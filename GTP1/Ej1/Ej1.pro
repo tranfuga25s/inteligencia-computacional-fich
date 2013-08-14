@@ -19,4 +19,5 @@ SOURCES += main.cpp \
     neurona.cpp
 
 HEADERS += \
-    neurona.h
+    neurona.h \
+    funciones_aux.h

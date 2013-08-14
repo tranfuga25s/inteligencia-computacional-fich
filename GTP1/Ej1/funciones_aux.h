@@ -1,0 +1,4 @@
+#ifndef FUNCIONES_AUX_H
+#define FUNCIONES_AUX_H
+
+#endif // FUNCIONES_AUX_H
