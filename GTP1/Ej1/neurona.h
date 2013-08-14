@@ -1,8 +1,9 @@
 #ifndef NEURONA_H
 #define NEURONA_H
 
+#include "funciones_aux.h"
 #include <QObject>
-#include <vector>
+#include <QVector>
 
 using namespace std;
 
@@ -20,7 +21,7 @@ public:
 private:
     int _cantidad_entradas;
     double _tasa_aprendizaje;
-    vector<double> _pesos;
+    QVector<double> _pesos;
     
 signals:
 public slots:

@@ -7,7 +7,7 @@ QObject(parent)
     _cantidad_entradas = cantidad_entradas;
     // Inicializo el vector de pesos
     for( int i = 0; i<_cantidad_entradas; i++ ) {
-        _pesos.push_back( valor_random( 0.5, 0.5 ) );
+        _pesos.push_back( valor_random( -0.5, 0.5 ) );
     }
 }
 
