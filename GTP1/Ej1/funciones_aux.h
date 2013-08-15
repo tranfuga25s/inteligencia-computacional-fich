@@ -4,7 +4,8 @@
 #include <QObject>
 #include <QFile>
 #include <QVector>
-
+#include <QStringList>
+#include <QDebug>
 /*
 
 Recive la direccion de donde lee el archivo
@@ -13,28 +14,39 @@ y el vector de salidas deseadas
 
 */
 
-static void leer_archivo_entrenamiento(QString direccion,QVector< QVector<double> >* vect_entradas, QVector<double>* vect_salidas_deseadas)
+static void leer_archivo_entrenamiento(QString direccion,QVector< QVector<double> >* vect_entradas, QVector< QVector<double> >* vect_salidas_deseadas)
 {
+
     QFile archivo_entrada(direccion);
+    if( !archivo_entrada.exists() ) {
+        qDebug() << "El archivo de entrada no existe! " << direccion;
+    }
 
     if(archivo_entrada.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        int i=0;
-        QVector<double> aux(2);
+        int cant=0;
+        QVector<double> aux(vect_entradas->size());
+        QVector<double> aux2(vect_salidas_deseadas->size());
         while(!archivo_entrada.atEnd())
         {
 
             //Leo la linea y la proceso almacenandola en los vectores correspondientes
             QString Linea = archivo_entrada.readLine();
+            QStringList divisiones = Linea.split( ',', QString::SkipEmptyParts );
 
-            aux[0]=Linea.section(",",0).toDouble();
-            aux[1]=Linea.section(",",1).toDouble();
+            for( int i = 0; i<vect_entradas->size(); i++ ) {
+                aux.push_back( divisiones.takeFirst().toDouble() );
+            }
             vect_entradas->push_back(aux);
-
-            vect_salidas_deseadas->push_back(Linea.section(",",2).toDouble());
-            i++;
+            aux.clear();
+            for( int i = 0; i<vect_salidas_deseadas->size(); i++ ) {
+                aux2.push_back( divisiones.takeFirst().toDouble() );
+            }
+            vect_salidas_deseadas->push_back(aux2);
+            aux2.clear();
+            cant++;
         }
-
+        qDebug() << "Leidas " << cant << " entradas de entrenamiento";
         archivo_entrada.close();
     }
 }

@@ -5,8 +5,6 @@
 #include <QObject>
 #include <QVector>
 
-using namespace std;
-
 class Neurona : public QObject
 {
     Q_OBJECT

@@ -1,4 +1,5 @@
 #include "neurona.h"
+#include "funciones_aux.h"
 
 Neurona::Neurona(QObject *parent, int cantidad_entradas ) :
 QObject(parent)
