@@ -17,12 +17,13 @@ typedef QVector< QVector<double> > matriz;
  * \param vect_entradas vector de entradas
  * \param vect_salidas_deseadas vector de salidas
  */
-static void leer_archivo_entrenamiento( QString direccion, matriz* vect_entradas, vector* vect_salidas_deseadas)
+static bool leer_archivo_entrenamiento( QString direccion, matriz* vect_entradas, vector* vect_salidas_deseadas)
 {
 
-    QFile archivo_entrada(direccion);
+    QFile archivo_entrada( direccion );
     if( !archivo_entrada.exists() ) {
         qDebug() << "El archivo de entrada no existe! " << direccion;
+        return false;
     }
 
     if(archivo_entrada.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -50,6 +51,7 @@ static void leer_archivo_entrenamiento( QString direccion, matriz* vect_entradas
         qDebug() << "Leidas " << cant << " entradas de entrenamiento";
         archivo_entrada.close();
     }
+    return true;
 }
 
 //Funcion para generar un valor aleatorio entre min y max

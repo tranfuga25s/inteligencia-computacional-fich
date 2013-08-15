@@ -1,6 +1,7 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QTime>
+#include <QDir>
 #include <QVector>
 
 typedef QVector<double> vector;
@@ -26,10 +27,15 @@ int main(int argc, char *argv[])
     matriz entradas;
     vector salidas;
 
-    leer_archivo_entrenamiento( "tp1ej1.csv", &entradas, &salidas );
+    QString archivo = QCoreApplication::applicationDirPath().append( QDir::separator() ).append( "tp1eh1.csv" );
+    qWarning() << archivo;
+    if( ! leer_archivo_entrenamiento( archivo, &entradas, &salidas ) ) {
+        qDebug() << "No se pudo encontrar el archivo de entrenamiento! cancelando!";
+        abort();
+    }
 
     Neurona n( 0, entradas.size() );
     n.setearTasaAprendizaje( 0.25 );
 
-    return a.exec();
+    return 0;
 }
