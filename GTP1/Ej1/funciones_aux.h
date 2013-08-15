@@ -18,7 +18,11 @@ typedef QVector< QVector<double> > matriz;
  * \param vect_salidas_deseadas vector de salidas
  * \return Verdadero si se pudieron cargar al menos una entrada del archivo
  */
-static bool leer_archivo_entrenamiento( QString direccion, matriz* vect_entradas, vector* vect_salidas_deseadas)
+static bool leer_archivo_entrenamiento( QString direccion,
+                                        matriz* vect_entradas,
+                                        vector* vect_salidas_deseadas,
+                                        int tam_entradas,
+                                        int tam_salida )
 {
 
     QFile archivo_entrada( direccion );
@@ -41,7 +45,7 @@ static bool leer_archivo_entrenamiento( QString direccion, matriz* vect_entradas
             QStringList divisiones = Linea.split( ',', QString::SkipEmptyParts );
 
             // Guardo las entradas
-            for( int i = 0; i<vect_entradas->size(); i++ ) {
+            for( int i = 0; i<tam_entradas; i++ ) {
                 aux.push_back( divisiones.takeFirst().toDouble() );
             }
             vect_entradas->push_back(aux);
@@ -57,8 +61,13 @@ static bool leer_archivo_entrenamiento( QString direccion, matriz* vect_entradas
     { return true; } else { return false; }
 }
 
-//Funcion para generar un valor aleatorio entre min y max
-
+/*!
+ * \brief valor_random
+ * Funcion para generar un valor aleatorio entre min y max
+ * \param min
+ * \param max
+ * \return
+ */
 static double valor_random(double min,double max)
 {
 
@@ -76,6 +85,22 @@ static double valor_random(double min,double max)
     }
 }
 
+/*!
+ * \brief mostrarVector
+ * \param v
+ */
+static void mostrarVector( const vector v ) {
+    qDebug() << v;
+}
 
+/*!
+ * \brief mostrarMatriz
+ * \param m
+ */
+static void mostrarMatriz( const matriz m ) {
+    for( int i=0; i<m.size(); i++) {
+        qDebug() << "Fila " << i << " " << m.at( i );
+    }
+}
 
 #endif // FUNCIONES_AUX_H

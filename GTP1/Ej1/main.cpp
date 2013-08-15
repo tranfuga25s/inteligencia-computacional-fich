@@ -28,15 +28,24 @@ int main(int argc, char *argv[])
     QSettings parametros( "parametros.cfg", QSettings::IniFormat );
     
     // Cargo los datos de los archivos que corresponda
-    matriz entradas( parametros.value( "cant_entradas" ).toInt() );
-    vector salidas( parametros.value( "cant_salidas" ).toInt() );
+    matriz entradas( parametros.value( "cantidad_entradas" ).toInt() );
+    vector salidas( parametros.value( "cantidad_salidas" ).toInt() );
 
     QString archivo = QCoreApplication::applicationDirPath().append( QDir::separator() ).append( parametros.value( "archivo" ).toString() );
     qWarning() << archivo;
-    if( ! leer_archivo_entrenamiento( archivo, &entradas, &salidas) ) {
+    if( ! leer_archivo_entrenamiento( archivo,
+                                      &entradas,
+                                      &salidas,
+                                      parametros.value( "cantidad_entradas" ).toInt(),
+                                      parametros.value( "cantidad_salidas" ).toInt() ) ) {
         qDebug() << "No se pudo encontrar el archivo de entrenamiento! cancelando!";
         abort();
     }
+
+    qDebug() << "Salidas";
+    mostrarVector( salidas );
+    qDebug() << "Entradas";
+    mostrarMatriz( entradas );
 
     Neurona n( 0, entradas.size() );
     n.setearTasaAprendizaje( 0.25 );
