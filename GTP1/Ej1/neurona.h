@@ -22,7 +22,8 @@ private:
     int _cantidad_entradas;
     double _tasa_aprendizaje;
     QVector<double> _pesos;
-    
+
+
 signals:
 public slots:
     
