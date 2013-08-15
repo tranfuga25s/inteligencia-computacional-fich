@@ -6,15 +6,18 @@
 #include <QVector>
 #include <QStringList>
 #include <QDebug>
-/*
 
-Recive la direccion de donde lee el archivo
-y el vector por direccion de los datos de entrada
-y el vector de salidas deseadas
+typedef QVector<double> vector;
+typedef QVector< QVector<double> > matriz;
 
-*/
-
-static void leer_archivo_entrenamiento(QString direccion,QVector< QVector<double> >* vect_entradas, QVector< QVector<double> >* vect_salidas_deseadas)
+/*!
+ * \brief leer_archivo_entrenamiento
+ * Recive la direccion de donde lee el archivo y el vector por direccion de los datos de entrada y el vector de salidas deseadas
+ * \param direccion Archivo de datos a cargar
+ * \param vect_entradas vector de entradas
+ * \param vect_salidas_deseadas vector de salidas
+ */
+static void leer_archivo_entrenamiento( QString direccion, matriz* vect_entradas, vector* vect_salidas_deseadas)
 {
 
     QFile archivo_entrada(direccion);
@@ -25,8 +28,8 @@ static void leer_archivo_entrenamiento(QString direccion,QVector< QVector<double
     if(archivo_entrada.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         int cant=0;
-        QVector<double> aux(vect_entradas->size());
-        QVector<double> aux2(vect_salidas_deseadas->size());
+        vector aux(vect_entradas->size());
+
         while(!archivo_entrada.atEnd())
         {
 
@@ -34,16 +37,14 @@ static void leer_archivo_entrenamiento(QString direccion,QVector< QVector<double
             QString Linea = archivo_entrada.readLine();
             QStringList divisiones = Linea.split( ',', QString::SkipEmptyParts );
 
+            // Guardo las entradas
             for( int i = 0; i<vect_entradas->size(); i++ ) {
                 aux.push_back( divisiones.takeFirst().toDouble() );
             }
             vect_entradas->push_back(aux);
             aux.clear();
-            for( int i = 0; i<vect_salidas_deseadas->size(); i++ ) {
-                aux2.push_back( divisiones.takeFirst().toDouble() );
-            }
-            vect_salidas_deseadas->push_back(aux2);
-            aux2.clear();
+            // Guardo las salidas
+            vect_salidas_deseadas->push_back( divisiones.takeFirst().toDouble() );
             cant++;
         }
         qDebug() << "Leidas " << cant << " entradas de entrenamiento";
