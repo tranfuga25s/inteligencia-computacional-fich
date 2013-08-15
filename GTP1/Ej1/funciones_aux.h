@@ -16,6 +16,7 @@ typedef QVector< QVector<double> > matriz;
  * \param direccion Archivo de datos a cargar
  * \param vect_entradas vector de entradas
  * \param vect_salidas_deseadas vector de salidas
+ * \return Verdadero si se pudieron cargar al menos una entrada del archivo
  */
 static bool leer_archivo_entrenamiento( QString direccion, matriz* vect_entradas, vector* vect_salidas_deseadas)
 {
@@ -26,9 +27,10 @@ static bool leer_archivo_entrenamiento( QString direccion, matriz* vect_entradas
         return false;
     }
 
+    int cant=0;
     if(archivo_entrada.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        int cant=0;
+
         vector aux(vect_entradas->size());
 
         while(!archivo_entrada.atEnd())
@@ -51,7 +53,8 @@ static bool leer_archivo_entrenamiento( QString direccion, matriz* vect_entradas
         qDebug() << "Leidas " << cant << " entradas de entrenamiento";
         archivo_entrada.close();
     }
-    return true;
+    if( cant > 0 )
+    { return true; } else { return false; }
 }
 
 //Funcion para generar un valor aleatorio entre min y max
