@@ -11,5 +11,4 @@ int main(int argc, char *argv[])
     
     // Cargo los datos de los archivos que corresponda
 
-    return a.exec();
 }
