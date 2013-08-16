@@ -6,6 +6,7 @@
 #include <QVector>
 #include <QStringList>
 #include <QDebug>
+#include <QTextStream>
 
 typedef QVector<double> vector;
 typedef QVector< QVector<double> > matriz;
@@ -35,14 +36,14 @@ static bool leer_archivo_entrenamiento( QString direccion,
     if(archivo_entrada.open(QIODevice::ReadOnly | QIODevice::Text))
     {
 
-        vector aux(vect_entradas->size());
-
+        QVector<double> aux;
         while(!archivo_entrada.atEnd())
         {
 
             //Leo la linea y la proceso almacenandola en los vectores correspondientes
             QString Linea = archivo_entrada.readLine();
             QStringList divisiones = Linea.split( ',', QString::SkipEmptyParts );
+
 
             // Guardo las entradas
             for( int i = 0; i<tam_entradas; i++ ) {
@@ -60,6 +61,36 @@ static bool leer_archivo_entrenamiento( QString direccion,
     if( cant > 0 )
     { return true; } else { return false; }
 }
+
+//Escribe el archivo con la salida incluyendo las entradas anteriormente leidas
+
+static void escribe_archivo_salida(QString direccion,QVector< QVector<double> >* vect_entradas,QVector<double>* vect_salidas)
+{
+    QFile archivo_salida(direccion);
+    QString aux;
+
+    if(archivo_salida.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        for(int i=0;i<vect_entradas->size();i++)
+        {
+            //agrego al string todas las entradas
+            for(int j=0;j<vect_entradas[i].size();j++)
+            {
+               aux.append(QString::number(vect_entradas->at(i).value(j)));
+            }
+
+            //agrego luego la salida obtenida
+            aux.append(QString::number(vect_salidas->value(i)));
+
+            //Escribo el string en la linea del archivo
+            QTextStream out(&archivo_salida);
+            out<<aux<<"endl";
+        }
+
+        archivo_salida.close();
+    }
+}
+
 
 /*!
  * \brief valor_random
