@@ -57,6 +57,7 @@ double Neurona::evaluar(QVector<double> entradas)
 
 int Neurona::funcionActivacion( double valor )
 {
+    /// @TODO RENATO! hacer esta función
     switch( _tipo_funcion_activacion) {
 
     }

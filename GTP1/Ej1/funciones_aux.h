@@ -46,7 +46,6 @@ static bool leer_archivo_entrenamiento( QString direccion,
             //Leo la linea y la proceso almacenandola en los vectores correspondientes
             QString Linea = archivo_entrada.readLine();
             QStringList divisiones = Linea.split( ',', QString::SkipEmptyParts );
-            qDebug() << divisiones;
 
             // Guardo las entradas
             for( int i = 0; i<tam_entradas; i++ ) {
@@ -67,9 +66,13 @@ static bool leer_archivo_entrenamiento( QString direccion,
 
 //Escribe el archivo con la salida incluyendo las entradas anteriormente leidas
 
-static void escribe_archivo_salida( QString direccion, matriz* vect_entradas, vector* vect_salidas)
+static bool escribe_archivo_salida( QString direccion, matriz* vect_entradas, vector* vect_salidas)
 {
     QFile archivo_salida(direccion);
+    if( !archivo_salida.exists() ) {
+        qDebug() << "El archivo de salida no existe! " << direccion;
+        return false;
+    }
     QString aux;
 
     if(archivo_salida.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -92,6 +95,7 @@ static void escribe_archivo_salida( QString direccion, matriz* vect_entradas, ve
 
         archivo_salida.close();
     }
+    return true;
 }
 
 

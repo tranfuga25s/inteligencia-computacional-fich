@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     matriz entradas( parametros.value( "cantidad_entradas" ).toInt() );
     vector salidas( parametros.value( "cantidad_salidas" ).toInt() );
 
-    QString archivo = QCoreApplication::applicationDirPath().append( QDir::separator() ).append( parametros.value( "archivo" ).toString() );
+    QString archivo = QCoreApplication::applicationDirPath().append( QDir::separator() ).append( parametros.value( "archivo_entrada" ).toString() );
     qWarning() << archivo;
     if( ! leer_archivo_entrenamiento( archivo,
                                       &entradas,
@@ -47,8 +47,34 @@ int main(int argc, char *argv[])
     qDebug() << "Entradas";
     mostrarMatriz( entradas );
 
-    Neurona n( 0, entradas.size() );
-    n.setearTasaAprendizaje( 0.25 );
+    Neurona n( 0, parametros.value( "cantidad_entradas" ).toInt() );
+    n.setearTasaAprendizaje( parametros.value( "tasa_aprendizaje" ).toDouble() );
+
+    // Inicio la etapa de entrenamiento
+    qDebug() << "--------------------------------";
+    qDebug() << ">> Entrenando";
+    foreach( vector dato, entradas ) {
+
+    }
+
+    // Verifico el error
+    qDebug() << "--------------------------------";
+    qDebug() << ">> Verificando tasa de error";
+    int errores = 0;
+    int correcto = 0;
+    for( int i = 0; i < entradas.size(); i++ ) {
+       if( n.evaluar( entradas.at( i ) ) != salidas.at( i ) ) {
+           errores++;
+       } else {
+           correcto++;
+       }
+    }
+    double porcentaje_error = ( (double) errores * 100.0 ) / (double) entradas.size();
+    double porcentaje_acierto = ( (double) correcto * 100.0 ) / (double) entradas.size();
+    qDebug() << "Cantidad de errores: " << errores << ", acertados: " << correcto;
+    qDebug() << "Porcentaje de acierto: " << porcentaje_acierto << "%";
+    qDebug() << "Porcentaje de error: " << porcentaje_error << "%";
+
 
     return 0;
 }
