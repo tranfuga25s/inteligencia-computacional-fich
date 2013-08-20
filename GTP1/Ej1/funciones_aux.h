@@ -33,6 +33,9 @@ static bool leer_archivo_entrenamiento( QString direccion,
     }
 
     int cant=0;
+    // Evita las primeras entradas de constructores nulos que agregas ceros en los vectores.
+    vect_entradas->clear();
+    vect_salidas_deseadas->clear();
     if(archivo_entrada.open(QIODevice::ReadOnly | QIODevice::Text))
     {
 
@@ -43,16 +46,16 @@ static bool leer_archivo_entrenamiento( QString direccion,
             //Leo la linea y la proceso almacenandola en los vectores correspondientes
             QString Linea = archivo_entrada.readLine();
             QStringList divisiones = Linea.split( ',', QString::SkipEmptyParts );
-
+            qDebug() << divisiones;
 
             // Guardo las entradas
             for( int i = 0; i<tam_entradas; i++ ) {
                 aux.push_back( divisiones.takeFirst().toDouble() );
             }
-            vect_entradas->push_back(aux);
+            vect_entradas->append( aux );
             aux.clear();
             // Guardo las salidas
-            vect_salidas_deseadas->push_back( divisiones.takeFirst().toDouble() );
+            vect_salidas_deseadas->append( divisiones.takeFirst().toDouble() );
             cant++;
         }
         qDebug() << "Leidas " << cant << " entradas de entrenamiento";
@@ -64,7 +67,7 @@ static bool leer_archivo_entrenamiento( QString direccion,
 
 //Escribe el archivo con la salida incluyendo las entradas anteriormente leidas
 
-static void escribe_archivo_salida(QString direccion,QVector< QVector<double> >* vect_entradas,QVector<double>* vect_salidas)
+static void escribe_archivo_salida( QString direccion, matriz* vect_entradas, vector* vect_salidas)
 {
     QFile archivo_salida(direccion);
     QString aux;
