@@ -7,6 +7,7 @@
 #include <QStringList>
 #include <QDebug>
 #include <QTextStream>
+#include <math.h>
 
 typedef QVector<double> vector;
 typedef QVector< QVector<double> > matriz;
@@ -23,7 +24,7 @@ static bool leer_archivo_entrenamiento( QString direccion,
                                         matriz* vect_entradas,
                                         vector* vect_salidas_deseadas,
                                         int tam_entradas,
-                                        int tam_salida )
+                                        int tam_salida)
 {
 
     QFile archivo_entrada( direccion );
@@ -140,5 +141,6 @@ static void mostrarMatriz( const matriz m ) {
         qDebug() << "Fila " << i << " " << m.at( i );
     }
 }
+
 
 #endif // FUNCIONES_AUX_H

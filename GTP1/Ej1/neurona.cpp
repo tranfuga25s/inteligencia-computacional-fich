@@ -6,6 +6,7 @@ QObject(parent)
 {
     _tasa_aprendizaje = 0.25;
     _cantidad_entradas = cantidad_entradas;
+    _alfa_activacion = 0;
 
 }
 
@@ -55,15 +56,55 @@ double Neurona::evaluar(QVector<double> entradas)
     return funcionActivacion(sumatoria);
 }
 
-int Neurona::funcionActivacion( double valor )
+double Neurona::funcionActivacion(double valor)
 {
     /// @TODO RENATO! hacer esta función
-    switch( _tipo_funcion_activacion) {
+    switch(_tipo_funcion_activacion)
+    {
 
+    case 1:
+    {
+        /* Signo */
+        if (valor >= 0)
+        {
+            return 1.0;
+        }
+        else
+        {
+            return -1.0;
+        }
+        break;
+    }
+    case 2:
+    {
+        /* Lineal */
+        if (valor >= _alfa_activacion)
+        {
+            return 1.0;
+        }
+        else
+        {
+            if(valor < (-1.0)*_alfa_activacion)
+            {
+                return -1.0;
+            }
+            else
+            {
+                return _alfa_activacion*valor;
+            }
+        }
+        break;
+    }
+    case 3:
+    {
+        /* Sigmoidea */
+        return (1 - exp(-1.0*_alfa_activacion*valor)) / (1 + exp(-1.0*_alfa_activacion*valor));
+        break;
+    }
     }
 
-
 }
+
 
 bool Neurona::entrenamiento(QVector<double> entradas, double salidaDeseada)
 {

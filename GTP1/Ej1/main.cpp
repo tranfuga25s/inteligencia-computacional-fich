@@ -47,34 +47,47 @@ int main(int argc, char *argv[])
     qDebug() << "Entradas";
     mostrarMatriz( entradas );
 
-    Neurona n( 0, parametros.value( "cantidad_entradas" ).toInt() );
+    Neurona n(0,parametros.value( "cantidad_entradas" ).toInt() );
+    n.inicializarPesos();
     n.setearTasaAprendizaje( parametros.value( "tasa_aprendizaje" ).toDouble() );
+    n.setearFuncionActivacion((Neurona::tipoFuncionActivacion)parametros.value( "funcion_activacion" ).toInt(),parametros.value( "alfa_activacion" ).toDouble());
 
-    // Inicio la etapa de entrenamiento
-    qDebug() << "--------------------------------";
-    qDebug() << ">> Entrenando";
-    foreach( vector dato, entradas ) {
+    int max_etapas = parametros.value( "etapas_maximas" ).toInt();
+    double tolerancia_error = parametros.value( "tolerancia_error" ).toInt();
+    int contador =0;
 
+    double porcentaje_error = 99; /*Mucho; sino sale*/
+    double porcentaje_acierto = 0;
+
+    while (contador <= max_etapas or porcentaje_error <= tolerancia_error)
+    {
+        // Inicio la etapa de entrenamiento
+        qDebug() << "--------------------------------";
+        qDebug() << ">> Entrenando";
+        for(int i =0; i<entradas.size(); i++ )
+        {
+           n.entrenamiento(entradas.at(i),salidas.at(i));
+        }
+
+        // Verifico el error
+        qDebug() << "--------------------------------";
+        qDebug() << ">> Verificando tasa de error";
+        int errores = 0;
+        int correcto = 0;
+        for( int i = 0; i < entradas.size(); i++ ) {
+            if( n.evaluar( entradas.at( i ) ) != salidas.at( i ) ) {
+                errores++;
+            } else {
+                correcto++;
+            }
+        }
+        porcentaje_error = ( (double) errores * 100.0 ) / (double) entradas.size();
+        porcentaje_acierto = ( (double) correcto * 100.0 ) / (double) entradas.size();
+        qDebug() << "Cantidad de errores: " << errores << ", acertados: " << correcto;
+        qDebug() << "Porcentaje de acierto: " << porcentaje_acierto << "%";
+        qDebug() << "Porcentaje de error: " << porcentaje_error << "%";
     }
-
-    // Verifico el error
-    qDebug() << "--------------------------------";
-    qDebug() << ">> Verificando tasa de error";
-    int errores = 0;
-    int correcto = 0;
-    for( int i = 0; i < entradas.size(); i++ ) {
-       if( n.evaluar( entradas.at( i ) ) != salidas.at( i ) ) {
-           errores++;
-       } else {
-           correcto++;
-       }
-    }
-    double porcentaje_error = ( (double) errores * 100.0 ) / (double) entradas.size();
-    double porcentaje_acierto = ( (double) correcto * 100.0 ) / (double) entradas.size();
-    qDebug() << "Cantidad de errores: " << errores << ", acertados: " << correcto;
-    qDebug() << "Porcentaje de acierto: " << porcentaje_acierto << "%";
-    qDebug() << "Porcentaje de error: " << porcentaje_error << "%";
-
 
     return 0;
+
 }

@@ -25,8 +25,8 @@ public:
 
     int cantidadEntradas();
     double evaluar(QVector<double> entradas);
-    void setearFuncionActivacion(tipoFuncionActivacion tipo){_tipo_funcion_activacion=tipo;}
-    int funcionActivacion( double valor );
+    void setearFuncionActivacion(tipoFuncionActivacion tipo,double alfa){_tipo_funcion_activacion=tipo; _alfa_activacion=alfa;}
+    double funcionActivacion( double valor );
     bool entrenamiento( QVector<double> entradas, double salidaDeseada );
 
 
@@ -34,6 +34,7 @@ public:
 private:
     int _cantidad_entradas;
     double _tasa_aprendizaje;
+    double _alfa_activacion;
     QVector<double> _pesos;
     Neurona::tipoFuncionActivacion _tipo_funcion_activacion;
 
