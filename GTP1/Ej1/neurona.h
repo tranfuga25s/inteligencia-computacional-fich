@@ -28,7 +28,7 @@ public:
     int cantidadEntradas() { return _cantidad_entradas; }
 
     double evaluar(QVector<double> entradas);
-    bool entrenamiento( QVector<double> entradas, double salidaDeseada );
+    double entrenamiento( QVector<double> entradas, double salidaDeseada );
 
     void setearFuncionActivacion( tipoFuncionActivacion tipo, double alfa ) { _tipo_funcion_activacion=tipo; _alfa_activacion=alfa; }
     double funcionActivacion( double valor );

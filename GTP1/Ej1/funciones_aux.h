@@ -70,30 +70,27 @@ static bool leer_archivo_entrenamiento( QString direccion,
 static bool escribe_archivo_salida( QString direccion, matriz* vect_entradas, vector* vect_salidas)
 {
     QFile archivo_salida(direccion);
-    if( !archivo_salida.exists() ) {
-        qDebug() << "El archivo de salida no existe! " << direccion;
-        return false;
-    }
     QString aux;
 
-    if(archivo_salida.open(QIODevice::WriteOnly | QIODevice::Text))
+    if(archivo_salida.open(  QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate ) )
     {
+        QTextStream out(&archivo_salida);
         for(int i=0;i<vect_entradas->size();i++)
         {
             //agrego al string todas las entradas
-            for(int j=0;j<vect_entradas[i].size();j++)
+            for(int j=0;j<vect_entradas->at( i).size();j++)
             {
                aux.append(QString::number(vect_entradas->at(i).value(j)));
+               aux.append( ", " );
             }
 
             //agrego luego la salida obtenida
             aux.append(QString::number(vect_salidas->value(i)));
-
+            aux.append( "\n" );
             //Escribo el string en la linea del archivo
-            QTextStream out(&archivo_salida);
-            out<<aux<<"endl";
-        }
 
+        }
+        out<<aux;
         archivo_salida.close();
     }
     return true;
@@ -142,5 +139,56 @@ static void mostrarMatriz( const matriz m ) {
     }
 }
 
+/*!
+ * \brief randomizarEntradas
+ * \param tam_datos
+ * \return
+ */
+static QVector<int> randomizarEntradas( int tam_datos ) {
+    QVector<int> temp1;
+    for( int i=0; i<tam_datos; i++ ) {
+        temp1.append(i);
+    }
+    QVector<int> retorno;
+    for( int i=0;i<tam_datos; i++ ) {
+        int pos = qrand() % temp1.size();
+        retorno.append( temp1.at( pos ) );
+        temp1.remove( pos );
+    }
+    return retorno;
+}
+
+/*!
+ * \brief randomizarDatos
+ * Escribe un archivo de salida con los datos de entradas agregando el porcentaje de variacion a cada entrada.
+ * \param archivo_entrada Nombre del archivo de entrada
+ * \param archivo_salida
+ * \param cantidad_extras
+ * \param porcentaje_error
+ */
+static void randomizarDatos( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_error ) {
+    matriz entradas;
+    vector salidas;
+    matriz entradas_nuevas;
+    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, 2, 1 );
+    for( int i=0; i<entradas.size(); i++ ) {
+
+        entradas_nuevas.append( entradas.at( i ) );
+        salidas[i]=0;
+        for( int j=0; j<cantidad_extras; j++ ) {
+            vector temporal = entradas.at( i );
+            double radio = valor_random( 0.1, porcentaje_error );
+            double angulo = valor_random( 0.0, 365.0 );
+            entradas[i][0] = entradas[i][0] + radio * cos( angulo );
+            entradas[i][1] = entradas[i][1] + radio * sin( angulo );
+            // Como el archivo generado solo se utiliza para probar los elementos de la red neuronal
+            // las salidas, aunque se cargan, no se utilizan. Por eso lo colocamos a todos en cero.
+            salidas.append( 0 );
+            entradas_nuevas.append( temporal );
+        }
+
+    }
+    escribe_archivo_salida( archivo_salida, &entradas_nuevas, &salidas );
+}
 
 #endif // FUNCIONES_AUX_H
