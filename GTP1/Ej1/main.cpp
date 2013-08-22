@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
     {
         // randomizo el vector de entradas
         QVector<int> mapa = randomizarEntradas( entradas.size() );
-        qDebug() << mapa;
+        qDebug() << "orden de datos: " << mapa;
 
         // Inicio la etapa de entrenamiento
         qDebug() << "--------------------------------";
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
         for(int i =0; i<entradas.size(); i++ )
         {
             double error_parcial = abs( n.entrenamiento( entradas.at( mapa.at(i) ), salidas.at( mapa.at( i ) ) ) );
-            if(error_parcial > error_parcial_maximo)
+            if( error_parcial > error_parcial_maximo )
             {
                 error_parcial_maximo = error_parcial;
                 qDebug() << "ep: " << error_parcial_maximo;

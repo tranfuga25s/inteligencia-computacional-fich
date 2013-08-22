@@ -95,22 +95,22 @@ double Neurona::funcionActivacion(double valor)
 double Neurona::entrenamiento(QVector<double> entradas, double salidaDeseada)
 {
     double salida = evaluar( entradas );
-    //qDebug() << "s: "<<salida<<"sd:"<<salidaDeseada;
+    qDebug() << "s: "<<salida<<"sd:"<<salidaDeseada;
     if ( salida == salidaDeseada ) {
         return 0.0;
         //qDebug() << "0.0";
     } else {
         // Ajusto los pesos
         double error = salidaDeseada - salida;
-        //qDebug() << error;
-
+        qDebug() << "error: "<< error;
+        qDebug() << "antes: " << _pesos;
         //Caso del w0 y x0. x0 siempre es -1 no importa cuantas epocas haga
         _pesos[0] = _pesos.at(0) + _tasa_aprendizaje*error*(-1.0);
 
-        for(int i=1 ; i<entradas.size() ; i++) {
+        for(int i=1 ; i<=entradas.size() ; i++) {
             _pesos[i]=_pesos.at(i) + _tasa_aprendizaje*error*entradas.at(i-1);
         }
-
+        qDebug() <<"despues: "<< _pesos;
         return error;
     }
 }
