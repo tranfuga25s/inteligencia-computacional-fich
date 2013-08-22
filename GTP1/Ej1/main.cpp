@@ -50,23 +50,24 @@ int main(int argc, char *argv[])
     Neurona n(0,parametros.value( "cantidad_entradas" ).toInt() );
     n.inicializarPesos();
     n.setearTasaAprendizaje( parametros.value( "tasa_aprendizaje" ).toDouble() );
-    n.setearFuncionActivacion((Neurona::tipoFuncionActivacion)parametros.value( "funcion_activacion" ).toInt(),parametros.value( "alfa_activacion" ).toDouble());
+    n.setearFuncionActivacion( (Neurona::tipoFuncionActivacion) parametros.value( "funcion_activacion" ).toInt(),
+                               parametros.value( "alfa_activacion" ).toDouble() );
 
     int max_etapas = parametros.value( "etapas_maximas" ).toInt();
-    double tolerancia_error = parametros.value( "tolerancia_error" ).toInt();
-    int contador =0;
+    double tolerancia_error = parametros.value( "tolerancia_error" ).toDouble();
+    int epoca = 0; /* Contador de etapa */
 
-    double porcentaje_error = 99; /*Mucho; sino sale*/
-    double porcentaje_acierto = 0;
+    double porcentaje_error = 99.0; /*Mucho; sino sale*/
+    double porcentaje_acierto = 0.0;
 
-    while (contador <= max_etapas or porcentaje_error <= tolerancia_error)
+    while ( epoca <= max_etapas || porcentaje_error <= tolerancia_error)
     {
         // Inicio la etapa de entrenamiento
         qDebug() << "--------------------------------";
-        qDebug() << ">> Entrenando";
+        qDebug() << ">> Entrenando - Epoca: " << epoca;
         for(int i =0; i<entradas.size(); i++ )
         {
-           n.entrenamiento(entradas.at(i),salidas.at(i));
+           n.entrenamiento( entradas.at(i), salidas.at(i) );
         }
 
         // Verifico el error
@@ -86,6 +87,9 @@ int main(int argc, char *argv[])
         qDebug() << "Cantidad de errores: " << errores << ", acertados: " << correcto;
         qDebug() << "Porcentaje de acierto: " << porcentaje_acierto << "%";
         qDebug() << "Porcentaje de error: " << porcentaje_error << "%";
+
+        // Aumento el contador de epocas
+        epoca++;
     }
 
     return 0;

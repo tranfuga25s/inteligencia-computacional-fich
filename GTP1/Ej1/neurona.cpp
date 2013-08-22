@@ -6,7 +6,7 @@ QObject(parent)
 {
     _tasa_aprendizaje = 0.25;
     _cantidad_entradas = cantidad_entradas;
-    _alfa_activacion = 0;
+    _alfa_activacion = 0.0;
 
 }
 
@@ -28,20 +28,7 @@ void Neurona::seteaPesos(QVector<double> pesos)
     _pesos = pesos;
 }
 
-void Neurona::setearTasaAprendizaje(double tasa)
-{
-    if( tasa > 0.0 ) {
-        this->_tasa_aprendizaje = tasa;
-    }
-}
-
-double Neurona::tasaAprendizaje()
-{ return _tasa_aprendizaje; }
-
-int Neurona::cantidadEntradas()
-{ return _cantidad_entradas; }
-
-double Neurona::evaluar(QVector<double> entradas)
+double Neurona::evaluar( QVector<double> entradas )
 {
     double sumatoria=0.0;
 
@@ -58,49 +45,48 @@ double Neurona::evaluar(QVector<double> entradas)
 
 double Neurona::funcionActivacion(double valor)
 {
-    /// @TODO RENATO! hacer esta función
     switch(_tipo_funcion_activacion)
     {
 
-    case 1:
-    {
-        /* Signo */
-        if (valor >= 0)
+        case 1:
         {
-            return 1.0;
-        }
-        else
-        {
-            return -1.0;
-        }
-        break;
-    }
-    case 2:
-    {
-        /* Lineal */
-        if (valor >= _alfa_activacion)
-        {
-            return 1.0;
-        }
-        else
-        {
-            if(valor < (-1.0)*_alfa_activacion)
+            /* Signo */
+            if (valor >= 0)
             {
-                return -1.0;
+                return 1.0;
             }
             else
             {
-                return _alfa_activacion*valor;
+                return -1.0;
             }
+            break;
         }
-        break;
-    }
-    case 3:
-    {
-        /* Sigmoidea */
-        return (1 - exp(-1.0*_alfa_activacion*valor)) / (1 + exp(-1.0*_alfa_activacion*valor));
-        break;
-    }
+        case 2:
+        {
+            /* Lineal */
+            if (valor >= _alfa_activacion)
+            {
+                return 1.0;
+            }
+            else
+            {
+                if(valor < (-1.0)*_alfa_activacion)
+                {
+                    return -1.0;
+                }
+                else
+                {
+                    return _alfa_activacion*valor;
+                }
+            }
+            break;
+        }
+        case 3:
+        {
+            /* Sigmoidea */
+            return (1 - exp(-1.0*_alfa_activacion*valor)) / (1 + exp(-1.0*_alfa_activacion*valor));
+            break;
+        }
     }
 
 }

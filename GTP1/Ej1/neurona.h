@@ -17,18 +17,21 @@ public:
     };
 
     Neurona( QObject *parent = 0, int cantidadEntradas = 1 );
+
     void inicializarPesos();
     QVector<double> devuelvePesos();
     void seteaPesos(QVector<double> pesos);
-    void setearTasaAprendizaje( double tasa );
-    double tasaAprendizaje();
 
-    int cantidadEntradas();
+    void setearTasaAprendizaje( double tasa ) { _tasa_aprendizaje = tasa; }
+    double tasaAprendizaje() { return _tasa_aprendizaje; }
+
+    int cantidadEntradas() { return _cantidad_entradas; }
+
     double evaluar(QVector<double> entradas);
-    void setearFuncionActivacion(tipoFuncionActivacion tipo,double alfa){_tipo_funcion_activacion=tipo; _alfa_activacion=alfa;}
-    double funcionActivacion( double valor );
     bool entrenamiento( QVector<double> entradas, double salidaDeseada );
 
+    void setearFuncionActivacion( tipoFuncionActivacion tipo, double alfa ) { _tipo_funcion_activacion=tipo; _alfa_activacion=alfa; }
+    double funcionActivacion( double valor );
 
 
 private:
@@ -37,10 +40,6 @@ private:
     double _alfa_activacion;
     QVector<double> _pesos;
     Neurona::tipoFuncionActivacion _tipo_funcion_activacion;
-
-
-signals:
-public slots:
     
 };
 
