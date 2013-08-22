@@ -42,25 +42,28 @@ int main(int argc, char *argv[])
         abort();
     }
 
-    qDebug() << "Salidas";
+    /*qDebug() << "Salidas";
     mostrarVector( salidas );
     qDebug() << "Entradas";
-    mostrarMatriz( entradas );
+    mostrarMatriz( entradas );*/
 
     Neurona n(0,parametros.value( "cantidad_entradas" ).toInt() );
     n.inicializarPesos();
     n.setearTasaAprendizaje( parametros.value( "tasa_aprendizaje" ).toDouble() );
+    qDebug() << "Tasa de aprendizaje: " << n.tasaAprendizaje();
     n.setearFuncionActivacion( (Neurona::tipoFuncionActivacion) parametros.value( "funcion_activacion" ).toInt(),
                                parametros.value( "alfa_activacion" ).toDouble() );
 
     int max_etapas = parametros.value( "etapas_maximas" ).toInt();
+    qDebug() << "Epocas: " << max_etapas;
     double tolerancia_error = parametros.value( "tolerancia_error" ).toDouble();
+    qDebug() << "Error de corte: " << ( tolerancia_error * 100.0 ) << "%";
     int epoca = 0; /* Contador de etapa */
 
-    double porcentaje_error = 99.0; /*Mucho; sino sale*/
+    double porcentaje_error = 100.0; /*Mucho; sino sale*/
     double porcentaje_acierto = 0.0;
 
-    while ( epoca <= max_etapas || porcentaje_error <= tolerancia_error)
+    while ( epoca <= max_etapas && porcentaje_error > tolerancia_error )
     {
         // Inicio la etapa de entrenamiento
         qDebug() << "--------------------------------";
@@ -71,7 +74,7 @@ int main(int argc, char *argv[])
         }
 
         // Verifico el error
-        qDebug() << "--------------------------------";
+        //qDebug() << "--------------------------------";
         qDebug() << ">> Verificando tasa de error";
         int errores = 0;
         int correcto = 0;
