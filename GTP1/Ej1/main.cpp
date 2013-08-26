@@ -27,11 +27,23 @@ int main(int argc, char *argv[])
     // Cargo los parametros del ejercicio
     QSettings parametros( "parametros.cfg", QSettings::IniFormat );
 
+    //Archivo OR
     QString archivo = QCoreApplication::applicationDirPath().append( QDir::separator() ).append( parametros.value( "archivo_entrada" ).toString() );
 
-    // Randomizamos los datos
-    randomizarDatos( archivo,
-                     parametros.value( "archivo_salida_randomizado" ).toString(),
+    //Generamos el archivo de entrenamiento en base a la desviacion del 5%
+    generarArchivoAleatoriosEntrenamiento( archivo,
+                     parametros.value( "archivo_entrenamiento_randomizado" ).toString(),
+                     parametros.value( "cantidad_datos_extras" ).toInt(),
+                     parametros.value( "porcentaje_variacion" ).toDouble() );
+
+
+    //Archivo OR randomizado
+    QString archivo_aleatorios = QCoreApplication::applicationDirPath().append( QDir::separator() ).append( parametros.value( "archivo_entrenamiento_randomizado" ).toString() );
+
+
+    // Randomizamos los datos en base a el contenido de "archivo" para la prueba
+    generarArchivoAleatoriosPrueba( archivo,
+                     parametros.value( "archivo_prueba_randomizado" ).toString(),
                      parametros.value( "cantidad_datos_extras" ).toInt(),
                      parametros.value( "porcentaje_variacion" ).toDouble() );
     
@@ -42,7 +54,7 @@ int main(int argc, char *argv[])
 
 
     qWarning() << archivo;
-    if( ! leer_archivo_entrenamiento( archivo,
+    if( ! leer_archivo_entrenamiento( archivo_aleatorios,
                                       &entradas,
                                       &salidas,
                                       parametros.value( "cantidad_entradas" ).toInt(),
@@ -62,7 +74,7 @@ int main(int argc, char *argv[])
 
     Neurona n(0,parametros.value( "cantidad_entradas" ).toInt() );
     n.inicializarPesos();
-    mostrarVector( n.devuelvePesos() );
+    //mostrarVector( n.devuelvePesos() );
     n.setearTasaAprendizaje( parametros.value( "tasa_aprendizaje" ).toDouble() );
     qDebug() << "Tasa de aprendizaje: " << n.tasaAprendizaje();
     n.setearFuncionActivacion( (Neurona::tipoFuncionActivacion) parametros.value( "funcion_activacion" ).toInt(),
@@ -74,7 +86,7 @@ int main(int argc, char *argv[])
     qDebug() << "Error de corte: " << ( tolerancia_error * 100.0 ) << "%";
     int epoca = 0; /* Contador de etapa */
 
-    double porcentaje_error = 100.0; /*Mucho; sino sale*/
+    double porcentaje_error = 100.0; /*Mucho sino sale*/
     double porcentaje_acierto = 0.0;
     double error_parcial_maximo = tolerancia_error+0.001;
 
@@ -83,9 +95,9 @@ int main(int argc, char *argv[])
                 ( metodo_corte == 1 && porcentaje_error > tolerancia_error )
                 || ( metodo_corte == 2 && error_parcial_maximo > tolerancia_error)))
     {
-        // randomizo el vector de entradas
+        // randomizo el la lectura del vector de entradas
         QVector<int> mapa = randomizarEntradas( entradas.size() );
-        qDebug() << "orden de datos: " << mapa;
+        //qDebug() << "orden de datos: " << mapa;
 
         // Inicio la etapa de entrenamiento
         qDebug() << "--------------------------------";
@@ -96,8 +108,9 @@ int main(int argc, char *argv[])
             if( error_parcial > error_parcial_maximo )
             {
                 error_parcial_maximo = error_parcial;
-                qDebug() << "ep: " << error_parcial_maximo;
+                //qDebug() << "ep: " << error_parcial_maximo;
             }
+            qDebug()<<n.devuelvePesos();
         }
 
 
@@ -127,27 +140,12 @@ int main(int argc, char *argv[])
 
     }
 
-    qDebug() << "Probando con random";
-    leer_archivo_entrenamiento( parametros.value( "archivo_salida_randomizado" ).toString(),
+    qDebug() << "Probando con archivo de datos aleatorios";
+    leer_archivo_entrenamiento( parametros.value( "archivo_prueba_randomizado" ).toString(),
                                 &entradas,
                                 &salidas,
                                 2,
                                 1 );
-    /*int errores = 0;
-    int correcto = 0;
-    for( int i = 0; i < entradas.size(); i++ ) {
-        if( n.evaluar( entradas.at( i ) ) != salidas.at( i ) ) {
-            errores++;
-        } else {
-            correcto++;
-        }
-    }
-    porcentaje_error = ( (double) errores * 100.0 ) / (double) entradas.size();
-    porcentaje_acierto = ( (double) correcto * 100.0 ) / (double) entradas.size();
-    qDebug() << "Cantidad de errores: " << errores << ", acertados: " << correcto;
-    qDebug() << "Porcentaje de acierto: " << porcentaje_acierto << "%";
-    qDebug() << "Porcentaje de error: " << porcentaje_error << "%";
-    */
 
     qDebug() << "Escribiendo resultados";
     salidas.clear();

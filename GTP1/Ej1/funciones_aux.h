@@ -166,21 +166,21 @@ static QVector<int> randomizarEntradas( int tam_datos ) {
  * \param cantidad_extras
  * \param porcentaje_error
  */
-static void randomizarDatos( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_error ) {
+static void generarArchivoAleatoriosPrueba( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_error ) {
     matriz entradas;
     vector salidas;
     matriz entradas_nuevas;
     leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, 2, 1 );
     for( int i=0; i<entradas.size(); i++ ) {
 
-        entradas_nuevas.append( entradas.at( i ) );
+        //entradas_nuevas.append( entradas.at( i ) );
         salidas[i]=0;
         for( int j=0; j<cantidad_extras; j++ ) {
             vector temporal = entradas.at( i );
             double radio = valor_random( 0.1, porcentaje_error );
             double angulo = valor_random( 0.0, 365.0 );
-            entradas[i][0] = entradas[i][0] + radio * cos( angulo );
-            entradas[i][1] = entradas[i][1] + radio * sin( angulo );
+            temporal[0] = temporal.at(0) + radio * cos( angulo );
+            temporal[1] = temporal.at(1) + radio * sin( angulo );
             // Como el archivo generado solo se utiliza para probar los elementos de la red neuronal
             // las salidas, aunque se cargan, no se utilizan. Por eso lo colocamos a todos en cero.
             salidas.append( 0 );
@@ -189,6 +189,30 @@ static void randomizarDatos( QString archivo_entrada, QString archivo_salida, in
 
     }
     escribe_archivo_salida( archivo_salida, &entradas_nuevas, &salidas );
+}
+
+static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_error ) {
+    matriz entradas;
+    vector salidas;
+    matriz entradas_nuevas;
+    vector salidas_nuevas;
+    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, 2, 1 );
+    for( int i=0; i<entradas.size(); i++ ) {
+
+        for( int j=0; j<cantidad_extras; j++ ) {
+            vector temporal = entradas.at( i );
+            double radio = valor_random( 0.1, porcentaje_error );
+            double angulo = valor_random( 0.0, 365.0 );
+            temporal[0] = temporal.at(0) + radio * cos( angulo );
+            temporal[1] = temporal.at(1) + radio * sin( angulo );
+            // Como el archivo generado solo se utiliza para probar los elementos de la red neuronal
+            // las salidas, aunque se cargan, no se utilizan. Por eso lo colocamos a todos en cero.
+            salidas_nuevas.append( salidas.at(i) );
+            entradas_nuevas.append( temporal );
+        }
+
+    }
+    escribe_archivo_salida( archivo_salida, &entradas_nuevas, &salidas_nuevas );
 }
 
 #endif // FUNCIONES_AUX_H
