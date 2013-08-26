@@ -205,10 +205,13 @@ static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QStr
     vector salidas;
     matriz entradas_nuevas;
     vector salidas_nuevas;
-    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, 2, 1 );
+    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, 3, 1 );
+
+    int generar = floor( cantidad_extras / entradas.size() );
+
     for( int i=0; i<entradas.size(); i++ ) {
 
-        for( int j=0; j<cantidad_extras; j++ ) {
+        for( int j=0; j<generar; j++ ) {
             vector temporal = entradas.at( i );
             double radio = valor_random( 0.1, porcentaje_error );
             double angulo = valor_random( 0.0, 365.0 );

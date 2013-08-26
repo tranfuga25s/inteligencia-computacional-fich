@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
                 error_parcial_maximo = error_parcial;
                 //qDebug() << "ep: " << error_parcial_maximo;
             }
-            qDebug()<<n.devuelvePesos();
+            //qDebug()<<n.devuelvePesos();
         }
 
 
