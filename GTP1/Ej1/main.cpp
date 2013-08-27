@@ -68,17 +68,12 @@ int main(int argc, char *argv[])
     qDebug() << "Entradas";
     mostrarMatriz( entradas );*/
 
-    int metodo_corte = parametros.value( "criterio_finalizacion" ).toInt();
-
-    qDebug() << "Criterio de Finalizacion seleccionado" << metodo_corte;
 
     Neurona n(0,parametros.value( "cantidad_entradas" ).toInt() );
     n.inicializarPesos();
     //mostrarVector( n.devuelvePesos() );
     n.setearTasaAprendizaje( parametros.value( "tasa_aprendizaje" ).toDouble() );
     qDebug() << "Tasa de aprendizaje: " << n.tasaAprendizaje();
-    n.setearFuncionActivacion( (Neurona::tipoFuncionActivacion) parametros.value( "funcion_activacion" ).toInt(),
-                               parametros.value( "alfa_activacion" ).toDouble() );
 
     int max_etapas = parametros.value( "etapas_maximas" ).toInt();
     qDebug() << "Epocas: " << max_etapas;
@@ -91,9 +86,7 @@ int main(int argc, char *argv[])
     double error_parcial_maximo = tolerancia_error+0.001;
 
     while ( epoca <= max_etapas
-            && (
-                ( metodo_corte == 1 && porcentaje_error > tolerancia_error )
-                || ( metodo_corte == 2 && error_parcial_maximo > tolerancia_error)))
+            && (porcentaje_error > tolerancia_error ))
     {
         // randomizo el la lectura del vector de entradas
         QVector<int> mapa = randomizarEntradas( entradas.size() );

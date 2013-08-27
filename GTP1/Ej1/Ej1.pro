@@ -24,4 +24,5 @@ HEADERS += \
 
 OTHER_FILES += \
     parametros.cfg \
-    ej1.csv
+    ej1-XOR.csv \
+    ej1-OR.csv
