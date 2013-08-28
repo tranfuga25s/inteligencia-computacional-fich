@@ -50,8 +50,9 @@ int main(int argc, char *argv[])
     matriz entradas( parametros.value( "cantidad_entradas" ).toInt() );
     vector salidas( parametros.value( "cantidad_salidas" ).toInt() );
 
-
-    qWarning() << archivo;
+    qDebug() << endl << "--------------- /Datos del entrenamiento/ -----------------" << endl;
+    qWarning() << "Archivo de lectura de datos originales: "<< archivo;
+    qWarning() << "Archivo de entrenamiento: "<< archivo_aleatorios;
     if( ! leer_archivo_entrenamiento( archivo_aleatorios,
                                       &entradas,
                                       &salidas,
@@ -72,7 +73,7 @@ int main(int argc, char *argv[])
 
     Neurona n( 0, parametros.value( "cantidad_entradas" ).toInt() );
     n.inicializarPesos();
-    mostrarVector( n.devuelvePesos() );
+    //mostrarVector( n.devuelvePesos() );
     n.setearTasaAprendizaje( parametros.value( "tasa_aprendizaje" ).toDouble() );
     qDebug() << "Tasa de aprendizaje: " << n.tasaAprendizaje();
 
@@ -80,10 +81,13 @@ int main(int argc, char *argv[])
     qDebug() << "Epocas: " << max_epocas;
 
     double tolerancia_error = parametros.value( "tolerancia_error" ).toDouble();
-    qDebug() << "Error de corte: " << ( tolerancia_error * 100.0 ) << "%";
+    qDebug() << "Error de corte: " << ( tolerancia_error ) << "%";
 
-    int epoca = 0; /* Contador de etapa */
-    double porcentaje_error = 1.0; /*Mucho sino sale*/
+    qDebug() << endl << "---------------- /Comienza el entrenamiento/ ----------------";
+
+    int epoca = 0; /* Contador de epocas */
+    double porcentaje_error = 100.0; /*Mucho sino sale*/
+    int cantidad_particiones_exitosas = 0;
 
     QVector<double> errores_particiones;
 
@@ -93,17 +97,17 @@ int main(int argc, char *argv[])
 
         errores_particiones.insert( p, 0.0 );
 
-        qDebug() << "Utilizando Particion: " << p ;
+        qDebug() << endl << "Utilizando Particion: " << p ;
 
-        //pongo nuevamente en los valores iniciales las variables de corte
+        //pongo nuevamente en los valores iniciales las variables de corte para que entre en todas las particiones
         epoca = 0;
-        porcentaje_error = 1.0;
+        porcentaje_error = 100.0;
 
         QVector<double> errores_epocas;
 
         std::cout << "Epoca: " << std::endl;
 
-        while ( epoca <= max_epocas
+        while ( epoca < max_epocas
                 && porcentaje_error > tolerancia_error )
         {
             // Inicio la etapa de entrenamiento
@@ -126,7 +130,7 @@ int main(int argc, char *argv[])
                     correcto++;
                 }
             }
-            porcentaje_error = ( (double) errores * 100.0 ) / (double) entradas.size();
+            porcentaje_error = ( (double) errores * 100 ) / (double) entradas.size();
             errores_epocas.push_back( porcentaje_error );
             //porcentaje_acierto = ( (double) correcto * 100.0 ) / (double) entradas.size();
             //qDebug() << "Cantidad de errores: " << errores << ", acertados: " << correcto;
@@ -139,8 +143,14 @@ int main(int argc, char *argv[])
             errores_particiones[p] = porcentaje_error;
         }
 
+        //Aumento el contador de las no exitosas
+        if (epoca < max_epocas)
+        {
+            cantidad_particiones_exitosas++;
+        }
+
         //qDebug() << errores_epocas;
-        qDebug() << "Terminada particion " << p << "- Error: " << errores_particiones.at( p ) ;
+        qDebug() <<"Terminada particion " << p << "- Error: " << errores_particiones.at( p ) << " - Epoca de finalizacion: " << epoca+1;
         errores_epocas.clear();
     }
     std::cout << std::endl;
@@ -150,9 +160,12 @@ int main(int argc, char *argv[])
     for( int i=0; i<errores_particiones.size(); i++ ) {
         sumatoria+=errores_particiones.at(i);
     }
-    qDebug() << "Error total: " << sumatoria/errores_particiones.size() ;
+    qDebug() << endl << "--------------- /Resumen/ -----------------";
+    qDebug() << endl << "Error total: " << sumatoria/errores_particiones.size() ;
+    qDebug() << endl << "Cantidad de Particiones entrenadas exitosamente: " << cantidad_particiones_exitosas ;
+    qDebug() << endl << "Cantidad de Particiones sin entrenar: " << (particiones.cantidadDeParticiones() - cantidad_particiones_exitosas) ;
 
-    mostrarVector(n.devuelvePesos());
+    //mostrarVector(n.devuelvePesos());
 
     return 0;
 

@@ -58,7 +58,7 @@ static bool leer_archivo_entrenamiento( QString direccion,
             vect_salidas_deseadas->append( divisiones.takeFirst().toDouble() );
             cant++;
         }
-        qDebug() << "Leidas " << cant << " entradas de entrenamiento";
+        //qDebug() << "Leidas " << cant << " entradas de entrenamiento";
         archivo_entrada.close();
     }
     if( cant > 0 )
@@ -157,7 +157,7 @@ static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QStr
     leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, 3, 1);
 
     int generar = floor( cantidad_datos / entradas.size() );
-    qDebug() << generar;
+    //qDebug() << generar;
 
     for( int i=0; i<entradas.size(); i++ ) {
 

@@ -78,12 +78,12 @@ int main(int argc, char *argv[])
     int max_etapas = parametros.value( "etapas_maximas" ).toInt();
     qDebug() << "Epocas: " << max_etapas;
     double tolerancia_error = parametros.value( "tolerancia_error" ).toDouble();
-    qDebug() << "Error de corte: " << ( tolerancia_error * 100.0 ) << "%";
+    qDebug() << "Error de corte: " << ( tolerancia_error ) << "%";
     int epoca = 0; /* Contador de etapa */
 
     double porcentaje_error = 100.0; /*Mucho sino sale*/
     double porcentaje_acierto = 0.0;
-    double error_parcial_maximo = tolerancia_error+0.001;
+    double error_parcial_maximo = tolerancia_error;
 
     while ( epoca <= max_etapas
             && (porcentaje_error > tolerancia_error ))
@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
         // Aumento el contador de epocas
         epoca++;
 
-        error_parcial_maximo=tolerancia_error+0.001;
+        error_parcial_maximo=tolerancia_error;
 
     }
 
