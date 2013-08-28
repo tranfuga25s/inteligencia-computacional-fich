@@ -35,23 +35,16 @@ int main(int argc, char *argv[])
     // Archivo de entrada
     QString archivo = QCoreApplication::applicationDirPath().append( QDir::separator() ).append( parametros.value( "archivo_entrada" ).toString() );
 
-    //Generamos el archivo de entrenamiento en base a la desviacion del 5%
+    //Generamos el archivo de entrenamiento en base a la desviacion indicada en la configuracion
     generarArchivoAleatoriosEntrenamiento( archivo,
                      parametros.value( "archivo_entrenamiento_randomizado" ).toString(),
                      parametros.value( "cantidad_datos_extras" ).toInt(),
                      parametros.value( "porcentaje_variacion" ).toDouble() );
 
 
-    //Archivo OR randomizado
+    //Archivo randomizado
     QString archivo_aleatorios = QCoreApplication::applicationDirPath().append( QDir::separator() ).append( parametros.value( "archivo_entrenamiento_randomizado" ).toString() );
 
-
-    // Randomizamos los datos en base a el contenido de "archivo" para la prueba
-    /*generarArchivoAleatoriosPrueba( archivo,
-                     parametros.value( "archivo_prueba_randomizado" ).toString(),
-                     parametros.value( "cantidad_datos_extras" ).toInt(),
-                     parametros.value( "porcentaje_variacion" ).toDouble() );
-    */
 
     // Cargo los datos de los archivos que corresponda
     matriz entradas( parametros.value( "cantidad_entradas" ).toInt() );
@@ -75,29 +68,13 @@ int main(int argc, char *argv[])
     particiones.setearPorcentajeEntrenamiento( parametros.value( "porcentaje_entrenamiento" ).toDouble() );
     particiones.particionarDatos();
 
-    /*
-    for( int i=0; i<particiones.cantidadDeParticiones(); i++ ) {
-        qDebug() << "Particion: " << i;
-        qDebug() << "Entrenamiento: " << particiones.getParticion(i).entrenamiento;
-        qDebug() << "Prueba: " << particiones.getParticion(i).prueba;
-    }
 
-    qDebug() << "Salidas";
-    mostrarVector( salidas );
-    qDebug() << "Entradas";
-    mostrarMatriz( entradas );*/
-
-    int metodo_corte = parametros.value( "criterio_finalizacion" ).toInt();
-
-    qDebug() << "Criterio de Finalizacion seleccionado" << metodo_corte;
 
     Neurona n( 0, parametros.value( "cantidad_entradas" ).toInt() );
     n.inicializarPesos();
     //mostrarVector( n.devuelvePesos() );
     n.setearTasaAprendizaje( parametros.value( "tasa_aprendizaje" ).toDouble() );
     qDebug() << "Tasa de aprendizaje: " << n.tasaAprendizaje();
-    n.setearFuncionActivacion( (Neurona::tipoFuncionActivacion) parametros.value( "funcion_activacion" ).toInt(),
-                               parametros.value( "alfa_activacion" ).toDouble() );
 
     int max_epocas = parametros.value( "epocas_maximas", 20 ).toInt();
     qDebug() << "Epocas: " << max_epocas;
