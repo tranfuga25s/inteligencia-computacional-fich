@@ -158,42 +158,6 @@ static QVector<int> randomizarEntradas( int tam_datos ) {
     return retorno;
 }
 
-/*!
- * \brief generarArchivoAleatoriosPrueba
- * Escribe un archivo de salida con los datos de entradas agregando el porcentaje de variacion a cada entrada.
- * \param archivo_entrada Nombre del archivo de entrada
- * \param archivo_salida
- * \param cantidad_extras
- * \param porcentaje_error
- */
-static void generarArchivoAleatoriosPrueba( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_variacion ) {
-    matriz entradas;
-    vector salidas;
-    matriz entradas_nuevas;
-    vector salidas_nuevas;
-    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, 3, 1 );
-    for( int i=0; i<entradas.size(); i++ ) {
-
-        //entradas_nuevas.append( entradas.at( i ) );
-        salidas[i]=0;
-        for( int j=0; j<cantidad_extras; j++ ) {
-            vector temporal = entradas.at(i);
-
-            for (int k = 0 ; k < entradas.at(i).size() ; k++){
-                        temporal[k] = valor_random( temporal.at(k)*(1.0 - porcentaje_variacion) , temporal.at(k)*(1.0 + porcentaje_variacion) );
-            }
-
-            //Guardo en el vector y la matriz nueva los nuevos valores variados
-            salidas_nuevas.append( salidas.at(i) );
-            entradas_nuevas.append( temporal );
-            salidas.append( 0 );
-            entradas_nuevas.append( temporal );
-        }
-
-    }
-    escribe_archivo_salida( archivo_salida, &entradas_nuevas, &salidas );
-}
-
 
 /*!
  * \brief generarArchivoAleatoriosEntrenamiento
@@ -203,32 +167,32 @@ static void generarArchivoAleatoriosPrueba( QString archivo_entrada, QString arc
  * \param porcentaje_error
  */
 
-static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_variacion ) {
+static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QString archivo_salida, int cantidad_datos, double porcentaje_variacion ) {
     matriz entradas;
     vector salidas;
     matriz entradas_nuevas;
     vector salidas_nuevas;
     leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, 3, 1 );
 
-    int generar = floor( cantidad_extras / entradas.size() );
+    int generar = floor( cantidad_datos / entradas.size() );
+    qDebug() << generar;
 
     for( int i=0; i<entradas.size(); i++ ) {
 
         for( int j=0; j<generar; j++ ) {
             vector temporal = entradas.at(i);
 
-            for (int k = 0 ; k < entradas.at(i).size() ; k++){
+            for (int k = 0 ; k < temporal.size() ; k++){
                         temporal[k] = valor_random( temporal.at(k)*(1.0 - porcentaje_variacion) , temporal.at(k)*(1.0 + porcentaje_variacion) );
             }
 
             //Guardo en el vector y la matriz nueva los nuevos valores variados
             salidas_nuevas.append( salidas.at(i) );
             entradas_nuevas.append( temporal );
-            salidas_nuevas.append( salidas.at(i) );
-            entradas_nuevas.append( temporal );
         }
 
     }
+
     escribe_archivo_salida( archivo_salida, &entradas_nuevas, &salidas_nuevas );
 }
 

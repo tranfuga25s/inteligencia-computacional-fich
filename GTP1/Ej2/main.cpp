@@ -35,10 +35,10 @@ int main(int argc, char *argv[])
     // Archivo de entrada
     QString archivo = QCoreApplication::applicationDirPath().append( QDir::separator() ).append( parametros.value( "archivo_entrada" ).toString() );
 
-    //Generamos el archivo de entrenamiento en base a la desviacion indicada en la configuracion
+    //Generamos el archivo de entrenamiento en base a la desviacion indicada en la configuracion y la cantidad de datos
     generarArchivoAleatoriosEntrenamiento( archivo,
                      parametros.value( "archivo_entrenamiento_randomizado" ).toString(),
-                     parametros.value( "cantidad_datos_extras" ).toInt(),
+                     parametros.value( "cantidad_datos" ).toInt(),
                      parametros.value( "porcentaje_variacion" ).toDouble() );
 
 
