@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
                                       &entradas,
                                       &salidas,
                                       parametros.value( "cantidad_entradas" ).toInt(),
-                                      parametros.value( "cantidad_salidas" ).toInt() ) ) {
+                                      parametros.value( "cantidad_salidas" ).toInt())) {
         qDebug() << "No se pudo encontrar el archivo de entrenamiento! cancelando!";
         abort();
     }
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
         {
             // Inicio la etapa de entrenamiento
             //qDebug() << "--------------------------------";
-            std::cout << epoca << "\r";
+            std::cout << epoca << " \r";
             for(int i =0; i<part_local.entrenamiento.size(); i++ )
             {
                 n.entrenamiento( entradas.at( part_local.entrenamiento.at(i) ), salidas.at( part_local.entrenamiento.at( i ) ) );
@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
             errores_particiones[p] = porcentaje_error;
         }
         qDebug() << errores_epocas;
-        qDebug() << "Terminada particion " << p << "- Error: " << errores_particiones.at( p );
+        qDebug() << "Terminada particion " << p << "- Error: " << errores_particiones.at( p ) ;
         errores_epocas.clear();
     }
     std::cout << std::endl;
@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
     for( int i=0; i<errores_particiones.size(); i++ ) {
         sumatoria+=errores_particiones.at(i);
     }
-    qDebug() << "Error total: " << sumatoria/errores_particiones.size();
+    qDebug() << "Error total: " << sumatoria/errores_particiones.size() ;
     return 0;
 
 }

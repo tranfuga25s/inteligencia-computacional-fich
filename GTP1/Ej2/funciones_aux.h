@@ -24,7 +24,7 @@ static bool leer_archivo_entrenamiento( QString direccion,
                                         matriz* vect_entradas,
                                         vector* vect_salidas_deseadas,
                                         int tam_entradas,
-                                        int tam_salida)
+                                        int tam_salidas)
 {
 
     QFile archivo_entrada( direccion );
@@ -139,24 +139,6 @@ static void mostrarMatriz( const matriz m ) {
     }
 }
 
-/*!
- * \brief randomizarEntradas
- * \param tam_datos
- * \return
- */
-static QVector<int> randomizarEntradas( int tam_datos ) {
-    QVector<int> temp1;
-    for( int i=0; i<tam_datos; i++ ) {
-        temp1.append(i);
-    }
-    QVector<int> retorno;
-    for( int i=0;i<tam_datos; i++ ) {
-        int pos = qrand() % temp1.size();
-        retorno.append( temp1.at( pos ) );
-        temp1.remove( pos );
-    }
-    return retorno;
-}
 
 
 /*!
@@ -172,7 +154,7 @@ static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QStr
     vector salidas;
     matriz entradas_nuevas;
     vector salidas_nuevas;
-    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, 3, 1 );
+    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, 3, 1);
 
     int generar = floor( cantidad_datos / entradas.size() );
     qDebug() << generar;
