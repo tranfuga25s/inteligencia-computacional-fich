@@ -39,6 +39,8 @@ double Neurona::evaluar( QVector<double> entradas )
         sumatoria+=_pesos.at(i+1)*entradas.value(i);//entradas empieza desde 0 pero los w desde 1
     }
 
+    //qDebug() << sumatoria;
+
     return funcionActivacion(sumatoria);
 }
 

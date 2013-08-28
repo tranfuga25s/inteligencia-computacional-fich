@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 
     Neurona n( 0, parametros.value( "cantidad_entradas" ).toInt() );
     n.inicializarPesos();
-    //mostrarVector( n.devuelvePesos() );
+    mostrarVector( n.devuelvePesos() );
     n.setearTasaAprendizaje( parametros.value( "tasa_aprendizaje" ).toDouble() );
     qDebug() << "Tasa de aprendizaje: " << n.tasaAprendizaje();
 
@@ -81,22 +81,28 @@ int main(int argc, char *argv[])
 
     double tolerancia_error = parametros.value( "tolerancia_error" ).toDouble();
     qDebug() << "Error de corte: " << ( tolerancia_error * 100.0 ) << "%";
-    int epoca = 0; /* Contador de etapa */
 
-    double porcentaje_error = 100.0; /*Mucho sino sale*/
+    int epoca = 0; /* Contador de etapa */
+    double porcentaje_error = 1.0; /*Mucho sino sale*/
 
     QVector<double> errores_particiones;
 
     for( int p=0; p<particiones.cantidadDeParticiones(); p++ ) {
-        Particionador::particion part_local = particiones.getParticion( p );
-        errores_particiones.insert( p, 0.0 );
-        qDebug() << "Utilizando Particion: " << p;
 
+        Particionador::particion part_local = particiones.getParticion( p );
+
+        errores_particiones.insert( p, 0.0 );
+
+        qDebug() << "Utilizando Particion: " << p ;
+
+        //pongo nuevamente en los valores iniciales las variables de corte
         epoca = 0;
+        porcentaje_error = 1.0;
 
         QVector<double> errores_epocas;
 
         std::cout << "Epoca: " << std::endl;
+
         while ( epoca <= max_epocas
                 && porcentaje_error > tolerancia_error )
         {
@@ -132,7 +138,8 @@ int main(int argc, char *argv[])
 
             errores_particiones[p] = porcentaje_error;
         }
-        qDebug() << errores_epocas;
+
+        //qDebug() << errores_epocas;
         qDebug() << "Terminada particion " << p << "- Error: " << errores_particiones.at( p ) ;
         errores_epocas.clear();
     }
@@ -144,6 +151,9 @@ int main(int argc, char *argv[])
         sumatoria+=errores_particiones.at(i);
     }
     qDebug() << "Error total: " << sumatoria/errores_particiones.size() ;
+
+    mostrarVector(n.devuelvePesos());
+
     return 0;
 
 }
