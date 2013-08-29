@@ -12,6 +12,7 @@ public:
     class particion {
     public:
         QVector<int> entrenamiento;
+        QVector<int> validacion;
         QVector<int> prueba;
     };
 
@@ -25,14 +26,17 @@ public:
     int cantidadDeParticiones() { return _cant_particiones; }
 
     void setearPorcentajeEntrenamiento( const double cant ) { _porcentaje_entrenamiento = cant; }
+    void setearPorcentajeValidacion( const double cant ) { _porcentaje_validacion = cant; }
     double porcentajeEntrenamiento() { return _porcentaje_entrenamiento; }
-    double porcentajeValidacion() { return 1.0-_porcentaje_entrenamiento; }
+    double porcentajeValidacion() { return _porcentaje_validacion; }
+    double porcentajePrueba() { return 1.0-_porcentaje_entrenamiento; }
 
     particion getParticion( const int num );
 
 private:
     int _cant_particiones;
     double _porcentaje_entrenamiento;
+    double _porcentaje_validacion;
     int _cantidad_datos;
 
     QVector<particion> _particiones;

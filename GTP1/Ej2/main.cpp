@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
     particiones.setearCantidadDatos( entradas.size() );
     particiones.setearCantidadDeParticiones( parametros.value( "cantidad_particiones" ).toInt() );
     particiones.setearPorcentajeEntrenamiento( parametros.value( "porcentaje_entrenamiento" ).toDouble() );
+    particiones.setearPorcentajeValidacion( parametros.value("porcentaje_validacion").toDouble() );
     particiones.particionarDatos();
 
 
@@ -102,6 +103,7 @@ int main(int argc, char *argv[])
         //pongo nuevamente en los valores iniciales las variables de corte para que entre en todas las particiones
         epoca = 0;
         porcentaje_error = 100.0;
+        n.inicializarPesos();
 
         QVector<double> errores_epocas;
 
@@ -123,8 +125,8 @@ int main(int argc, char *argv[])
             //qDebug() << ">> Verificando tasa de error";
             int errores = 0;
             int correcto = 0;
-            for( int i = 0; i < part_local.prueba.size(); i++ ) {
-                if( n.evaluar( entradas.at( part_local.prueba.at( i ) ) ) != salidas.at( part_local.prueba.at( i ) ) ) {
+            for( int i = 0; i < part_local.validacion.size(); i++ ) {
+                if( n.evaluar( entradas.at( part_local.validacion.at( i ) ) ) != salidas.at( part_local.validacion.at( i ) ) ) {
                     errores++;
                 } else {
                     correcto++;
@@ -132,16 +134,25 @@ int main(int argc, char *argv[])
             }
             porcentaje_error = ( (double) errores * 100 ) / (double) entradas.size();
             errores_epocas.push_back( porcentaje_error );
-            //porcentaje_acierto = ( (double) correcto * 100.0 ) / (double) entradas.size();
-            //qDebug() << "Cantidad de errores: " << errores << ", acertados: " << correcto;
-            //qDebug() << "Porcentaje de acierto: " << porcentaje_acierto << "%";
-            //qDebug() << "Porcentaje de error: " << porcentaje_error << "%";
 
             // Aumento el contador de epocas
             epoca++;
 
             errores_particiones[p] = porcentaje_error;
         }
+
+        // Genero las estadisticas con los datos de prueba
+        int errores = 0;
+        int correcto = 0;
+        for( int i = 0; i < part_local.prueba.size(); i++ ) {
+            if( n.evaluar( entradas.at( part_local.prueba.at( i ) ) ) != salidas.at( part_local.prueba.at( i ) ) ) {
+                errores++;
+            } else {
+                correcto++;
+            }
+        }
+        porcentaje_error = ( (double) errores * 100 ) / (double) entradas.size();
+        errores_particiones.push_back( porcentaje_error );
 
         //Aumento el contador de las no exitosas
         if (epoca < max_epocas)
@@ -150,7 +161,7 @@ int main(int argc, char *argv[])
         }
 
         //qDebug() << errores_epocas;
-        qDebug() <<"Terminada particion " << p << "- Error: " << errores_particiones.at( p ) << " - Epoca de finalizacion: " << epoca+1;
+        qDebug() <<"Terminada particion " << p << "- Error: " << errores_particiones.at( p ) << "% - Epoca de finalizacion: " << epoca+1;
         errores_epocas.clear();
     }
     std::cout << std::endl;
@@ -161,9 +172,9 @@ int main(int argc, char *argv[])
         sumatoria+=errores_particiones.at(i);
     }
     qDebug() << endl << "--------------- /Resumen/ -----------------";
-    qDebug() << endl << "Error total: " << sumatoria/errores_particiones.size() ;
-    qDebug() << endl << "Cantidad de Particiones entrenadas exitosamente: " << cantidad_particiones_exitosas ;
-    qDebug() << endl << "Cantidad de Particiones sin entrenar: " << (particiones.cantidadDeParticiones() - cantidad_particiones_exitosas) ;
+    qDebug() << endl << "Error total: " << sumatoria/errores_particiones.size() << "%";
+    qDebug() << endl << "Cantidad de Particiones que convergen: " << cantidad_particiones_exitosas ;
+    qDebug() << endl << "Cantidad de Particiones sin converger: " << (particiones.cantidadDeParticiones() - cantidad_particiones_exitosas) ;
 
     //mostrarVector(n.devuelvePesos());
 
