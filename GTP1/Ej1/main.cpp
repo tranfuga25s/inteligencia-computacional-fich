@@ -136,6 +136,8 @@ int main(int argc, char *argv[])
 
     qDebug() << erroresParciales;
     graf->agregarCurva( erroresParciales, "Errores parciales en el entrenamiento" );
+    graf->setearTituloEjeX( "Epocas" );
+    graf->setearTituloEjeY( "Porcentaje" );
 
     qDebug() <<"-----------------------------------------";
     qDebug() << endl <<"Probando con archivo de datos aleatorios";

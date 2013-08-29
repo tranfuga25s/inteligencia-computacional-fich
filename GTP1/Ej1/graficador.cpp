@@ -1,6 +1,8 @@
 #include "graficador.h"
 
 #include <QLayout>
+#include <qwt_legend.h>
+#include <qwt_plot.h>
 
 Graficador::Graficador(QWidget *parent) :
     QWidget(parent)
@@ -11,6 +13,9 @@ Graficador::Graficador(QWidget *parent) :
     }
     this->layout()->addWidget( myPlot );
     color = Qt::blue;
+
+    leyenda = new QwtLegend( myPlot );
+    myPlot->insertLegend( leyenda, QwtPlot::RightLegend );
 }
 
 /*!
@@ -20,6 +25,16 @@ Graficador::Graficador(QWidget *parent) :
 void Graficador::setearTitulo(QString titulo)
 {
     myPlot->setTitle( titulo );
+}
+
+void Graficador::setearTituloEjeX( QString titulo )
+{
+    myPlot->setAxisTitle( QwtPlot::xBottom, titulo );
+}
+
+void Graficador::setearTituloEjeY( QString titulo )
+{
+    myPlot->setAxisTitle( QwtPlot::yLeft, titulo );
 }
 
 void Graficador::agregarCurva( QVector<double> datos, QString nombre )
@@ -38,13 +53,12 @@ void Graficador::agregarCurva( QVector<double> x, QVector<double> y, QString nom
 
     curve->setSamples( x, y );
     curve->setLegendAttribute( QwtPlotCurve::LegendShowLine );
-    QBrush b = curve->brush();
-    b.setColor( color );
-    curve->setBrush( b );
+    QPen p = curve->pen();
+    p.setColor( color );
+    curve->setPen( p );
     cambiarColor();
 
     curve->attach( myPlot );
-    myPlot->setTitle( nombre );
 
     // Refresco el grafico
     myPlot->replot();

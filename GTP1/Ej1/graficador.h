@@ -11,11 +11,14 @@ class Graficador : public QWidget
 public:
     Graficador( QWidget *parent = 0 );
     void setearTitulo( QString titulo );
+    void setearTituloEjeX( QString titulo );
+    void setearTituloEjeY( QString titulo );
     void agregarCurva( QVector<double> datos, QString nombre );
     void agregarCurva( QVector<double> x, QVector<double> y, QString nombre );
 
 private:
     QwtPlot *myPlot;
+    QwtLegend *leyenda;
     int color;
     void cambiarColor();
 
