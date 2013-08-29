@@ -93,6 +93,7 @@ int main(int argc, char *argv[])
     int epoca = 0; /* Contador de etapa */
     double porcentaje_error = 100.0; /*Mucho sino sale*/
     double porcentaje_acierto = 0.0;
+    QVector<double> erroresParciales;
 
     while ( epoca <= max_etapas
             && (porcentaje_error > tolerancia_error ))
@@ -108,9 +109,6 @@ int main(int argc, char *argv[])
         {
             n.entrenamiento( entradas.at( mapa.at(i) ), salidas.at( mapa.at( i ) ) );
         }
-
-        graf->agregarCurva( n.devuelvePesos(), "pesos" );
-        graf->setearTitulo( "Estado de pesos" );
 
         // Verifico el error
         //qDebug() << "--------------------------------";
@@ -129,11 +127,15 @@ int main(int argc, char *argv[])
         qDebug() << "Cantidad de errores: " << errores << ", acertados: " << correcto;
         qDebug() << "Porcentaje de acierto: " << porcentaje_acierto << "%";
         qDebug() << "Porcentaje de error: " << porcentaje_error << "%";
+        erroresParciales.append( porcentaje_error );
 
         // Aumento el contador de epocas
         epoca++;
 
     }
+
+    qDebug() << erroresParciales;
+    graf->agregarCurva( erroresParciales, "Errores parciales en el entrenamiento" );
 
     qDebug() <<"-----------------------------------------";
     qDebug() << endl <<"Probando con archivo de datos aleatorios";
