@@ -24,7 +24,7 @@ static bool leer_archivo_entrenamiento( QString direccion,
                                         matriz* vect_entradas,
                                         vector* vect_salidas_deseadas,
                                         int tam_entradas,
-                                        int tam_salida)
+                                        int tam_salidas)
 {
 
     QFile archivo_entrada( direccion );
@@ -58,7 +58,7 @@ static bool leer_archivo_entrenamiento( QString direccion,
             vect_salidas_deseadas->append( divisiones.takeFirst().toDouble() );
             cant++;
         }
-        qDebug() << "Leidas " << cant << " entradas de entrenamiento";
+        //qDebug() << "Leidas " << cant << " entradas de entrenamiento";
         archivo_entrada.close();
     }
     if( cant > 0 )
@@ -78,7 +78,7 @@ static bool escribe_archivo_salida( QString direccion, matriz* vect_entradas, ve
         for(int i=0;i<vect_entradas->size();i++)
         {
             //agrego al string todas las entradas
-            for(int j=0;j<vect_entradas->at( i).size();j++)
+            for(int j=0;j<vect_entradas->at(i).size();j++)
             {
                aux.append(QString::number(vect_entradas->at(i).value(j)));
                aux.append( ", " );
@@ -106,7 +106,7 @@ static bool escribe_archivo_salida( QString direccion, matriz* vect_entradas, ve
  */
 static double valor_random(double min,double max)
 {
-
+    //Cuida que no haya problemas si ingresan las entradas invertidas
     double aleatorio = ((double) qrand()) / (double) RAND_MAX;
 
     if (min>max)
@@ -139,57 +139,6 @@ static void mostrarMatriz( const matriz m ) {
     }
 }
 
-/*!
- * \brief randomizarEntradas
- * \param tam_datos
- * \return
- */
-static QVector<int> randomizarEntradas( int tam_datos ) {
-    QVector<int> temp1;
-    for( int i=0; i<tam_datos; i++ ) {
-        temp1.append(i);
-    }
-    QVector<int> retorno;
-    for( int i=0;i<tam_datos; i++ ) {
-        int pos = qrand() % temp1.size();
-        retorno.append( temp1.at( pos ) );
-        temp1.remove( pos );
-    }
-    return retorno;
-}
-
-/*!
- * \brief generarArchivoAleatoriosPrueba
- * Escribe un archivo de salida con los datos de entradas agregando el porcentaje de variacion a cada entrada.
- * \param archivo_entrada Nombre del archivo de entrada
- * \param archivo_salida
- * \param cantidad_extras
- * \param porcentaje_error
- */
-static void generarArchivoAleatoriosPrueba( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_error ) {
-    matriz entradas;
-    vector salidas;
-    matriz entradas_nuevas;
-    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, 2, 1 );
-    for( int i=0; i<entradas.size(); i++ ) {
-
-        //entradas_nuevas.append( entradas.at( i ) );
-        salidas[i]=0;
-        for( int j=0; j<cantidad_extras; j++ ) {
-            vector temporal = entradas.at( i );
-            double radio = valor_random( 0.1, porcentaje_error );
-            double angulo = valor_random( 0.0, 365.0 );
-            temporal[0] = temporal.at(0) + radio * cos( angulo );
-            temporal[1] = temporal.at(1) + radio * sin( angulo );
-            // Como el archivo generado solo se utiliza para probar los elementos de la red neuronal
-            // las salidas, aunque se cargan, no se utilizan. Por eso lo colocamos a todos en cero.
-            salidas.append( 0 );
-            entradas_nuevas.append( temporal );
-        }
-
-    }
-    escribe_archivo_salida( archivo_salida, &entradas_nuevas, &salidas );
-}
 
 
 /*!
@@ -200,30 +149,32 @@ static void generarArchivoAleatoriosPrueba( QString archivo_entrada, QString arc
  * \param porcentaje_error
  */
 
-static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_error ) {
+static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QString archivo_salida, int cantidad_datos, double porcentaje_variacion ) {
     matriz entradas;
     vector salidas;
     matriz entradas_nuevas;
     vector salidas_nuevas;
-    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, 3, 1 );
+    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, 3, 1);
 
-    int generar = floor( cantidad_extras / entradas.size() );
+    int generar = floor( cantidad_datos / entradas.size() );
+    //qDebug() << generar;
 
     for( int i=0; i<entradas.size(); i++ ) {
 
         for( int j=0; j<generar; j++ ) {
-            vector temporal = entradas.at( i );
-            double radio = valor_random( 0.1, porcentaje_error );
-            double angulo = valor_random( 0.0, 365.0 );
-            temporal[0] = temporal.at(0) + radio * cos( angulo );
-            temporal[1] = temporal.at(1) + radio * sin( angulo );
-            // Como el archivo generado solo se utiliza para probar los elementos de la red neuronal
-            // las salidas, aunque se cargan, no se utilizan. Por eso lo colocamos a todos en cero.
+            vector temporal = entradas.at(i);
+
+            for (int k = 0 ; k < temporal.size() ; k++){
+                        temporal[k] = valor_random( temporal.at(k)*(1.0 - porcentaje_variacion) , temporal.at(k)*(1.0 + porcentaje_variacion) );
+            }
+
+            //Guardo en el vector y la matriz nueva los nuevos valores variados
             salidas_nuevas.append( salidas.at(i) );
             entradas_nuevas.append( temporal );
         }
 
     }
+
     escribe_archivo_salida( archivo_salida, &entradas_nuevas, &salidas_nuevas );
 }
 

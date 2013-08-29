@@ -10,11 +10,6 @@ class Neurona : public QObject
     Q_OBJECT
 public:
 
-    enum tipoFuncionActivacion {
-        signo = 1,
-        diagonal = 2,
-        sigmoidea = 3
-    };
 
     Neurona( QObject *parent = 0, int cantidadEntradas = 1 );
 

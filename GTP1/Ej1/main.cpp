@@ -57,8 +57,9 @@ int main(int argc, char *argv[])
     matriz entradas( parametros.value( "cantidad_entradas" ).toInt() );
     vector salidas( parametros.value( "cantidad_salidas" ).toInt() );
 
-
-    qWarning() << archivo;
+    qDebug() << "--------------- /Datos del entrenamiento/ -----------------" << endl;
+    qWarning() << "Archivo de datos: " << archivo;
+    qWarning() << "Archivo de aleatorios: " << archivo_aleatorios;
     if( ! leer_archivo_entrenamiento( archivo_aleatorios,
                                       &entradas,
                                       &salidas,
@@ -85,9 +86,11 @@ int main(int argc, char *argv[])
     int max_etapas = parametros.value( "etapas_maximas" ).toInt();
     qDebug() << "Epocas: " << max_etapas;
     double tolerancia_error = parametros.value( "tolerancia_error" ).toDouble();
-    qDebug() << "Error de corte: " << ( tolerancia_error * 100.0 ) << "%";
-    int epoca = 0; /* Contador de etapa */
+    qDebug() << "Error de corte: " << ( tolerancia_error ) << "%";
 
+    qDebug() << endl <<"--------------- /Comienza el entrenamiento/ -----------------" << endl;
+
+    int epoca = 0; /* Contador de etapa */
     double porcentaje_error = 100.0; /*Mucho sino sale*/
     double porcentaje_acierto = 0.0;
 
@@ -132,7 +135,8 @@ int main(int argc, char *argv[])
 
     }
 
-    qDebug() << "Probando con archivo de datos aleatorios";
+    qDebug() <<"-----------------------------------------";
+    qDebug() << endl <<"Probando con archivo de datos aleatorios";
     leer_archivo_entrenamiento( parametros.value( "archivo_prueba_randomizado" ).toString(),
                                 &entradas,
                                 &salidas,

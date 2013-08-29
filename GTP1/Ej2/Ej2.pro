@@ -27,4 +27,5 @@ HEADERS += \
 OTHER_FILES += \
     parametros.cfg \
     ej1.csv \
-    tabla2.csv
+    tabla2a.csv \
+    tabla2b.csv
