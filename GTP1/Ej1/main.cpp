@@ -95,6 +95,12 @@ int main(int argc, char *argv[])
     double porcentaje_acierto = 0.0;
     QVector<double> erroresParciales;
 
+    Graficador *graf3 = new Graficador();
+    graf3->setearTitulo( "Recta durante el entrenamiento" );
+    graf3->setearTituloEjeX( "X" );
+    graf3->setearTituloEjeY( "Y" );
+    graf3->agregarPuntos( entradas, "entradas" );
+
     while ( epoca <= max_etapas
             && (porcentaje_error > tolerancia_error ))
     {
@@ -132,6 +138,9 @@ int main(int argc, char *argv[])
         // Aumento el contador de epocas
         epoca++;
 
+        // Grafico la recta
+        graf3->dibujarRecta( 1, n.devuelvePesos() , "division" );
+
     }
 
     qDebug() << erroresParciales;
@@ -149,9 +158,23 @@ int main(int argc, char *argv[])
 
     qDebug() << "Escribiendo resultados";
     salidas.clear();
+    matriz m1,m2;
     for( int i=0; i<entradas.size(); i++ ) {
-        salidas.append( n.evaluar( entradas.at( i ) ) );
+        double salida = n.evaluar( entradas.at( i ) );
+        salidas.append( salida );
+        if( salida < 0.0 ) {
+            m1.append( entradas.at( i ) );
+        } else {
+            m2.append( entradas.at( i ) );
+        }
     }
+
+    Graficador *graf2 = new Graficador();
+    graf2->agregarPuntos( m1, "clase -1" );
+    graf2->agregarPuntos( m2, "clase +1" );
+
+    graf2->show();
+
     escribe_archivo_salida( parametros.value( "archivo_salida" ).toString(),
                             &entradas,
                             &salidas );

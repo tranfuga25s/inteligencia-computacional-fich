@@ -3,6 +3,7 @@
 #include <QLayout>
 #include <qwt_legend.h>
 #include <qwt_plot.h>
+#include <qwt_symbol.h>
 
 Graficador::Graficador(QWidget *parent) :
     QWidget(parent)
@@ -13,9 +14,12 @@ Graficador::Graficador(QWidget *parent) :
     }
     this->layout()->addWidget( myPlot );
     color = Qt::blue;
+    simbolo = QwtSymbol::Diamond;
 
     leyenda = new QwtLegend( myPlot );
     myPlot->insertLegend( leyenda, QwtPlot::RightLegend );
+
+    this->curvas = new QHash<int,QwtPlotCurve*>();
 }
 
 /*!
@@ -64,26 +68,86 @@ void Graficador::agregarCurva( QVector<double> x, QVector<double> y, QString nom
     myPlot->replot();
 }
 
+void Graficador::agregarPuntos( QVector<double> x, QVector<double> y, QString nombre ){
+
+    QwtPlotCurve *curve = new QwtPlotCurve( nombre );
+
+    curve->setSamples( x, y );
+    curve->setRenderHint(QwtPlotItem::RenderAntialiased);
+    curve->setLegendAttribute(QwtPlotCurve::LegendShowLine , true);
+    cambiarColor();
+    cambiarSimbolo();
+    curve->setStyle( QwtPlotCurve::Dots );
+    curve->setSymbol( new QwtSymbol( (QwtSymbol::Style)this->simbolo,
+                                     QBrush( (Qt::GlobalColor)this->color ),
+                                     QPen( Qt::NoPen ),
+                                     QSize( 8, 8 ) ) );
+
+    curve->attach( myPlot );
+
+    // Refresco el grafico
+     myPlot->replot();
+}
+
+void Graficador::agregarPuntos( matriz m1, QString nombre ) {
+
+    vector x, y;
+    for(int j=0; j<m1.size(); j++ ) {
+        x.append( m1.at(j).at(0) );
+        y.append( m1.at(j).at(1) );
+    }
+    agregarPuntos( x, y, nombre );
+}
+
+void Graficador::dibujarRecta( int num_recta, vector pesos, QString nombre ) {
+
+    if( curvas->contains( num_recta ) ) {
+        QwtPlotCurve *curva = curvas[num_recta];
+    } else {
+        QwtPlotCurve *curva = new QwtPlotCurve( nombre );
+        curvas->insert( num_curva, curva );
+        curva->attach( myPlot );
+    }
+
+    double min = myPlot->getMin();
+    double max = myPlot->getMax();
+
+    y1 = ( pesos.at( 0 ) / pesos.at( 2 ) ) - ( pesos.at( 1 ) / pesos.at(2) ) * min;
+    y2 = ( pesos.at( 0 ) / pesos.at( 2 ) ) - ( pesos.at( 1 ) / pesos.at(2) ) * max;
+    vector x;
+    x.append( min ).append( max );
+    vector y;
+    y.append( y1 ).append( y2 );
+    curva->setSamples( x, y );
+    myPlot->replot();
+}
+
 void Graficador::cambiarColor()
 {
     switch( this->color ) {
-    case Qt::red:         { this->color = Qt::green;       }
-    case Qt::green:       { this->color = Qt::darkRed;     }
-    case Qt::darkRed:     { this->color = Qt::darkGreen;   }
-    case Qt::darkGreen:   { this->color = Qt::blue;        }
-    case Qt::blue:        { this->color = Qt::darkBlue;    }
-    case Qt::darkBlue:    { this->color = Qt::cyan;        }
-    case Qt::cyan:        { this->color = Qt::darkCyan;    }
-    case Qt::darkCyan:    { this->color = Qt::magenta;     }
-    case Qt::magenta:     { this->color = Qt::darkMagenta; }
-    case Qt::darkMagenta: { this->color = Qt::yellow;      }
-    case Qt::yellow:      { this->color = Qt::darkYellow;  }
-    case Qt::darkYellow:  { this->color = Qt::gray;        }
-    case Qt::gray:        { this->color = Qt::darkGray;    }
-    case Qt::darkGray:    { this->color = Qt::lightGray;   }
-    case Qt::lightGray:   { this->color = Qt::red;         }
+    case Qt::red:         { this->color = Qt::green; break;      }
+    case Qt::green:       { this->color = Qt::darkRed; break;     }
+    case Qt::darkRed:     { this->color = Qt::darkGreen; break;   }
+    case Qt::darkGreen:   { this->color = Qt::blue;  break;       }
+    case Qt::blue:        { this->color = Qt::darkBlue;  break;   }
+    case Qt::darkBlue:    { this->color = Qt::cyan;  break;       }
+    case Qt::cyan:        { this->color = Qt::darkCyan;  break;   }
+    case Qt::darkCyan:    { this->color = Qt::magenta;  break;    }
+    case Qt::magenta:     { this->color = Qt::darkMagenta; break; }
+    case Qt::darkMagenta: { this->color = Qt::yellow;  break;     }
+    case Qt::yellow:      { this->color = Qt::darkYellow; break;  }
+    case Qt::darkYellow:  { this->color = Qt::gray; break;        }
+    case Qt::gray:        { this->color = Qt::darkGray;  break;   }
+    case Qt::darkGray:    { this->color = Qt::lightGray;  break;  }
+    case Qt::lightGray:   { this->color = Qt::red;  break;        }
     }
 
 }
 
-
+void Graficador::cambiarSimbolo() {
+    switch( this->simbolo ) {
+        case QwtSymbol::Cross:   { this->simbolo = QwtSymbol::Diamond;  break;   }
+        case QwtSymbol::Diamond: { this->simbolo = QwtSymbol::DTriangle;  break; }
+        case QwtSymbol::DTriangle: { this->simbolo = QwtSymbol::Cross; break; }
+    }
+}

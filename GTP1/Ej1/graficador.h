@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
+#include <qwt_symbol.h>
+#include "funciones_aux.h"
 
 class Graficador : public QWidget
 {
@@ -15,12 +17,18 @@ public:
     void setearTituloEjeY( QString titulo );
     void agregarCurva( QVector<double> datos, QString nombre );
     void agregarCurva( QVector<double> x, QVector<double> y, QString nombre );
+    void agregarPuntos( QVector<double> x, QVector<double> y, QString nombre );
+    void agregarPuntos( matriz m1, QString nombre );
+    void dibujarRecta( int num_recta, vector pesos, QString nombre );
 
 private:
     QwtPlot *myPlot;
     QwtLegend *leyenda;
-    int color;
+    Qt::GlobalColor color;
+    QwtSymbol::Style simbolo;
     void cambiarColor();
+    void cambiarSimbolo();
+    QHash<int,QwtPlotCurve*> *curvas;
 
 };
 
