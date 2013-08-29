@@ -4,25 +4,18 @@
 #
 #-------------------------------------------------
 
-QT       += core
-
-QT       -= gui
-
 TARGET = Ej1
-CONFIG   += console
-CONFIG   -= app_bundle
-
+CONFIG   += qwt
 TEMPLATE = app
 
-
 SOURCES += main.cpp \
-    neurona.cpp
+    neurona.cpp \
+    graficador.cpp
 
-HEADERS += \
-    neurona.h \
-    funciones_aux.h
+HEADERS += neurona.h \
+    funciones_aux.h \
+    graficador.h
 
-OTHER_FILES += \
-    parametros.cfg \
+OTHER_FILES += parametros.cfg \
     ej1-XOR.csv \
     ej1-OR.csv

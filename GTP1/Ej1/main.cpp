@@ -1,4 +1,5 @@
-#include <QCoreApplication>
+#include <QApplication>
+#include <QMainWindow>
 #include <QDebug>
 #include <QTime>
 #include <QDir>
@@ -10,6 +11,7 @@ typedef QVector< QVector<double> > matriz;
 
 #include "funciones_aux.h"
 #include "neurona.h"
+#include "graficador.h"
 
 /*!
  * \brief main
@@ -19,7 +21,10 @@ typedef QVector< QVector<double> > matriz;
  */
 int main(int argc, char *argv[])
 {
-    QCoreApplication a( argc, argv );
+    QApplication a( argc, argv );
+    QMainWindow main;
+    a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
+    main.showMaximized();
 
     //Inicializo con una semilla aleatoria para la generacion de Aleatorios
     qsrand(QTime::currentTime().msec());
@@ -68,6 +73,8 @@ int main(int argc, char *argv[])
     qDebug() << "Entradas";
     mostrarMatriz( entradas );*/
 
+    Graficador *graf = new Graficador();
+    main.setCentralWidget( graf );
 
     Neurona n(0,parametros.value( "cantidad_entradas" ).toInt() );
     n.inicializarPesos();
@@ -83,7 +90,6 @@ int main(int argc, char *argv[])
 
     double porcentaje_error = 100.0; /*Mucho sino sale*/
     double porcentaje_acierto = 0.0;
-    double error_parcial_maximo = tolerancia_error+0.001;
 
     while ( epoca <= max_etapas
             && (porcentaje_error > tolerancia_error ))
@@ -97,16 +103,11 @@ int main(int argc, char *argv[])
         qDebug() << ">> Entrenando - Epoca: " << epoca;
         for(int i =0; i<entradas.size(); i++ )
         {
-            double error_parcial = abs( n.entrenamiento( entradas.at( mapa.at(i) ), salidas.at( mapa.at( i ) ) ) );
-            if( error_parcial > error_parcial_maximo )
-            {
-                error_parcial_maximo = error_parcial;
-                //qDebug() << "ep: " << error_parcial_maximo;
-            }
-            //qDebug()<<n.devuelvePesos();
+            n.entrenamiento( entradas.at( mapa.at(i) ), salidas.at( mapa.at( i ) ) );
         }
 
-
+        graf->agregarCurva( n.devuelvePesos(), "pesos" );
+        graf->setearTitulo( "Estado de pesos" );
 
         // Verifico el error
         //qDebug() << "--------------------------------";
@@ -129,8 +130,6 @@ int main(int argc, char *argv[])
         // Aumento el contador de epocas
         epoca++;
 
-        error_parcial_maximo=tolerancia_error+0.001;
-
     }
 
     qDebug() << "Probando con archivo de datos aleatorios";
@@ -149,6 +148,6 @@ int main(int argc, char *argv[])
                             &entradas,
                             &salidas );
 
-    return 0;
+    return a.exec();
 
 }
