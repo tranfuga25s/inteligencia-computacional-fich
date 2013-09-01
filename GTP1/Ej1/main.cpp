@@ -75,7 +75,6 @@ int main(int argc, char *argv[])
     mostrarMatriz( entradas );*/
 
     Graficador *graf = new Graficador();
-    main.setCentralWidget( graf );
 
     Neurona n(0,parametros.value( "cantidad_entradas" ).toInt() );
     n.inicializarPesos();
@@ -99,14 +98,15 @@ int main(int argc, char *argv[])
     graf3->setearTitulo( "Recta durante el entrenamiento" );
     graf3->setearTituloEjeX( "X" );
     graf3->setearTituloEjeY( "Y" );
+    graf3->setearEjesEnGrafico();
     graf3->agregarPuntos( entradas, "entradas" );
+    main.setCentralWidget( graf3 );
 
     while ( epoca <= max_etapas
             && (porcentaje_error > tolerancia_error ))
     {
         // randomizo el la lectura del vector de entradas
         QVector<int> mapa = randomizarEntradas( entradas.size() );
-        //qDebug() << "orden de datos: " << mapa;
 
         // Inicio la etapa de entrenamiento
         qDebug() << "--------------------------------";
@@ -139,14 +139,16 @@ int main(int argc, char *argv[])
         epoca++;
 
         // Grafico la recta
-        graf3->dibujarRecta( 1, n.devuelvePesos() , "division" );
+        graf3->dibujarRecta( 1, n.devuelvePesos() , "Recta de División" );
 
     }
 
     qDebug() << erroresParciales;
-    graf->agregarCurva( erroresParciales, "Errores parciales en el entrenamiento" );
+    graf->setearTitulo( "Evolución del error de entrenamiento" );
+    graf->agregarCurva( erroresParciales, "Errores parciales" );
     graf->setearTituloEjeX( "Epocas" );
     graf->setearTituloEjeY( "Porcentaje" );
+    graf->show();
 
     qDebug() <<"-----------------------------------------";
     qDebug() << endl <<"Probando con archivo de datos aleatorios";
@@ -170,9 +172,10 @@ int main(int argc, char *argv[])
     }
 
     Graficador *graf2 = new Graficador();
+    graf2->setearTitulo( "Salidas de particion de prueba" );
     graf2->agregarPuntos( m1, "clase -1" );
     graf2->agregarPuntos( m2, "clase +1" );
-
+    graf2->setearEjesEnGrafico();
     graf2->show();
 
     escribe_archivo_salida( parametros.value( "archivo_salida" ).toString(),

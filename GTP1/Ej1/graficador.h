@@ -5,6 +5,7 @@
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include <qwt_symbol.h>
+#include <qwt_plot_scaleitem.h>
 #include "funciones_aux.h"
 
 class Graficador : public QWidget
@@ -20,6 +21,7 @@ public:
     void agregarPuntos( QVector<double> x, QVector<double> y, QString nombre );
     void agregarPuntos( matriz m1, QString nombre );
     void dibujarRecta( int num_recta, vector pesos, QString nombre );
+    void setearEjesEnGrafico();
 
 private:
     QwtPlot *myPlot;
@@ -28,7 +30,9 @@ private:
     QwtSymbol::Style simbolo;
     void cambiarColor();
     void cambiarSimbolo();
-    QHash<int,QwtPlotCurve*> *curvas;
+    QVector<QwtPlotCurve*> *curvas;
+    QwtPlotScaleItem *scaleItemX;
+    QwtPlotScaleItem *scaleItemY;
 
 };
 

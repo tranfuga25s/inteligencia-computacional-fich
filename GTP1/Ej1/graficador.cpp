@@ -4,6 +4,9 @@
 #include <qwt_legend.h>
 #include <qwt_plot.h>
 #include <qwt_symbol.h>
+#include <qwt_plot_layout.h>
+#include <qwt_plot_scaleitem.h>
+#include <qwt_scale_widget.h>
 
 Graficador::Graficador(QWidget *parent) :
     QWidget(parent)
@@ -19,7 +22,7 @@ Graficador::Graficador(QWidget *parent) :
     leyenda = new QwtLegend( myPlot );
     myPlot->insertLegend( leyenda, QwtPlot::RightLegend );
 
-    this->curvas = new QHash<int,QwtPlotCurve*>();
+    this->curvas = new QVector<QwtPlotCurve*>();
 }
 
 /*!
@@ -99,33 +102,62 @@ void Graficador::agregarPuntos( matriz m1, QString nombre ) {
     agregarPuntos( x, y, nombre );
 }
 
+/*!
+ * \brief Graficador::dibujarRecta
+ * \param num_recta
+ * \param pesos
+ * \param nombre
+ */
 void Graficador::dibujarRecta( int num_recta, vector pesos, QString nombre ) {
 
-    if( curvas->contains( num_recta ) ) {
-        QwtPlotCurve *curva = curvas[num_recta];
+    QwtPlotCurve *curva;
+    if( curvas->size() >= num_recta ) {
+        curva = curvas->value( num_recta );
     } else {
-        QwtPlotCurve *curva = new QwtPlotCurve( nombre );
-        curvas->insert( num_curva, curva );
+        curva = new QwtPlotCurve( nombre );
+        curvas->append( curva );
         curva->attach( myPlot );
     }
 
-    double min = myPlot->getMin();
-    double max = myPlot->getMax();
 
-    y1 = ( pesos.at( 0 ) / pesos.at( 2 ) ) - ( pesos.at( 1 ) / pesos.at(2) ) * min;
-    y2 = ( pesos.at( 0 ) / pesos.at( 2 ) ) - ( pesos.at( 1 ) / pesos.at(2) ) * max;
+    double min = myPlot->axisScaleDiv( QwtPlot::xBottom )->lowerBound();
+
+    double max = myPlot->axisScaleDiv( QwtPlot::xBottom )->upperBound();
+
+    double y1 = ( pesos.value( 0 ) / pesos.at( 2 ) ) - ( ( pesos.at( 1 ) / pesos.at(2) ) * min );
+    double y2 = ( pesos.at( 0 ) / pesos.at( 2 ) ) - ( ( pesos.at( 1 ) / pesos.at(2) ) * max );
     vector x;
-    x.append( min ).append( max );
+    x.append( min );
+    x.append( max );
     vector y;
-    y.append( y1 ).append( y2 );
+    y.append( y1 );
+    y.append( y2 );
     curva->setSamples( x, y );
+
+    curva->attach( myPlot );
+    qDebug() << x << ", "<< y << " Recta dibujada";
     myPlot->replot();
+}
+
+void Graficador::setearEjesEnGrafico()
+{
+    scaleItemX = new QwtPlotScaleItem( QwtScaleDraw::RightScale, 0.0 );
+    scaleItemX->setFont( myPlot->axisWidget( QwtPlot::yLeft )->font() );
+    scaleItemX->attach( myPlot );
+
+    myPlot->enableAxis( QwtPlot::yLeft, false );
+
+    scaleItemY = new QwtPlotScaleItem( QwtScaleDraw::BottomScale, 0.0 );
+    scaleItemY->setFont( myPlot->axisWidget( QwtPlot::xBottom )->font() );
+    scaleItemY->attach( myPlot );
+
+    myPlot->enableAxis( QwtPlot::xBottom, false );
 }
 
 void Graficador::cambiarColor()
 {
     switch( this->color ) {
-    case Qt::red:         { this->color = Qt::green; break;      }
+    case Qt::red:         { this->color = Qt::green; break;       }
     case Qt::green:       { this->color = Qt::darkRed; break;     }
     case Qt::darkRed:     { this->color = Qt::darkGreen; break;   }
     case Qt::darkGreen:   { this->color = Qt::blue;  break;       }
@@ -139,15 +171,30 @@ void Graficador::cambiarColor()
     case Qt::darkYellow:  { this->color = Qt::gray; break;        }
     case Qt::gray:        { this->color = Qt::darkGray;  break;   }
     case Qt::darkGray:    { this->color = Qt::lightGray;  break;  }
-    case Qt::lightGray:   { this->color = Qt::red;  break;        }
+    case Qt::lightGray:   { this->color = Qt::black;  break;      }
+    case Qt::black:       { this->color = Qt::white;  break;      }
+    case Qt::white:       { this->color = Qt::red;  break;        }
+    default:              { this->color = Qt::red;  break;        }
     }
 
 }
 
 void Graficador::cambiarSimbolo() {
     switch( this->simbolo ) {
-        case QwtSymbol::Cross:   { this->simbolo = QwtSymbol::Diamond;  break;   }
-        case QwtSymbol::Diamond: { this->simbolo = QwtSymbol::DTriangle;  break; }
-        case QwtSymbol::DTriangle: { this->simbolo = QwtSymbol::Cross; break; }
+        case QwtSymbol::Cross:     { this->simbolo = QwtSymbol::Diamond;    break; }
+        case QwtSymbol::Diamond:   { this->simbolo = QwtSymbol::DTriangle;  break; }
+        case QwtSymbol::DTriangle: { this->simbolo = QwtSymbol::Cross;      break; }
+        case QwtSymbol::Triangle:  { this->simbolo = QwtSymbol::UTriangle;  break; }
+        case QwtSymbol::UTriangle: { this->simbolo = QwtSymbol::LTriangle;  break; }
+        case QwtSymbol::LTriangle: { this->simbolo = QwtSymbol::RTriangle;  break; }
+        case QwtSymbol::RTriangle: { this->simbolo = QwtSymbol::XCross;     break; }
+        case QwtSymbol::XCross:    { this->simbolo = QwtSymbol::HLine;      break; }
+        case QwtSymbol::HLine:     { this->simbolo = QwtSymbol::Ellipse;    break; }
+        case QwtSymbol::Rect:      { this->simbolo = QwtSymbol::VLine;      break; }
+        case QwtSymbol::VLine:     { this->simbolo = QwtSymbol::Star1;      break; }
+        case QwtSymbol::Star1:     { this->simbolo = QwtSymbol::Star2;      break; }
+        case QwtSymbol::Star2:     { this->simbolo = QwtSymbol::Hexagon;    break; }
+        case QwtSymbol::Hexagon:   { this->simbolo = QwtSymbol::Cross;      break; }
+        default:                   { this->simbolo = QwtSymbol::Diamond;    break; }
     }
 }
