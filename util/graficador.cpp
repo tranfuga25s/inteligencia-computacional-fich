@@ -32,6 +32,7 @@ Graficador::Graficador(QWidget *parent) :
 void Graficador::setearTitulo(QString titulo)
 {
     myPlot->setTitle( titulo );
+    this->setWindowTitle( titulo );
 }
 
 void Graficador::setearTituloEjeX( QString titulo )

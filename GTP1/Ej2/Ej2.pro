@@ -11,7 +11,6 @@ CONFIG += qwt
 
 TEMPLATE = app
 
-
 SOURCES += main.cpp \
     neurona.cpp \
     particionador.cpp \
@@ -21,10 +20,13 @@ HEADERS += \
     neurona.h \
     funciones_aux.h \
     particionador.h \
-    ../../util/graficador.h
+    ../../util/graficador.h \
+    ../../util/funciones_aux.h
 
 OTHER_FILES += \
     parametros.cfg \
     ej1.csv \
     tabla2a.csv \
     tabla2b.csv
+
+INCLUDEPATH += ../../util

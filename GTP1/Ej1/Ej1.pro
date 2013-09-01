@@ -14,7 +14,8 @@ SOURCES += main.cpp \
 
 HEADERS += neurona.h \
     funciones_aux.h \
-    ../../util/graficador.h
+    ../../util/graficador.h \
+    ../../util/funciones_aux.h
 
 OTHER_FILES += parametros.cfg \
     ej1-XOR.csv \
