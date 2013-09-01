@@ -7,6 +7,7 @@
 #include <QSettings>
 
 #include "iostream"
+#include "graficador.h"
 
 
 typedef QVector<double> vector;
@@ -92,6 +93,13 @@ int main(int argc, char *argv[])
     double porcentaje_error = 100.0; /*Mucho sino sale*/
     int cantidad_particiones_exitosas = 0;
 
+    Graficador *graf1 = new Graficador();
+    main.setCentralWidget( graf1 );
+    graf1->setearTitulo( QString::fromUtf8( "Porcentaje de error según particion" ) );
+    graf1->setearTituloEjeX( QString::fromUtf8( "Partición" ) );
+    graf1->setearTituloEjeY( QString::fromUtf8( "Porcentaje error" ) );
+
+
     QVector<double> errores_particiones;
 
     for( int p=0; p<particiones.cantidadDeParticiones(); p++ ) {
@@ -140,8 +148,10 @@ int main(int argc, char *argv[])
             // Aumento el contador de epocas
             epoca++;
 
-            errores_particiones[p] = porcentaje_error;
+            QApplication::processEvents();
         }
+
+        graf1->agregarCurva( errores_epocas, QString( "Epoca %1" ).arg( p ) );
 
         // Genero las estadisticas con los datos de prueba
         int errores = 0;
@@ -154,7 +164,7 @@ int main(int argc, char *argv[])
             }
         }
         porcentaje_error = ( (double) errores * 100 ) / (double) entradas.size();
-        errores_particiones.push_back( porcentaje_error );
+        errores_particiones[p] = porcentaje_error;
 
         //Aumento el contador de las no exitosas
         if (epoca < max_epocas)
@@ -178,8 +188,13 @@ int main(int argc, char *argv[])
     qDebug() << endl << "Cantidad de Particiones que convergen: " << cantidad_particiones_exitosas ;
     qDebug() << endl << "Cantidad de Particiones sin converger: " << (particiones.cantidadDeParticiones() - cantidad_particiones_exitosas) ;
 
-    //mostrarVector(n.devuelvePesos());
+    Graficador *graf2 = new Graficador();
+    graf2->show();
+    graf2->setearTitulo( "Errores por particion" );
+    graf2->setearTituloEjeX( "Particion" );
+    graf2->setearTituloEjeY( "Error" );
+    graf2->agregarCurva( errores_particiones, "Errores" );
 
-    return 0;
+    return a.exec();
 
 }
