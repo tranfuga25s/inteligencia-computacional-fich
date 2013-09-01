@@ -1,4 +1,5 @@
-#include <QCoreApplication>
+#include <QApplication>
+#include <QMainWindow>
 #include <QDebug>
 #include <QTime>
 #include <QDir>
@@ -24,7 +25,10 @@ typedef QVector< QVector<double> > matriz;
  */
 int main(int argc, char *argv[])
 {
-    QCoreApplication a( argc, argv );
+    QApplication a( argc, argv );
+    QMainWindow main;
+    a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
+    main.showMaximized();
 
     //Inicializo con una semilla aleatoria para la generacion de Aleatorios
     qsrand(QTime::currentTime().msec());
@@ -69,8 +73,6 @@ int main(int argc, char *argv[])
     particiones.setearPorcentajeEntrenamiento( parametros.value( "porcentaje_entrenamiento" ).toDouble() );
     particiones.setearPorcentajeValidacion( parametros.value("porcentaje_validacion").toDouble() );
     particiones.particionarDatos();
-
-
 
     Neurona n( 0, parametros.value( "cantidad_entradas" ).toInt() );
     n.inicializarPesos();
