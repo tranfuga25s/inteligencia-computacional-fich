@@ -5,24 +5,23 @@
 #-------------------------------------------------
 
 QT       += core
-
-QT       -= gui
-
 TARGET = Ej2
 CONFIG   += console
-CONFIG   -= app_bundle
+CONFIG += qwt
 
 TEMPLATE = app
 
 
 SOURCES += main.cpp \
     neurona.cpp \
-    particionador.cpp
+    particionador.cpp \
+    ../../util/graficador.cpp
 
 HEADERS += \
     neurona.h \
     funciones_aux.h \
-    particionador.h
+    particionador.h \
+    ../../util/graficador.h
 
 OTHER_FILES += \
     parametros.cfg \

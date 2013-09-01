@@ -5,16 +5,16 @@
 #-------------------------------------------------
 
 TARGET = Ej1
-CONFIG   += qwt
+CONFIG += qwt
 TEMPLATE = app
 
 SOURCES += main.cpp \
     neurona.cpp \
-    graficador.cpp
+    ../../util/graficador.cpp
 
 HEADERS += neurona.h \
     funciones_aux.h \
-    graficador.h
+    ../../util/graficador.h
 
 OTHER_FILES += parametros.cfg \
     ej1-XOR.csv \
