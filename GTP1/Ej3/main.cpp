@@ -8,6 +8,8 @@
 
 #include "iostream"
 #include "graficador.h"
+#include "redneuronal.h"
+#include "capaneuronal.h"
 
 
 typedef QVector<double> vector;
@@ -40,30 +42,16 @@ int main(int argc, char *argv[])
     // Archivo de entrada
     QString archivo = QCoreApplication::applicationDirPath().append( QDir::separator() ).append( parametros.value( "archivo_entrada" ).toString() );
 
-    //Generamos el archivo de entrenamiento en base a la desviacion indicada en la configuracion y la cantidad de datos
-    generarArchivoAleatoriosEntrenamiento( archivo,
-                     parametros.value( "archivo_entrenamiento_randomizado" ).toString(),
-                     parametros.value( "cantidad_datos" ).toInt(),
-                     parametros.value( "porcentaje_variacion" ).toDouble(),
-                     parametros.value( "cantidad_entradas" ).toInt());
-
-
-    //Archivo randomizado
-    QString archivo_aleatorios = QCoreApplication::applicationDirPath().append( QDir::separator() ).append( parametros.value( "archivo_entrenamiento_randomizado" ).toString() );
-
-
     // Cargo los datos de los archivos que corresponda
     matriz entradas( parametros.value( "cantidad_entradas" ).toInt() );
     vector salidas( parametros.value( "cantidad_salidas" ).toInt() );
 
     qDebug() << endl << "--------------- /Datos del entrenamiento/ -----------------" << endl;
     qWarning() << "Archivo de lectura de datos originales: "<< archivo;
-    qWarning() << "Archivo de entrenamiento: "<< archivo_aleatorios;
-    if( ! leer_archivo_entrenamiento( archivo_aleatorios,
+    if( ! leer_archivo_entrenamiento( archivo,
                                       &entradas,
                                       &salidas,
-                                      parametros.value( "cantidad_entradas" ).toInt(),
-                                      parametros.value( "cantidad_salidas" ).toInt() )  ) {
+                                      parametros.value( "cantidad_entradas" ).toInt() )  ) {
         qDebug() << "No se pudo encontrar el archivo de entrenamiento! cancelando!";
         abort();
     }
@@ -76,11 +64,19 @@ int main(int argc, char *argv[])
     particiones.setearPorcentajeValidacion( parametros.value("porcentaje_validacion").toDouble() );
     particiones.particionarDatos();
 
-    Neurona n( 0, parametros.value( "cantidad_entradas" ).toInt() );
-    n.inicializarPesos();
-    //mostrarVector( n.devuelvePesos() );
-    n.setearTasaAprendizaje( parametros.value( "tasa_aprendizaje" ).toDouble() );
-    qDebug() << "Tasa de aprendizaje: " << n.tasaAprendizaje();
+    // Inicializo la red neuronal
+    QVector<QString> temp = parametros.value( "capas" ).toStringList().toVector();
+    QVector<int> neuronas_por_capas;
+    foreach( QString temp2, temp ) {
+        neuronas_por_capas.append( temp2.toInt() );
+    }
+    RedNeuronal red( neuronas_por_capas.size(),
+                     neuronas_por_capas,
+                     parametros.value("cantidad_entradas").toInt(),
+                     main.centralWidget() );
+
+    red.setearTasaAprendizaje( parametros.value( "tasa_aprendizaje" ).toDouble() );
+    qDebug() << "Tasa de aprendizaje: " << parametros.value( "tasa_aprendizaje" ).toDouble();
 
     int max_epocas = parametros.value( "epocas_maximas", 20 ).toInt();
     qDebug() << "Epocas: " << max_epocas;
@@ -121,7 +117,7 @@ int main(int argc, char *argv[])
         //pongo nuevamente en los valores iniciales las variables de corte para que entre en todas las particiones
         epoca = 0;
         porcentaje_error = 100.0;
-        n.inicializarPesos();
+        red.reinicializarPesos();
 
         QVector<double> errores_epocas;
 
@@ -135,7 +131,7 @@ int main(int argc, char *argv[])
             std::cout << epoca << " \r";
             for(int i =0; i<part_local.entrenamiento.size(); i++ )
             {
-                n.entrenamiento( entradas.at( part_local.entrenamiento.at(i) ), salidas.at( part_local.entrenamiento.at( i ) ) );
+                red.entrenamiento( entradas.at( part_local.entrenamiento.at(i) ), salidas.at( part_local.entrenamiento.at( i ) ) );
             }
 
             // Verifico el error
@@ -144,7 +140,7 @@ int main(int argc, char *argv[])
             int errores = 0;
             int correcto = 0;
             for( int i = 0; i < part_local.validacion.size(); i++ ) {
-                if( n.evaluar( entradas.at( part_local.validacion.at( i ) ) ) != salidas.at( part_local.validacion.at( i ) ) ) {
+                if( red.evaluar( entradas.at( part_local.validacion.at( i ) ) ) != salidas.at( part_local.validacion.at( i ) ) ) {
                     errores++;
                 } else {
                     correcto++;
@@ -169,7 +165,7 @@ int main(int argc, char *argv[])
         int errores = 0;
         int correcto = 0;
         for( int i = 0; i < part_local.prueba.size(); i++ ) {
-            if( n.evaluar( entradas.at( part_local.prueba.at( i ) ) ) != salidas.at( part_local.prueba.at( i ) ) ) {
+            if( red.evaluar( entradas.at( part_local.prueba.at( i ) ) ) != salidas.at( part_local.prueba.at( i ) ) ) {
                 errores++;
             } else {
                 correcto++;

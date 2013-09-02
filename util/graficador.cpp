@@ -17,7 +17,7 @@ Graficador::Graficador(QWidget *parent) :
     }
     this->layout()->addWidget( myPlot );
     color = Qt::blue;
-    simbolo = QwtSymbol::Triangle;
+    simbolo = QwtSymbol::Diamond;
 
     leyenda = new QwtLegend( myPlot );
     myPlot->insertLegend( leyenda, QwtPlot::RightLegend );
@@ -224,14 +224,14 @@ void Graficador::cambiarSimbolo() {
     switch( this->simbolo ) {
         case QwtSymbol::Cross:     { this->simbolo = QwtSymbol::Diamond;    break; }
         case QwtSymbol::Diamond:   { this->simbolo = QwtSymbol::DTriangle;  break; }
-        case QwtSymbol::DTriangle: { this->simbolo = QwtSymbol::Cross;      break; }
+        case QwtSymbol::DTriangle: { this->simbolo = QwtSymbol::Triangle;   break; }
         case QwtSymbol::Triangle:  { this->simbolo = QwtSymbol::UTriangle;  break; }
         case QwtSymbol::UTriangle: { this->simbolo = QwtSymbol::LTriangle;  break; }
         case QwtSymbol::LTriangle: { this->simbolo = QwtSymbol::RTriangle;  break; }
         case QwtSymbol::RTriangle: { this->simbolo = QwtSymbol::XCross;     break; }
         case QwtSymbol::XCross:    { this->simbolo = QwtSymbol::HLine;      break; }
         case QwtSymbol::HLine:     { this->simbolo = QwtSymbol::Ellipse;    break; }
-        case QwtSymbol::Rect:      { this->simbolo = QwtSymbol::VLine;      break; }
+        case QwtSymbol::Ellipse:   { this->simbolo = QwtSymbol::VLine;      break; }
         case QwtSymbol::VLine:     { this->simbolo = QwtSymbol::Star1;      break; }
         case QwtSymbol::Star1:     { this->simbolo = QwtSymbol::Star2;      break; }
         case QwtSymbol::Star2:     { this->simbolo = QwtSymbol::Hexagon;    break; }

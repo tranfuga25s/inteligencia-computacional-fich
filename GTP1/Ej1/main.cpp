@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
     graf->agregarCurva( erroresParciales, "Errores parciales" );
     graf->setearTituloEjeX( "Epocas" );
     graf->setearTituloEjeY( "Porcentaje" );
-    graf->show();
+    graf->showMaximized();
 
     qDebug() <<"-----------------------------------------";
     qDebug() << endl <<"Probando con archivo de datos aleatorios";
@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
     graf2->setearTitulo( " 3 - Salidas de particion de prueba" );
     graf2->setearEjesEnGrafico();
     graf2->agregarPuntosClasificados( entradas, salidas );
-    graf2->show();
+    graf2->showMaximized();
 
     escribe_archivo_salida( parametros.value( "archivo_salida" ).toString(),
                             &entradas,

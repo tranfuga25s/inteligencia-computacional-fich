@@ -23,8 +23,7 @@ typedef QVector< QVector<double> > matriz;
 static bool leer_archivo_entrenamiento( QString direccion,
                                         matriz* vect_entradas,
                                         vector* vect_salidas_deseadas,
-                                        int tam_entradas,
-                                        int tam_salida)
+                                        int tam_entradas )
 {
 
     QFile archivo_entrada( direccion );
@@ -171,7 +170,7 @@ static void generarArchivoAleatoriosPruebaRadial( QString archivo_entrada, QStri
     matriz entradas;
     vector salidas;
     matriz entradas_nuevas;
-    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, tamano_entradas, 1 );
+    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, tamano_entradas );
     for( int i=0; i<entradas.size(); i++ ) {
 
         //entradas_nuevas.append( entradas.at( i ) );
@@ -207,7 +206,7 @@ static void generarArchivoAleatoriosPrueba( QString archivo_entrada, QString arc
     matriz entradas;
     vector salidas;
     matriz entradas_nuevas;
-    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, tamano_entradas, 1 );
+    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, tamano_entradas );
     for( int i=0; i<entradas.size(); i++ ) {
 
         //entradas_nuevas.append( entradas.at( i ) );
@@ -250,7 +249,7 @@ static void generarArchivoAleatoriosEntrenamientoRadial( QString archivo_entrada
     vector salidas;
     matriz entradas_nuevas;
     vector salidas_nuevas;
-    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, tamano_entradas, 1 );
+    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, tamano_entradas );
     for( int i=0; i<entradas.size(); i++ ) {
 
         for( int j=0; j<cantidad_extras; j++ ) {
@@ -285,7 +284,7 @@ static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QStr
     vector salidas;
     matriz entradas_nuevas;
     vector salidas_nuevas;
-    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, tamano_entradas, 1 );
+    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, tamano_entradas );
     for( int i=0; i<entradas.size(); i++ ) {
 
         for( int j=0; j<cantidad_extras; j++ ) {
