@@ -17,7 +17,7 @@ Graficador::Graficador(QWidget *parent) :
     }
     this->layout()->addWidget( myPlot );
     color = Qt::blue;
-    simbolo = QwtSymbol::Diamond;
+    simbolo = QwtSymbol::Triangle;
 
     leyenda = new QwtLegend( myPlot );
     myPlot->insertLegend( leyenda, QwtPlot::RightLegend );
@@ -105,14 +105,14 @@ void Graficador::agregarPuntos( matriz m1, QString nombre ) {
 
 /*!
  * \brief Graficador::dibujarRecta
- * \param num_recta
+ * \param num_recta Numero de recta a redibujar. Si es cero dibuja una nueva recta.
  * \param pesos
  * \param nombre
  */
 void Graficador::dibujarRecta( int num_recta, vector pesos, QString nombre ) {
 
     QwtPlotCurve *curva = 0;
-    if( curvas->contains(num_recta) ) {
+    if( curvas->contains( num_recta ) && num_recta != 0 ) {
         curva = curvas->operator []( num_recta ); /// ??? WTF ???
     } else {
         curva = new QwtPlotCurve( nombre );
@@ -136,12 +136,20 @@ void Graficador::dibujarRecta( int num_recta, vector pesos, QString nombre ) {
     y.append( y2 );
 
     curva->setSamples( x, y );
+    curva->setRenderHint( QwtPlotItem::RenderAntialiased );
+    curva->setLegendAttribute(QwtPlotCurve::LegendShowLine , true);
+    cambiarColor();
+    curva->setPen( QPen( color ) );
 
     curva->attach( myPlot );
-    qDebug() << x << ", "<< y << " Recta dibujada";
+        //qDebug() << x << ", "<< y << " Recta dibujada";
     myPlot->replot();
 }
 
+/*!
+ * \brief Graficador::setearEjesEnGrafico
+ * Coloca los ejes xbottom y yleft en el medio del grafico
+ */
 void Graficador::setearEjesEnGrafico()
 {
     scaleItemX = new QwtPlotScaleItem( QwtScaleDraw::RightScale, 0.0 );
@@ -155,6 +163,16 @@ void Graficador::setearEjesEnGrafico()
     scaleItemY->attach( myPlot );
 
     myPlot->enableAxis( QwtPlot::xBottom, false );
+}
+
+/*!
+ * \brief Graficador::setearTamanoFijo
+ * No permite que los ejes sean redimensionados al ingresar una nueva curva
+ */
+void Graficador::setearTamanoFijo()
+{
+    myPlot->setAxisAutoScale( QwtPlot::xBottom, false );
+    myPlot->setAxisAutoScale( QwtPlot::yLeft, false );
 }
 
 void Graficador::cambiarColor()

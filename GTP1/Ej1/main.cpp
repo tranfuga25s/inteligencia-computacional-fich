@@ -91,7 +91,6 @@ int main(int argc, char *argv[])
 
     int epoca = 0; /* Contador de etapa */
     double porcentaje_error = 100.0; /*Mucho sino sale*/
-    double porcentaje_acierto = 0.0;
     QVector<double> erroresParciales;
 
     Graficador *graf3 = new Graficador();
@@ -99,8 +98,20 @@ int main(int argc, char *argv[])
     graf3->setearTituloEjeX( "X" );
     graf3->setearTituloEjeY( "Y" );
     graf3->setearEjesEnGrafico();
-    graf3->agregarPuntos( entradas, "entradas" );
+    matriz m1,m2;
+    for( int i=0; i<entradas.size(); i++ ) {
+        double salida = n.evaluar( entradas.at( i ) );
+        salidas.append( salida );
+        if( salida < 0.0 ) {
+            m1.append( entradas.at( i ) );
+        } else {
+            m2.append( entradas.at( i ) );
+        }
+    }
+    graf3->agregarPuntos( m1, "Entradas -1" );
+    graf3->agregarPuntos( m2, "Entradas +1" );
     main.setCentralWidget( graf3 );
+    graf3->setearTamanoFijo();
 
     while ( epoca <= max_etapas
             && (porcentaje_error > tolerancia_error ))
@@ -129,9 +140,7 @@ int main(int argc, char *argv[])
             }
         }
         porcentaje_error = ( (double) errores * 100.0 ) / (double) entradas.size();
-        porcentaje_acierto = ( (double) correcto * 100.0 ) / (double) entradas.size();
         qDebug() << "Cantidad de errores: " << errores << ", acertados: " << correcto;
-        qDebug() << "Porcentaje de acierto: " << porcentaje_acierto << "%";
         qDebug() << "Porcentaje de error: " << porcentaje_error << "%";
         erroresParciales.append( porcentaje_error );
 
@@ -139,12 +148,12 @@ int main(int argc, char *argv[])
         epoca++;
 
         // Grafico la recta
-        graf3->dibujarRecta( 1, n.devuelvePesos() , QString::fromUtf8( "Recta de División" ) );
+        graf3->dibujarRecta( 0, n.devuelvePesos() , QString::fromUtf8( "Recta de División" ) );
+        QApplication::processEvents();
 
     }
 
-    qDebug() << erroresParciales;
-    graf->setearTitulo( "Evolución del error de entrenamiento" );
+    graf->setearTitulo( QString::fromUtf8( "Evolución del error de entrenamiento" ) );
     graf->agregarCurva( erroresParciales, "Errores parciales" );
     graf->setearTituloEjeX( "Epocas" );
     graf->setearTituloEjeY( "Porcentaje" );
@@ -160,7 +169,8 @@ int main(int argc, char *argv[])
 
     qDebug() << "Escribiendo resultados";
     salidas.clear();
-    matriz m1,m2;
+    m1.clear();
+    m2.clear();
     for( int i=0; i<entradas.size(); i++ ) {
         double salida = n.evaluar( entradas.at( i ) );
         salidas.append( salida );

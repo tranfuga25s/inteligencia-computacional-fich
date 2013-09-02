@@ -22,6 +22,7 @@ public:
     void agregarPuntos( matriz m1, QString nombre );
     void dibujarRecta( int num_recta, vector pesos, QString nombre );
     void setearEjesEnGrafico();
+    void setearTamanoFijo();
 
 private:
     QwtPlot *myPlot;
