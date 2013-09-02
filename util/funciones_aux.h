@@ -179,10 +179,9 @@ static void generarArchivoAleatoriosPruebaRadial( QString archivo_entrada, QStri
         for( int j=0; j<cantidad_extras; j++ ) {
             vector temporal = entradas.at(i);
 
-            double radio = valor_random( 0.1, porcentaje_variacion );
+            double radio = valor_random( 0.0 , porcentaje_variacion);
             double angulo = valor_random( 0.0, 365.0 );
-            entradas[i][0] = entradas[i][0] + radio * cos( angulo );
-            entradas[i][1] = entradas[i][1] + radio * sin( angulo );
+
             temporal[0] = temporal.at(0) + radio * cos( angulo );
             temporal[1] = temporal.at(1) + radio * sin( angulo );
 
@@ -250,10 +249,9 @@ static void generarArchivoAleatoriosEntrenamientoRadial( QString archivo_entrada
         for( int j=0; j<cantidad_extras; j++ ) {
             vector temporal = entradas.at(i);
 
-            double radio = valor_random( 0.1, porcentaje_variacion );
+            double radio =  valor_random( 0.0 , porcentaje_variacion);
             double angulo = valor_random( 0.0, 365.0 );
-            entradas[i][0] = entradas[i][0] + radio * cos( angulo );
-            entradas[i][1] = entradas[i][1] + radio * sin( angulo );
+
             temporal[0] = temporal.at(0) + radio * cos( angulo );
             temporal[1] = temporal.at(1) + radio * sin( angulo );
 
