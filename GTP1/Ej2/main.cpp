@@ -100,6 +100,25 @@ int main(int argc, char *argv[])
     graf1->setearTituloEjeX( QString::fromUtf8( "Partición" ) );
     graf1->setearTituloEjeY( QString::fromUtf8( "Porcentaje error" ) );
 
+    Graficador *graf2 = new Graficador();
+    graf2->showMaximized();
+    graf2->setearTitulo( "Datos" );
+    graf2->setearEjesEnGrafico();
+    graf2->setearTituloEjeX( " X " );
+    graf2->setearTituloEjeY( " y " );
+    matriz m1,m2;
+    for( int i=0; i<entradas.size(); i++ ) {
+        double salida = n.evaluar( entradas.at( i ) );
+        salidas.append( salida );
+        if( salida < 0.0 ) {
+            m1.append( entradas.at( i ) );
+        } else {
+            m2.append( entradas.at( i ) );
+        }
+    }
+    graf2->agregarPuntos( m1, "Entradas -1" );
+    graf2->agregarPuntos( m2, "Entradas +1" );
+
     QVector<double> errores_particiones;
 
     for( int p=0; p<particiones.cantidadDeParticiones(); p++ ) {
@@ -188,12 +207,12 @@ int main(int argc, char *argv[])
     qDebug() << endl << "Cantidad de Particiones que convergen: " << cantidad_particiones_exitosas ;
     qDebug() << endl << "Cantidad de Particiones sin converger: " << (particiones.cantidadDeParticiones() - cantidad_particiones_exitosas) ;
 
-    Graficador *graf2 = new Graficador();
-    graf2->show();
-    graf2->setearTitulo( "Errores por particion" );
-    graf2->setearTituloEjeX( "Particion" );
-    graf2->setearTituloEjeY( "Error" );
-    graf2->agregarCurva( errores_particiones, "Errores" );
+    Graficador *graf3 = new Graficador();
+    graf3->show();
+    graf3->setearTitulo( "Errores por particion" );
+    graf3->setearTituloEjeX( "Particion" );
+    graf3->setearTituloEjeY( "Error" );
+    graf3->agregarCurva( errores_particiones, "Errores" );
 
     return a.exec();
 
