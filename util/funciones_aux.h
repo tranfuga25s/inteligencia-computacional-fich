@@ -162,15 +162,16 @@ static QVector<int> randomizarEntradas( int tam_datos ) {
  * \brief generarArchivoAleatoriosPrueba
  * Escribe un archivo de salida con los datos de entradas agregando el porcentaje de variacion a cada entrada.
  * \param archivo_entrada Nombre del archivo de entrada
- * \param archivo_salida
- * \param cantidad_extras
- * \param porcentaje_error
+ * \param archivo_salida Nombre del archivo a escribir
+ * \param cantidad_extras Cantidad de datos extras a generar por cada entrada
+ * \param porcentaje_error Porcentaje de error a aplicar a la variación
+ * \param tamano_entradas Cantidad de datos que poseen las entradas
  */
-static void generarArchivoAleatoriosPrueba( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_variacion ) {
+static void generarArchivoAleatoriosPrueba( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_variacion, int tamano_entradas ) {
     matriz entradas;
     vector salidas;
     matriz entradas_nuevas;
-    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, 2, 1 );
+    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, tamano_entradas, 1 );
     for( int i=0; i<entradas.size(); i++ ) {
 
         //entradas_nuevas.append( entradas.at( i ) );
@@ -194,18 +195,19 @@ static void generarArchivoAleatoriosPrueba( QString archivo_entrada, QString arc
 
 /*!
  * \brief generarArchivoAleatoriosEntrenamiento
- * \param archivo_entrada
- * \param archivo_salida
- * \param cantidad_extras
- * \param porcentaje_error
+ * \param archivo_entrada Nombre del archivo de entrada
+ * \param archivo_salida Nombre del archivo a escribir
+ * \param cantidad_extras Cantidad de datos extras a generar por cada entrada
+ * \param porcentaje_error Porcentaje de error a aplicar a la variación
+ * \param tamano_entradas Cantidad de datos que poseen las entradas
  */
 
-static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_variacion ) {
+static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_variacion, int tamano_entradas ) {
     matriz entradas;
     vector salidas;
     matriz entradas_nuevas;
     vector salidas_nuevas;
-    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, 2, 1 );
+    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, tamano_entradas, 1 );
     for( int i=0; i<entradas.size(); i++ ) {
 
         for( int j=0; j<cantidad_extras; j++ ) {

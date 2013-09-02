@@ -39,7 +39,8 @@ int main(int argc, char *argv[])
     generarArchivoAleatoriosEntrenamiento( archivo,
                      parametros.value( "archivo_entrenamiento_randomizado" ).toString(),
                      parametros.value( "cantidad_datos_extras" ).toInt(),
-                     parametros.value( "porcentaje_variacion" ).toDouble() );
+                     parametros.value( "porcentaje_variacion" ).toDouble(),
+                     parametros.value( "cantidad_entradas" ).toInt() );
 
 
     //Archivo OR randomizado
@@ -50,7 +51,8 @@ int main(int argc, char *argv[])
     generarArchivoAleatoriosPrueba( archivo,
                      parametros.value( "archivo_prueba_randomizado" ).toString(),
                      parametros.value( "cantidad_datos_extras" ).toInt(),
-                     parametros.value( "porcentaje_variacion" ).toDouble() );
+                     parametros.value( "porcentaje_variacion" ).toDouble(),
+                     parametros.value( "cantidad_entradas" ).toInt() );
     
 
     // Cargo los datos de los archivos que corresponda

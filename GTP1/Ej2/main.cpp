@@ -44,7 +44,8 @@ int main(int argc, char *argv[])
     generarArchivoAleatoriosEntrenamiento( archivo,
                      parametros.value( "archivo_entrenamiento_randomizado" ).toString(),
                      parametros.value( "cantidad_datos" ).toInt(),
-                     parametros.value( "porcentaje_variacion" ).toDouble() );
+                     parametros.value( "porcentaje_variacion" ).toDouble(),
+                     parametros.value( "cantidad_entradas" ).toInt());
 
 
     //Archivo randomizado
@@ -62,7 +63,7 @@ int main(int argc, char *argv[])
                                       &entradas,
                                       &salidas,
                                       parametros.value( "cantidad_entradas" ).toInt(),
-                                      parametros.value( "cantidad_salidas" ).toInt())) {
+                                      parametros.value( "cantidad_salidas" ).toInt() )  ) {
         qDebug() << "No se pudo encontrar el archivo de entrenamiento! cancelando!";
         abort();
     }
@@ -98,7 +99,6 @@ int main(int argc, char *argv[])
     graf1->setearTitulo( QString::fromUtf8( "Porcentaje de error según particion" ) );
     graf1->setearTituloEjeX( QString::fromUtf8( "Partición" ) );
     graf1->setearTituloEjeY( QString::fromUtf8( "Porcentaje error" ) );
-
 
     QVector<double> errores_particiones;
 
