@@ -215,9 +215,16 @@ static void generarArchivoAleatoriosPrueba( QString archivo_entrada, QString arc
         for( int j=0; j<cantidad_extras; j++ ) {
             vector temporal = entradas.at(i);
 
-            for (int k = 0 ; k < entradas.at(i).size() ; k++){
-                        temporal[k] = valor_random( temporal.at(k)*(1.0 - porcentaje_variacion) , temporal.at(k)*(1.0 + porcentaje_variacion) );
-            }
+            //for (int k = 0 ; k < entradas.at(i).size() ; k++){
+            //            temporal[k] = valor_random( temporal.at(k)*(1.0 - porcentaje_variacion) , temporal.at(k)*(1.0 + porcentaje_variacion) );
+            //}
+
+            double radio =  valor_random( 0.0 , porcentaje_variacion);
+            double angulo = valor_random( 0.0, 365.0 );
+
+            temporal[0] = temporal.at(0) + radio * cos( angulo );
+            temporal[1] = temporal.at(1) + radio * sin( angulo );
+            temporal[2] = temporal.at(2) + radio * cos( angulo );
 
             //Guardo en el vector y la matriz nueva los nuevos valores variados
             salidas.append( 0 );
@@ -284,9 +291,16 @@ static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QStr
         for( int j=0; j<cantidad_extras; j++ ) {
             vector temporal = entradas.at(i);
 
-            for (int k = 0 ; k < entradas.at(i).size() ; k++){
-                        temporal[k] = valor_random( temporal.at(k)*(1.0 - porcentaje_variacion) , temporal.at(k)*(1.0 + porcentaje_variacion) );
-            }
+            //for (int k = 0 ; k < entradas.at(i).size() ; k++){
+            //            temporal[k] = valor_random( temporal.at(k)*(1.0 - porcentaje_variacion) , temporal.at(k)*(1.0 + porcentaje_variacion) );
+            //}
+
+            double radio =  valor_random( 0.0 , porcentaje_variacion);
+            double angulo = valor_random( 0.0, 365.0 );
+
+            temporal[0] = temporal.at(0) + radio * cos( angulo );
+            temporal[1] = temporal.at(1) + radio * sin( angulo );
+            temporal[2] = temporal.at(2) + radio * cos( angulo );
 
             //Guardo en el vector y la matriz nueva los nuevos valores variados
             salidas_nuevas.append( salidas.at(i) );
