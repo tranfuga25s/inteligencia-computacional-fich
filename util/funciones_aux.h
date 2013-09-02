@@ -167,6 +167,43 @@ static QVector<int> randomizarEntradas( int tam_datos ) {
  * \param porcentaje_error Porcentaje de error a aplicar a la variación
  * \param tamano_entradas Cantidad de datos que poseen las entradas
  */
+static void generarArchivoAleatoriosPruebaRadial( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_variacion, int tamano_entradas ) {
+    matriz entradas;
+    vector salidas;
+    matriz entradas_nuevas;
+    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, tamano_entradas, 1 );
+    for( int i=0; i<entradas.size(); i++ ) {
+
+        //entradas_nuevas.append( entradas.at( i ) );
+        salidas[i]=0;
+        for( int j=0; j<cantidad_extras; j++ ) {
+            vector temporal = entradas.at(i);
+
+            double radio = valor_random( 0.1, porcentaje_variacion );
+            double angulo = valor_random( 0.0, 365.0 );
+            entradas[i][0] = entradas[i][0] + radio * cos( angulo );
+            entradas[i][1] = entradas[i][1] + radio * sin( angulo );
+            temporal[0] = temporal.at(0) + radio * cos( angulo );
+            temporal[1] = temporal.at(1) + radio * sin( angulo );
+
+            //Guardo en el vector y la matriz nueva los nuevos valores variados
+            salidas.append( 0 );
+            entradas_nuevas.append( temporal );
+        }
+
+    }
+    escribe_archivo_salida( archivo_salida, &entradas_nuevas, &salidas );
+}
+
+/*!
+ * \brief generarArchivoAleatoriosPrueba
+ * \param archivo_entrada
+ * \param archivo_salida
+ * \param cantidad_extras
+ * \param porcentaje_variacion
+ * \param tamano_entradas
+ */
+
 static void generarArchivoAleatoriosPrueba( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_variacion, int tamano_entradas ) {
     matriz entradas;
     vector salidas;
@@ -200,6 +237,42 @@ static void generarArchivoAleatoriosPrueba( QString archivo_entrada, QString arc
  * \param cantidad_extras Cantidad de datos extras a generar por cada entrada
  * \param porcentaje_error Porcentaje de error a aplicar a la variación
  * \param tamano_entradas Cantidad de datos que poseen las entradas
+ */
+
+static void generarArchivoAleatoriosEntrenamientoRadial( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_variacion, int tamano_entradas ) {
+    matriz entradas;
+    vector salidas;
+    matriz entradas_nuevas;
+    vector salidas_nuevas;
+    leer_archivo_entrenamiento( archivo_entrada, &entradas, &salidas, tamano_entradas, 1 );
+    for( int i=0; i<entradas.size(); i++ ) {
+
+        for( int j=0; j<cantidad_extras; j++ ) {
+            vector temporal = entradas.at(i);
+
+            double radio = valor_random( 0.1, porcentaje_variacion );
+            double angulo = valor_random( 0.0, 365.0 );
+            entradas[i][0] = entradas[i][0] + radio * cos( angulo );
+            entradas[i][1] = entradas[i][1] + radio * sin( angulo );
+            temporal[0] = temporal.at(0) + radio * cos( angulo );
+            temporal[1] = temporal.at(1) + radio * sin( angulo );
+
+            //Guardo en el vector y la matriz nueva los nuevos valores variados
+            salidas_nuevas.append( salidas.at(i) );
+            entradas_nuevas.append( temporal );
+        }
+
+    }
+    escribe_archivo_salida( archivo_salida, &entradas_nuevas, &salidas_nuevas );
+}
+
+/*!
+ * \brief generarArchivoAleatoriosEntrenamiento
+ * \param archivo_entrada
+ * \param archivo_salida
+ * \param cantidad_extras
+ * \param porcentaje_variacion
+ * \param tamano_entradas
  */
 
 static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_variacion, int tamano_entradas ) {

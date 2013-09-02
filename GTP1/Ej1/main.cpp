@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     QString archivo = QCoreApplication::applicationDirPath().append( QDir::separator() ).append( parametros.value( "archivo_entrada" ).toString() );
 
     //Generamos el archivo de entrenamiento en base a la desviacion del 5%
-    generarArchivoAleatoriosEntrenamiento( archivo,
+    generarArchivoAleatoriosEntrenamientoRadial( archivo,
                      parametros.value( "archivo_entrenamiento_randomizado" ).toString(),
                      parametros.value( "cantidad_datos_extras" ).toInt(),
                      parametros.value( "porcentaje_variacion" ).toDouble(),
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 
 
     // Randomizamos los datos en base a el contenido de "archivo" para la prueba
-    generarArchivoAleatoriosPrueba( archivo,
+    generarArchivoAleatoriosPruebaRadial( archivo,
                      parametros.value( "archivo_prueba_randomizado" ).toString(),
                      parametros.value( "cantidad_datos_extras" ).toInt(),
                      parametros.value( "porcentaje_variacion" ).toDouble(),
