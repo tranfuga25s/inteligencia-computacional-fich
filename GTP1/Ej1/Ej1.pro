@@ -20,3 +20,5 @@ HEADERS += neurona.h \
 OTHER_FILES += parametros.cfg \
     ej1-XOR.csv \
     ej1-OR.csv
+
+INCLUDEPATH += ../../util

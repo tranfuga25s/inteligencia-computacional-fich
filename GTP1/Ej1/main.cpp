@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
         epoca++;
 
         // Grafico la recta
-        graf3->dibujarRecta( 1, n.devuelvePesos() , "Recta de División" );
+        graf3->dibujarRecta( 1, n.devuelvePesos() , QString::fromUtf8( "Recta de División" ) );
 
     }
 
