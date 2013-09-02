@@ -22,7 +22,7 @@ Graficador::Graficador(QWidget *parent) :
     leyenda = new QwtLegend( myPlot );
     myPlot->insertLegend( leyenda, QwtPlot::RightLegend );
 
-    this->curvas = new QVector<QwtPlotCurve*>();
+    this->curvas = new QHash<int, QwtPlotCurve*>();
 }
 
 /*!
@@ -111,28 +111,30 @@ void Graficador::agregarPuntos( matriz m1, QString nombre ) {
  */
 void Graficador::dibujarRecta( int num_recta, vector pesos, QString nombre ) {
 
-    QwtPlotCurve *curva;
-    if( curvas->size() >= num_recta ) {
-        curva = curvas->value( num_recta );
+    QwtPlotCurve *curva = 0;
+    if( curvas->contains(num_recta) ) {
+        curva = curvas->operator []( num_recta ); /// ??? WTF ???
     } else {
         curva = new QwtPlotCurve( nombre );
-        curvas->append( curva );
+        curvas->insert( num_recta, curva );
         curva->attach( myPlot );
     }
 
 
     double min = myPlot->axisScaleDiv( QwtPlot::xBottom )->lowerBound();
-
     double max = myPlot->axisScaleDiv( QwtPlot::xBottom )->upperBound();
 
     double y1 = ( pesos.value( 0 ) / pesos.at( 2 ) ) - ( ( pesos.at( 1 ) / pesos.at(2) ) * min );
     double y2 = ( pesos.at( 0 ) / pesos.at( 2 ) ) - ( ( pesos.at( 1 ) / pesos.at(2) ) * max );
+
     vector x;
     x.append( min );
     x.append( max );
+
     vector y;
     y.append( y1 );
     y.append( y2 );
+
     curva->setSamples( x, y );
 
     curva->attach( myPlot );

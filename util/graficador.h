@@ -30,7 +30,7 @@ private:
     QwtSymbol::Style simbolo;
     void cambiarColor();
     void cambiarSimbolo();
-    QVector<QwtPlotCurve*> *curvas;
+    QHash<int, QwtPlotCurve*> *curvas;
     QwtPlotScaleItem *scaleItemX;
     QwtPlotScaleItem *scaleItemY;
 
