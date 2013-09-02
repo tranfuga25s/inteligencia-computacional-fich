@@ -101,23 +101,12 @@ int main(int argc, char *argv[])
     graf1->setearTituloEjeY( QString::fromUtf8( "Porcentaje error" ) );
 
     Graficador *graf2 = new Graficador();
-    graf2->showMaximized();
+    graf2->show();
     graf2->setearTitulo( "Datos" );
     graf2->setearEjesEnGrafico();
     graf2->setearTituloEjeX( " X " );
     graf2->setearTituloEjeY( " y " );
-    matriz m1,m2;
-    for( int i=0; i<entradas.size(); i++ ) {
-        double salida = n.evaluar( entradas.at( i ) );
-        salidas.append( salida );
-        if( salida < 0.0 ) {
-            m1.append( entradas.at( i ) );
-        } else {
-            m2.append( entradas.at( i ) );
-        }
-    }
-    graf2->agregarPuntos( m1, "Entradas -1" );
-    graf2->agregarPuntos( m2, "Entradas +1" );
+    graf2->agregarPuntosClasificados( entradas, salidas );
 
     QVector<double> errores_particiones;
 

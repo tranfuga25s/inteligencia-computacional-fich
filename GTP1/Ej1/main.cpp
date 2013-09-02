@@ -96,22 +96,11 @@ int main(int argc, char *argv[])
     QVector<double> erroresParciales;
 
     Graficador *graf3 = new Graficador();
-    graf3->setearTitulo( "Recta durante el entrenamiento" );
+    graf3->setearTitulo( " 1 - Recta durante el entrenamiento" );
     graf3->setearTituloEjeX( "X" );
     graf3->setearTituloEjeY( "Y" );
     graf3->setearEjesEnGrafico();
-    matriz m1,m2;
-    for( int i=0; i<entradas.size(); i++ ) {
-        double salida = n.evaluar( entradas.at( i ) );
-        salidas.append( salida );
-        if( salida < 0.0 ) {
-            m1.append( entradas.at( i ) );
-        } else {
-            m2.append( entradas.at( i ) );
-        }
-    }
-    graf3->agregarPuntos( m1, "Entradas -1" );
-    graf3->agregarPuntos( m2, "Entradas +1" );
+    graf3->agregarPuntosClasificados( entradas, salidas );
     main.setCentralWidget( graf3 );
     graf3->setearTamanoFijo();
 
@@ -155,7 +144,7 @@ int main(int argc, char *argv[])
 
     }
 
-    graf->setearTitulo( QString::fromUtf8( "Evolución del error de entrenamiento" ) );
+    graf->setearTitulo( QString::fromUtf8( " 2 - Evolución del error de entrenamiento" ) );
     graf->agregarCurva( erroresParciales, "Errores parciales" );
     graf->setearTituloEjeX( "Epocas" );
     graf->setearTituloEjeY( "Porcentaje" );
@@ -171,23 +160,15 @@ int main(int argc, char *argv[])
 
     qDebug() << "Escribiendo resultados";
     salidas.clear();
-    m1.clear();
-    m2.clear();
     for( int i=0; i<entradas.size(); i++ ) {
         double salida = n.evaluar( entradas.at( i ) );
         salidas.append( salida );
-        if( salida < 0.0 ) {
-            m1.append( entradas.at( i ) );
-        } else {
-            m2.append( entradas.at( i ) );
-        }
     }
 
     Graficador *graf2 = new Graficador();
-    graf2->setearTitulo( "Salidas de particion de prueba" );
-    graf2->agregarPuntos( m1, "clase -1" );
-    graf2->agregarPuntos( m2, "clase +1" );
+    graf2->setearTitulo( " 3 - Salidas de particion de prueba" );
     graf2->setearEjesEnGrafico();
+    graf2->agregarPuntosClasificados( entradas, salidas );
     graf2->show();
 
     escribe_archivo_salida( parametros.value( "archivo_salida" ).toString(),
