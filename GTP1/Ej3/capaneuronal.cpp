@@ -18,6 +18,13 @@ void CapaNeuronal::setearTasaAprendizaje(double tasa)
     }
 }
 
+void CapaNeuronal::setearMomento(double momento)
+{
+    for( int i=0; i<_cantidad_neuronas; i++ ) {
+        neuronas[i].setearMomento( momento );
+    }
+}
+
 /*!
  * \brief CapaNeuronal::inicializarPesos
  */

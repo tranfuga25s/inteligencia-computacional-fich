@@ -14,6 +14,7 @@ public:
     int cantidadCapas() { return _cantidad_capas; }
 
     void setearTasaAprendizaje( double tasa );
+    void setearMomento(double momento);
 
     void inicializarPesos();
 

@@ -20,6 +20,10 @@ public:
     void setearTasaAprendizaje( double tasa ) { _tasa_aprendizaje = tasa; }
     double tasaAprendizaje() { return _tasa_aprendizaje; }
 
+    void setearMomento( double momento ) { _momento = momento; }
+    double tasaAprendizaje() { return _momento; }
+
+
     int cantidadEntradas() { return _cantidad_entradas; }
 
     double evaluar(QVector<double> entradas);
@@ -35,7 +39,9 @@ public:
 private:
     int _cantidad_entradas;
     double _tasa_aprendizaje;
+    double _momento;
     QVector<double> _pesos;
+    QVector<double> _var_pesos_ant;
     double _ultima_salida;
     double _delta;
     

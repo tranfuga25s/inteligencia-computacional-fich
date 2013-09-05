@@ -14,6 +14,7 @@ void Neurona::inicializarPesos()
     //El termino cantidad_entradad+1 es porque reservo el lugar en el w para el bias
     for( int i = 0; i<_cantidad_entradas+1; i++ ) {
         _pesos.push_back( valor_random( -0.5, 0.5 ) );
+        _var_pesos_ant.push_back(0);
     }
     _ultima_salida = 0.0;
 }
@@ -52,10 +53,14 @@ void Neurona::ajustarPesos(QVector<double> entradas)
 {
 
     //Caso del w0 y x0. x0 siempre es -1 no importa cuantas epocas haga
-    _pesos[0] = _pesos.at(0) + _tasa_aprendizaje*_delta*(-1.0);
+    _pesos[0] = _pesos.at(0) + _tasa_aprendizaje*_delta*(-1.0) + _momento*_var_pesos_ant.at(0);
+
+    _var_pesos_ant[0] = _tasa_aprendizaje*_delta*(-1.0); //Actualizo el vector
 
     for(int i=1 ; i<=entradas.size() ; i++) {
-        _pesos[i]=_pesos.at(i) + _tasa_aprendizaje*_delta*entradas.at(i-1);
+        _pesos[i]=_pesos.at(i) + _tasa_aprendizaje*_delta*entradas.at(i-1) + _momento*_var_pesos_ant.at(i);
+
+        _var_pesos_ant[i] = _tasa_aprendizaje*_delta*entradas.at(i-1); //Actualizo el vector
     }
 
 }

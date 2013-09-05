@@ -8,11 +8,12 @@
 class CapaNeuronal
 {
 public:
-    explicit CapaNeuronal( int cant_neuronas, int cant_entradas );
+    CapaNeuronal( int cant_neuronas, int cant_entradas );
     void setearCantidadNeuronas( int cantidad ) { _cantidad_neuronas = cantidad; }
     int cantidadNeuronas() { return _cantidad_neuronas; }
 
     void setearTasaAprendizaje( double tasa );
+    void setearMomento ( double momento );
     void inicializarPesos();
 
     void evaluar( vector entradas );

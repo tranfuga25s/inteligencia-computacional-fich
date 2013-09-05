@@ -27,6 +27,13 @@ void RedNeuronal::setearTasaAprendizaje( double tasa )
     }
 }
 
+void RedNeuronal::setearMomento(double momento)
+{
+    for( int i=0; i<_cantidad_capas; i++ ) {
+        capas[i].setearMomento( momento );
+    }
+}
+
 /*!
  * \brief RedNeuronal::inicializarPesos
  */
