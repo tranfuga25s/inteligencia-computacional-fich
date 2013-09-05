@@ -1,8 +1,7 @@
 #include "neurona.h"
 #include "funciones_aux.h"
 
-Neurona::Neurona(QObject *parent, int cantidad_entradas ) :
-QObject(parent)
+Neurona::Neurona( int cantidad_entradas )
 {
     _tasa_aprendizaje = 0.25;
     _cantidad_entradas = cantidad_entradas;
@@ -16,6 +15,7 @@ void Neurona::inicializarPesos()
     for( int i = 0; i<_cantidad_entradas+1; i++ ) {
         _pesos.push_back( valor_random( -0.5, 0.5 ) );
     }
+    _ultima_salida = 0.0;
 }
 
 QVector<double> Neurona::devuelvePesos()
@@ -46,43 +46,17 @@ double Neurona::evaluar( QVector<double> entradas )
     return _ultima_salida;
 }
 
-double Neurona::funcionActivacion(double valor)
+
+
+void Neurona::ajustarPesos(QVector<double> entradas)
 {
-    /* Signo */
-    if (valor >= 0.0)
-    {
-        return 1.0;
-    }
-    else
-    {
-        return -1.0;
+
+    //Caso del w0 y x0. x0 siempre es -1 no importa cuantas epocas haga
+    _pesos[0] = _pesos.at(0) + _tasa_aprendizaje*_delta*(-1.0);
+
+    for(int i=1 ; i<=entradas.size() ; i++) {
+        _pesos[i]=_pesos.at(i) + _tasa_aprendizaje*_delta*entradas.at(i-1);
     }
 
-}
-
-void Neurona::backPropagation( vector error )
-{
-}
-
-
-double Neurona::entrenamiento(QVector<double> entradas, double salidaDeseada)
-{
-    double salida = evaluar( entradas );
-
-    if ( salida == salidaDeseada ) {
-        return 0.0;
-    } else {
-        // Ajusto los pesos
-        double error = salidaDeseada - salida;
-
-        //Caso del w0 y x0. x0 siempre es -1 no importa cuantas epocas haga
-        _pesos[0] = _pesos.at(0) + _tasa_aprendizaje*error*(-1.0);
-
-        for(int i=1 ; i<=entradas.size() ; i++) {
-            _pesos[i]=_pesos.at(i) + _tasa_aprendizaje*error*entradas.at(i-1);
-        }
-
-        return error;
-    }
 }
 

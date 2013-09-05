@@ -5,13 +5,13 @@
 #include <QObject>
 #include <QVector>
 
-class Neurona : public QObject
+class Neurona
 {
-    Q_OBJECT
+
 public:
 
 
-    Neurona( QObject *parent = 0, int cantidadEntradas = 1 );
+    Neurona( int cantidadEntradas = 1 );
 
     void inicializarPesos();
     QVector<double> devuelvePesos();
@@ -23,13 +23,13 @@ public:
     int cantidadEntradas() { return _cantidad_entradas; }
 
     double evaluar(QVector<double> entradas);
-    double entrenamiento( QVector<double> entradas, double salidaDeseada );
+    void ajustarPesos( QVector<double> entradas );
 
-    double funcionActivacion( double valor );
+    double funcionActivacion( double valor ){return ( 2 / ( 1 + exp( -1 * valor) ) - 1 );} //faltaria el valor de b?
 
     double getSalida() { return _ultima_salida; }
-
-    void backPropagation( vector error );
+    double getDelta() { return _delta; }
+    void setDelta( double delta ) { _delta = delta; }
 
 
 private:
@@ -37,6 +37,7 @@ private:
     double _tasa_aprendizaje;
     QVector<double> _pesos;
     double _ultima_salida;
+    double _delta;
     
 };
 

@@ -26,6 +26,8 @@ HEADERS += \
     capaneuronal.h \
     redneuronal.h
 
-OTHER_FILES += parametros.cfg
+OTHER_FILES += parametros.cfg \
+    iris.csv \
+    concent.csv
 
 INCLUDEPATH += ../../util

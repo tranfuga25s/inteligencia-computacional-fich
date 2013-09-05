@@ -15,9 +15,11 @@ public:
 
     void setearTasaAprendizaje( double tasa );
 
-    void reinicializarPesos();
+    void inicializarPesos();
 
-    double evaluar( vector entradas );
+    vector forwardPass( vector entradas );//forward pass
+    void backwardPass( vector entradas, vector salidas );//backward pass
+
     void entrenamiento( vector entradas, vector salidas );
     
 private:

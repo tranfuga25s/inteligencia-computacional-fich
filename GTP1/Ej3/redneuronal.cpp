@@ -6,9 +6,11 @@ RedNeuronal::RedNeuronal(int cantidad_capas , QVector<int> cantidad_neuronas ,in
     if( cantidad_capas != 0 ) {
         for (int i = 0 ; i < cantidad_capas ; i++ ){
             if ( i == 0 ){
-                capas.append( CapaNeuronal( cantidad_neuronas.at(i), cantidad_entradas, this ) );
+                CapaNeuronal Aux( cantidad_neuronas[i], cantidad_entradas);
+                capas.append( Aux );
             } else {
-                capas.append( CapaNeuronal( cantidad_neuronas.at(i), cantidad_neuronas.at(i-1), this ) );
+                CapaNeuronal Aux( cantidad_neuronas[i], cantidad_neuronas[i-1] );
+                capas.append( Aux );
             }
         }
     }
@@ -25,38 +27,53 @@ void RedNeuronal::setearTasaAprendizaje( double tasa )
     }
 }
 
-void RedNeuronal::reinicializarPesos()
+/*!
+ * \brief RedNeuronal::inicializarPesos
+ */
+
+void RedNeuronal::inicializarPesos()
 {
-    /// @TODO LUCHOS hacete esto...
+    for( int i=0; i<_cantidad_capas; i++ ) {
+        capas[i].inicializarPesos();
+    }
 }
 
-double RedNeuronal::evaluar( vector entradas )
+vector RedNeuronal::forwardPass( vector entradas )
 {
-    capa[0].evaluar( entradas );
+    capas[0].evaluar( entradas );
     for( int c=1; c<=_cantidad_capas-1; c++ ) {
-        capa[c].evaluar( capa[c-1].getSalidas() );
+        capas[c].evaluar( capas[c-1].getSalidas() );
     }
-    return capa[_cantidad_capas-1].getSalidas();
+    return capas[_cantidad_capas-1].getSalidas();
 }
 
 /*!
- * \brief RedNeuronal::entrenamiento
+ * \brief RedNeuronal::backwardPass
+ * Metodo para hacer la correccion de los deltas para todas las capas y corregir los pesos
  * \param entradas
  * \param salidas
  */
-void RedNeuronal::entrenamiento( vector entradas, vector salida_deseada )
+void RedNeuronal::backwardPass( vector entradas, vector salida_deseada )
 {
-    QVector salida = evaluar( entradas );
+    vector salida = forwardPass( entradas );
     if( salida != salida_deseada ) {
        // Calculo la diferencia para cada parte del vector
-       vector error;
+       double error;
+
+
        for( int i=0; i<salida.size(); i++ ) {
-           error.append( salida_deseada.at( i ) - salida.at( i ) );
+           error = salida_deseada.at( i ) - salida.at( i );
+           capas[_cantidad_capas-1].getNeuronas()[i].setDelta( error * capas[_cantidad_capas-1].getNeuronas()[i].getSalida()) ;
        }
 
-       capas[_cantidad_capas-1].backPropagation( error );
+
+
        for( int c=_cantidad_capas-2; c>=0; c-- ) {
-           capas[c].backPropagation( capas[c+1].getDeltas() );
+           for (int n = 0 ; n < capas[c].cantidadNeuronas() ; n++ ) {
+
+               capas[c].corregirDeltas(n,capas[c+1].getDeltas(n));
+           }
+
        }
 
        capas[0].corregirPesos( entradas );
@@ -65,4 +82,10 @@ void RedNeuronal::entrenamiento( vector entradas, vector salida_deseada )
        }
        return;
     }
+}
+
+void RedNeuronal::entrenamiento(vector entradas, vector salidas)
+{
+    forwardPass( entradas );
+    backwardPass( entradas , salidas );
 }

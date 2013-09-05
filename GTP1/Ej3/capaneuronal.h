@@ -5,22 +5,26 @@
 #include "neurona.h"
 #include "funciones_aux.h"
 
-class CapaNeuronal : public QObject
+class CapaNeuronal
 {
-    Q_OBJECT
 public:
-    CapaNeuronal( int cant_neuronas, int cant_entradas ,QObject *parent = 0);
+    explicit CapaNeuronal( int cant_neuronas, int cant_entradas );
     void setearCantidadNeuronas( int cantidad ) { _cantidad_neuronas = cantidad; }
     int cantidadNeuronas() { return _cantidad_neuronas; }
 
     void setearTasaAprendizaje( double tasa );
+    void inicializarPesos();
 
-    void entrenar( vector entradas );
+    void evaluar( vector entradas );
 
     vector getSalidas();
 
-    vector backPropagation( vector error );
-    vector getDeltas();
+    void corregirPesos(vector entradas);
+
+    void corregirDeltas(int num_nueronas, double error );
+    double getDeltas(int num_neurona);
+
+    QVector<Neurona> getNeuronas(){ return neuronas; }
     
 private:
     int _cantidad_neuronas;

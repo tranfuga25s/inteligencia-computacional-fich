@@ -44,14 +44,15 @@ int main(int argc, char *argv[])
 
     // Cargo los datos de los archivos que corresponda
     matriz entradas( parametros.value( "cantidad_entradas" ).toInt() );
-    vector salidas( parametros.value( "cantidad_salidas" ).toInt() );
+    matriz salidas( parametros.value( "cantidad_salidas" ).toInt() );
 
     qDebug() << endl << "--------------- /Datos del entrenamiento/ -----------------" << endl;
     qWarning() << "Archivo de lectura de datos originales: "<< archivo;
     if( ! leer_archivo_entrenamiento( archivo,
                                       &entradas,
                                       &salidas,
-                                      parametros.value( "cantidad_entradas" ).toInt() )  ) {
+                                      parametros.value( "cantidad_entradas" ).toInt(),
+                                      parametros.value( "cantidad_salidas" ).toInt())  ) {
         qDebug() << "No se pudo encontrar el archivo de entrenamiento! cancelando!";
         abort();
     }
@@ -102,7 +103,7 @@ int main(int argc, char *argv[])
     graf2->setearEjesEnGrafico();
     graf2->setearTituloEjeX( " X " );
     graf2->setearTituloEjeY( " y " );
-    graf2->agregarPuntosClasificados( entradas, salidas );
+    //graf2->agregarPuntosClasificados( entradas, salidas );
 
     QVector<double> errores_particiones;
 
@@ -117,7 +118,7 @@ int main(int argc, char *argv[])
         //pongo nuevamente en los valores iniciales las variables de corte para que entre en todas las particiones
         epoca = 0;
         porcentaje_error = 100.0;
-        red.reinicializarPesos();
+        red.inicializarPesos();
 
         QVector<double> errores_epocas;
 
@@ -140,7 +141,7 @@ int main(int argc, char *argv[])
             int errores = 0;
             int correcto = 0;
             for( int i = 0; i < part_local.validacion.size(); i++ ) {
-                if( red.evaluar( entradas.at( part_local.validacion.at( i ) ) ) != salidas.at( part_local.validacion.at( i ) ) ) {
+                if( red.forwardPass( entradas.at( part_local.validacion.at( i ) ) ) != salidas.at( part_local.validacion.at( i ) ) ) {
                     errores++;
                 } else {
                     correcto++;
@@ -165,7 +166,7 @@ int main(int argc, char *argv[])
         int errores = 0;
         int correcto = 0;
         for( int i = 0; i < part_local.prueba.size(); i++ ) {
-            if( red.evaluar( entradas.at( part_local.prueba.at( i ) ) ) != salidas.at( part_local.prueba.at( i ) ) ) {
+            if( red.forwardPass( entradas.at( part_local.prueba.at( i ) ) ) != salidas.at( part_local.prueba.at( i ) ) ) {
                 errores++;
             } else {
                 correcto++;
