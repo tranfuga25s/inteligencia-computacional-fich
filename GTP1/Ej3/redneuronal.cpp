@@ -71,7 +71,9 @@ void RedNeuronal::backwardPass( vector entradas, vector salida_deseada )
 
        for( int i=0; i<salida.size(); i++ ) {
            /// @TODO VERIFICAR ESTO!!1 -> Una salida desde el archivo pero usamos 2 neuronas!
-           Parahacer!
+           if( salida_deseada.at( i ).size() != salida.at( i ).size() ) {
+               abort();
+           }
            error = salida_deseada.at( i ) - salida.at( i );
            capas[capas.size()-1].getNeuronas()[i].setDelta( error * capas[capas.size()-1].getNeuronas()[i].getSalida()) ;
        }
