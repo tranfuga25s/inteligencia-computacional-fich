@@ -21,7 +21,7 @@ public:
     double tasaAprendizaje() { return _tasa_aprendizaje; }
 
     void setearMomento( double momento ) { _momento = momento; }
-    double tasaAprendizaje() { return _momento; }
+    double tasaMomento() { return _momento; }
 
 
     int cantidadEntradas() { return _cantidad_entradas; }
