@@ -15,6 +15,7 @@ public:
 
     void setearTasaAprendizaje( double tasa );
     void setearMomento(double momento);
+    double getMomento() { return capas[0].getNeuronas()[0].tasaMomento(); }
 
     void inicializarPesos();
 

@@ -12,6 +12,9 @@
 typedef QVector<double> vector;
 typedef QVector< QVector<double> > matriz;
 
+#ifndef LEERARCHIVOENTRENAMIENTO
+#define LEERARCHIVOENTRENAMIENTO
+
 static bool leer_archivo_entrenamiento( QString direccion,
                                         matriz* vect_entradas,
                                         matriz* vect_salidas_deseadas,
@@ -63,6 +66,10 @@ static bool leer_archivo_entrenamiento( QString direccion,
     { return true; } else { return false; }
 }
 
+#endif
+
+#ifndef LEERARCHIVOENTRENAMIENTOOLD
+#define LEERARCHIVOENTRENAMIENTOOLD
 /*!
  * \brief leer_archivo_entrenamiento
  * Recive la direccion de donde lee el archivo y el vector por direccion de los datos de entrada y el vector de salidas deseadas
@@ -114,6 +121,8 @@ static bool leer_archivo_entrenamiento( QString direccion,
     if( cant > 0 )
     { return true; } else { return false; }
 }
+
+#endif
 
 //Escribe el archivo con la salida incluyendo las entradas anteriormente leidas
 
@@ -321,6 +330,9 @@ static void generarArchivoAleatoriosEntrenamientoRadial( QString archivo_entrada
     escribe_archivo_salida( archivo_salida, &entradas_nuevas, &salidas_nuevas );
 }
 
+
+#ifndef GENERARARCHIVOALEATORIOENTRENAMIENTO
+#define GENERARARCHIVOALEATORIOENTRENAMIENTO
 /*!
  * \brief generarArchivoAleatoriosEntrenamiento
  * \param archivo_entrada
@@ -329,7 +341,6 @@ static void generarArchivoAleatoriosEntrenamientoRadial( QString archivo_entrada
  * \param porcentaje_variacion
  * \param tamano_entradas
  */
-
 static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_variacion, int tamano_entradas ) {
     matriz entradas;
     vector salidas;
@@ -360,5 +371,22 @@ static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QStr
     }
     escribe_archivo_salida( archivo_salida, &entradas_nuevas, &salidas_nuevas );
 }
+
+#endif
+
+#ifndef STRINGAVECTOR
+#define STRINGAVECTOR
+
+QVector<int> stringAQVector( QString datos, QString separador = " " ) {
+    QVector<int> retorno;
+    QVector<QString> temp = datos.split( separador, QString::KeepEmptyParts ).toVector();
+    QVector<int> neuronas_por_capas;
+    foreach( QString temp2, temp ) {
+        retorno.append( temp2.toInt() );
+    }
+    return retorno;
+}
+
+#endif
 
 #endif // FUNCIONES_AUX_H

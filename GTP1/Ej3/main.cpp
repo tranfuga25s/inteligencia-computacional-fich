@@ -71,13 +71,7 @@ int main(int argc, char *argv[])
     particiones.particionarDatos();
 
     // Inicializo la red neuronal
-    QString temporal = parametros.value( "capas" ).toString();
-    QVector<QString> temp = temporal.split( " ", QString::KeepEmptyParts ).toVector();
-    QVector<int> neuronas_por_capas;
-    foreach( QString temp2, temp ) {
-        neuronas_por_capas.append( temp2.toInt() );
-    }
-    qDebug() << neuronas_por_capas;
+    QVector<int> neuronas_por_capas = stringAQVector( parametros.value( "capas" ).toString() );
     RedNeuronal red( neuronas_por_capas.size(),
                      neuronas_por_capas,
                      parametros.value("cantidad_entradas").toInt(),
@@ -85,6 +79,12 @@ int main(int argc, char *argv[])
 
     red.setearTasaAprendizaje( parametros.value( "tasa_aprendizaje" ).toDouble() );
     qDebug() << "Tasa de aprendizaje: " << parametros.value( "tasa_aprendizaje" ).toDouble();
+
+    red.setearMomento( parametros.value( "momento" ).toDouble() );
+    qDebug() << "Momento: " << red.getMomento();
+
+    red.setearCodificacion( stringAQVector( parametros.value( "codigicacion_salida" ).toString() ) );
+    qDebug() << "Codificacion salida: " << red.mostrarCodificacionSalida();
 
     int max_epocas = parametros.value( "epocas_maximas", 20 ).toInt();
     qDebug() << "Epocas: " << max_epocas;
