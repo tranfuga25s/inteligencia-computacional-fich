@@ -8,7 +8,7 @@
 class CapaNeuronal
 {
 public:
-    CapaNeuronal( int cant_neuronas, int cant_entradas );
+    CapaNeuronal( int cant_neuronas = 1, int cant_entradas = 1 );
     void setearCantidadNeuronas( int cantidad ) { _cantidad_neuronas = cantidad; }
     int cantidadNeuronas() { return _cantidad_neuronas; }
 
