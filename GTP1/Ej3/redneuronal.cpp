@@ -13,6 +13,7 @@ RedNeuronal::RedNeuronal(int cantidad_capas , QVector<int> cantidad_neuronas ,in
                 capas.append( Aux );
             }
         }
+        _cantidad_capas = cantidad_capas;
     }
 }
 
