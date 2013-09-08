@@ -109,11 +109,31 @@ void Graficador::agregarPuntos( matriz m1, QString nombre ) {
  * \param entradas Matriz de entradas
  * \param salidas Vector de salidas
  */
-void Graficador::agregarPuntosClasificados( matriz entradas, vector salida )
+void Graficador::agregarPuntosClasificados( matriz entradas, vector salida, double limite_division )
 {
     matriz m1,m2;
     for( int i=0; i<entradas.size(); i++ ) {
-        if( salida.at( i ) < 0.0 ) {
+        if( salida.at( i ) <= limite_division ) {
+            m1.append( entradas.at( i ) );
+        } else {
+            m2.append( entradas.at( i ) );
+        }
+    }
+    agregarPuntos( m1, "Entradas -1" );
+    agregarPuntos( m2, "Entradas +1" );
+}
+
+/*!
+ * \brief Graficador::agregarPuntosClasificados
+ * Clasifica todas las entradas en 2 grupos ( -1 y +1 ) y las grafica
+ * \param entradas Matriz de entradas
+ * \param salidas Vector de salidas
+ */
+void Graficador::agregarPuntosClasificados( matriz entradas, matriz salida, double limite_division )
+{
+    matriz m1,m2;
+    for( int i=0; i<entradas.size(); i++ ) {
+        if( salida.at( i ).at( 0 ) <= limite_division ) {
             m1.append( entradas.at( i ) );
         } else {
             m2.append( entradas.at( i ) );

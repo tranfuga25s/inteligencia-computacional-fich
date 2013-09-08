@@ -20,7 +20,8 @@ public:
     void agregarCurva( QVector<double> x, QVector<double> y, QString nombre );
     void agregarPuntos( QVector<double> x, QVector<double> y, QString nombre );
     void agregarPuntos( matriz m1, QString nombre );
-    void agregarPuntosClasificados( matriz entradas, vector salida );
+    void agregarPuntosClasificados( matriz entradas, vector salida, double limite_division = 0.0 );
+    void agregarPuntosClasificados( matriz entradas, matriz salida, double limite_division = 0.0 );
     void dibujarRecta( int num_recta, vector pesos, QString nombre );
     void setearEjesEnGrafico();
     void setearTamanoFijo();

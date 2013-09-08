@@ -5,9 +5,10 @@
 #include <QDir>
 #include <QVector>
 #include <QSettings>
+#include <QMdiArea>
 
 #include "iostream"
-#include "graficador.h"
+#include "graficadormdi.h"
 #include "redneuronal.h"
 #include "capaneuronal.h"
 
@@ -32,6 +33,10 @@ int main(int argc, char *argv[])
     QMainWindow main;
     a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
     main.showMaximized();
+    QMdiArea *mdiArea = new QMdiArea;
+    mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    main.setCentralWidget(mdiArea);
 
     //Inicializo con una semilla aleatoria para la generacion de Aleatorios
     qsrand(QTime::currentTime().msec());
@@ -91,19 +96,22 @@ int main(int argc, char *argv[])
     double porcentaje_error = 100.0; /*Mucho sino sale*/
     int cantidad_particiones_exitosas = 0;
 
-    Graficador *graf1 = new Graficador();
-    main.setCentralWidget( graf1 );
+    GraficadorMdi *graf1 = new GraficadorMdi( mdiArea );
     graf1->setearTitulo( QString::fromUtf8( "Porcentaje de error según particion" ) );
     graf1->setearTituloEjeX( QString::fromUtf8( "Partición" ) );
     graf1->setearTituloEjeY( QString::fromUtf8( "Porcentaje error" ) );
+    mdiArea->addSubWindow( graf1 );
+    mdiArea->tileSubWindows();
 
-    Graficador *graf2 = new Graficador();
+    GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );
+    mdiArea->addSubWindow( graf2 );
     graf2->showMaximized();
     graf2->setearTitulo( "Datos" );
     graf2->setearEjesEnGrafico();
     graf2->setearTituloEjeX( " X " );
     graf2->setearTituloEjeY( " y " );
-    //graf2->agregarPuntosClasificados( entradas, salidas );
+    graf2->agregarPuntosClasificados( entradas, salidas, 0.5 );
+    mdiArea->tileSubWindows();
 
     QVector<double> errores_particiones;
 
@@ -197,12 +205,16 @@ int main(int argc, char *argv[])
     qDebug() << endl << "Cantidad de Particiones que convergen: " << cantidad_particiones_exitosas ;
     qDebug() << endl << "Cantidad de Particiones sin converger: " << (particiones.cantidadDeParticiones() - cantidad_particiones_exitosas) ;
 
-    Graficador *graf3 = new Graficador();
+    GraficadorMdi *graf3 = new GraficadorMdi( mdiArea );
+    mdiArea->addSubWindow( graf3 );
     graf3->showMaximized();
     graf3->setearTitulo( "Errores por particion" );
     graf3->setearTituloEjeX( "Particion" );
     graf3->setearTituloEjeY( "Error" );
     graf3->agregarCurva( errores_particiones, "Errores" );
+
+    mdiArea->tileSubWindows();
+
 
     return a.exec();
 

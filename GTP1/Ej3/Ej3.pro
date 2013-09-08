@@ -16,7 +16,8 @@ SOURCES += main.cpp \
     particionador.cpp \
     ../../util/graficador.cpp \
     capaneuronal.cpp \
-    redneuronal.cpp
+    redneuronal.cpp \
+    ../../util/graficadormdi.cpp
 
 HEADERS += \
     neurona.h \
@@ -24,7 +25,8 @@ HEADERS += \
     ../../util/graficador.h \
     ../../util/funciones_aux.h \
     capaneuronal.h \
-    redneuronal.h
+    redneuronal.h \
+    ../../util/graficadormdi.h
 
 OTHER_FILES += parametros.cfg \
     iris.csv \
