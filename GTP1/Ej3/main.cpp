@@ -71,11 +71,13 @@ int main(int argc, char *argv[])
     particiones.particionarDatos();
 
     // Inicializo la red neuronal
-    QVector<QString> temp = parametros.value( "capas" ).toStringList().toVector();
+    QString temporal = parametros.value( "capas" ).toString();
+    QVector<QString> temp = temporal.split( " ", QString::KeepEmptyParts ).toVector();
     QVector<int> neuronas_por_capas;
     foreach( QString temp2, temp ) {
         neuronas_por_capas.append( temp2.toInt() );
     }
+    qDebug() << neuronas_por_capas;
     RedNeuronal red( neuronas_por_capas.size(),
                      neuronas_por_capas,
                      parametros.value("cantidad_entradas").toInt(),
