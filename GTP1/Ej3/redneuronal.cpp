@@ -77,7 +77,6 @@ void RedNeuronal::backwardPass( vector entradas, vector salida_deseada )
     vector salida = forwardPass( entradas );
 
     int sal_codif = mapeadorSalidas(salida);
-    double error = 0.0;
 
     // Tanto la salida codificada como la salida deseada están codificadas
     // El vector de la salida deseada tiene un solo elemento
@@ -87,7 +86,7 @@ void RedNeuronal::backwardPass( vector entradas, vector salida_deseada )
 
             for( int i=0; i<salida_deseada_vector.size(); i++ ) {
 
-                error = salida_deseada_vector.at( i ) - salida.at( i );
+                double error = salida_deseada_vector.at( i ) - salida.at( i );
 
                 capas[capas.size()-1].getNeuronas()[i].setDelta( error * capas[capas.size()-1].getNeuronas()[i].getSalida()) ;
             }
