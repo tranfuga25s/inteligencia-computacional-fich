@@ -94,6 +94,8 @@ void RedNeuronal::backwardPass( vector entradas, vector salida_deseada )
 
     } else {
         /// @TODO ver en caso de que el tamaño de las salidas sean mas grandes
+        qDebug() << "Esto no está implementado!";
+        abort();
     }
 
     for( int c=capas.size()-2; c>=0; c-- ) {
