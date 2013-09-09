@@ -99,8 +99,8 @@ int main(int argc, char *argv[])
     int cantidad_particiones_exitosas = 0;
 
     GraficadorMdi *graf1 = new GraficadorMdi( mdiArea );
-    graf1->setearTitulo( QString::fromUtf8( "Porcentaje de error según particion" ) );
-    graf1->setearTituloEjeX( QString::fromUtf8( "Partición" ) );
+    graf1->setearTitulo( QString::fromUtf8( "Porcentaje de error según particion ( entrenamiento )" ) );
+    graf1->setearTituloEjeX( QString::fromUtf8( "Epoca" ) );
     graf1->setearTituloEjeY( QString::fromUtf8( "Porcentaje error" ) );
     mdiArea->addSubWindow( graf1 );
     mdiArea->tileSubWindows();
@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
     GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );
     mdiArea->addSubWindow( graf2 );
     graf2->showMaximized();
-    graf2->setearTitulo( "Datos" );
+    graf2->setearTitulo( "Datos originales" );
     graf2->setearEjesEnGrafico();
     graf2->setearTituloEjeX( " X " );
     graf2->setearTituloEjeY( " y " );
@@ -132,14 +132,14 @@ int main(int argc, char *argv[])
 
         QVector<double> errores_epocas;
 
-        std::cout << "Epoca: " << std::endl;
+        //std::cout << "Epoca: " << std::endl;
 
         while ( epoca < max_epocas
                 && porcentaje_error > tolerancia_error )
         {
             // Inicio la etapa de entrenamiento
             //qDebug() << "--------------------------------";
-            std::cout << epoca << " \r";
+            //std::cout << epoca << " \r";
             for(int i =0; i<part_local.entrenamiento.size(); i++ )
             {
                 red.entrenamiento( entradas.at( part_local.entrenamiento.at(i) ), salidas.at( part_local.entrenamiento.at( i ) ) );
@@ -166,9 +166,9 @@ int main(int argc, char *argv[])
             QApplication::processEvents();
         }
 
-        graf1->agregarCurva( errores_epocas, QString( "Epoca %1" ).arg( p ) );
+        graf1->agregarCurva( errores_epocas, QString( "Particion %1" ).arg( p ) );
 
-        std::cout << "\r";
+        //std::cout << "\r";
 
         qDebug() << " Epoca de finalizacion: " << epoca+1 << " - Error de salida de entrenamiento: " << porcentaje_error << "%";
 
@@ -210,13 +210,26 @@ int main(int argc, char *argv[])
     GraficadorMdi *graf3 = new GraficadorMdi( mdiArea );
     mdiArea->addSubWindow( graf3 );
     graf3->showMaximized();
-    graf3->setearTitulo( "Errores por particion" );
+    graf3->setearTitulo( "Errores por particion( datos de prueba )" );
     graf3->setearTituloEjeX( "Particion" );
     graf3->setearTituloEjeY( "Error" );
     graf3->agregarCurva( errores_particiones, "Errores" );
-
     mdiArea->tileSubWindows();
 
+    QVector<int> nueva_salida;
+    for( int i=0; i<entradas.size(); i++ ) {
+        nueva_salida.append( red.mapeadorSalidas( red.forwardPass( entradas.at(i) ) ) );
+    }
+
+    GraficadorMdi *graf4 = new GraficadorMdi( mdiArea );
+    mdiArea->addSubWindow( graf4 );
+    graf4->showMaximized();
+    graf4->setearTitulo( "Datos evaluados con red neuronal" );
+    graf4->setearEjesEnGrafico();
+    graf4->setearTituloEjeX( " X " );
+    graf4->setearTituloEjeY( " y " );
+    graf4->agregarPuntosClasificados( entradas, nueva_salida, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
+    mdiArea->tileSubWindows();
 
     return a.exec();
 

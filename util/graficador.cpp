@@ -119,8 +119,13 @@ void Graficador::agregarPuntosClasificados( matriz entradas, vector salida, doub
             m2.append( entradas.at( i ) );
         }
     }
-    agregarPuntos( m1, "Entradas -1" );
-    agregarPuntos( m2, "Entradas +1" );
+    if( limite_division == 0.0 ) {
+        agregarPuntos( m1, "Entradas -1" );
+        agregarPuntos( m2, "Entradas +1" );
+    } else {
+        agregarPuntos( m1, QString( "Entradas %1" ).arg( limite_division-limite_division ) );
+        agregarPuntos( m2, QString( "Entradas %1" ).arg( limite_division+limite_division ) );
+    }
 }
 
 /*!
@@ -141,6 +146,23 @@ void Graficador::agregarPuntosClasificados( matriz entradas, matriz salida, doub
     }
     agregarPuntos( m1, "Entradas -1" );
     agregarPuntos( m2, "Entradas +1" );
+}
+
+/*!
+ * \brief Graficador::agregarPuntosClasificados
+ * Clasifica todas las entradas en 2 grupos ( -1 y +1 ) y las grafica
+ * \param entradas Matriz de entradas
+ * \param salidas Vector de salidas
+ */
+void Graficador::agregarPuntosClasificados( matriz entradas, QVector<int> salida, QVector<int> codificacion_salida )
+{
+    QVector<matriz> superentrada( codificacion_salida.size() );
+    for( int i=0; i<entradas.size(); i++ ) {
+        superentrada[salida.at(i)].append( entradas.at(i) );
+    }
+    for( int j=0; j<codificacion_salida.size(); j++ ) {
+        agregarPuntos( superentrada.at( j ), QString( "Clase %1" ).arg( codificacion_salida.at(j) ) );
+    }
 }
 
 /*!
@@ -221,8 +243,8 @@ void Graficador::cambiarColor()
     case Qt::red:         { this->color = Qt::green; break;       }
     case Qt::green:       { this->color = Qt::darkRed; break;     }
     case Qt::darkRed:     { this->color = Qt::darkGreen; break;   }
-    case Qt::darkGreen:   { this->color = Qt::blue;  break;       }
-    case Qt::blue:        { this->color = Qt::darkBlue;  break;   }
+    case Qt::darkGreen:   { this->color = Qt::darkBlue;  break;   }
+    case Qt::blue:        { this->color = Qt::red;  break;        }
     case Qt::darkBlue:    { this->color = Qt::cyan;  break;       }
     case Qt::cyan:        { this->color = Qt::darkCyan;  break;   }
     case Qt::darkCyan:    { this->color = Qt::magenta;  break;    }
