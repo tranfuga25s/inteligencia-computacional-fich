@@ -23,6 +23,8 @@ public:
     void backwardPass( vector entradas, vector salidas );//backward pass
 
     void entrenamiento( vector entradas, vector salidas );
+
+    int mapeador_salidas(vector salidas)
     
 private:
     QVector<CapaNeuronal> capas;

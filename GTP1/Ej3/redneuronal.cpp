@@ -72,9 +72,12 @@ void RedNeuronal::backwardPass( vector entradas, vector salida_deseada )
        for( int i=0; i<salida.size(); i++ ) {
            /// @TODO VERIFICAR ESTO!!1 -> Una salida desde el archivo pero usamos 2 neuronas!
            if( salida_deseada.at( i ).size() != salida.at( i ).size() ) {
-               abort();
+               mapeador_salidas(salida);
+
+               //abort();
            }
            error = salida_deseada.at( i ) - salida.at( i );
+           //Seteo los deltas de la ultima capa
            capas[capas.size()-1].getNeuronas()[i].setDelta( error * capas[capas.size()-1].getNeuronas()[i].getSalida()) ;
        }
 
@@ -100,4 +103,22 @@ void RedNeuronal::entrenamiento(vector entradas, vector salidas)
 {
     forwardPass( entradas );
     backwardPass( entradas , salidas );
+}
+
+int RedNeuronal::mapeador_salidas(vector salidas)
+{
+    int max = 0;
+    int mayor;
+
+    if (salidas.size() == 1) {return salidas.at(0);}
+
+    for(int i = 0 ; i < salidas.size() ; i++) {
+        if (salidas.at(i) > max) {
+            max = salidas.at(i);
+            mayor = i;
+        }
+    }
+
+    return elvectordeesteban.at(i)
+
 }
