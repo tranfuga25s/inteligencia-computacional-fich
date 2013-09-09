@@ -24,11 +24,11 @@ public:
 
     void entrenamiento( vector entradas, vector salidas );
 
-    void setearCodificacion(QVector<int> codif);
-    QVector<int> mostrarCodificacionSalida(){return codif_salidas;}
+    void setearCodificacion( QVector<int> codif );
+    QVector<int> mostrarCodificacionSalida() { return codif_salidas; }
 
-    int mapeador_salidas(vector salidas);
-    vector mapeador_inverso(int valor);
+    int mapeadorSalidas( vector salidas );
+    vector mapeadorInverso( int valor );
 
     
 private:

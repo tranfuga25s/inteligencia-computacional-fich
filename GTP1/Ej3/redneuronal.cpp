@@ -65,13 +65,17 @@ void RedNeuronal::backwardPass( vector entradas, vector salida_deseada )
 {
     vector salida = forwardPass( entradas );
 
-    int sal_codif = mapeador_salidas(salida);
+    int sal_codif = mapeadorSalidas(salida);
     double error = 0.0;
 
-    for( int i=0; i<salida_deseada.size(); i++ ) {
-        if( sal_codif != salida_deseada.at(i) ) {
+    // Tanto la salida codificada como la salida deseada están codificadas
+    // El vector de la salida deseada tiene un solo elemento
+    if( sal_codif != salida_deseada.at(0) ) {
+        vector salida_deseada_vector = mapeadorInverso( salida_deseada.at( 0 ) );
 
-            error = salida_deseada.at( i ) - sal_codif;
+        for( int i=0; i<salida_deseada_vector.size(); i++ ) {
+
+            error = salida_deseada_vector.at( i ) - salida.at( i );
 
             capas[capas.size()-1].getNeuronas()[i].setDelta( error * capas[capas.size()-1].getNeuronas()[i].getSalida()) ;
         }
@@ -107,7 +111,7 @@ void RedNeuronal::setearCodificacion(QVector<int> codif)
     }
 }
 
-int RedNeuronal::mapeador_salidas(vector salidas)
+int RedNeuronal::mapeadorSalidas(vector salidas)
 {
     int max = 0;
     int mayor;
@@ -125,9 +129,16 @@ int RedNeuronal::mapeador_salidas(vector salidas)
 
 }
 
-vector RedNeuronal::mapeador_inverso(int valor)
+vector RedNeuronal::mapeadorInverso( int valor )
 {
     //Deberia devolver cualquier vector salida que me genere el valor
-
-
+    vector retorno;
+    for( int i=0; i<codif_salidas.size(); i++ ) {
+        if( valor == codif_salidas.at( i ) ) {
+            retorno.insert( i, 1 );
+        } else {
+            retorno.insert( i, 0 );
+        }
+    }
+    return retorno;
 }
