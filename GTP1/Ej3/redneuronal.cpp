@@ -28,6 +28,10 @@ void RedNeuronal::setearTasaAprendizaje( double tasa )
     }
 }
 
+/*!
+ * \brief RedNeuronal::setearMomento
+ * \param momento
+ */
 void RedNeuronal::setearMomento(double momento)
 {
     for( int i=0; i<_cantidad_capas; i++ ) {
@@ -46,6 +50,11 @@ void RedNeuronal::inicializarPesos()
     }
 }
 
+/*!
+ * \brief RedNeuronal::forwardPass
+ * \param entradas
+ * \return
+ */
 vector RedNeuronal::forwardPass( vector entradas )
 {
     capas[0].evaluar( entradas );
@@ -70,15 +79,19 @@ void RedNeuronal::backwardPass( vector entradas, vector salida_deseada )
 
     // Tanto la salida codificada como la salida deseada están codificadas
     // El vector de la salida deseada tiene un solo elemento
-    if( sal_codif != salida_deseada.at(0) ) {
-        vector salida_deseada_vector = mapeadorInverso( salida_deseada.at( 0 ) );
+    if( salida_deseada.size() == 1 ) {
+        if( sal_codif != salida_deseada.at(0) ) {
+            vector salida_deseada_vector = mapeadorInverso( salida_deseada.at( 0 ) );
 
-        for( int i=0; i<salida_deseada_vector.size(); i++ ) {
+            for( int i=0; i<salida_deseada_vector.size(); i++ ) {
 
-            error = salida_deseada_vector.at( i ) - salida.at( i );
+                error = salida_deseada_vector.at( i ) - salida.at( i );
 
-            capas[capas.size()-1].getNeuronas()[i].setDelta( error * capas[capas.size()-1].getNeuronas()[i].getSalida()) ;
+                capas[capas.size()-1].getNeuronas()[i].setDelta( error * capas[capas.size()-1].getNeuronas()[i].getSalida()) ;
+            }
         }
+    } else {
+        /// @TODO ver en caso de que las salidas sean mas grandes
     }
 
     for( int c=capas.size()-2; c>=0; c-- ) {
@@ -98,12 +111,21 @@ void RedNeuronal::backwardPass( vector entradas, vector salida_deseada )
 
 }
 
+/*!
+ * \brief RedNeuronal::entrenamiento
+ * \param entradas
+ * \param salidas
+ */
 void RedNeuronal::entrenamiento(vector entradas, vector salidas)
 {
     forwardPass( entradas );
     backwardPass( entradas , salidas );
 }
 
+/*!
+ * \brief RedNeuronal::setearCodificacion
+ * \param codif
+ */
 void RedNeuronal::setearCodificacion(QVector<int> codif)
 {
     for (int i = 0 ; i < codif.size() ; i++) {
@@ -111,6 +133,11 @@ void RedNeuronal::setearCodificacion(QVector<int> codif)
     }
 }
 
+/*!
+ * \brief RedNeuronal::mapeadorSalidas
+ * \param salidas
+ * \return
+ */
 int RedNeuronal::mapeadorSalidas(vector salidas)
 {
     int max = 0;
@@ -129,6 +156,11 @@ int RedNeuronal::mapeadorSalidas(vector salidas)
 
 }
 
+/*!
+ * \brief RedNeuronal::mapeadorInverso
+ * \param valor
+ * \return
+ */
 vector RedNeuronal::mapeadorInverso( int valor )
 {
     //Deberia devolver cualquier vector salida que me genere el valor
