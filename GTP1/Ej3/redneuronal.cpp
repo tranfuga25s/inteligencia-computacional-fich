@@ -89,9 +89,11 @@ void RedNeuronal::backwardPass( vector entradas, vector salida_deseada )
 
                 capas[capas.size()-1].getNeuronas()[i].setDelta( error * capas[capas.size()-1].getNeuronas()[i].getSalida()) ;
             }
+
         }
+
     } else {
-        /// @TODO ver en caso de que las salidas sean mas grandes
+        /// @TODO ver en caso de que el tamaño de las salidas sean mas grandes
     }
 
     for( int c=capas.size()-2; c>=0; c-- ) {
@@ -106,8 +108,8 @@ void RedNeuronal::backwardPass( vector entradas, vector salida_deseada )
     for( int c=1; c<_cantidad_capas-1; c++ ) {
         capas[c].corregirPesos( capas[c-1].getSalidas() );
     }
-    return;
 
+    return;
 
 }
 
