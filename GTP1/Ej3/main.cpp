@@ -6,6 +6,9 @@
 #include <QVector>
 #include <QSettings>
 #include <QMdiArea>
+#include <QProgressBar>
+#include <QDockWidget>
+#include <QLayout>
 
 #include "iostream"
 #include "graficadormdi.h"
@@ -115,7 +118,23 @@ int main(int argc, char *argv[])
     graf2->agregarPuntosClasificados( entradas, salidas, 0.5 );
     mdiArea->tileSubWindows();
 
+    QDockWidget *dockBarra1 = new QDockWidget( "Progreso Particiones" );
+    main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra1 );
+    QProgressBar *PBParticiones = new QProgressBar( dockBarra1 );
+    dockBarra1->setWidget( PBParticiones );
+
+    QDockWidget *dockBarra2 = new QDockWidget( "Progreso Epocas" );
+    main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra2 );
+    QProgressBar *PBEpocas = new QProgressBar( dockBarra2 );
+    dockBarra2->setWidget( PBEpocas );
+
+
     QVector<double> errores_particiones;
+
+    PBParticiones->setRange( 0, particiones.cantidadDeParticiones() );
+    PBParticiones->setValue( 0 );
+
+    PBEpocas->setRange( 0, max_epocas );
 
     for( int p=0; p<particiones.cantidadDeParticiones(); p++ ) {
 
@@ -133,7 +152,7 @@ int main(int argc, char *argv[])
         QVector<double> errores_epocas;
 
         //std::cout << "Epoca: " << std::endl;
-
+        PBEpocas->setValue( 0 );
         while ( epoca < max_epocas
                 && porcentaje_error > tolerancia_error )
         {
@@ -162,6 +181,7 @@ int main(int argc, char *argv[])
 
             // Aumento el contador de epocas
             epoca++;
+            PBEpocas->setValue( epoca );
 
             QApplication::processEvents();
         }
@@ -194,6 +214,7 @@ int main(int argc, char *argv[])
         //qDebug() << errores_epocas;
         qDebug() <<"Terminada particion " << p << "- Error de prueba: " << errores_particiones.at( p ) << "%";
         errores_epocas.clear();
+        PBParticiones->setValue( PBParticiones->value() + 1 );
     }
     std::cout << std::endl;
 

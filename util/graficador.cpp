@@ -144,9 +144,13 @@ void Graficador::agregarPuntosClasificados( matriz entradas, matriz salida, doub
             m2.append( entradas.at( i ) );
         }
     }
-    agregarPuntos( m1, "Entradas -1" );
-    agregarPuntos( m2, "Entradas +1" );
-}
+    if( limite_division == 0.0 ) {
+        agregarPuntos( m1, "Entradas -1" );
+        agregarPuntos( m2, "Entradas +1" );
+    } else {
+        agregarPuntos( m1, QString( "Entradas %1" ).arg( limite_division-limite_division ) );
+        agregarPuntos( m2, QString( "Entradas %1" ).arg( limite_division+limite_division ) );
+    }}
 
 /*!
  * \brief Graficador::agregarPuntosClasificados
