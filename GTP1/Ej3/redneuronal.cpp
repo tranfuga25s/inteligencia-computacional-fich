@@ -15,7 +15,6 @@ RedNeuronal::RedNeuronal(int cantidad_capas , QVector<int> cantidad_neuronas ,in
                 capas.append( Aux );
             }
         }
-        _cantidad_capas = cantidad_capas;
     }
 }
 
@@ -25,7 +24,7 @@ RedNeuronal::RedNeuronal(int cantidad_capas , QVector<int> cantidad_neuronas ,in
  */
 void RedNeuronal::setearTasaAprendizaje( double tasa )
 {
-    for( int i=0; i<_cantidad_capas; i++ ) {
+    for( int i=0; i<capas.size(); i++ ) {
         capas[i].setearTasaAprendizaje( tasa );
     }
 }
@@ -36,7 +35,7 @@ void RedNeuronal::setearTasaAprendizaje( double tasa )
  */
 void RedNeuronal::setearMomento(double momento)
 {
-    for( int i=0; i<_cantidad_capas; i++ ) {
+    for( int i=0; i<capas.size(); i++ ) {
         capas[i].setearMomento( momento );
     }
 }
@@ -47,7 +46,7 @@ void RedNeuronal::setearMomento(double momento)
 
 void RedNeuronal::inicializarPesos()
 {
-    for( int i=0; i<_cantidad_capas; i++ ) {
+    for( int i=0; i<capas.size(); i++ ) {
         capas[i].inicializarPesos();
     }
 }
@@ -60,10 +59,10 @@ void RedNeuronal::inicializarPesos()
 vector RedNeuronal::forwardPass( vector entradas )
 {
     capas[0].evaluar( entradas );
-    for( int c=1; c<=_cantidad_capas-1; c++ ) {
+    for( int c=1; c<capas.size(); c++ ) {
         capas[c].evaluar( capas[c-1].getSalidas() );
     }
-    return capas[_cantidad_capas-1].getSalidas();
+    return capas[capas.size()-1].getSalidas();
 }
 
 /*!
@@ -72,7 +71,7 @@ vector RedNeuronal::forwardPass( vector entradas )
  * \param entradas
  * \param salidas
  */
-void RedNeuronal::backwardPass( vector entradas, vector salida_deseada )
+void RedNeuronal::backwardPass( vector entradas, double salida_deseada )
 {
     vector salida = forwardPass( entradas );
 
@@ -80,38 +79,32 @@ void RedNeuronal::backwardPass( vector entradas, vector salida_deseada )
 
     // Tanto la salida codificada como la salida deseada están codificadas
     // El vector de la salida deseada tiene un solo elemento
-    if( salida_deseada.size() == 1 ) {
-        if( sal_codif != salida_deseada.at(0) ) {
-            vector salida_deseada_vector = mapeadorInverso( salida_deseada.at( 0 ) );
+    if( sal_codif != salida_deseada ) {
+        vector salida_deseada_vector = mapeadorInverso( salida_deseada );
 
-            for( int i=0; i<salida_deseada_vector.size(); i++ ) {
+        for( int i=0; i<salida_deseada_vector.size(); i++ ) {
 
-                double error = salida_deseada_vector.at( i ) - salida.at( i );
+            double error = salida.at( i ) - salida_deseada_vector.at( i );
+            double salida = capas[capas.size()-1].getNeuronas()->operator []( i ).getSalida();
+            double derivada = Neurona::funcionActivacionDerivada( salida );
+            double delta = error * derivada;
+            capas[capas.size()-1].getNeuronas()->operator []( i ).setDelta( delta );
+            //qDebug() << delta;
+        }
 
-                capas[capas.size()-1].getNeuronas()[i].setDelta( error * capas[capas.size()-1].getNeuronas()[i].getSalida()) ;
+        for( int c=capas.size()-2; c>=0; c-- ) {
+            for (int n = 0 ; n < capas[c].cantidadNeuronas() ; n++ ) {
+
+                capas[c].corregirDeltas( n, capas[c+1].getDeltas(n) );
             }
 
         }
 
-    } else {
-        /// @TODO ver en caso de que el tamaño de las salidas sean mas grandes
-        qDebug() << "Esto no está implementado!";
-        abort();
-    }
-
-    for( int c=capas.size()-2; c>=0; c-- ) {
-        for (int n = 0 ; n < capas[c].cantidadNeuronas() ; n++ ) {
-
-            capas[c].corregirDeltas( n, capas[c+1].getDeltas(n) );
+        capas[0].corregirPesos( entradas );
+        for( int c=1; c<capas.size()-1; c++ ) {
+            capas[c].corregirPesos( capas[c-1].getSalidas() );
         }
-
     }
-
-    capas[0].corregirPesos( entradas );
-    for( int c=1; c<_cantidad_capas-1; c++ ) {
-        capas[c].corregirPesos( capas[c-1].getSalidas() );
-    }
-
     return;
 
 }
@@ -121,9 +114,9 @@ void RedNeuronal::backwardPass( vector entradas, vector salida_deseada )
  * \param entradas
  * \param salidas
  */
-void RedNeuronal::entrenamiento(vector entradas, vector salidas)
+void RedNeuronal::entrenamiento( vector entradas, double salidas )
 {
-    forwardPass( entradas );
+    //forwardPass( entradas );
     backwardPass( entradas , salidas );
 }
 

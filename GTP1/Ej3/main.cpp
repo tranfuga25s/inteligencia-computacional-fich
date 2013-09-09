@@ -52,15 +52,14 @@ int main(int argc, char *argv[])
 
     // Cargo los datos de los archivos que corresponda
     matriz entradas( parametros.value( "cantidad_entradas" ).toInt() );
-    matriz salidas( parametros.value( "cantidad_salidas" ).toInt() );
+    vector salidas( parametros.value( "cantidad_salidas" ).toInt() );
 
     qDebug() << endl << "--------------- /Datos del entrenamiento/ -----------------" << endl;
     qWarning() << "Archivo de lectura de datos originales: "<< archivo;
     if( ! leer_archivo_entrenamiento( archivo,
                                       &entradas,
                                       &salidas,
-                                      parametros.value( "cantidad_entradas" ).toInt(),
-                                      parametros.value( "cantidad_salidas" ).toInt())  ) {
+                                      parametros.value( "cantidad_entradas" ).toInt() )  ) {
         qDebug() << "No se pudo encontrar el archivo de entrenamiento! cancelando!";
         abort();
     }
@@ -118,16 +117,15 @@ int main(int argc, char *argv[])
     graf2->agregarPuntosClasificados( entradas, salidas, 0.5 );
     mdiArea->tileSubWindows();
 
-    QDockWidget *dockBarra1 = new QDockWidget( "Progreso Particiones" );
+    QDockWidget *dockBarra1 = new QDockWidget( "Progreso de Particiones" );
     main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra1 );
     QProgressBar *PBParticiones = new QProgressBar( dockBarra1 );
     dockBarra1->setWidget( PBParticiones );
 
-    QDockWidget *dockBarra2 = new QDockWidget( "Progreso Epocas" );
+    QDockWidget *dockBarra2 = new QDockWidget( "Progreso de Epocas" );
     main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra2 );
     QProgressBar *PBEpocas = new QProgressBar( dockBarra2 );
     dockBarra2->setWidget( PBEpocas );
-
 
     QVector<double> errores_particiones;
 
@@ -139,8 +137,6 @@ int main(int argc, char *argv[])
     for( int p=0; p<particiones.cantidadDeParticiones(); p++ ) {
 
         Particionador::particion part_local = particiones.getParticion( p );
-
-        errores_particiones.insert( p, 0.0 );
 
         qDebug() << endl << "Utilizando Particion: " << p ;
 
@@ -161,7 +157,7 @@ int main(int argc, char *argv[])
             //std::cout << epoca << " \r";
             for(int i =0; i<part_local.entrenamiento.size(); i++ )
             {
-                red.entrenamiento( entradas.at( part_local.entrenamiento.at(i) ), salidas.at( part_local.entrenamiento.at( i ) ) );
+                red.backwardPass( entradas.at( part_local.entrenamiento.at(i) ), salidas.at( part_local.entrenamiento.at( i ) ) );
             }
 
             // Verifico el error
@@ -170,7 +166,7 @@ int main(int argc, char *argv[])
             int errores = 0;
             int correcto = 0;
             for( int i = 0; i < part_local.validacion.size(); i++ ) {
-                if( red.forwardPass( entradas.at( part_local.validacion.at( i ) ) ) != salidas.at( part_local.validacion.at( i ) ) ) {
+                if( red.mapeadorSalidas( red.forwardPass( entradas.at( part_local.validacion.at( i ) ) ) ) != salidas.at( part_local.validacion.at( i ) ) ) {
                     errores++;
                 } else {
                     correcto++;
@@ -193,17 +189,18 @@ int main(int argc, char *argv[])
         qDebug() << " Epoca de finalizacion: " << epoca+1 << " - Error de salida de entrenamiento: " << porcentaje_error << "%";
 
         // Genero las estadisticas con los datos de prueba
+        porcentaje_error = 0.0;
         int errores = 0;
         int correcto = 0;
         for( int i = 0; i < part_local.prueba.size(); i++ ) {
-            if( red.forwardPass( entradas.at( part_local.prueba.at( i ) ) ) != salidas.at( part_local.prueba.at( i ) ) ) {
+            if( red.mapeadorSalidas( red.forwardPass( entradas.at( part_local.prueba.at( i ) ) ) ) != salidas.at( part_local.prueba.at( i ) ) ) {
                 errores++;
             } else {
                 correcto++;
             }
         }
         porcentaje_error = ( (double) errores * 100 ) / (double) entradas.size();
-        errores_particiones[p] = porcentaje_error;
+        errores_particiones.push_back( porcentaje_error );
 
         //Aumento el contador de las no exitosas
         if (epoca < max_epocas)

@@ -6,7 +6,7 @@ Neurona::Neurona( int cantidad_entradas )
     _tasa_aprendizaje = 0.25;
     _cantidad_entradas = cantidad_entradas;
     _ultima_salida = 0.0;
-
+    _delta = 0.0;
 }
 
 void Neurona::inicializarPesos()
@@ -48,23 +48,25 @@ double Neurona::evaluar( QVector<double> entradas )
 }
 
 
-
+/*!
+ * \brief Neurona::ajustarPesos
+ * \param entradas
+ */
 void Neurona::ajustarPesos( QVector<double> entradas )
 {
 
-    double pesocero = _pesos[0];
-
+    double pesocero = _tasa_aprendizaje*_delta*(-1.0) + _momento*_var_pesos_ant.at(0);
     //Caso del w0 y x0. x0 siempre es -1 no importa cuantas epocas haga
     _pesos[0] = _pesos.at(0) + _tasa_aprendizaje*_delta*(-1.0) + _momento*_var_pesos_ant.at(0);
 
     _var_pesos_ant[0] = pesocero;
 
     for(int i=1 ; i<=entradas.size() ; i++) {
-        double temporal = _pesos[i]; // Guardo el valor para setearlo despues
+        double temporal = _tasa_aprendizaje*_delta*entradas.at(i-1) + _momento*_var_pesos_ant.at(i);
 
         _pesos[i]=_pesos.at(i) + _tasa_aprendizaje*_delta*entradas.at(i-1) + _momento*_var_pesos_ant.at(i);
 
-        //_var_pesos_ant[i] = _tasa_aprendizaje*_delta*entradas.at(i-1); //Actualizo el vector
+         //Actualizo el vector
         _var_pesos_ant[i] = temporal; // Guardo el peso anterior como nuevo peso anterior
     }
 

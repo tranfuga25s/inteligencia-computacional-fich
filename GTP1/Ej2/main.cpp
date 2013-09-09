@@ -62,8 +62,7 @@ int main(int argc, char *argv[])
     if( ! leer_archivo_entrenamiento( archivo_aleatorios,
                                       &entradas,
                                       &salidas,
-                                      parametros.value( "cantidad_entradas" ).toInt(),
-                                      parametros.value( "cantidad_salidas" ).toInt() )  ) {
+                                      parametros.value( "cantidad_entradas" ).toInt() )  ) {
         qDebug() << "No se pudo encontrar el archivo de entrenamiento! cancelando!";
         abort();
     }
@@ -106,7 +105,7 @@ int main(int argc, char *argv[])
     graf2->setearEjesEnGrafico();
     graf2->setearTituloEjeX( " X " );
     graf2->setearTituloEjeY( " y " );
-    graf2->agregarPuntosClasificados( entradas, salidas );
+    graf2->agregarPuntosClasificados( entradas, salidas, 0.0 );
 
     QVector<double> errores_particiones;
 

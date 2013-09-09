@@ -63,8 +63,9 @@ double CapaNeuronal::getDeltas(int num_neurona)
     double sumatoria = 0.0;
 
     for (int j = 0 ; j < neuronas.size(); j++ ) {
-
-        double delta = neuronas[j].devuelvePesos()[num_neurona]*neuronas[j].getDelta();
+        double delta_anterior = neuronas[j].getDelta();
+        double peso = neuronas[j].devuelvePesos()[num_neurona];
+        double delta = delta_anterior*peso;
         sumatoria += delta;
     }
     return sumatoria;
@@ -91,9 +92,11 @@ void CapaNeuronal::corregirPesos(vector entradas)
  */
 void CapaNeuronal::corregirDeltas( int num_neurona, double error )
 {
-    double nuevo_delta = neuronas[num_neurona].getSalida() * error ;
+    double salida = neuronas[num_neurona].getSalida();
+    double derivada = Neurona::funcionActivacionDerivada( salida );
+    double nuevo_delta =  derivada * error;
 
-    neuronas[num_neurona].setDelta(nuevo_delta);
+    neuronas[num_neurona].setDelta( nuevo_delta );
 }
 
 
