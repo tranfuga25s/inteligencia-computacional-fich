@@ -64,45 +64,47 @@ vector RedNeuronal::forwardPass( vector entradas )
 void RedNeuronal::backwardPass( vector entradas, vector salida_deseada )
 {
     vector salida = forwardPass( entradas );
-    if( salida != salida_deseada ) {
-       // Calculo la diferencia para cada parte del vector
-       double error;
 
+    int sal_codif = mapeador_salidas(salida);
+    double error = 0.0;
 
-       for( int i=0; i<salida.size(); i++ ) {
-           /// @TODO VERIFICAR ESTO!!1 -> Una salida desde el archivo pero usamos 2 neuronas!
-           if( salida_deseada.at( i ).size() != salida.at( i ).size() ) {
-               mapeador_salidas(salida);
+    for( int i=0; i<salida_deseada.size(); i++ ) {
+        if( sal_codif != salida_deseada.at(i) ) {
 
-               //abort();
-           }
-           error = salida_deseada.at( i ) - salida.at( i );
-           //Seteo los deltas de la ultima capa
-           capas[capas.size()-1].getNeuronas()[i].setDelta( error * capas[capas.size()-1].getNeuronas()[i].getSalida()) ;
-       }
+            error = salida_deseada.at( i ) - sal_codif;
 
-
-
-       for( int c=capas.size()-2; c>=0; c-- ) {
-           for (int n = 0 ; n < capas[c].cantidadNeuronas() ; n++ ) {
-
-               capas[c].corregirDeltas(n,capas[c+1].getDeltas(n));
-           }
-
-       }
-
-       capas[0].corregirPesos( entradas );
-       for( int c=1; c<_cantidad_capas-1; c++ ) {
-           capas[c].corregirPesos( capas[c-1].getSalidas() );
-       }
-       return;
+            capas[capas.size()-1].getNeuronas()[i].setDelta( error * capas[capas.size()-1].getNeuronas()[i].getSalida()) ;
+        }
     }
+
+    for( int c=capas.size()-2; c>=0; c-- ) {
+        for (int n = 0 ; n < capas[c].cantidadNeuronas() ; n++ ) {
+
+            capas[c].corregirDeltas(n,capas[c+1].getDeltas(n));
+        }
+
+    }
+
+    capas[0].corregirPesos( entradas );
+    for( int c=1; c<_cantidad_capas-1; c++ ) {
+        capas[c].corregirPesos( capas[c-1].getSalidas() );
+    }
+    return;
+
+
 }
 
 void RedNeuronal::entrenamiento(vector entradas, vector salidas)
 {
     forwardPass( entradas );
     backwardPass( entradas , salidas );
+}
+
+void RedNeuronal::setearCodificacion(QVector<int> codif)
+{
+    for (int i = 0 ; i < codif.size() ; i++) {
+        codif_salidas.push_back(codif.at(i));
+    }
 }
 
 int RedNeuronal::mapeador_salidas(vector salidas)
@@ -119,6 +121,13 @@ int RedNeuronal::mapeador_salidas(vector salidas)
         }
     }
 
-    return elvectordeesteban.at(i)
+    return codif_salidas.at(mayor);
+
+}
+
+vector RedNeuronal::mapeador_inverso(int valor)
+{
+    //Deberia devolver cualquier vector salida que me genere el valor
+
 
 }

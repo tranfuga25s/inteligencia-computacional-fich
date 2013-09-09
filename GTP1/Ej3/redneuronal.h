@@ -24,11 +24,17 @@ public:
 
     void entrenamiento( vector entradas, vector salidas );
 
-    int mapeador_salidas(vector salidas)
+    void setearCodificacion(QVector<int> codif);
+    QVector<int> mostrarCodificacionSalida(){return codif_salidas;}
+
+    int mapeador_salidas(vector salidas);
+    vector mapeador_inverso(int valor);
+
     
 private:
     QVector<CapaNeuronal> capas;
     int _cantidad_capas;
+    QVector<int> codif_salidas;
     
 };
 

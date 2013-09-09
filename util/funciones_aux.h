@@ -377,7 +377,7 @@ static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QStr
 #ifndef STRINGAVECTOR
 #define STRINGAVECTOR
 
-QVector<int> stringAQVector( QString datos, QString separador = " " ) {
+static QVector<int> stringAQVector( QString datos, QString separador = " " ) {
     QVector<int> retorno;
     QVector<QString> temp = datos.split( separador, QString::KeepEmptyParts ).toVector();
     QVector<int> neuronas_por_capas;
