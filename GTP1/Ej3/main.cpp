@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     red.setearMomento( parametros.value( "momento" ).toDouble() );
     qDebug() << "Momento: " << red.getMomento();
 
-    red.setearCodificacion( stringAQVector( parametros.value( "codigicacion_salida" ).toString() ) );
+    red.setearCodificacion( stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
     qDebug() << "Codificacion salida: " << red.mostrarCodificacionSalida();
 
     int max_epocas = parametros.value( "epocas_maximas", 20 ).toInt();
