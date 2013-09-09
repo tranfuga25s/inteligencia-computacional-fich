@@ -1,5 +1,7 @@
 #include "redneuronal.h"
 
+#include <cfloat>
+
 RedNeuronal::RedNeuronal(int cantidad_capas , QVector<int> cantidad_neuronas ,int cantidad_entradas,QObject *parent) :
     QObject(parent)
 {
@@ -101,7 +103,7 @@ void RedNeuronal::backwardPass( vector entradas, vector salida_deseada )
     for( int c=capas.size()-2; c>=0; c-- ) {
         for (int n = 0 ; n < capas[c].cantidadNeuronas() ; n++ ) {
 
-            capas[c].corregirDeltas(n,capas[c+1].getDeltas(n));
+            capas[c].corregirDeltas( n, capas[c+1].getDeltas(n) );
         }
 
     }
@@ -144,8 +146,8 @@ void RedNeuronal::setearCodificacion(QVector<int> codif)
  */
 int RedNeuronal::mapeadorSalidas(vector salidas)
 {
-    int max = 0;
-    int mayor;
+    double max = (-1.0)*DBL_MAX;
+    int mayor = 0;
 
     if (salidas.size() == 1) {return salidas.at(0);}
 

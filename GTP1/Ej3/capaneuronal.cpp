@@ -86,10 +86,9 @@ void CapaNeuronal::corregirPesos(vector entradas)
 /*!
  * \brief CapaNeuronal::corregirDeltas
  * Esto seria la parte del backpropagation en donde se corrigen los deltas de cada neurona de la capa
- *\param error
+ * \param error
  * \return
  */
-
 void CapaNeuronal::corregirDeltas( int num_neurona, double error )
 {
     double nuevo_delta = neuronas[num_neurona].getSalida() * error ;
