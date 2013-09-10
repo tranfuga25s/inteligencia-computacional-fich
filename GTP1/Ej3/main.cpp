@@ -64,6 +64,7 @@ int main(int argc, char *argv[])
         abort();
     }
 
+
     // particionamos los datos
     Particionador particiones;
     particiones.setearCantidadDatos( entradas.size() );

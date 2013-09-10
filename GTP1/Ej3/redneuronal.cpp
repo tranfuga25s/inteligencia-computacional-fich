@@ -90,9 +90,13 @@ void RedNeuronal::backwardPass( vector entradas, double salida_deseada )
             double delta = error * derivada;
             capas[capas.size()-1].getNeuronas()->operator []( i ).setDelta( delta );
             //qDebug() << delta;
+
+
         }
 
-        for( int c=capas.size()-2; c>=0; c-- ) {
+
+        for( int c = capas.size()-2 ; c >= 0 ; c-- ) {
+
             for (int n = 0 ; n < capas[c].cantidadNeuronas() ; n++ ) {
 
                 capas[c].corregirDeltas( n, capas[c+1].getDeltas(n) );

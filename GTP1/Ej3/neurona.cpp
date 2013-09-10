@@ -57,14 +57,14 @@ void Neurona::ajustarPesos( QVector<double> entradas )
 
     double pesocero = _tasa_aprendizaje*_delta*(-1.0) + _momento*_var_pesos_ant.at(0);
     //Caso del w0 y x0. x0 siempre es -1 no importa cuantas epocas haga
-    _pesos[0] = _pesos.at(0) + _tasa_aprendizaje*_delta*(-1.0) + _momento*_var_pesos_ant.at(0);
+    _pesos[0] = _pesos.at(0) + pesocero;
 
     _var_pesos_ant[0] = pesocero;
 
     for(int i=1 ; i<=entradas.size() ; i++) {
         double temporal = _tasa_aprendizaje*_delta*entradas.at(i-1) + _momento*_var_pesos_ant.at(i);
 
-        _pesos[i]=_pesos.at(i) + _tasa_aprendizaje*_delta*entradas.at(i-1) + _momento*_var_pesos_ant.at(i);
+        _pesos[i]=_pesos.at(i) + temporal;
 
          //Actualizo el vector
         _var_pesos_ant[i] = temporal; // Guardo el peso anterior como nuevo peso anterior
