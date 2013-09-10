@@ -81,6 +81,7 @@ void CapaNeuronal::corregirPesos(vector entradas)
 {
     for (int i = 0 ; i < neuronas.size() ; i++) {
         neuronas[i]->ajustarPesos(entradas);
+        neuronas[i]->setDelta( 0.0 );
     }
 }
 

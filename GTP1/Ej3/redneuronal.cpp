@@ -84,12 +84,9 @@ void RedNeuronal::backwardPass( vector entradas, double salida_deseada )
         for( int i=0; i<salida_deseada_vector.size(); i++ ) {
 
             double error = salida.at( i ) - salida_deseada_vector.at( i );
-            double salida = capas[capas.size()-1]->getNeuronas()[i]->getSalida();
-            double derivada = Neurona::funcionActivacionDerivada( salida );
+            double derivada = Neurona::funcionActivacionDerivada( salida.at(i) );
             double delta = error * derivada;
             capas[capas.size()-1]->getNeuronas()[i]->setDelta( delta );
-            //qDebug() << delta;
-
 
         }
 
@@ -119,7 +116,7 @@ void RedNeuronal::backwardPass( vector entradas, double salida_deseada )
  */
 void RedNeuronal::entrenamiento( vector entradas, double salidas )
 {
-    //forwardPass( entradas );
+    forwardPass( entradas );
     backwardPass( entradas , salidas );
 }
 

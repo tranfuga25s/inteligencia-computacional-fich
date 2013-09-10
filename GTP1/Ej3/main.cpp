@@ -132,8 +132,10 @@ int main(int argc, char *argv[])
 
     PBParticiones->setRange( 0, particiones.cantidadDeParticiones() );
     PBParticiones->setValue( 0 );
+    PBParticiones->setFormat( "Particion %v de %m - %p%" );
 
     PBEpocas->setRange( 0, max_epocas );
+    PBEpocas->setFormat( "Epoca %v de %m - %p%" );
 
     for( int p=0; p<particiones.cantidadDeParticiones(); p++ ) {
 
@@ -181,6 +183,7 @@ int main(int argc, char *argv[])
             PBEpocas->setValue( epoca );
 
             QApplication::processEvents();
+
         }
 
         graf1->agregarCurva( errores_epocas, QString( "Particion %1" ).arg( p ) );
@@ -213,6 +216,25 @@ int main(int argc, char *argv[])
         qDebug() <<"Terminada particion " << p << "- Error de prueba: " << errores_particiones.at( p ) << "%";
         errores_epocas.clear();
         PBParticiones->setValue( PBParticiones->value() + 1 );
+
+        QVector<int> nueva_salida;
+        matriz nueva_entrada;
+        for( int i=0; i<part_local.prueba.size(); i++ ) {
+            nueva_salida.append( red.mapeadorSalidas( red.forwardPass( entradas.at( part_local.prueba.at( i ) ) ) ) );
+            nueva_entrada.append( entradas.at( part_local.prueba.at( i ) ) );
+        }
+
+        GraficadorMdi *graf = new GraficadorMdi( mdiArea );
+        mdiArea->addSubWindow( graf );
+        graf->show();
+        graf->setearTitulo( QString( "Datos de prueba evaluados con red neuronal - Particion %1" ).arg( p+1 ) );
+        graf->setearEjesEnGrafico();
+        graf->setearTituloEjeX( " X " );
+        graf->setearTituloEjeY( " y " );
+        graf->agregarPuntosClasificados( nueva_entrada, nueva_salida, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
+        mdiArea->tileSubWindows();
+
+        QApplication::processEvents();
     }
     //std::cout << std::endl;
 
