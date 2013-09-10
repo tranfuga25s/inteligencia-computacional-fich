@@ -30,17 +30,16 @@ public:
     void ajustarPesos( QVector<double> entradas );
 
     // Entre -1 y 1
-    double funcionActivacion( double valor ) { return ( ( 2.0 / ( 1.0 + exp( -1.0 * valor) ) ) - 1.0 ); }
+    double funcionActivacion( double valor ) { return ( 2.0 / ( 1.0 + exp( -1.0 * valor) ) ) - 1.0; }
     static double funcionActivacionDerivada( double valor ) { return ( 1.0 + valor ) * ( 1.0 - valor ) * 0.5; }
 
     // Funcion de activacion entre 0 y 1
     /*static double funcionActivacion( double valor ) { return ( 1.0 / ( 1.0 + exp( -1.0 * valor ) ) ); }
-    static double funcionActivacionDerivada( double valor ) { return valor * ( 1.0 - valor ); } */
+    static double funcionActivacionDerivada( double valor ) { return valor * ( 1.0 - valor ); }*/
 
     double getSalida() { return _ultima_salida; }
     double getDelta() { return _delta; }
     void setDelta( double delta ) { _delta = delta; }
-
 
 private:
     int _cantidad_entradas;

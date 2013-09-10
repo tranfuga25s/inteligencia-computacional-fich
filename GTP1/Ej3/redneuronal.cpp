@@ -3,16 +3,15 @@
 #include <cfloat>
 
 RedNeuronal::RedNeuronal(int cantidad_capas , QVector<int> cantidad_neuronas ,int cantidad_entradas,QObject *parent) :
-    QObject(parent)
+QObject(parent)
 {
     if( cantidad_capas != 0 ) {
+        capas.reserve( cantidad_capas );
         for (int i = 0 ; i < cantidad_capas ; i++ ){
             if ( i == 0 ){
-                CapaNeuronal Aux( cantidad_neuronas[i], cantidad_entradas);
-                capas.append( Aux );
+                capas.insert( i, new CapaNeuronal( cantidad_neuronas[i], cantidad_entradas) );
             } else {
-                CapaNeuronal Aux( cantidad_neuronas[i], cantidad_neuronas[i-1] );
-                capas.append( Aux );
+                capas.insert( i, new CapaNeuronal( cantidad_neuronas[i], cantidad_neuronas[i-1] ) );
             }
         }
     }
@@ -25,7 +24,7 @@ RedNeuronal::RedNeuronal(int cantidad_capas , QVector<int> cantidad_neuronas ,in
 void RedNeuronal::setearTasaAprendizaje( double tasa )
 {
     for( int i=0; i<capas.size(); i++ ) {
-        capas[i].setearTasaAprendizaje( tasa );
+        capas[i]->setearTasaAprendizaje( tasa );
     }
 }
 
@@ -36,7 +35,7 @@ void RedNeuronal::setearTasaAprendizaje( double tasa )
 void RedNeuronal::setearMomento(double momento)
 {
     for( int i=0; i<capas.size(); i++ ) {
-        capas[i].setearMomento( momento );
+        capas[i]->setearMomento( momento );
     }
 }
 
@@ -47,7 +46,7 @@ void RedNeuronal::setearMomento(double momento)
 void RedNeuronal::inicializarPesos()
 {
     for( int i=0; i<capas.size(); i++ ) {
-        capas[i].inicializarPesos();
+        capas[i]->inicializarPesos();
     }
 }
 
@@ -58,11 +57,11 @@ void RedNeuronal::inicializarPesos()
  */
 vector RedNeuronal::forwardPass( vector entradas )
 {
-    capas[0].evaluar( entradas );
+    capas[0]->evaluar( entradas );
     for( int c=1; c<capas.size(); c++ ) {
-        capas[c].evaluar( capas[c-1].getSalidas() );
+        capas[c]->evaluar( capas[c-1]->getSalidas() );
     }
-    return capas[capas.size()-1].getSalidas();
+    return capas[capas.size()-1]->getSalidas();
 }
 
 /*!
@@ -88,29 +87,26 @@ void RedNeuronal::backwardPass( vector entradas, double salida_deseada )
         for( int i=0; i<salida_deseada_vector.size(); i++ ) {
 
             double error = salida.at( i ) - salida_deseada_vector.at( i );
-            double salida = capas[capas.size()-1].getNeuronas()->operator []( i ).getSalida();
-            double derivada = Neurona::funcionActivacionDerivada( salida );
+            double derivada = Neurona::funcionActivacionDerivada( salida.at(i) );
             double delta = error * derivada;
-            capas[capas.size()-1].getNeuronas()->operator []( i ).setDelta( delta );
-            //qDebug() << delta;
-
+            capas[capas.size()-1]->getNeuronas()[i]->setDelta( delta );
 
         }
 
         //CORRECCION DELTAS RESTANTES CAPAS
         for( int c = capas.size()-2 ; c >= 0 ; c-- ) {
 
-            for (int n = 0 ; n < capas[c].cantidadNeuronas() ; n++ ) {
+            for (int n = 0 ; n < capas[c]->cantidadNeuronas() ; n++ ) {
 
-                capas[c].corregirDeltas( n, capas[c+1].getDeltas(n) );
+                capas[c]->corregirDeltas( n, capas[c+1]->getDeltas(n) );
             }
 
         }
         //UNA VEZ QUE CORREGI LOS DELTAS DE LA RED CORRIJO LOS PESOS
         //ACA HABIA UN ERROR ESTABAMOS RECORRIENDO HASTA capas.size()-1 ES DECIR QUE NO CORREGIRIAMOS LOS PESOS DE LA ULTIMA CAPA
-        capas[0].corregirPesos( entradas );
-        for( int c=1; c<capas.size(); c++ ) {
-            capas[c].corregirPesos( capas[c-1].getSalidas() );
+        capas[0]->corregirPesos( entradas );
+        for( int c=1; c<capas.size()-1; c++ ) {
+            capas[c]->corregirPesos( capas[c-1]->getSalidas() );
         }
     }
     return;
@@ -124,7 +120,7 @@ void RedNeuronal::backwardPass( vector entradas, double salida_deseada )
  */
 void RedNeuronal::entrenamiento( vector entradas, double salidas )
 {
-    //forwardPass( entradas );
+    forwardPass( entradas );
     backwardPass( entradas , salidas );
 }
 
