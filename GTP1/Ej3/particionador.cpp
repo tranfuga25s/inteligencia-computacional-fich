@@ -21,10 +21,23 @@ Particionador::particion Particionador::getParticion( const int num )
 void Particionador::particionarDatos()
 {
 
-    int cantidad_entrenamiento = floor(_cantidad_datos * _porcentaje_entrenamiento );
-    int cantidad_validacion = floor( cantidad_entrenamiento * _porcentaje_validacion );
-    int cantidad_prueba = _cantidad_datos - cantidad_entrenamiento;
-    cantidad_entrenamiento-=cantidad_validacion;
+    int cantidad_entrenamiento = 0;
+    int cantidad_validacion = 0;
+    int cantidad_prueba = 0;
+
+    //Contemplo el k para los metodos de leavekout y leaveoneout
+    if (_k == 0) {
+        cantidad_entrenamiento = floor(_cantidad_datos * _porcentaje_entrenamiento );
+        cantidad_validacion = floor( cantidad_entrenamiento * _porcentaje_validacion );
+        cantidad_prueba = _cantidad_datos - cantidad_entrenamiento;
+        cantidad_entrenamiento-=cantidad_validacion;
+    }
+    else {
+        cantidad_entrenamiento = floor(_cantidad_datos * _porcentaje_entrenamiento );
+        cantidad_validacion = _k;
+        cantidad_prueba = _cantidad_datos - cantidad_entrenamiento;
+        cantidad_entrenamiento-=cantidad_validacion;
+    }
 
     for( int p=0; p<_cant_particiones; p++ ) {
         Particionador::particion part;

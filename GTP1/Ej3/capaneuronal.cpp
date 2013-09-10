@@ -48,6 +48,7 @@ vector CapaNeuronal::getSalidas()
     vector temp;
     for( int n=0; n<neuronas.size(); n++ ) {
         temp.append( neuronas[n].getSalida() );
+        //qDebug() << neuronas[n].getSalida();
     }
     return temp;
 }

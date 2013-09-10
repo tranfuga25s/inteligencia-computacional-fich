@@ -71,6 +71,7 @@ int main(int argc, char *argv[])
     particiones.setearCantidadDeParticiones( parametros.value( "cantidad_particiones" ).toInt() );
     particiones.setearPorcentajeEntrenamiento( parametros.value( "porcentaje_entrenamiento" ).toDouble() );
     particiones.setearPorcentajeValidacion( parametros.value("porcentaje_validacion").toDouble() );
+    particiones.setearK(parametros.value("k").toInt());
     particiones.particionarDatos();
 
     // Inicializo la red neuronal
@@ -156,17 +157,22 @@ int main(int argc, char *argv[])
             // Inicio la etapa de entrenamiento
             //qDebug() << "--------------------------------";
             //std::cout << epoca << " \r";
-            for(int i =0; i<part_local.entrenamiento.size(); i++ )
+            for(int i = 0; i<part_local.entrenamiento.size(); i++ )
             {
                 red.backwardPass( entradas.at( part_local.entrenamiento.at(i) ), salidas.at( part_local.entrenamiento.at( i ) ) );
             }
+
+            ///@TODO Velocidad de convergencia para poder comparar con y sin momento
 
             // Verifico el error
             //qDebug() << "--------------------------------";
             //qDebug() << ">> Verificando tasa de error";
             int errores = 0;
             int correcto = 0;
+
+            //TIENE QUE ESTAR ACA EL PROBLEMA RELACIONADO CON EL FORWARDPASS SALEN DE MAYOR A MENOR LAS SALIDAS
             for( int i = 0; i < part_local.validacion.size(); i++ ) {
+                //qDebug() << red.forwardPass( entradas.at( part_local.validacion.at( i ) ) );
                 if( red.mapeadorSalidas( red.forwardPass( entradas.at( part_local.validacion.at( i ) ) ) ) != salidas.at( part_local.validacion.at( i ) ) ) {
                     errores++;
                 } else {
@@ -175,6 +181,8 @@ int main(int argc, char *argv[])
             }
             porcentaje_error = ( (double) errores * 100 ) / (double) entradas.size();
             errores_epocas.push_back( porcentaje_error );
+
+            ///@TODO calcular el error promedio y la desviacion estandar segun leavekout o leaveoneout
 
             // Aumento el contador de epocas
             epoca++;

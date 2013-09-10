@@ -24,6 +24,8 @@ public:
 
     void setearCantidadDeParticiones( const int cant ) { _cant_particiones = cant; }
     int cantidadDeParticiones() { return _cant_particiones; }
+    void setearK(int k) { _k = k; }
+    int devolverk() { return _k; }
 
     void setearPorcentajeEntrenamiento( const double cant ) { _porcentaje_entrenamiento = cant; }
     void setearPorcentajeValidacion( const double cant ) { _porcentaje_validacion = cant; }
@@ -38,6 +40,7 @@ private:
     double _porcentaje_entrenamiento;
     double _porcentaje_validacion;
     int _cantidad_datos;
+    int _k;
 
     QVector<particion> _particiones;
     
