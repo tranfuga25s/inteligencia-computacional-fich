@@ -229,13 +229,13 @@ int main(int argc, char *argv[])
         double error_aux = 0.0;
 
 
-        for (int i = 0 ; i < errores_particiones.size() ; i++ ) { error_promedio += errores_particiones.at(i);}
-        error_promedio /= errores_particiones.size();
+        for (int i = 0 ; i < errores_epocas.size() ; i++ ) { error_promedio += errores_epocas.at(i);}
+        error_promedio /= errores_epocas.size();
 
         qDebug() <<"Error Promedio: " << error_promedio << "%";
 
-        for (int i = 0 ; i < errores_particiones.size() ; i++ ) { error_aux += exp(errores_particiones.at(i) - error_promedio);}
-        desviacion_estandar = sqrt( (1.0 / (errores_particiones.size() - 1.0) ) * error_aux );
+        for (int i = 0 ; i < errores_epocas.size() ; i++ ) { error_aux += exp(errores_epocas.at(i) - error_promedio);}
+        desviacion_estandar = sqrt( (1.0 / (errores_epocas.size() - 1.0) ) * error_aux );
 
         qDebug() <<"Desviacion Estandar: " << desviacion_estandar << "%";
 
@@ -272,6 +272,17 @@ int main(int argc, char *argv[])
     qDebug() << endl << "Error total: " << sumatoria/errores_particiones.size() << "%";
     qDebug() << endl << "Cantidad de Particiones que convergen: " << cantidad_particiones_exitosas ;
     qDebug() << endl << "Cantidad de Particiones sin converger: " << (particiones.cantidadDeParticiones() - cantidad_particiones_exitosas) ;
+
+    //Calculo el error promedio y la desviacion estandar para todo
+    double error_promedio = sumatoria/errores_particiones.size();
+    double desviacion_estandar = 0.0;
+    double error_aux = 0.0;
+
+    for (int i = 0 ; i < errores_particiones.size() ; i++ ) { error_aux += exp(errores_particiones.at(i) - error_promedio);}
+    desviacion_estandar = sqrt( (1.0 / (errores_particiones.size() - 1.0) ) * error_aux );
+
+    qDebug() <<"Desviacion Estandar: " << desviacion_estandar << "%";
+
 
     GraficadorMdi *graf3 = new GraficadorMdi( mdiArea );
     mdiArea->addSubWindow( graf3 );
