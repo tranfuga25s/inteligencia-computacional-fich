@@ -184,7 +184,7 @@ int main(int argc, char *argv[])
             porcentaje_error = ( (double) errores * 100 ) / (double) entradas.size();
             errores_epocas.push_back( porcentaje_error );
 
-            ///@TODO calcular el error promedio y la desviacion estandar segun leavekout o leaveoneout
+
 
             // Aumento el contador de epocas
             epoca++;
@@ -222,6 +222,23 @@ int main(int argc, char *argv[])
 
         //qDebug() << errores_epocas;
         qDebug() <<"Terminada particion " << p << "- Error de prueba: " << errores_particiones.at( p ) << "%";
+
+        //Calculo el error promedio y la desviacion estandar para la particion
+        double error_promedio = 0.0;
+        double desviacion_estandar = 0.0;
+        double error_aux = 0.0;
+
+
+        for (int i = 0 ; i < errores_particiones.size() ; i++ ) { error_promedio += errores_particiones.at(i);}
+        error_promedio /= errores_particiones.size();
+
+        qDebug() <<"Error Promedio: " << error_promedio << "%";
+
+        for (int i = 0 ; i < errores_particiones.size() ; i++ ) { error_aux += exp(errores_particiones.at(i) - error_promedio);}
+        desviacion_estandar = sqrt( (1.0 / (errores_particiones.size() - 1.0) ) * error_aux );
+
+        qDebug() <<"Desviacion Estandar: " << desviacion_estandar << "%";
+
         errores_epocas.clear();
         PBParticiones->setValue( PBParticiones->value() + 1 );
 

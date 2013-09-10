@@ -105,7 +105,7 @@ void RedNeuronal::backwardPass( vector entradas, double salida_deseada )
         //UNA VEZ QUE CORREGI LOS DELTAS DE LA RED CORRIJO LOS PESOS
         //ACA HABIA UN ERROR ESTABAMOS RECORRIENDO HASTA capas.size()-1 ES DECIR QUE NO CORREGIRIAMOS LOS PESOS DE LA ULTIMA CAPA
         capas[0]->corregirPesos( entradas );
-        for( int c=1; c<capas.size()-1; c++ ) {
+        for( int c=1; c<capas.size(); c++ ) {
             capas[c]->corregirPesos( capas[c-1]->getSalidas() );
         }
     }
