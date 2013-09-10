@@ -14,7 +14,7 @@ public:
 
     void setearTasaAprendizaje( double tasa );
     void setearMomento(double momento);
-    double getMomento() { return capas[0].getNeuronas()->operator []( 0 ).tasaMomento(); }
+    double getMomento() { return capas[0]->getNeuronas()[0]->tasaMomento(); }
 
     void inicializarPesos();
 
@@ -28,10 +28,9 @@ public:
 
     int mapeadorSalidas( vector salidas );
     vector mapeadorInverso( int valor );
-
     
 private:
-    QVector<CapaNeuronal> capas;
+    QVector<CapaNeuronal *> capas;
     QVector<int> codif_salidas;
     
 };

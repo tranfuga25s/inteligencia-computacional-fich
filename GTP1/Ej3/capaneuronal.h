@@ -8,7 +8,7 @@
 class CapaNeuronal
 {
 public:
-    CapaNeuronal( int cant_neuronas = 1, int cant_entradas = 1 );
+    explicit CapaNeuronal( int cant_neuronas = 0, int cant_entradas = 0 );
     int cantidadNeuronas() { return neuronas.size(); }
 
     void setearTasaAprendizaje( double tasa );
@@ -19,15 +19,15 @@ public:
 
     vector getSalidas();
 
-    void corregirPesos(vector entradas);
+    void corregirPesos( vector entradas );
 
-    void corregirDeltas(int num_nueronas, double error );
-    double getDeltas(int num_neurona);
+    void corregirDeltas( int num_nueronas, double error );
+    double getDeltas( int num_neurona );
 
-    QVector<Neurona> *getNeuronas(){ return &neuronas; }
+    QVector<Neurona *> getNeuronas() { return neuronas; }
     
 private:
-    QVector<Neurona> neuronas;
+    QVector<Neurona *> neuronas;
 
     
 };

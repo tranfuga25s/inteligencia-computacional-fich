@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     main.setCentralWidget(mdiArea);
 
     //Inicializo con una semilla aleatoria para la generacion de Aleatorios
-    qsrand(QTime::currentTime().msec());
+    qsrand( QTime::currentTime().msec() );
 
     // Cargo los parametros del ejercicio
     QSettings parametros( "parametros.cfg", QSettings::IniFormat );
@@ -214,7 +214,7 @@ int main(int argc, char *argv[])
         errores_epocas.clear();
         PBParticiones->setValue( PBParticiones->value() + 1 );
     }
-    std::cout << std::endl;
+    //std::cout << std::endl;
 
     // Calculo el promedio de todos los errores
     double sumatoria = 0.0;

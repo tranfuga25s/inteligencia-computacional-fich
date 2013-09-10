@@ -7,6 +7,7 @@ Neurona::Neurona( int cantidad_entradas )
     _cantidad_entradas = cantidad_entradas;
     _ultima_salida = 0.0;
     _delta = 0.0;
+   // qDebug() << "Nueva neurona";
 }
 
 void Neurona::inicializarPesos()
