@@ -74,8 +74,6 @@ void RedNeuronal::backwardPass( vector entradas, double salida_deseada )
 {
     vector salida = forwardPass( entradas );
 
-    //for (int i = 0; i<capas.size() ; i++) { qDebug() << capas[i].getSalidas();}
-
     int sal_codif = mapeadorSalidas(salida);
 
     // Tanto la salida codificada como la salida deseada están codificadas
@@ -83,7 +81,7 @@ void RedNeuronal::backwardPass( vector entradas, double salida_deseada )
     if( sal_codif != salida_deseada ) {
         vector salida_deseada_vector = mapeadorInverso( salida_deseada );
 
-        //CORRECCION DELTAS ULTIMA CAPA
+        // CORRECCION DELTAS ULTIMA CAPA
         for( int i=0; i<salida_deseada_vector.size(); i++ ) {
 
             double error = salida.at( i ) - salida_deseada_vector.at( i );
@@ -93,7 +91,7 @@ void RedNeuronal::backwardPass( vector entradas, double salida_deseada )
 
         }
 
-        //CORRECCION DELTAS RESTANTES CAPAS
+        // CORRECCION DELTAS RESTANTES CAPAS
         for( int c = capas.size()-2 ; c >= 0 ; c-- ) {
 
             for (int n = 0 ; n < capas[c]->cantidadNeuronas() ; n++ ) {
@@ -103,7 +101,6 @@ void RedNeuronal::backwardPass( vector entradas, double salida_deseada )
 
         }
         //UNA VEZ QUE CORREGI LOS DELTAS DE LA RED CORRIJO LOS PESOS
-        //ACA HABIA UN ERROR ESTABAMOS RECORRIENDO HASTA capas.size()-1 ES DECIR QUE NO CORREGIRIAMOS LOS PESOS DE LA ULTIMA CAPA
         capas[0]->corregirPesos( entradas );
         for( int c=1; c<capas.size(); c++ ) {
             capas[c]->corregirPesos( capas[c-1]->getSalidas() );
@@ -128,12 +125,8 @@ void RedNeuronal::entrenamiento( vector entradas, double salidas )
  * \brief RedNeuronal::setearCodificacion
  * \param codif
  */
-void RedNeuronal::setearCodificacion(QVector<int> codif)
-{
-    for (int i = 0 ; i < codif.size() ; i++) {
-        codif_salidas.push_back(codif.at(i));
-    }
-}
+void RedNeuronal::setearCodificacion( QVector<int> codif )
+{ codif_salidas = codif; }
 
 /*!
  * \brief RedNeuronal::mapeadorSalidas
@@ -142,11 +135,19 @@ void RedNeuronal::setearCodificacion(QVector<int> codif)
  */
 int RedNeuronal::mapeadorSalidas(vector salidas)
 {
+    //Esto es el caso de que haya una sola neurona en la ultima capa
+    if( salidas.size() == 1 ) {return salidas.at(0);}
+
+    if( salidas.size() == 2 ) {
+        if( salidas.at(0) > salidas.at(1) ) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
     double max = (-1.0)*DBL_MAX;
     int mayor = 0;
-
-    //Esto es el caso de que haya una sola neurona en la ultima capa
-    //if (salidas.size() == 1) {return salidas.at(0);}
 
     for(int i = 0 ; i < salidas.size() ; i++) {
         //La comparacion implica que me quedo con el primer maximo encontrado
@@ -169,11 +170,14 @@ vector RedNeuronal::mapeadorInverso( int valor )
 {
     //Deberia devolver cualquier vector salida que me genere el valor
     vector retorno;
+    // Los valores que tiene que contener los vectores de
+    // comparación para las neuronas tienen que ser acordes a la funcion
+    // de activación que se esté tuilizando
     for( int i=0; i<codif_salidas.size(); i++ ) {
         if( valor == codif_salidas.at( i ) ) {
-            retorno.insert( i, 1 );
+            retorno.insert( i, 1.0  );
         } else {
-            retorno.insert( i, 0 );
+            retorno.insert( i, -1.0 );
         }
     }
     return retorno;

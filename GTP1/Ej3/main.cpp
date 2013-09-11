@@ -158,28 +158,22 @@ int main(int argc, char *argv[])
 
         //std::cout << "Epoca: " << std::endl;
         PBEpocas->setValue( 0 );
+
         while ( epoca < max_epocas
                 && porcentaje_error > tolerancia_error )
         {
             // Inicio la etapa de entrenamiento
-            //qDebug() << "--------------------------------";
-            //std::cout << epoca << " \r";
             for(int i = 0; i<part_local.entrenamiento.size(); i++ )
             {
                 red.backwardPass( entradas.at( part_local.entrenamiento.at(i) ), salidas.at( part_local.entrenamiento.at( i ) ) );
             }
 
-            ///@TODO Velocidad de convergencia para poder comparar con y sin momento
-
             // Verifico el error
-            //qDebug() << "--------------------------------";
-            //qDebug() << ">> Verificando tasa de error";
             int errores = 0;
             int correcto = 0;
 
             //TIENE QUE ESTAR ACA EL PROBLEMA RELACIONADO CON EL FORWARDPASS SALEN DE MAYOR A MENOR LAS SALIDAS
             for( int i = 0; i < part_local.validacion.size(); i++ ) {
-                //qDebug() << red.forwardPass( entradas.at( part_local.validacion.at( i ) ) );
                 if( red.mapeadorSalidas( red.forwardPass( entradas.at( part_local.validacion.at( i ) ) ) ) != salidas.at( part_local.validacion.at( i ) ) ) {
                     errores++;
                 } else {
@@ -188,8 +182,6 @@ int main(int argc, char *argv[])
             }
             porcentaje_error = ( (double) errores * 100 ) / (double) entradas.size();
             errores_epocas.push_back( porcentaje_error );
-
-
 
             // Aumento el contador de epocas
             epoca++;
