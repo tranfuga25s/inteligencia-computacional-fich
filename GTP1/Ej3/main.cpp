@@ -9,6 +9,7 @@
 #include <QProgressBar>
 #include <QDockWidget>
 #include <QLayout>
+#include <QElapsedTimer>
 
 #include "iostream"
 #include "graficadormdi.h"
@@ -138,6 +139,10 @@ int main(int argc, char *argv[])
     PBEpocas->setRange( 0, max_epocas );
     PBEpocas->setFormat( "Epoca %v de %m - %p%" );
 
+    // Mido el tiempo
+    QElapsedTimer medidor_tiempo;
+    medidor_tiempo.start();
+
     for( int p=0; p<particiones.cantidadDeParticiones(); p++ ) {
 
         Particionador::particion part_local = particiones.getParticion( p );
@@ -261,6 +266,8 @@ int main(int argc, char *argv[])
 
         QApplication::processEvents();
     }
+    qint64 milisegundos = medidor_tiempo.elapsed();
+
     //std::cout << std::endl;
 
     // Calculo el promedio de todos los errores
@@ -282,6 +289,8 @@ int main(int argc, char *argv[])
     desviacion_estandar = sqrt( (1.0 / (errores_particiones.size() - 1.0) ) * error_aux );
 
     qDebug() <<"Desviacion Estandar: " << desviacion_estandar << "%";
+
+    qDebug() << "Tiempo medido: " << milisegundos << " ms";
 
 
     GraficadorMdi *graf3 = new GraficadorMdi( mdiArea );
