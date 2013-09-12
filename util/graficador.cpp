@@ -196,6 +196,25 @@ void Graficador::agregarPuntosClasificados( matriz entradas, QVector<int> salida
 }
 
 /*!
+ * \brief Graficador::agregarPuntosClasificados
+ * Clasifica todas las entradas en 2 grupos ( -1 y +1 ) y las grafica
+ * \param entradas Matriz de entradas
+ * \param salidas Vector de salidas
+ */
+void Graficador::agregarPuntosClasificados( matriz entradas, vector salida, QVector<int> codificacion_salida )
+{
+    QVector<matriz> superentrada( codificacion_salida.size() );
+    for( int i=0; i<entradas.size(); i++ ) {
+        superentrada[salida.at(i)].append( entradas.at(i) );
+    }
+    for( int j=0; j<codificacion_salida.size(); j++ ) {
+        if( superentrada.at( j ).size() > 0 ) {
+            agregarPuntos( superentrada.at( j ), QString( "Clase %1" ).arg( codificacion_salida.at(j) ) );
+        }
+    }
+}
+
+/*!
  * \brief Graficador::dibujarRecta
  * \param num_recta Numero de recta a redibujar. Si es cero dibuja una nueva recta.
  * \param pesos

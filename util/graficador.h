@@ -24,6 +24,7 @@ public:
     void agregarPuntosClasificados( matriz entradas, QVector<int> salida, double limite_division = 0.0 );
     void agregarPuntosClasificados( matriz entradas, matriz salida, double limite_division = 0.0 );
     void agregarPuntosClasificados( matriz entradas, QVector<int> salida, QVector<int> codificacion_salida );
+    void agregarPuntosClasificados( matriz entradas, vector salida, QVector<int> codificacion_salida );
     void dibujarRecta( int num_recta, vector pesos, QString nombre );
     void setearEjesEnGrafico();
     void setearTamanoFijo();

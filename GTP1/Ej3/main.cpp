@@ -113,15 +113,53 @@ int main(int argc, char *argv[])
     mdiArea->addSubWindow( graf1 );
     mdiArea->tileSubWindows();
 
-    GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );
-    mdiArea->addSubWindow( graf2 );
-    graf2->showMaximized();
-    graf2->setearTitulo( "Datos originales" );
-    graf2->setearEjesEnGrafico();
-    graf2->setearTituloEjeX( " X " );
-    graf2->setearTituloEjeY( " y " );
-    graf2->agregarPuntosClasificados( entradas, salidas, 0.5 );
-    mdiArea->tileSubWindows();
+    if( stringAQVector( parametros.value( "codificacion_salida" ).toString() ).size() <= 2 ) {
+        GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );
+        mdiArea->addSubWindow( graf2 );
+        graf2->showMaximized();
+        graf2->setearTitulo( "Datos originales" );
+        graf2->setearEjesEnGrafico();
+        graf2->setearTituloEjeX( " X " );
+        graf2->setearTituloEjeY( " y " );
+        graf2->agregarPuntosClasificados( entradas, salidas, 0.5 );
+        mdiArea->tileSubWindows();
+    } else {
+
+        matriz entradas1, entradas2;
+        vector salidas1, salidas2;
+        for( int i=0; i < entradas.size(); i++ ) {
+            vector temp;
+            temp.append( entradas.at(i).at(0) );
+            temp.append( entradas.at(i).at(1) );
+            entradas1.append( temp );
+            vector temp2;
+            temp2.append( entradas.at(i).at(2) );
+            temp2.append( entradas.at(i).at(3) );
+            entradas2.append( temp2 );
+            salidas1.append( salidas.at( i ) );
+            salidas2.append( salidas.at( i ) );
+        }
+
+        GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );
+        mdiArea->addSubWindow( graf2 );
+        graf2->showMaximized();
+        graf2->setearTitulo( "Datos originales" );
+        //graf2->setearEjesEnGrafico();
+        graf2->setearTituloEjeX( "Longitud" );
+        graf2->setearTituloEjeY( "Ancho" );
+        graf2->agregarPuntosClasificados( entradas1, salidas1, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
+
+        GraficadorMdi *graf3 = new GraficadorMdi( mdiArea );
+        mdiArea->addSubWindow( graf3 );
+        graf3->showMaximized();
+        graf3->setearTitulo( "Datos originales" );
+        //graf3->setearEjesEnGrafico();
+        graf3->setearTituloEjeX( "Petalos" );
+        graf3->setearTituloEjeY( "Sepalos" );
+        graf3->agregarPuntosClasificados( entradas2, salidas2, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
+        mdiArea->tileSubWindows();
+
+    }
 
     QDockWidget *dockBarra1 = new QDockWidget( "Progreso de Particiones" );
     main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra1 );
@@ -309,15 +347,48 @@ int main(int argc, char *argv[])
         nueva_salida.append( red.mapeadorSalidas( red.forwardPass( entradas.at(i) ) ) );
     }
 
-    GraficadorMdi *graf4 = new GraficadorMdi( mdiArea );
-    mdiArea->addSubWindow( graf4 );
-    graf4->showMaximized();
-    graf4->setearTitulo( "Datos evaluados con red neuronal" );
-    graf4->setearEjesEnGrafico();
-    graf4->setearTituloEjeX( " X " );
-    graf4->setearTituloEjeY( " y " );
-    graf4->agregarPuntosClasificados( entradas, nueva_salida, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
-    //graf4->agregarPuntosClasificados( entradas, nueva_salida );
+    matriz entradas1, entradas2;
+    vector salidas1, salidas2;
+    for( int i=0; i < entradas.size(); i++ ) {
+        vector temp;
+        temp.append( entradas.at(i).at(0) );
+        temp.append( entradas.at(i).at(1) );
+        entradas1.append( temp );
+        vector temp2;
+        temp2.append( entradas.at(i).at(2) );
+        temp2.append( entradas.at(i).at(3) );
+        entradas2.append( temp2 );
+        salidas1.append( nueva_salida.at( i ) );
+        salidas2.append( nueva_salida.at( i ) );
+    }
+
+    if( stringAQVector( parametros.value( "codificacion_salida" ).toString() ).size() <= 2 ) {
+        GraficadorMdi *graf4 = new GraficadorMdi( mdiArea );
+        mdiArea->addSubWindow( graf4 );
+        graf4->showMaximized();
+        graf4->setearTitulo( "Datos evaluados con red neuronal" );
+        graf4->setearEjesEnGrafico();
+        graf4->setearTituloEjeX( " X " );
+        graf4->setearTituloEjeY( " y " );
+        graf4->agregarPuntosClasificados( entradas, nueva_salida, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
+        //graf4->agregarPuntosClasificados( entradas, nueva_salida );
+    } else {
+        GraficadorMdi *graf4 = new GraficadorMdi( mdiArea );
+        mdiArea->addSubWindow( graf4 );
+        graf4->showMaximized();
+        graf4->setearTitulo( "Datos evaluados con red neuronal" );
+        graf4->setearTituloEjeX( "Largo" );
+        graf4->setearTituloEjeY( "Ancho" );
+        graf4->agregarPuntosClasificados( entradas1, salidas1, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
+
+        GraficadorMdi *graf5 = new GraficadorMdi( mdiArea );
+        mdiArea->addSubWindow( graf5 );
+        graf5->showMaximized();
+        graf5->setearTitulo( "Datos evaluados con red neuronal" );
+        graf5->setearTituloEjeX( "Petalos" );
+        graf5->setearTituloEjeY( "Sepalos" );
+        graf5->agregarPuntosClasificados( entradas2, salidas2, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
+    }
     mdiArea->tileSubWindows();
 
     arch.close();
