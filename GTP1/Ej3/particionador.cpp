@@ -33,9 +33,9 @@ void Particionador::particionarDatos()
         cantidad_entrenamiento-=cantidad_validacion;
     }
     else {
-        cantidad_entrenamiento = floor(_cantidad_datos * _porcentaje_entrenamiento );
-        cantidad_validacion = _k;
-        cantidad_prueba = _cantidad_datos - cantidad_entrenamiento;
+        cantidad_entrenamiento = _cantidad_datos - _k;
+        cantidad_validacion = floor( cantidad_entrenamiento * _porcentaje_validacion );
+        cantidad_prueba = _k;
         cantidad_entrenamiento-=cantidad_validacion;
     }
 

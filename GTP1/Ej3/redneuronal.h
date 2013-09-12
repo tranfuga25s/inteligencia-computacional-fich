@@ -19,7 +19,7 @@ public:
     void inicializarPesos();
 
     vector forwardPass( vector entradas );//forward pass
-    void backwardPass( vector entradas, double salidas );//backward pass
+    void backwardPass(vector entradas, double salida );//backward pass
 
     void entrenamiento(vector entradas, double salidas );
 
@@ -27,7 +27,7 @@ public:
     QVector<int> mostrarCodificacionSalida() { return codif_salidas; }
 
     int mapeadorSalidas( vector salidas );
-    vector mapeadorInverso( int valor );
+    vector mapeadorInverso(double valor );
     
 private:
     QVector<CapaNeuronal *> capas;

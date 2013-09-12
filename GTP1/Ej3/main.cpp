@@ -172,7 +172,6 @@ int main(int argc, char *argv[])
             int errores = 0;
             int correcto = 0;
 
-            //TIENE QUE ESTAR ACA EL PROBLEMA RELACIONADO CON EL FORWARDPASS SALEN DE MAYOR A MENOR LAS SALIDAS
             for( int i = 0; i < part_local.validacion.size(); i++ ) {
                 if( red.mapeadorSalidas( red.forwardPass( entradas.at( part_local.validacion.at( i ) ) ) ) != salidas.at( part_local.validacion.at( i ) ) ) {
                     errores++;
@@ -221,20 +220,20 @@ int main(int argc, char *argv[])
         qDebug() <<"Terminada particion " << p << "- Error de prueba: " << errores_particiones.at( p ) << "%";
 
         //Calculo el error promedio y la desviacion estandar para la particion
-        double error_promedio = 0.0;
-        double desviacion_estandar = 0.0;
-        double error_aux = 0.0;
+        //        double error_promedio = 0.0;
+        //        double desviacion_estandar = 0.0;
+        //        double error_aux = 0.0;
 
 
-        for (int i = 0 ; i < errores_epocas.size() ; i++ ) { error_promedio += errores_epocas.at(i);}
-        error_promedio /= errores_epocas.size();
+        //        for (int i = 0 ; i < errores_epocas.size() ; i++ ) { error_promedio += errores_epocas.at(i);}
+        //        error_promedio /= errores_epocas.size();
 
-        qDebug() <<"Error Promedio: " << error_promedio << "%";
+        //        qDebug() <<"Error Promedio: " << error_promedio << "%";
 
-        for (int i = 0 ; i < errores_epocas.size() ; i++ ) { error_aux += exp(errores_epocas.at(i) - error_promedio);}
-        desviacion_estandar = sqrt( (1.0 / (errores_epocas.size() - 1.0) ) * error_aux );
+        //        for (int i = 0 ; i < errores_epocas.size() ; i++ ) { error_aux += exp(errores_epocas.at(i) - error_promedio);}
+        //        desviacion_estandar = sqrt( (1.0 / (errores_epocas.size() - 1.0) ) * error_aux );
 
-        qDebug() <<"Desviacion Estandar: " << desviacion_estandar << "%";
+        //        qDebug() <<"Desviacion Estandar: " << desviacion_estandar << "%";
 
         errores_epocas.clear();
         PBParticiones->setValue( PBParticiones->value() + 1 );

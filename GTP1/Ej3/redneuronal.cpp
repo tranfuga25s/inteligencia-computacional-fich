@@ -77,14 +77,14 @@ void RedNeuronal::backwardPass( vector entradas, double salida_deseada )
     int sal_codif = mapeadorSalidas(salida);
 
     // Tanto la salida codificada como la salida deseada están codificadas
-    // El vector de la salida deseada tiene un solo elemento
     if( sal_codif != salida_deseada ) {
+
         vector salida_deseada_vector = mapeadorInverso( salida_deseada );
 
         // CORRECCION DELTAS ULTIMA CAPA
         for( int i=0; i<salida_deseada_vector.size(); i++ ) {
 
-            double error = salida.at( i ) - salida_deseada_vector.at( i );
+            double error = salida_deseada_vector.at( i ) - salida.at( i );
             double derivada = Neurona::funcionActivacionDerivada( salida.at(i) );
             double delta = error * derivada;
             capas[capas.size()-1]->getNeuronas()[i]->setDelta( delta );
@@ -92,8 +92,9 @@ void RedNeuronal::backwardPass( vector entradas, double salida_deseada )
         }
 
         // CORRECCION DELTAS RESTANTES CAPAS
+        //Recorro desde la penultima capa hasta la primera
         for( int c = capas.size()-2 ; c >= 0 ; c-- ) {
-
+            //Recorro todas las neuronas de la capa
             for (int n = 0 ; n < capas[c]->cantidadNeuronas() ; n++ ) {
 
                 capas[c]->corregirDeltas( n, capas[c+1]->getDeltas(n) );
@@ -166,9 +167,8 @@ int RedNeuronal::mapeadorSalidas(vector salidas)
  * \param valor
  * \return
  */
-vector RedNeuronal::mapeadorInverso( int valor )
+vector RedNeuronal::mapeadorInverso( double valor )
 {
-    //Deberia devolver cualquier vector salida que me genere el valor
     vector retorno;
     if( codif_salidas.size() == 1 ) {
         retorno.append( valor );
@@ -176,7 +176,7 @@ vector RedNeuronal::mapeadorInverso( int valor )
     }
     // Los valores que tiene que contener los vectores de
     // comparación para las neuronas tienen que ser acordes a la funcion
-    // de activación que se esté tuilizando
+    // de activación que se esté uilizando
     for( int i=0; i<codif_salidas.size(); i++ ) {
         if( valor == codif_salidas.at( i ) ) {
             retorno.insert( i, 1.0  );
