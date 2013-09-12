@@ -261,8 +261,8 @@ int main(int argc, char *argv[])
         graf->setearEjesEnGrafico();
         graf->setearTituloEjeX( " X " );
         graf->setearTituloEjeY( " y " );
-        //graf->agregarPuntosClasificados( nueva_entrada, nueva_salida, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
-        graf->agregarPuntosClasificados( nueva_entrada, nueva_salida, 0.0 );
+        graf->agregarPuntosClasificados( nueva_entrada, nueva_salida, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
+        //graf->agregarPuntosClasificados( nueva_entrada, nueva_salida, 0.0 );
         mdiArea->tileSubWindows();
 
         QApplication::processEvents();
@@ -293,15 +293,16 @@ int main(int argc, char *argv[])
 
     qDebug() << "Tiempo medido: " << milisegundos << " ms";
 
-
-    GraficadorMdi *graf3 = new GraficadorMdi( mdiArea );
-    mdiArea->addSubWindow( graf3 );
-    graf3->showMaximized();
-    graf3->setearTitulo( "Errores por particion( datos de prueba )" );
-    graf3->setearTituloEjeX( "Particion" );
-    graf3->setearTituloEjeY( "Error" );
-    graf3->agregarCurva( errores_particiones, "Errores" );
-    mdiArea->tileSubWindows();
+    if( particiones.cantidadDeParticiones() != 1 ) {
+        GraficadorMdi *graf3 = new GraficadorMdi( mdiArea );
+        mdiArea->addSubWindow( graf3 );
+        graf3->showMaximized();
+        graf3->setearTitulo( "Errores por particion( datos de prueba )" );
+        graf3->setearTituloEjeX( "Particion" );
+        graf3->setearTituloEjeY( "Error" );
+        graf3->agregarCurva( errores_particiones, "Errores" );
+        mdiArea->tileSubWindows();
+    }
 
     QVector<int> nueva_salida;
     for( int i=0; i<entradas.size(); i++ ) {
@@ -315,8 +316,8 @@ int main(int argc, char *argv[])
     graf4->setearEjesEnGrafico();
     graf4->setearTituloEjeX( " X " );
     graf4->setearTituloEjeY( " y " );
-    //graf4->agregarPuntosClasificados( entradas, nueva_salida, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
-    graf4->agregarPuntosClasificados( entradas, nueva_salida );
+    graf4->agregarPuntosClasificados( entradas, nueva_salida, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
+    //graf4->agregarPuntosClasificados( entradas, nueva_salida );
     mdiArea->tileSubWindows();
 
     arch.close();

@@ -140,13 +140,13 @@ int RedNeuronal::mapeadorSalidas(vector salidas)
         }
     }
 
-    if( salidas.size() == 2 ) {
+    /*if( salidas.size() == 2 ) {
         if( salidas.at(0) > salidas.at(1) ) {
             return -1;
         } else {
             return 1;
         }
-    }
+    }*/
 
     double max = (-1.0)*DBL_MAX;
     int mayor = 0;
