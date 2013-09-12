@@ -16,7 +16,6 @@
 #include "redneuronal.h"
 #include "capaneuronal.h"
 
-
 typedef QVector<double> vector;
 typedef QVector< QVector<double> > matriz;
 
@@ -41,6 +40,10 @@ int main(int argc, char *argv[])
     mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     main.setCentralWidget(mdiArea);
+
+    QFile arch( "pesos.csv" );
+    arch.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate );
+    QTextStream pesos( &arch );
 
     //Inicializo con una semilla aleatoria para la generacion de Aleatorios
     qsrand( QTime::currentTime().msec() );
@@ -166,6 +169,7 @@ int main(int argc, char *argv[])
             for(int i = 0; i<part_local.entrenamiento.size(); i++ )
             {
                 red.backwardPass( entradas.at( part_local.entrenamiento.at(i) ), salidas.at( part_local.entrenamiento.at( i ) ) );
+                red.mostrarPesos( pesos );
             }
 
             // Verifico el error
@@ -173,7 +177,12 @@ int main(int argc, char *argv[])
             int correcto = 0;
 
             for( int i = 0; i < part_local.validacion.size(); i++ ) {
-                if( red.mapeadorSalidas( red.forwardPass( entradas.at( part_local.validacion.at( i ) ) ) ) != salidas.at( part_local.validacion.at( i ) ) ) {
+                int pos = part_local.validacion.at( i );
+                vector entrada_a_evaluar = entradas.at( pos );
+                vector salida_red = red.forwardPass( entrada_a_evaluar ) ;
+                double salida_mapeada = red.mapeadorSalidas( salida_red );
+                double salida_deseada = salidas.at( pos );
+                if( salida_mapeada != salida_deseada  ) {
                     errores++;
                 } else {
                     correcto++;
@@ -252,7 +261,8 @@ int main(int argc, char *argv[])
         graf->setearEjesEnGrafico();
         graf->setearTituloEjeX( " X " );
         graf->setearTituloEjeY( " y " );
-        graf->agregarPuntosClasificados( nueva_entrada, nueva_salida, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
+        //graf->agregarPuntosClasificados( nueva_entrada, nueva_salida, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
+        graf->agregarPuntosClasificados( nueva_entrada, nueva_salida, 0.0 );
         mdiArea->tileSubWindows();
 
         QApplication::processEvents();
@@ -305,8 +315,11 @@ int main(int argc, char *argv[])
     graf4->setearEjesEnGrafico();
     graf4->setearTituloEjeX( " X " );
     graf4->setearTituloEjeY( " y " );
-    graf4->agregarPuntosClasificados( entradas, nueva_salida, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
+    //graf4->agregarPuntosClasificados( entradas, nueva_salida, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
+    graf4->agregarPuntosClasificados( entradas, nueva_salida );
     mdiArea->tileSubWindows();
+
+    arch.close();
 
     return a.exec();
 

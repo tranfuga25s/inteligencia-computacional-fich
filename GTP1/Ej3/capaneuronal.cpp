@@ -91,7 +91,7 @@ void CapaNeuronal::corregirPesos(vector entradas)
  * \param error
  * \return
  */
-void CapaNeuronal::corregirDeltas( int num_neurona, double error )
+void CapaNeuronal::corregirDeltas( int num_neurona, double error )//sumatoria = error
 {
     double salida = neuronas[num_neurona]->getSalida();
     double derivada = Neurona::funcionActivacionDerivada( salida );

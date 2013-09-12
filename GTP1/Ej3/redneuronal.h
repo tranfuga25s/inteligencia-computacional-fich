@@ -28,6 +28,8 @@ public:
 
     int mapeadorSalidas( vector salidas );
     vector mapeadorInverso(double valor );
+
+    void mostrarPesos( QTextStream &pesos );
     
 private:
     QVector<CapaNeuronal *> capas;

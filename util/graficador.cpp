@@ -150,7 +150,33 @@ void Graficador::agregarPuntosClasificados( matriz entradas, matriz salida, doub
     } else {
         agregarPuntos( m1, QString( "Entradas %1" ).arg( limite_division-limite_division ) );
         agregarPuntos( m2, QString( "Entradas %1" ).arg( limite_division+limite_division ) );
-    }}
+    }
+}
+
+/*!
+ * \brief Graficador::agregarPuntosClasificados
+ * Clasifica todas las entradas en 2 grupos ( -1 y +1 ) y las grafica
+ * \param entradas Matriz de entradas
+ * \param salidas Vector de salidas
+ */
+void Graficador::agregarPuntosClasificados( matriz entradas, QVector<int> salida, double limite_division )
+{
+    matriz m1,m2;
+    for( int i=0; i<entradas.size(); i++ ) {
+        if( salida.at( i ) <= limite_division ) {
+            m1.append( entradas.at( i ) );
+        } else {
+            m2.append( entradas.at( i ) );
+        }
+    }
+    if( limite_division == 0.0 ) {
+        agregarPuntos( m1, "Entradas -1" );
+        agregarPuntos( m2, "Entradas +1" );
+    } else {
+        agregarPuntos( m1, QString( "Entradas %1" ).arg( limite_division-limite_division ) );
+        agregarPuntos( m2, QString( "Entradas %1" ).arg( limite_division+limite_division ) );
+    }
+}
 
 /*!
  * \brief Graficador::agregarPuntosClasificados

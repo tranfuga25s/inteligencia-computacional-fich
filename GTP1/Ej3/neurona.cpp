@@ -39,7 +39,7 @@ double Neurona::evaluar( QVector<double> entradas )
 
     for (int i=0 ; i<entradas.size() ; i++)
     {
-        sumatoria+=_pesos.at(i+1)*entradas.value(i);//entradas empieza desde 0 pero los w desde 1
+        sumatoria+=_pesos.at(i+1)*entradas.at(i);//entradas empieza desde 0 pero los w desde 1
     }
 
     //qDebug() << sumatoria;
