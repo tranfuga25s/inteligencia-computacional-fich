@@ -170,6 +170,10 @@ vector RedNeuronal::mapeadorInverso( int valor )
 {
     //Deberia devolver cualquier vector salida que me genere el valor
     vector retorno;
+    if( codif_salidas.size() == 1 ) {
+        retorno.append( valor );
+        return retorno;
+    }
     // Los valores que tiene que contener los vectores de
     // comparación para las neuronas tienen que ser acordes a la funcion
     // de activación que se esté tuilizando

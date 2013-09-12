@@ -65,8 +65,7 @@ int main(int argc, char *argv[])
     if( ! leer_archivo_entrenamiento( archivo_aleatorios,
                                       &entradas,
                                       &salidas,
-                                      parametros.value( "cantidad_entradas" ).toInt(),
-                                      parametros.value( "cantidad_salidas" ).toInt() ) ) {
+                                      parametros.value( "cantidad_entradas" ).toInt() ) ) {
         qDebug() << "No se pudo encontrar el archivo de entrenamiento! cancelando!";
         abort();
     }
@@ -155,8 +154,7 @@ int main(int argc, char *argv[])
     leer_archivo_entrenamiento( parametros.value( "archivo_prueba_randomizado" ).toString(),
                                 &entradas,
                                 &salidas,
-                                2,
-                                1 );
+                                2 );
 
     qDebug() << "Escribiendo resultados";
     salidas.clear();

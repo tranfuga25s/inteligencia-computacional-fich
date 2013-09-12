@@ -30,6 +30,7 @@ HEADERS += \
 
 OTHER_FILES += parametros.cfg \
     iris.csv \
-    concent.csv
+    concent.csv \
+    XOR-etra.csv
 
 INCLUDEPATH += ../../util
