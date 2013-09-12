@@ -292,16 +292,17 @@ int main(int argc, char *argv[])
             nueva_entrada.append( entradas.at( part_local.prueba.at( i ) ) );
         }
 
-        GraficadorMdi *graf = new GraficadorMdi( mdiArea );
-        mdiArea->addSubWindow( graf );
-        graf->show();
-        graf->setearTitulo( QString( "Datos de prueba evaluados con red neuronal - Particion %1" ).arg( p+1 ) );
-        graf->setearEjesEnGrafico();
-        graf->setearTituloEjeX( " X " );
-        graf->setearTituloEjeY( " y " );
-        graf->agregarPuntosClasificados( nueva_entrada, nueva_salida, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
-        //graf->agregarPuntosClasificados( nueva_entrada, nueva_salida, 0.0 );
-        mdiArea->tileSubWindows();
+        if( particiones.cantidadDeParticiones() <= 5 ) {
+            GraficadorMdi *graf = new GraficadorMdi( mdiArea );
+            mdiArea->addSubWindow( graf );
+            graf->show();
+            graf->setearTitulo( QString( "Datos de prueba evaluados con red neuronal - Particion %1" ).arg( p+1 ) );
+            graf->setearEjesEnGrafico();
+            graf->setearTituloEjeX( " X " );
+            graf->setearTituloEjeY( " y " );
+            graf->agregarPuntosClasificados( nueva_entrada, nueva_salida, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
+            mdiArea->tileSubWindows();
+        }
 
         QApplication::processEvents();
     }
