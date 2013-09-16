@@ -207,7 +207,7 @@ int main(int argc, char *argv[])
             for(int i = 0; i<part_local.entrenamiento.size(); i++ )
             {
                 red.backwardPass( entradas.at( part_local.entrenamiento.at(i) ), salidas.at( part_local.entrenamiento.at( i ) ) );
-                red.mostrarPesos( pesos );
+                //red.mostrarPesos( pesos );
             }
 
             // Verifico el error
@@ -226,7 +226,7 @@ int main(int argc, char *argv[])
                     correcto++;
                 }
             }
-            porcentaje_error = ( (double) errores * 100 ) / (double) entradas.size();
+            porcentaje_error = ( (double) errores * 100 ) / (double) part_local.validacion.size();
             errores_epocas.push_back( porcentaje_error );
 
             // Aumento el contador de epocas
@@ -254,7 +254,7 @@ int main(int argc, char *argv[])
                 correcto++;
             }
         }
-        porcentaje_error = ( (double) errores * 100 ) / (double) entradas.size();
+        porcentaje_error = ( (double) errores * 100 ) / (double) part_local.prueba.size();
         errores_particiones.push_back( porcentaje_error );
 
         //Aumento el contador de las no exitosas
@@ -325,10 +325,10 @@ int main(int argc, char *argv[])
     double desviacion_estandar = 0.0;
     double error_aux = 0.0;
 
-    for (int i = 0 ; i < errores_particiones.size() ; i++ ) { error_aux += exp(errores_particiones.at(i) - error_promedio);}
+    for (int i = 0 ; i < errores_particiones.size() ; i++ ) { error_aux += pow(errores_particiones.at(i) - error_promedio,2);}
     desviacion_estandar = sqrt( (1.0 / (errores_particiones.size() - 1.0) ) * error_aux );
 
-    qDebug() <<"Desviacion Estandar: " << desviacion_estandar << "%";
+    qDebug() <<"Desviacion Estandar: " << desviacion_estandar ;
 
     qDebug() << "Tiempo medido: " << milisegundos << " ms";
 
@@ -343,25 +343,17 @@ int main(int argc, char *argv[])
         mdiArea->tileSubWindows();
     }
 
+
+
     QVector<int> nueva_salida;
     for( int i=0; i<entradas.size(); i++ ) {
         nueva_salida.append( red.mapeadorSalidas( red.forwardPass( entradas.at(i) ) ) );
     }
 
-    matriz entradas1, entradas2;
-    vector salidas1, salidas2;
-    for( int i=0; i < entradas.size(); i++ ) {
-        vector temp;
-        temp.append( entradas.at(i).at(0) );
-        temp.append( entradas.at(i).at(1) );
-        entradas1.append( temp );
-        vector temp2;
-        temp2.append( entradas.at(i).at(2) );
-        temp2.append( entradas.at(i).at(3) );
-        entradas2.append( temp2 );
-        salidas1.append( nueva_salida.at( i ) );
-        salidas2.append( nueva_salida.at( i ) );
-    }
+
+
+
+
 
     if( stringAQVector( parametros.value( "codificacion_salida" ).toString() ).size() <= 2 ) {
         GraficadorMdi *graf4 = new GraficadorMdi( mdiArea );
@@ -374,6 +366,22 @@ int main(int argc, char *argv[])
         graf4->agregarPuntosClasificados( entradas, nueva_salida, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
         //graf4->agregarPuntosClasificados( entradas, nueva_salida );
     } else {
+
+        matriz entradas1, entradas2;
+        vector salidas1, salidas2;
+        for( int i=0; i < entradas.size(); i++ ) {
+            vector temp;
+            temp.append( entradas.at(i).at(0) );
+            temp.append( entradas.at(i).at(1) );
+            entradas1.append( temp );
+            vector temp2;
+            temp2.append( entradas.at(i).at(2) );
+            temp2.append( entradas.at(i).at(3) );
+            entradas2.append( temp2 );
+            salidas1.append( nueva_salida.at( i ) );
+            salidas2.append( nueva_salida.at( i ) );
+        }
+
         GraficadorMdi *graf4 = new GraficadorMdi( mdiArea );
         mdiArea->addSubWindow( graf4 );
         graf4->showMaximized();

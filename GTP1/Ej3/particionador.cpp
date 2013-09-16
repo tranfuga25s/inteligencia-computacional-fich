@@ -32,7 +32,15 @@ void Particionador::particionarDatos()
         cantidad_prueba = _cantidad_datos - cantidad_entrenamiento;
         cantidad_entrenamiento-=cantidad_validacion;
     } else {
-        _cant_particiones = _cantidad_datos - _k;
+        //Para probar que la varianza y el desvio sean representativos de los datos
+        if (_k == 1) {
+            _cant_particiones = _cantidad_datos - _k;
+
+        }
+        else
+        {
+            _cant_particiones = floor(_cantidad_datos/_k);
+        }
         cantidad_entrenamiento = _cantidad_datos - _k;
         cantidad_validacion = floor( cantidad_entrenamiento * _porcentaje_validacion );
         cantidad_prueba = _k;
