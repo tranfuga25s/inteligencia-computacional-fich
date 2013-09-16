@@ -6,7 +6,12 @@
 class CapaNeuronalRadial
 {
 public:
-    CapaNeuronalRadial();
+    CapaNeuronalRadial( int cantidad_neuronas, int cantidad_entradas );
+
+    void setearTasaAprendizaje( double tasa );
+    void setearMomento( double momento );
+
+    QVector<double> getSalidas( QPointF entrada );
 
 private:
     QVector<NeuronaRadial> *_neuronas;
