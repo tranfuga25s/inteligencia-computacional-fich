@@ -17,14 +17,21 @@ public:
 
     void inicializarPesos();
 
-    void setearDatosOriginales( QVector<QPointF> entradas, QVector<int> clases );
+    void setearDatosOriginales( QVector<QPointF> *entradas, QVector<int> *clases );
+
+    void buscarCentroides();
+    void entrenarCapaNeuronalComun();
+
+    int probarPatron( QPointF patron );
 
 private:
     CapaNeuronal *_capaNeuronas;
     CapaNeuronalRadial *_capaRadial;
 
-    QPair<int, QPointF> *_datos_originales; // Guarda la posicion y la clase a la que pertenece en el momento
+    int _cantidad_clases; // K
 
+    QVector<QPointF> *_datos_originales; // Guarda la posicion y la clase a la que pertenece en el momento
+    QVector<int> *_clases_originales;
 };
 
 #endif // REDNEURONALRADIAL_H

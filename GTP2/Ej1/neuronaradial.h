@@ -3,6 +3,7 @@
 
 #include <QPoint>
 #include <QList>
+#include "math.h"
 
 class NeuronaRadial
 {

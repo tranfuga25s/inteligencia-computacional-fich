@@ -16,6 +16,8 @@ public:
     void inicializarPesos();
 
     void evaluar( vector entradas );
+    int evaluarCodificado( vector entradas );
+    void entrenar( vector entradas, int clase );
 
     vector getSalidas();
 
@@ -24,10 +26,15 @@ public:
     void corregirDeltas( int num_nueronas, double error );
     double getDeltas( int num_neurona );
 
+    void setearCodificacion( QVector<int> codif );
+    int mapeadorSalidas( vector salidas );
+    vector mapeadorInverso(double valor );
+
     QVector<Neurona *> getNeuronas() { return neuronas; }
     
 private:
     QVector<Neurona *> neuronas;
+    QVector<int> codif_salidas;
 
     
 };

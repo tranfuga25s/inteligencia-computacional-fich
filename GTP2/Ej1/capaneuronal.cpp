@@ -1,5 +1,6 @@
 #include "capaneuronal.h"
 #include "neurona.h"
+#include <cfloat>
 
 CapaNeuronal::CapaNeuronal(int cant_neuronas, int cant_entradas )
 {
@@ -43,6 +44,27 @@ void CapaNeuronal::evaluar( vector entradas )
     }
 }
 
+int CapaNeuronal::evaluarCodificado(vector entradas)
+{
+    vector temporal;
+    for( int n=0; n<neuronas.size(); n++ ) {
+        temporal.append( neuronas[n]->evaluar( entradas ) );
+    }
+    return mapeadorSalidas( temporal );
+}
+
+void CapaNeuronal::entrenar( vector entradas, int clase )
+{
+
+    // corrijo los errores
+    vector vector_deseado = this->mapeadorInverso( clase );
+
+    for( int i=0; i<neuronas.size(); i++ ) {
+        neuronas[i]->entrenamiento( entradas, vector_deseado.at( i ) );
+    }
+
+}
+
 vector CapaNeuronal::getSalidas()
 {
     vector temp;
@@ -51,13 +73,13 @@ vector CapaNeuronal::getSalidas()
     }
     return temp;
 }
+
 /*!
  * \brief CapaNeuronal::getDeltas
  * Devuelve la sumatoria de los deltas de todas las neuronas de la capa por el peso de la neurona pasada como parametro
  *\param num_neurona
  * \return
  */
-
 double CapaNeuronal::getDeltas(int num_neurona)
 {
     double sumatoria = 0.0;
@@ -100,5 +122,66 @@ void CapaNeuronal::corregirDeltas( int num_neurona, double error )//sumatoria = 
     neuronas[num_neurona]->setDelta( nuevo_delta );
 }
 
+/*!
+ * \brief RedNeuronal::setearCodificacion
+ * \param codif
+ */
+void CapaNeuronal::setearCodificacion( QVector<int> codif )
+{ codif_salidas = codif; }
 
+/*!
+ * \brief RedNeuronal::mapeadorSalidas
+ * \param salidas
+ * \return
+ */
+int CapaNeuronal::mapeadorSalidas(vector salidas)
+{
+    //Esto es el caso de que haya una sola neurona en la ultima capa
+    if( salidas.size() == 1 ) {
+        if( salidas.at(0) > 0.0 ) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+
+    double max = (-1.0)*DBL_MAX;
+    int mayor = 0;
+
+    for(int i = 0 ; i < salidas.size() ; i++) {
+        //La comparacion implica que me quedo con el primer maximo encontrado
+        if (salidas.at(i) > max) {
+            max = salidas.at(i);
+            mayor = i;
+        }
+    }
+
+    return codif_salidas.at( mayor );
+
+}
+
+/*!
+ * \brief RedNeuronal::mapeadorInverso
+ * \param valor
+ * \return
+ */
+vector CapaNeuronal::mapeadorInverso( double valor )
+{
+    vector retorno;
+    if( codif_salidas.size() == 1 ) {
+        retorno.append( valor );
+        return retorno;
+    }
+    // Los valores que tiene que contener los vectores de
+    // comparación para las neuronas tienen que ser acordes a la funcion
+    // de activación que se esté uilizando
+    for( int i=0; i<codif_salidas.size(); i++ ) {
+        if( valor == codif_salidas.at( i ) ) {
+            retorno.insert( i, 1.0  );
+        } else {
+            retorno.insert( i, -1.0 );
+        }
+    }
+    return retorno;
+}
 

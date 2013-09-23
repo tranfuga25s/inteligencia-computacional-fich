@@ -23,6 +23,7 @@ public:
     void setearMomento( double momento ) { _momento = momento; }
     double tasaMomento() { return _momento; }
 
+    double entrenamiento( QVector<double> entradas, double salidaDeseada );
 
     int cantidadEntradas() { return _cantidad_entradas; }
 
