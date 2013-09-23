@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
                     correcto++;
                 }
             }
-            porcentaje_error = ( (double) errores * 100 ) / (double) entradas.size();
+            porcentaje_error = ( (double) errores * 100 ) / (double) part_local.validacion.size();
             errores_epocas.push_back( porcentaje_error );
 
             // Aumento el contador de epocas
@@ -174,7 +174,7 @@ int main(int argc, char *argv[])
                 correcto++;
             }
         }
-        porcentaje_error = ( (double) errores * 100 ) / (double) entradas.size();
+        porcentaje_error = ( (double) errores * 100 ) / (double) part_local.prueba.size();
         errores_particiones[p] = porcentaje_error;
 
         //Aumento el contador de las no exitosas
