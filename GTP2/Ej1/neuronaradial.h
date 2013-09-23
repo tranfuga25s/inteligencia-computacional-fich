@@ -15,13 +15,14 @@ public:
     void setearClase( int c ) { _clase = c; }
 
     void recalcularCentroide( QList<QPointF> lista );
+    double distanciaCentroide(QPointF punto){ return sqrt( pow( punto.x() - _media.x(), 2.0 ) + pow( punto.y() - _media.y(), 2.0 ) ) ;}
 
     double getSalida( QPointF punto );
 
 
 private:
     QPointF _media; // Punto del centroide
-    float _desviacion;
+    float _desviacion;//Radio Gausseana
 
     int _clase;
 

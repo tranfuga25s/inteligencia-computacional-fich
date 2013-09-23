@@ -28,5 +28,5 @@ void NeuronaRadial::recalcularCentroide( QList<QPointF> lista )
 
 double NeuronaRadial::getSalida( QPointF punto )
 {
-    /// @TODO: Agregar evaluacion de la gaussiana para el punto especificado
+    return exp( -1 * pow(distanciaCentroide(punto),2) / 2 * pow(_desviacion,2) );
 }
