@@ -84,7 +84,7 @@ void CapaNeuronalRadial::buscarCentroides( QVector<QPointF> _datos_originales )
                 // Cambio el patron de lugar si corresponde
                 if( _patrones_clase->indexOf( *clase ) != clase_elegida ) {
                     // Muevo el patron a la clase que le corresponde
-                    _patrones_clase->at( clase_elegida).append( clase->takeAt( clase->indexOf( *p ) ) );
+                    _patrones_clase->operator []( clase_elegida ).append( clase->takeAt( clase->indexOf( *p ) ) );
                     //_patrones_clase->at( clase ).removeAt( p );
                     hubo_cambio = true;
                 }

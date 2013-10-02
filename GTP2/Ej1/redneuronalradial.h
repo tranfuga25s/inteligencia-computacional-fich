@@ -22,6 +22,9 @@ public:
     void buscarCentroides();
     void entrenarCapaNeuronalComun();
 
+    void setearCodificacion( QVector<int> vector ) { _capaNeuronas->setearCodificacion( vector ); }
+    QVector<int> mostrarCodificacionSalida() { _capaNeuronas->getCodificacionSalidas(); }
+
     int probarPatron( QPointF patron );
 
 private:

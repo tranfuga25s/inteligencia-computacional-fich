@@ -27,6 +27,7 @@ public:
     double getDeltas( int num_neurona );
 
     void setearCodificacion( QVector<int> codif );
+    QVector<int> getCodificacionSalidas() { return codif_salidas; }
     int mapeadorSalidas( vector salidas );
     vector mapeadorInverso(double valor );
 

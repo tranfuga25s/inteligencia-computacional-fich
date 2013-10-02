@@ -13,7 +13,7 @@
 
 #include "iostream"
 #include "graficadormdi.h"
-#include "redneuronal.h"
+#include "redneuronalradial.h"
 #include "capaneuronal.h"
 
 typedef QVector<double> vector;
@@ -68,14 +68,6 @@ int main(int argc, char *argv[])
         abort();
     }
 
-
-    return 0;
-
-
-
-
-
-
     // particionamos los datos
     Particionador particiones;
     particiones.setearCantidadDatos( entradas.size() );
@@ -87,15 +79,17 @@ int main(int argc, char *argv[])
 
     // Inicializo la red neuronal
     QVector<int> neuronas_por_capas = stringAQVector( parametros.value( "capas" ).toString() );
-    RedNeuronal red( neuronas_por_capas.size(),
-                     neuronas_por_capas,
-                     parametros.value("cantidad_entradas").toInt(),
-                     main.centralWidget() );
+
+    // Inicilizo la red radial
+
+    RedNeuronalRadial red( neuronas_por_capas.at(0),
+                           neuronas_por_capas.at(1),
+                           parametros.value("cantidad_entradas").toInt() );
 
     red.setearTasaAprendizaje( parametros.value( "tasa_aprendizaje" ).toDouble() );
     qDebug() << "Tasa de aprendizaje: " << parametros.value( "tasa_aprendizaje" ).toDouble();
 
-    red.setearMomento( parametros.value( "momento" ).toDouble() );
+    red.setearMomento( parametros.value( "momento", 0.0 ).toDouble() );
     qDebug() << "Momento: " << red.getMomento();
 
     red.setearCodificacion( stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
@@ -110,8 +104,10 @@ int main(int argc, char *argv[])
     qDebug() << endl << "---------------- /Comienza el entrenamiento/ ----------------";
 
     int epoca = 0; /* Contador de epocas */
-    double porcentaje_error = 100.0; /*Mucho sino sale*/
+    double porcentaje_error = 100.0; /* Mucho sino sale */
     int cantidad_particiones_exitosas = 0;
+
+    return 0;
 
     GraficadorMdi *graf1 = new GraficadorMdi( mdiArea );
     graf1->setearTitulo( QString::fromUtf8( "Porcentaje de error según particion ( entrenamiento )" ) );
