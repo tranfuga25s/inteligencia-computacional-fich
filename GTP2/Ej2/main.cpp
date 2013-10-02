@@ -19,6 +19,8 @@ typedef QVector< QVector<double> > matriz;
 
 #include "funciones_aux.h"
 
+#include "som.h"
+
 /*!
  * \brief main
  * Ejercicio 2 Guia de Trabajos Practicos 2
@@ -43,41 +45,32 @@ int main(int argc, char *argv[])
     // Cargo los parametros del ejercicio
     QSettings parametros( "parametros.cfg", QSettings::IniFormat );
 
+    GraficadorMdi *graf1 = new GraficadorMdi( mdiArea );
+    graf1->setearTitulo( QString::fromUtf8( "Porcentaje de error según particion ( entrenamiento )" ) );
+    graf1->setearTituloEjeX( QString::fromUtf8( "Epoca" ) );
+    graf1->setearTituloEjeY( QString::fromUtf8( "Porcentaje error" ) );
+    mdiArea->addSubWindow( graf1 );
+    mdiArea->tileSubWindows();
+
     // Archivo de entrada
-/*    QString archivo = QCoreApplication::applicationDirPath().append( QDir::separator() ).append( parametros.value( "archivo_entrada" ).toString() );
+    QString archivo = QCoreApplication::applicationDirPath().append( QDir::separator() ).append( parametros.value( "archivo_entrada" ).toString() );
 
     // Cargo los datos de los archivos que corresponda
     matriz entradas( parametros.value( "cantidad_entradas" ).toInt() );
-    vector salidas( parametros.value( "cantidad_salidas" ).toInt() );
 
     qDebug() << endl << "--------------- /Datos del entrenamiento/ -----------------" << endl;
     qWarning() << "Archivo de lectura de datos originales: "<< archivo;
     if( ! leer_archivo_entrenamiento( archivo,
                                       &entradas,
-                                      &salidas,
                                       parametros.value( "cantidad_entradas" ).toInt() )  ) {
         qDebug() << "No se pudo encontrar el archivo de entrenamiento! cancelando!";
         abort();
     }
 
-    // particionamos los datos
-    Particionador particiones;
-    particiones.setearCantidadDatos( entradas.size() );
-    particiones.setearCantidadDeParticiones( parametros.value( "cantidad_particiones" ).toInt() );
-    particiones.setearPorcentajeEntrenamiento( parametros.value( "porcentaje_entrenamiento" ).toDouble() );
-    particiones.setearPorcentajeValidacion( parametros.value("porcentaje_validacion").toDouble() );
-    particiones.setearK(parametros.value("k").toInt());
-    particiones.particionarDatos();
-
-    // Inicializo la red neuronal
-    QVector<int> neuronas_por_capas = stringAQVector( parametros.value( "capas" ).toString() );
-
-    // Inicilizo la red radial
-
-    RedNeuronalRadial red( neuronas_por_capas.at(0),
-                           neuronas_por_capas.at(1),
-                           parametros.value("cantidad_entradas").toInt() );
-
+    // Inicializo el SOM
+    SOM SOM( parametros.value( "som_tam_x", 2 ).toInt(),
+             parametros.value( "som_tam_y", 2 ).toInt() );
+/*
     red.setearTasaAprendizaje( parametros.value( "tasa_aprendizaje" ).toDouble() );
     qDebug() << "Tasa de aprendizaje: " << parametros.value( "tasa_aprendizaje" ).toDouble();
 
@@ -98,13 +91,6 @@ int main(int argc, char *argv[])
     int epoca = 0; // Contador de epocas
     double porcentaje_error = 100.0; // Mucho sino sale
     int cantidad_particiones_exitosas = 0;
-
-    GraficadorMdi *graf1 = new GraficadorMdi( mdiArea );
-    graf1->setearTitulo( QString::fromUtf8( "Porcentaje de error según particion ( entrenamiento )" ) );
-    graf1->setearTituloEjeX( QString::fromUtf8( "Epoca" ) );
-    graf1->setearTituloEjeY( QString::fromUtf8( "Porcentaje error" ) );
-    mdiArea->addSubWindow( graf1 );
-    mdiArea->tileSubWindows();
 
     if( stringAQVector( parametros.value( "codificacion_salida" ).toString() ).size() <= 2 ) {
         GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );

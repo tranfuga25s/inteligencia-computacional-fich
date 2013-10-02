@@ -65,8 +65,55 @@ static bool leer_archivo_entrenamiento( QString direccion,
     if( cant > 0 )
     { return true; } else { return false; }
 }
-
 #endif
+
+/*!
+ * \brief leer_archivo_entrenamiento
+ * \param direccion
+ * \param vect_entradas
+ * \param tam_entradas
+ * \return
+ */
+static bool leer_archivo_entrenamiento( QString direccion,
+                                        matriz* vect_entradas,
+                                        int tam_entradas )
+{
+
+    QFile archivo_entrada( direccion );
+    if( !archivo_entrada.exists() ) {
+        qDebug() << "El archivo de entrada no existe! " << direccion;
+        return false;
+    }
+
+    int cant=0;
+    // Evita las primeras entradas de constructores nulos que agregas ceros en los vectores.
+    vect_entradas->clear();
+    if(archivo_entrada.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+
+        QVector<double> aux;
+        while( !archivo_entrada.atEnd() )
+        {
+
+            //Leo la linea y la proceso almacenandola en los vectores correspondientes
+            QString Linea = archivo_entrada.readLine();
+            QStringList divisiones = Linea.split( ',', QString::SkipEmptyParts );
+
+            // Guardo las entradas
+            for( int i = 0; i<tam_entradas; i++ ) {
+                aux.push_back( divisiones.takeFirst().toDouble() );
+            }
+            vect_entradas->append( aux );
+            cant++;
+        }
+        //qDebug() << "Leidas " << cant << " entradas de entrenamiento";
+        archivo_entrada.close();
+    }
+    if( cant > 0 )
+    { return true; } else { return false; }
+}
+
+
 
 #ifndef LEERARCHIVOENTRENAMIENTOOLD
 #define LEERARCHIVOENTRENAMIENTOOLD
