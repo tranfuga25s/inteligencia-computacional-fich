@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core
-TARGET = Ej3
+TARGET = GTP2EJ1
 CONFIG   += console
 CONFIG += qwt
 
@@ -35,8 +35,6 @@ HEADERS +=  neurona.h \
 
 OTHER_FILES += parametros.cfg \
                iris.csv \
-               concent.csv \
-               XOR-etra.csv \
-    XOR-extra.csv
+               XOR-etra.csv
 
 INCLUDEPATH += ../../util
