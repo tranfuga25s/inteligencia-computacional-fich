@@ -44,7 +44,7 @@ void CapaNeuronal::evaluar( vector entradas )
     }
 }
 
-int CapaNeuronal::evaluarCodificado(vector entradas)
+int CapaNeuronal::evaluarCodificado( vector entradas )
 {
     vector temporal;
     for( int n=0; n<neuronas.size(); n++ ) {

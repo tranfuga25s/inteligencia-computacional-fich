@@ -13,19 +13,15 @@
 
 #include "iostream"
 #include "graficadormdi.h"
-#include "redneuronalradial.h"
-#include "capaneuronal.h"
 
 typedef QVector<double> vector;
 typedef QVector< QVector<double> > matriz;
 
 #include "funciones_aux.h"
-#include "neurona.h"
-#include "particionador.h"
 
 /*!
  * \brief main
- * Ejercicio 2 Guia de Trabajos Practicos 1
+ * Ejercicio 2 Guia de Trabajos Practicos 2
  * \param argc
  * \param argv
  * \return
@@ -41,10 +37,6 @@ int main(int argc, char *argv[])
     mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     main.setCentralWidget(mdiArea);
 
-    QFile arch( "pesos.csv" );
-    arch.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate );
-    QTextStream pesos( &arch );
-
     //Inicializo con una semilla aleatoria para la generacion de Aleatorios
     qsrand( QTime::currentTime().msec() );
 
@@ -52,7 +44,7 @@ int main(int argc, char *argv[])
     QSettings parametros( "parametros.cfg", QSettings::IniFormat );
 
     // Archivo de entrada
-    QString archivo = QCoreApplication::applicationDirPath().append( QDir::separator() ).append( parametros.value( "archivo_entrada" ).toString() );
+/*    QString archivo = QCoreApplication::applicationDirPath().append( QDir::separator() ).append( parametros.value( "archivo_entrada" ).toString() );
 
     // Cargo los datos de los archivos que corresponda
     matriz entradas( parametros.value( "cantidad_entradas" ).toInt() );
@@ -103,11 +95,9 @@ int main(int argc, char *argv[])
 
     qDebug() << endl << "---------------- /Comienza el entrenamiento/ ----------------";
 
-    int epoca = 0; /* Contador de epocas */
-    double porcentaje_error = 100.0; /* Mucho sino sale */
+    int epoca = 0; // Contador de epocas
+    double porcentaje_error = 100.0; // Mucho sino sale
     int cantidad_particiones_exitosas = 0;
-
-    return 0;
 
     GraficadorMdi *graf1 = new GraficadorMdi( mdiArea );
     graf1->setearTitulo( QString::fromUtf8( "Porcentaje de error según particion ( entrenamiento )" ) );
@@ -391,9 +381,7 @@ int main(int argc, char *argv[])
         graf5->agregarPuntosClasificados( entradas2, salidas2, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
     }
     mdiArea->tileSubWindows();
-
-    arch.close();
-
+*/
     return a.exec();
 
 }
