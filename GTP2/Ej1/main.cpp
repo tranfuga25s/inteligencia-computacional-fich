@@ -147,6 +147,7 @@ int main(int argc, char *argv[])
         mdiArea->addSubWindow( graf2 );
         graf2->showMaximized();
         graf2->setearTitulo( "Datos originales" );
+        //graf2->setearEjesEnGrafico();
         graf2->setearTituloEjeX( "Longitud" );
         graf2->setearTituloEjeY( "Ancho" );
         graf2->agregarPuntosClasificados( entradas1, salidas1, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
@@ -201,17 +202,13 @@ int main(int argc, char *argv[])
         //std::cout << "Epoca: " << std::endl;
         PBEpocas->setValue( 0 );
 
-        // Setear los datos originales
-        // Buscar los centroides
-
-        // Entreno la parte de red normal
         while ( epoca < max_epocas
                 && porcentaje_error > tolerancia_error )
         {
             // Inicio la etapa de entrenamiento
             for(int i = 0; i<part_local.entrenamiento.size(); i++ )
             {
-                red.backwardPass( entradas.at( part_local.entrenamiento.at(i) ), salidas.at( part_local.entrenamiento.at( i ) ) );
+                red.entrenarCapaNeuronalComun( entradas.at( part_local.entrenamiento.at(i) ), salidas.at( part_local.entrenamiento.at( i ) ) );
                 //red.mostrarPesos( pesos );
             }
 
@@ -222,7 +219,7 @@ int main(int argc, char *argv[])
             for( int i = 0; i < part_local.validacion.size(); i++ ) {
                 int pos = part_local.validacion.at( i );
                 vector entrada_a_evaluar = entradas.at( pos );
-                vector salida_red = red.forwardPass( entrada_a_evaluar ) ;
+                vector salida_red = red.probarPatron( entrada_a_evaluar ) ;
                 double salida_mapeada = red.mapeadorSalidas( salida_red );
                 double salida_deseada = salidas.at( pos );
                 if( salida_mapeada != salida_deseada  ) {

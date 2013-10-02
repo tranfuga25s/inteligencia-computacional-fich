@@ -36,24 +36,24 @@ void RedNeuronalRadial::setearDatosOriginales( QVector<QPointF> *entradas, QVect
    _clases_originales = clases;
 }
 
+/*!
+ * \brief RedNeuronalRadial::buscarCentroides
+ */
 void RedNeuronalRadial::buscarCentroides()
 {
     _capaRadial->setearCantidadClases( _cantidad_clases );
     _capaRadial->buscarCentroides( *_datos_originales );
 }
 
-void RedNeuronalRadial::entrenarCapaNeuronalComun()
+/*!
+ * \brief RedNeuronalRadial::entrenarCapaNeuronalComun
+ * \param entrada
+ * \param clase
+ */
+void RedNeuronalRadial::entrenarCapaNeuronalComun( QVecto<double> entrada, int clase )
 {
-
-    // recorremos todos los datos originales
-    for( int d = 0; d < _datos_originales->size(); d++ ) {
-
-        QVector<double> temporal = _capaRadial->getSalidas( _datos_originales->at( d ) );
-
-        _capaNeuronas->entrenar( temporal, _clases_originales->at( d ) );
-
-    }
-
+    QVector<double> temporal = _capaRadial->getSalidas( entrada );
+    _capaNeuronas->entrenar( temporal, clase );
 }
 
 /*!
@@ -61,7 +61,7 @@ void RedNeuronalRadial::entrenarCapaNeuronalComun()
  * \param patron
  * \return
  */
-int RedNeuronalRadial::probarPatron( QPointF patron )
+int RedNeuronalRadial::probarPatron( QVector<double> patron )
 {
     return _capaNeuronas->evaluarCodificado( _capaRadial->getSalidas( patron ) );
 }

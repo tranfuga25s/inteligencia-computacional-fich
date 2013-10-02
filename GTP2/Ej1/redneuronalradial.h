@@ -20,7 +20,7 @@ public:
     void setearDatosOriginales( QVector<QPointF> *entradas, QVector<int> *clases );
 
     void buscarCentroides();
-    void entrenarCapaNeuronalComun();
+    void entrenarCapaNeuronalComun( QVector<double> entrada, int clase );
 
     void setearCodificacion( QVector<int> vector ) { _capaNeuronas->setearCodificacion( vector ); }
     QVector<int> mostrarCodificacionSalida() { _capaNeuronas->getCodificacionSalidas(); }
