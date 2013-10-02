@@ -288,7 +288,7 @@ int main(int argc, char *argv[])
         QVector<int> nueva_salida;
         matriz nueva_entrada;
         for( int i=0; i<part_local.prueba.size(); i++ ) {
-            nueva_salida.append( red.mapeadorSalidas( red.forwardPass( entradas.at( part_local.prueba.at( i ) ) ) ) );
+            nueva_salida.append( red.mapeadorSalidas( red.probarPatron( entradas.at( part_local.prueba.at( i ) ) ) ) );
             nueva_entrada.append( entradas.at( part_local.prueba.at( i ) ) );
         }
 
@@ -345,7 +345,7 @@ int main(int argc, char *argv[])
 
     QVector<int> nueva_salida;
     for( int i=0; i<entradas.size(); i++ ) {
-        nueva_salida.append( red.mapeadorSalidas( red.forwardPass( entradas.at(i) ) ) );
+        nueva_salida.append( red.mapeadorSalidas( red.probarPatron( entradas.at(i) ) ) );
     }
 
     matriz entradas1, entradas2;
