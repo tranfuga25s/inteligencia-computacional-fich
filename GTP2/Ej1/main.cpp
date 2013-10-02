@@ -147,7 +147,6 @@ int main(int argc, char *argv[])
         mdiArea->addSubWindow( graf2 );
         graf2->showMaximized();
         graf2->setearTitulo( "Datos originales" );
-        //graf2->setearEjesEnGrafico();
         graf2->setearTituloEjeX( "Longitud" );
         graf2->setearTituloEjeY( "Ancho" );
         graf2->agregarPuntosClasificados( entradas1, salidas1, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
@@ -156,7 +155,6 @@ int main(int argc, char *argv[])
         mdiArea->addSubWindow( graf3 );
         graf3->showMaximized();
         graf3->setearTitulo( "Datos originales" );
-        //graf3->setearEjesEnGrafico();
         graf3->setearTituloEjeX( "Petalos" );
         graf3->setearTituloEjeY( "Sepalos" );
         graf3->agregarPuntosClasificados( entradas2, salidas2, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
@@ -203,6 +201,10 @@ int main(int argc, char *argv[])
         //std::cout << "Epoca: " << std::endl;
         PBEpocas->setValue( 0 );
 
+        // Setear los datos originales
+        // Buscar los centroides
+
+        // Entreno la parte de red normal
         while ( epoca < max_epocas
                 && porcentaje_error > tolerancia_error )
         {
