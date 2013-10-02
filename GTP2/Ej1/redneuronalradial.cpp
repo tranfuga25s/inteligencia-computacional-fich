@@ -1,6 +1,6 @@
 #include "redneuronalradial.h"
 
-RedNeuronalRadial::RedNeuronalRadial( int cantidad_neuronas_radiales, int cantidad_neuronas_normales, int cantidad_entradas )
+RedNeuronalRadial::RedNeuronalRadial(int cantidad_neuronas_radiales, int cantidad_neuronas_normales, int cantidad_entradas , int cant_clases)
 {
     if( cantidad_neuronas_radiales != 0 ) {
         _capaRadial = new CapaNeuronalRadial( cantidad_neuronas_radiales, cantidad_entradas );
@@ -10,6 +10,7 @@ RedNeuronalRadial::RedNeuronalRadial( int cantidad_neuronas_radiales, int cantid
     }
     _datos_originales = new QVector<QPointF>();
     _clases_originales = new QVector<int>();
+    _cantidad_clases = cant_clases;
 }
 
 void RedNeuronalRadial::setearTasaAprendizaje( double tasa )

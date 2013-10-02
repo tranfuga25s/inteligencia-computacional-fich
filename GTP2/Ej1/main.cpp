@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 
     RedNeuronalRadial red( neuronas_por_capas.at(0),
                            neuronas_por_capas.at(1),
-                           parametros.value("cantidad_entradas").toInt() );
+                           parametros.value("cantidad_entradas").toInt(),parametros.value( "cant_clases" ).toInt()  );
 
     red.setearTasaAprendizaje( parametros.value( "tasa_aprendizaje" ).toDouble() );
     qDebug() << "Tasa de aprendizaje: " << parametros.value( "tasa_aprendizaje" ).toDouble();

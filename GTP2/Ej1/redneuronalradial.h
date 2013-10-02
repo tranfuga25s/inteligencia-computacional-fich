@@ -7,7 +7,7 @@
 class RedNeuronalRadial
 {
 public:
-    RedNeuronalRadial( int cantidad_neuronas_radiales, int cantidad_neuronas_normales, int cantidad_entradas );
+    RedNeuronalRadial( int cantidad_neuronas_radiales, int cantidad_neuronas_normales, int cantidad_entradas, int cant_clases );
 
     int cantidadCapas() { return 2; }
 
