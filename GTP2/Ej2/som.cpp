@@ -1,5 +1,5 @@
 #include "som.h"
 
-SOM::SOM()
+SOM::SOM( int tamano_x, int tamano_y )
 {
 }

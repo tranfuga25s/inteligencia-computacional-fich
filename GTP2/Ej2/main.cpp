@@ -19,6 +19,8 @@ typedef QVector< QVector<double> > matriz;
 
 #include "funciones_aux.h"
 
+#include "som.h"
+
 /*!
  * \brief main
  * Ejercicio 2 Guia de Trabajos Practicos 2

@@ -4,7 +4,7 @@
 class SOM
 {
 public:
-    SOM();
+    SOM( int tamano_x, int tamano_y );
 };
 
 #endif // SOM_H
