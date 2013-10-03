@@ -50,7 +50,7 @@ int CapaNeuronal::evaluarCodificado( vector entradas )
     for( int n=0; n<neuronas.size(); n++ ) {
         temporal.append( neuronas[n]->evaluar( entradas ) );
     }
-    return mapeadorSalidas( temporal );
+    return mapeadorSalidas(temporal);
 }
 
 void CapaNeuronal::entrenar( vector entradas, int clase )
@@ -156,7 +156,7 @@ int CapaNeuronal::mapeadorSalidas(vector salidas)
         }
     }
 
-    return codif_salidas.at( mayor );
+    return codif_salidas.at(mayor);
 
 }
 

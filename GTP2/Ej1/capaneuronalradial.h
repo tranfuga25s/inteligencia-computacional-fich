@@ -6,19 +6,19 @@
 class CapaNeuronalRadial
 {
 public:
-    CapaNeuronalRadial( int cantidad_neuronas, int cantidad_entradas );
+    CapaNeuronalRadial( int cantidad_neuronas, int cantidad_entradas, int cantidad_clases );
 
     void setearTasaAprendizaje( double tasa );
     void setearMomento( double momento );
     void setearCantidadClases( int valor ) { _cantidad_clases = valor; }
 
-    QVector<double> getSalidas( QPointF entrada );
+    QVector<double> getSalidas(vector entrada );
 
-    void buscarCentroides( QVector<QPointF> _datos_originales );
+    void buscarCentroides( QVector<vector> &_datos_originales );
 
 private:
     QVector<NeuronaRadial> *_neuronas;
-    QVector< QList<QPointF> > *_patrones_clase;
+    QVector< QList<vector> > *_patrones_clase;
 
     int _cantidad_clases;
 };

@@ -41,10 +41,6 @@ int main(int argc, char *argv[])
     mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     main.setCentralWidget(mdiArea);
 
-    QFile arch( "pesos.csv" );
-    arch.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate );
-    QTextStream pesos( &arch );
-
     //Inicializo con una semilla aleatoria para la generacion de Aleatorios
     qsrand( QTime::currentTime().msec() );
 
@@ -56,7 +52,7 @@ int main(int argc, char *argv[])
 
     // Cargo los datos de los archivos que corresponda
     matriz entradas( parametros.value( "cantidad_entradas" ).toInt() );
-    vector salidas( parametros.value( "cantidad_salidas" ).toInt() );
+    QVector<int> salidas;
 
     qDebug() << endl << "--------------- /Datos del entrenamiento/ -----------------" << endl;
     qWarning() << "Archivo de lectura de datos originales: "<< archivo;
@@ -84,13 +80,11 @@ int main(int argc, char *argv[])
 
     RedNeuronalRadial red( neuronas_por_capas.at(0),
                            neuronas_por_capas.at(1),
-                           parametros.value("cantidad_entradas").toInt(),parametros.value( "cant_clases" ).toInt()  );
+                           parametros.value("cantidad_entradas").toInt(),
+                           parametros.value( "cant_clases" ).toInt()  );
 
     red.setearTasaAprendizaje( parametros.value( "tasa_aprendizaje" ).toDouble() );
     qDebug() << "Tasa de aprendizaje: " << parametros.value( "tasa_aprendizaje" ).toDouble();
-
-    red.setearMomento( parametros.value( "momento", 0.0 ).toDouble() );
-    qDebug() << "Momento: " << red.getMomento();
 
     red.setearCodificacion( stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
     qDebug() << "Codificacion salida: " << red.mostrarCodificacionSalida();
@@ -106,8 +100,6 @@ int main(int argc, char *argv[])
     int epoca = 0; /* Contador de epocas */
     double porcentaje_error = 100.0; /* Mucho sino sale */
     int cantidad_particiones_exitosas = 0;
-
-    return 0;
 
     GraficadorMdi *graf1 = new GraficadorMdi( mdiArea );
     graf1->setearTitulo( QString::fromUtf8( "Porcentaje de error según particion ( entrenamiento )" ) );
@@ -186,6 +178,10 @@ int main(int argc, char *argv[])
     QElapsedTimer medidor_tiempo;
     medidor_tiempo.start();
 
+    // Busco los centroides
+    red.setearDatosOriginales( &entradas, &salidas );
+    red.buscarCentroides();
+
     for( int p=0; p<particiones.cantidadDeParticiones(); p++ ) {
 
         Particionador::particion part_local = particiones.getParticion( p );
@@ -219,10 +215,10 @@ int main(int argc, char *argv[])
             for( int i = 0; i < part_local.validacion.size(); i++ ) {
                 int pos = part_local.validacion.at( i );
                 vector entrada_a_evaluar = entradas.at( pos );
-                vector salida_red = red.probarPatron( entrada_a_evaluar ) ;
-                double salida_mapeada = red.mapeadorSalidas( salida_red );
+                int salida_red = red.probarPatron( entrada_a_evaluar ) ;
+                //double salida_mapeada = red.mapeadorSalidas( salida_red );
                 double salida_deseada = salidas.at( pos );
-                if( salida_mapeada != salida_deseada  ) {
+                if( salida_red != salida_deseada  ) {
                     errores++;
                 } else {
                     correcto++;
@@ -248,7 +244,7 @@ int main(int argc, char *argv[])
         int errores = 0;
         int correcto = 0;
         for( int i = 0; i < part_local.prueba.size(); i++ ) {
-            if( red.mapeadorSalidas( red.probarPatron( entradas.at( part_local.prueba.at( i ) ) ) ) != salidas.at( part_local.prueba.at( i ) ) ) {
+            if( red.probarPatron( entradas.at( part_local.prueba.at( i ) ) )  != salidas.at( part_local.prueba.at( i ) ) ) {
                 errores++;
             } else {
                 correcto++;
@@ -288,7 +284,7 @@ int main(int argc, char *argv[])
         QVector<int> nueva_salida;
         matriz nueva_entrada;
         for( int i=0; i<part_local.prueba.size(); i++ ) {
-            nueva_salida.append( red.mapeadorSalidas( red.probarPatron( entradas.at( part_local.prueba.at( i ) ) ) ) );
+            nueva_salida.append( red.probarPatron( entradas.at( part_local.prueba.at( i ) ) )  );
             nueva_entrada.append( entradas.at( part_local.prueba.at( i ) ) );
         }
 
@@ -345,7 +341,7 @@ int main(int argc, char *argv[])
 
     QVector<int> nueva_salida;
     for( int i=0; i<entradas.size(); i++ ) {
-        nueva_salida.append( red.mapeadorSalidas( red.probarPatron( entradas.at(i) ) ) );
+        nueva_salida.append( red.probarPatron( entradas.at(i) ) );
     }
 
     matriz entradas1, entradas2;
@@ -391,8 +387,6 @@ int main(int argc, char *argv[])
         graf5->agregarPuntosClasificados( entradas2, salidas2, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
     }
     mdiArea->tileSubWindows();
-
-    arch.close();
 
     return a.exec();
 

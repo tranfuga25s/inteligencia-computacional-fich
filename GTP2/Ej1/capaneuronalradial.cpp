@@ -1,7 +1,7 @@
 #include <QVector>
 #include "capaneuronalradial.h"
 
-CapaNeuronalRadial::CapaNeuronalRadial( int cantidad_neuronas, int cantidad_entradas )
+CapaNeuronalRadial::CapaNeuronalRadial( int cantidad_neuronas, int cantidad_entradas, int cantidad_clases )
 {
     if( cantidad_neuronas != 0 ) {
         _neuronas = new QVector<NeuronaRadial>();
@@ -9,7 +9,7 @@ CapaNeuronalRadial::CapaNeuronalRadial( int cantidad_neuronas, int cantidad_entr
         for( int i=0; i<cantidad_neuronas; i++ ) {
             _neuronas->insert( i, NeuronaRadial( cantidad_entradas ) );
         }
-        _patrones_clase = new QVector< QList<QPointF> >();
+        _patrones_clase = new QVector< QList<vector> >( cantidad_clases );
     }
 }
 
@@ -23,7 +23,7 @@ void CapaNeuronalRadial::setearMomento( double )
     return;
 }
 
-QVector<double> CapaNeuronalRadial::getSalidas( QPointF entrada )
+QVector<double> CapaNeuronalRadial::getSalidas( vector entrada )
 {
     QVector<double> temp;
     for( int i=0; i<_neuronas->size(); i++ ) {
@@ -36,7 +36,7 @@ QVector<double> CapaNeuronalRadial::getSalidas( QPointF entrada )
  * \brief CapaNeuronalRadial::buscarCentroides
  * \param _datos_originales
  */
-void CapaNeuronalRadial::buscarCentroides( QVector<QPointF> _datos_originales )
+void CapaNeuronalRadial::buscarCentroides( QVector<vector> &_datos_originales )
 {
     int datos_por_conjunto = floor( _datos_originales.size() / _cantidad_clases );
 
@@ -61,10 +61,10 @@ void CapaNeuronalRadial::buscarCentroides( QVector<QPointF> _datos_originales )
 
         hubo_cambio = false;
 
-        QVector< QList<QPointF> >::iterator clase;
+        QVector< QList<vector> >::iterator clase;
         for( clase = _patrones_clase->begin(); clase != _patrones_clase->end(); ++clase ) {
 
-            QList<QPointF>::iterator p;
+            QList<vector>::iterator p;
             for( p = clase->begin(); p != clase->end(); ++p ) {
 
                 double distancia_minima = 0;

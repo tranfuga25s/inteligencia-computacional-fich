@@ -15,17 +15,19 @@ public:
     void setearMomento(double momento);
     double getMomento() { return _capaNeuronas->getNeuronas()[0]->tasaMomento(); }
 
-    void inicializarPesos();
-
-    void setearDatosOriginales( QVector<QPointF> *entradas, QVector<int> *clases );
+    void setearDatosOriginales(matriz *entradas, QVector<int> *clases );
 
     void buscarCentroides();
     void entrenarCapaNeuronalComun( QVector<double> entrada, int clase );
 
     void setearCodificacion( QVector<int> vector ) { _capaNeuronas->setearCodificacion( vector ); }
-    QVector<int> mostrarCodificacionSalida() { _capaNeuronas->getCodificacionSalidas(); }
+    QVector<int> mostrarCodificacionSalida() { return _capaNeuronas->getCodificacionSalidas(); }
 
-    int probarPatron( QPointF patron );
+    int probarPatron( vector patron );
+    int mapeadorSalidas(vector salidas);
+
+    void inicializarPesos() { _capaNeuronas->inicializarPesos(); }
+
 
 private:
     CapaNeuronal *_capaNeuronas;
@@ -33,8 +35,9 @@ private:
 
     int _cantidad_clases; // K
 
-    QVector<QPointF> *_datos_originales; // Guarda la posicion y la clase a la que pertenece en el momento
+    QVector<vector> *_datos_originales; // Guarda la posicion y la clase a la que pertenece en el momento
     QVector<int> *_clases_originales;
+
 };
 
 #endif // REDNEURONALRADIAL_H
