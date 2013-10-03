@@ -68,25 +68,66 @@ int main(int argc, char *argv[])
     }
 
     // Inicializo el SOM
-    SOM SOM( parametros.value( "som_tam_x", 2 ).toInt(),
-             parametros.value( "som_tam_y", 2 ).toInt() );
-/*
-    red.setearTasaAprendizaje( parametros.value( "tasa_aprendizaje" ).toDouble() );
-    qDebug() << "Tasa de aprendizaje: " << parametros.value( "tasa_aprendizaje" ).toDouble();
-
-    red.setearMomento( parametros.value( "momento", 0.0 ).toDouble() );
-    qDebug() << "Momento: " << red.getMomento();
-
-    red.setearCodificacion( stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
-    qDebug() << "Codificacion salida: " << red.mostrarCodificacionSalida();
-
-    int max_epocas = parametros.value( "epocas_maximas", 20 ).toInt();
-    qDebug() << "Epocas: " << max_epocas;
-
-    double tolerancia_error = parametros.value( "tolerancia_error" ).toDouble();
-    qDebug() << "Error de corte: " << ( tolerancia_error ) << "%";
+    SOM som( parametros.value( "som_tam_x", 2 ).toInt(),
+             parametros.value( "som_tam_y", 2 ).toInt(),
+             parametros.value( "tamano_entradas" ).toInt() );
 
     qDebug() << endl << "---------------- /Comienza el entrenamiento/ ----------------";
+
+    QVector<int> epocas = stringAQVector( parametros.value( "epocas" ).toString() );
+    QVector<double> tasas = stringAQVector( parametros.value( "tasa_aprendizaje" ).toString() ); /// @TODO: Sobrecargar !
+    int tamano_vecindad_inicial = parametros.value( "radio_vecindad").toInt();
+
+
+    // Etapa de Ordenamiento Global
+    som.setearRadioVecindad( tamano_vecindad_inicial );
+    som.setearTasaAprendizaje( tasas.at( 0 ) );
+
+    for( int epoca=0; epoca<epocas.at(0); epoca++ ) {
+
+        for( int p=0; p<entradas.size(); p++ ) {
+
+            som.entrenar( entradas.at( p ) );
+
+        }
+
+    }
+
+    // Etapa de transición
+    QVector<int> tamano_vecindad = aproximacionLineal( epocas.at( 1 ), tamano_vecindad_inicial, 1 ); /// @TODO: Hacer en funciones auxiliares
+    QVector<double> tasa_aprendizajes = aproximacionLineal( epocas.at( 1 ), tasas.at( 1 ), tasas.at( 2 ) );
+
+    for( int epoca=0; epoca<epocas.at(0); epoca++ ) {
+
+        som.setearRadioVecindad( tamano_vecindad.at( epoca ) );
+        som.setearTasaAprendizaje( tasa_aprendizajes.at( epoca ) );
+
+        for( int p=0; p<entradas.size(); p++ ) {
+
+            som.entrenar( entradas.at( p ) );
+
+        }
+
+    }
+
+    // Etapa de ajuste fino
+    som.setearRadioVecindad( 0 );
+    tasa_aprendizajes = aproximacionLineal( epocas.at( 1 ), tasas.at( 1 ), tasas.at( 2 ) );
+
+    for( int epoca=0; epoca<epocas.at(0); epoca++ ) {
+
+        som.setearTasaAprendizaje( tasa_aprendizajes.at( epoca ) );
+
+        for( int p=0; p<entradas.size(); p++ ) {
+
+            som.entrenar( entradas.at( p ) );
+
+        }
+
+    }
+
+ /*
+
 
     int epoca = 0; // Contador de epocas
     double porcentaje_error = 100.0; // Mucho sino sale
