@@ -479,6 +479,39 @@ static QVector<int> stringAQVector( QString datos, QString separador = " " ) {
     return retorno;
 }
 
+static int max_x_matriz(int columna,int distancia_obtenida,int cant_col) {
+    int i = columna;
+    while (i <= (columna + distancia_obtenida) && i < cant_col)  {
+        i++;
+    }
+    return i;
+}
+
+static int min_x_matriz(int columna,int distancia_obtenida) {
+    int i = columna;
+    while (i >= (columna - distancia_obtenida) && i > 0)  {
+        i--;
+    }
+    return i;
+}
+
+static int max_y_matriz(int fila,int distancia_obtenida,int cant_fil) {
+    int i = fila;
+    while (i <= (fila + distancia_obtenida) && i < cant_col)  {
+        i++;
+    }
+    return i;
+}
+
+static int min_y_matriz(int fila,int distancia_obtenida) {
+    int i = fila;
+    while (i >= (fila - distancia_obtenida) && i > 0)  {
+        i--;
+    }
+    return i;
+}
+
+
 #endif
 
 #endif // FUNCIONES_AUX_H

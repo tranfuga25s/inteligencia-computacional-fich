@@ -131,9 +131,9 @@ int main(int argc, char *argv[])
     QVector< QVector< QVector<int> > > contadores;
     for( int clase=0; clase<cantidad_clases; clase++ ) {
         QVector< QVector<int> > temp;
-        for( int f=0; f<filas; f++ ) {
+        for( int f=0; f<contadores.at(clase).size(); f++ ) {
             QVector<int> aux;
-            for( int c=0; ..... ) {
+            for( int c=0; c<contadores.at(clase).at(f).size() ; c++ ) {
                 aux[c] = 0;
             }
             temp.append( aux );
