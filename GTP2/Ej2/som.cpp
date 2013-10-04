@@ -51,11 +51,12 @@ double SOM::distancia( QVector<double> patron, int fila, int columna )
 
 void SOM::actualizarPeso( int fila, int columna, double distancia_obtenida )
 {
-    int max_vec_x = ?;
-    int min_vec_x = ?;
-    int max_vec_y = ?;
-    int min_vec_y = ?;
-    for( int col=min_vec_x; col< max_col_x; col++ ) {
+    int max_vec_x = max_x_matriz(columna,distancia_obtenida,_som.size());
+    int min_vec_x = min_x_matriz(columna,distancia_obtenida);
+    int max_vec_y = max_y_matriz(fila,distancia_obtenida,_som.at(0).size());
+    int min_vec_y = min_y_matriz(fila,distancia_obtenida);
+
+    for( int col=min_vec_x; col< max_vec_x; col++ ) {
 
         for( int fil=min_vec_y; fil<max_vec_y; fil++ ) {
 
@@ -80,5 +81,5 @@ double SOM::funcionVecindad( int fila, int columna, int fila_ganadora, int colum
 
     double distancia = sqrt( pow( fila_ganadora - fila, 2.0 ) + pow( columna_ganadora - columna, 2.0 ) );
 
-    return epx( ( -1 )  * ( pow( abs( distancia ), 2.0 ) ) / ( 2.0 * pow( _radio_vecindad, 2.0 ) ) );
+    return exp( ( -1 )  * ( pow( abs( distancia ), 2.0 ) ) / ( 2.0 * pow( _radio_vecindad, 2.0 ) ) );
 }

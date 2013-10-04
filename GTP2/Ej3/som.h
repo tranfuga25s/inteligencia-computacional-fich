@@ -2,6 +2,7 @@
 #define SOM_H
 
 #include <QVector>
+#include "funciones_aux.h"
 
 class SOM
 {
@@ -18,16 +19,21 @@ public:
 
     void setearRadioVecindad( int valor ) {_radio_vecindad = valor; }
     int radioVecindad() { return _radio_vecindad; }
+    void setearTasaAprendizaje(double tasa){ _tasa_aprendizaje = tasa;}
 
     void setearClase( int fila, int col, int clase );
     int obtenerClase( int fila, int col );
     int obtenerClase( QVector<double> patron ); // Obtengo la clase evaluando el patron
+
+    QPair<int,int> getNeuronaGanadora(QVector<double> patron);
+
 
 private:
     QVector< QVector< QVector<double> > > _som;
     QVector< QVector<int> > _som_clasificado;
     int _radio_vecindad;
     double _tasa_aprendizaje;
+
 };
 
 #endif // SOM_H

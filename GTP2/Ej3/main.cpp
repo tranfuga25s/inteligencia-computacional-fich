@@ -57,12 +57,14 @@ int main(int argc, char *argv[])
 
     // Cargo los datos de los archivos que corresponda
     matriz entradas( parametros.value( "cantidad_entradas" ).toInt() );
+    QVector<int> salidas (parametros.value( "cantidad_salidas" ).toInt());
 
     qDebug() << endl << "--------------- /Datos del entrenamiento/ -----------------" << endl;
     qWarning() << "Archivo de lectura de datos originales: "<< archivo;
     if( ! leer_archivo_entrenamiento( archivo,
                                       &entradas,
-                                      parametros.value( "cantidad_entradas" ).toInt() )  ) {
+                                      &salidas,
+                                      parametros.value( "cantidad_entradas" ).toInt())  ) {
         qDebug() << "No se pudo encontrar el archivo de entrenamiento! cancelando!";
         abort();
     }
@@ -75,7 +77,8 @@ int main(int argc, char *argv[])
     qDebug() << endl << "---------------- /Comienza el entrenamiento/ ----------------";
 
     QVector<int> epocas = stringAQVector( parametros.value( "epocas" ).toString() );
-    QVector<double> tasas = stringAQVector( parametros.value( "tasa_aprendizaje" ).toString() ); /// @TODO: Sobrecargar !
+    QVector<double> tasas = stringAQVectord( parametros.value( "tasa_aprendizaje" ).toString() );
+    int cant_clases =  parametros.value( "cant_clases" ).toInt();
     int tamano_vecindad_inicial = parametros.value( "radio_vecindad").toInt();
 
 
@@ -94,8 +97,8 @@ int main(int argc, char *argv[])
     }
 
     // Etapa de transición
-    QVector<int> tamano_vecindad = aproximacionLineal( epocas.at( 1 ), tamano_vecindad_inicial, 1 ); /// @TODO: Hacer en funciones auxiliares
-    QVector<double> tasa_aprendizajes = aproximacionLineal( epocas.at( 1 ), tasas.at( 1 ), tasas.at( 2 ) );
+    QVector<int> tamano_vecindad = aproximacionLineal( epocas.at(0), epocas.at( 1 ), tamano_vecindad_inicial, 1 );
+    QVector<double> tasa_aprendizajes = aproximacionLineald( epocas.at(0), epocas.at( 1 ), tasas.at( 0 ), tasas.at( 1 ) );
 
     for( int epoca=0; epoca<epocas.at(0); epoca++ ) {
 
@@ -112,7 +115,7 @@ int main(int argc, char *argv[])
 
     // Etapa de ajuste fino
     som.setearRadioVecindad( 0 );
-    tasa_aprendizajes = aproximacionLineal( epocas.at( 1 ), tasas.at( 1 ), tasas.at( 2 ) );
+    tasa_aprendizajes = aproximacionLineald( epocas.at( 1 ), epocas.at(2) , tasas.at( 1 ), tasas.at( 2 ) );
 
     for( int epoca=0; epoca<epocas.at(0); epoca++ ) {
 
@@ -129,7 +132,7 @@ int main(int argc, char *argv[])
     // Comienzo el etiquetado
      // Matrices de conteo de activacion
     QVector< QVector< QVector<int> > > contadores;
-    for( int clase=0; clase<cantidad_clases; clase++ ) {
+    for( int clase=0; clase<cant_clases; clase++ ) {
         QVector< QVector<int> > temp;
         for( int f=0; f<contadores.at(clase).size(); f++ ) {
             QVector<int> aux;
@@ -141,22 +144,23 @@ int main(int argc, char *argv[])
         contadores.append( temp );
     }
 
+    QPair<int,int> pos;
 
-    for( int entrada = 0; entradas < entradas.size(); entrada++ ) {
+    for( int entrada = 0; entrada < entradas.size(); entrada++ ) {
 
-        QPair<int,int> pos = som.getNeuronaGanadora( entradas.at( p ) );
+        pos = som.getNeuronaGanadora( entradas.at( entrada ) );
 
-        int clase = salidas.at( p );
+        int clase = salidas.at( entrada );
 
         contadores[clase][pos.first][pos.second] += 1;
     }
 
-    for( int fila=0; fila<sarasa; fila++ ) {
-        for( int columna=0; columna<saasa2; columna++ ) {
+    for( int fila=0; fila<pos.first; fila++ ) {
+        for( int columna=0; columna<pos.second; columna++ ) {
 
             int maximo = 0;
             int clase = -1;
-            for( int c=0; c<cantidad_clases; c++ ) {
+            for( int c=0; c<cant_clases; c++ ) {
                 if( contadores.at( c ).at( columna ).at( fila ) > maximo ) {
                     clase = c;
                     maximo = contadores.at( c ).at( columna ).at( fila );

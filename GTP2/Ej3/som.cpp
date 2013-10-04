@@ -81,5 +81,35 @@ double SOM::funcionVecindad( int fila, int columna, int fila_ganadora, int colum
 
     double distancia = sqrt( pow( fila_ganadora - fila, 2.0 ) + pow( columna_ganadora - columna, 2.0 ) );
 
-    return epx( ( -1 )  * ( pow( abs( distancia ), 2.0 ) ) / ( 2.0 * pow( _radio_vecindad, 2.0 ) ) );
+    return exp( ( -1 )  * ( pow( abs( distancia ), 2.0 ) ) / ( 2.0 * pow( _radio_vecindad, 2.0 ) ) );
+}
+
+void SOM::setearClase(int fila, int col, int clase)
+{
+    _som_clasificado[fila][col] = clase;
+}
+
+QPair<int, int> SOM::getNeuronaGanadora(QVector<double> patron)
+{
+    double distancia_minima = 0.0;
+    int fila_ganadora = -1;
+    int columna_ganadora = -1;
+
+    for( int c=0; c<_som.size(); c++ ) {
+
+        for( int f=0; f<_som.at(c).size(); f++ ) {
+
+            double dist = distancia( patron, c, f );
+
+            if( dist <= distancia_minima ) {
+                distancia_minima = dist;
+                fila_ganadora = f;
+                columna_ganadora = c;
+            }
+
+        }
+
+    }
+
+    return QPair<int, int>(fila_ganadora,columna_ganadora);
 }

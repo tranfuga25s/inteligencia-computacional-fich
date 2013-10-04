@@ -2,6 +2,7 @@
 #define SOM_H
 
 #include <QVector>
+#include "funciones_aux.h"
 
 class SOM
 {
@@ -18,6 +19,7 @@ public:
 
     void setearRadioVecindad( int valor ) {_radio_vecindad = valor; }
     int radioVecindad() { return _radio_vecindad; }
+    void setearTasaAprendizaje(double tasa){ _tasa_aprendizaje = tasa;}
 
 private:
     QVector< QVector< QVector<double> > > _som;

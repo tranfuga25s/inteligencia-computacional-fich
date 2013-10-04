@@ -65,6 +65,7 @@ static bool leer_archivo_entrenamiento( QString direccion,
     if( cant > 0 )
     { return true; } else { return false; }
 }
+
 #endif
 
 /*!
@@ -466,17 +467,23 @@ static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QStr
 
 #endif
 
-#ifndef STRINGAVECTOR
-#define STRINGAVECTOR
+#ifndef FUNCIONESPARASOM
+#define FUNCIONESPARASOM
 
-static QVector<int> stringAQVector( QString datos, QString separador = " " ) {
-    QVector<int> retorno;
-    QVector<QString> temp = datos.split( separador, QString::KeepEmptyParts ).toVector();
-    QVector<int> neuronas_por_capas;
-    foreach( QString temp2, temp ) {
-        retorno.append( temp2.toInt() );
+static QVector<int> aproximacionLineal( int epocas_ini, int epocas_fin , int par_ini, int par_fin) {
+    QVector<int> auxiliar;
+    for(int i = 0 ; i < (epocas_fin - epocas_ini) ; i++) {
+        auxiliar.push_back(par_ini + ( (par_fin - par_ini) / (epocas_fin - epocas_ini ) ) * ( epocas_fin - epocas_ini ));
     }
-    return retorno;
+    return auxiliar;
+}
+
+static QVector<double> aproximacionLineald( int epocas_ini, int epocas_fin , double par_ini, double par_fin) {
+    QVector<double> auxiliar;
+    for(int i = 0 ; i < (epocas_fin - epocas_ini) ; i++) {
+        auxiliar.push_back(par_ini + ( (par_fin - par_ini) / (epocas_fin - epocas_ini ) ) * ( epocas_fin - epocas_ini ));
+    }
+    return auxiliar;
 }
 
 static int max_x_matriz(int columna,int distancia_obtenida,int cant_col) {
@@ -497,7 +504,7 @@ static int min_x_matriz(int columna,int distancia_obtenida) {
 
 static int max_y_matriz(int fila,int distancia_obtenida,int cant_fil) {
     int i = fila;
-    while (i <= (fila + distancia_obtenida) && i < cant_col)  {
+    while (i <= (fila + distancia_obtenida) && i < cant_fil)  {
         i++;
     }
     return i;
@@ -509,6 +516,32 @@ static int min_y_matriz(int fila,int distancia_obtenida) {
         i--;
     }
     return i;
+}
+
+
+#endif
+
+#ifndef STRINGAVECTOR
+#define STRINGAVECTOR
+
+static QVector<int> stringAQVector( QString datos, QString separador = " " ) {
+    QVector<int> retorno;
+    QVector<QString> temp = datos.split( separador, QString::KeepEmptyParts ).toVector();
+    QVector<int> neuronas_por_capas;
+    foreach( QString temp2, temp ) {
+        retorno.append( temp2.toInt() );
+    }
+    return retorno;
+}
+
+static QVector<double> stringAQVectord( QString datos, QString separador = " " ) {
+    QVector<double> retorno;
+    QVector<QString> temp = datos.split( separador, QString::KeepEmptyParts ).toVector();
+    QVector<double> neuronas_por_capas;
+    foreach( QString temp2, temp ) {
+        retorno.append( temp2.toDouble() );
+    }
+    return retorno;
 }
 
 

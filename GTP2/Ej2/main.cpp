@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     qDebug() << endl << "---------------- /Comienza el entrenamiento/ ----------------";
 
     QVector<int> epocas = stringAQVector( parametros.value( "epocas" ).toString() );
-    QVector<double> tasas = stringAQVector( parametros.value( "tasa_aprendizaje" ).toString() ); /// @TODO: Sobrecargar !
+    QVector<double> tasas = stringAQVectord( parametros.value( "tasa_aprendizaje" ).toString() );
     int tamano_vecindad_inicial = parametros.value( "radio_vecindad").toInt();
 
 
@@ -94,8 +94,8 @@ int main(int argc, char *argv[])
     }
 
     // Etapa de transición
-    QVector<int> tamano_vecindad = aproximacionLineal( epocas.at( 1 ), tamano_vecindad_inicial, 1 ); /// @TODO: Hacer en funciones auxiliares
-    QVector<double> tasa_aprendizajes = aproximacionLineal( epocas.at( 1 ), tasas.at( 1 ), tasas.at( 2 ) );
+    QVector<int> tamano_vecindad = aproximacionLineal( epocas.at(0), epocas.at( 1 ), tamano_vecindad_inicial, 1 );
+    QVector<double> tasa_aprendizajes = aproximacionLineald( epocas.at(0), epocas.at( 1 ), tasas.at( 0 ), tasas.at( 1 ) );
 
     for( int epoca=0; epoca<epocas.at(0); epoca++ ) {
 
@@ -112,7 +112,8 @@ int main(int argc, char *argv[])
 
     // Etapa de ajuste fino
     som.setearRadioVecindad( 0 );
-    tasa_aprendizajes = aproximacionLineal( epocas.at( 1 ), tasas.at( 1 ), tasas.at( 2 ) );
+    tasa_aprendizajes = aproximacionLineald( epocas.at( 1 ), epocas.at(2) , tasas.at( 1 ), tasas.at( 2 ) );
+
 
     for( int epoca=0; epoca<epocas.at(0); epoca++ ) {
 
