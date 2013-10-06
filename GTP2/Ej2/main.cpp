@@ -112,44 +112,41 @@ int main(int argc, char *argv[])
 
     QDockWidget *dockBarra1 = new QDockWidget( "Epocas de Ordenamiento Global" );
     main.addDockWidget( Qt::TopDockWidgetArea, dockBarra1 );
-    QProgressBar *PBEpocasOrdenamiento = new QProgressBar( dockBarra1 );
-    dockBarra1->setWidget( PBEpocasOrdenamiento );
+    QProgressBar *PBEpocas = new QProgressBar( dockBarra1 );
+    dockBarra1->setWidget( PBEpocas );
 
-    PBEpocasOrdenamiento->setRange( 0, epocas.at( 0 ) );
-    PBEpocasOrdenamiento->setFormat( "Epoca %v de %m - %p%" );
+    PBEpocas->setRange( 0, epocas.at( 0 ) );
+    PBEpocas->setFormat( "Epoca %v de %m - %p%" );
 
     // Etapa de Ordenamiento Global
     som.setearRadioVecindad( tamano_vecindad_inicial );
     som.setearTasaAprendizaje( tasas.at( 0 ) );
-    PBTasaAprendizaje->setValue( tasas.at( 0 ) );
+    PBTasaAprendizaje->setValue( tasas.at( 0 ) * 100 );
 
     for( int epoca=0; epoca<epocas.at(0); epoca++ ) {
-        PBEpocasOrdenamiento->setValue( PBEpocasOrdenamiento->value() + 1 );
+        PBEpocas->setValue( PBEpocas->value() + 1 );
         for( int p=0; p<entradas.size(); p++ ) {
             som.entrenar( entradas.at( p ) );
             graf1->setearPuntos( som.obtenerPuntos() );
             a.processEvents();
         }
     }
-    return a.exec();
+
     // Etapa de transición
     QVector<int> tamano_vecindad = aproximacionLineal( epocas.at( 1 ), tamano_vecindad_inicial, 1 );
     QVector<double> tasa_aprendizajes = aproximacionLineald( epocas.at( 1 ), tasas.at( 0 ), tasas.at( 1 ) );
 
-    QDockWidget *dockBarra2 = new QDockWidget( "Epocas de transición" );
-    main.addDockWidget( Qt::TopDockWidgetArea, dockBarra2 );
-    QProgressBar *PBEpocasTransicion = new QProgressBar( dockBarra2 );
-    dockBarra2->setWidget( PBEpocasTransicion );
+    dockBarra1->setWindowTitle( "Epocas de transición" );
 
-    PBEpocasTransicion->setRange( 0, epocas.at( 1 ) );
-    PBEpocasTransicion->setFormat( "Epoca %v de %m - %p%" );
+    PBEpocas->setRange( 0, epocas.at( 1 ) );
+    PBEpocas->setFormat( "Epoca %v de %m - %p%" );
 
-    for( int epoca=0; epoca<epocas.at(0); epoca++ ) {
+    for( int epoca=0; epoca<epocas.at(1); epoca++ ) {
         som.setearRadioVecindad( tamano_vecindad.at( epoca ) );
         som.setearTasaAprendizaje( tasa_aprendizajes.at( epoca ) );
-        PBEpocasTransicion->setValue( PBEpocasTransicion->value() + 1 );
+        PBEpocas->setValue( epoca + 1 );
         PBTamanoVecindad->setValue( tamano_vecindad.at( epoca ) );
-        PBTasaAprendizaje->setValue( tasa_aprendizajes.at( epoca ) );
+        PBTasaAprendizaje->setValue( tasa_aprendizajes.at( epoca ) * 100 );
         for( int p=0; p<entradas.size(); p++ ) {
             som.entrenar( entradas.at( p ) );
             graf1->setearPuntos( som.obtenerPuntos() );
@@ -158,22 +155,19 @@ int main(int argc, char *argv[])
     }
 
     // Etapa de ajuste fino
-    QDockWidget *dockBarra4 = new QDockWidget( "Epocas de ajuste fino" );
-    main.addDockWidget( Qt::TopDockWidgetArea, dockBarra4 );
-    QProgressBar *PBEpocasFino = new QProgressBar( dockBarra4 );
-    dockBarra4->setWidget( PBEpocasFino );
+    dockBarra1->setWindowTitle( "Epocas de ajuste fino" );
 
-    PBEpocasFino->setRange( 0, epocas.at( 2 ) );
-    PBEpocasFino->setFormat( "Epoca %v de %m - %p%" );
+    PBEpocas->setRange( 0, epocas.at( 2 ) );
+    PBEpocas->setFormat( "Epoca %v de %m - %p%" );
 
     som.setearRadioVecindad( 0 );
     tasa_aprendizajes = aproximacionLineald (epocas.at( 2 ), tasas.at( 1 ), tasas.at( 2 ) );
 
-    for( int epoca=0; epoca<epocas.at(0); epoca++ ) {
+    for( int epoca=0; epoca<epocas.at(2); epoca++ ) {
 
         som.setearTasaAprendizaje( tasa_aprendizajes.at( epoca ) );
-        PBEpocasFino->setValue( epoca );
-        PBTasaAprendizaje->setValue( tasa_aprendizajes.at( epoca ) );
+        PBEpocas->setValue( epoca + 1 );
+        PBTasaAprendizaje->setValue( tasa_aprendizajes.at( epoca )  * 100 );
 
         for( int p=0; p<entradas.size(); p++ ) {
             som.entrenar( entradas.at( p ) );

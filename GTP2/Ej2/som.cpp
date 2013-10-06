@@ -91,16 +91,10 @@ void SOM::actualizarPeso( int fila, int columna, QVector<double> distancia_obten
 
             for( int pos=0; pos<_som.at(fil).at(col).size(); pos++ ) {
                 double fv = funcionVecindad( fil, col, fila, columna );
-                double actualizacion = _tasa_aprendizaje*distancia_obtenida.at(pos)*fv;
-                qDebug() << actualizacion;
-                _som[fil][col][pos] += _tasa_aprendizaje*distancia_obtenida.at(pos)*fv;
-
+                _som[fil][col][pos] -= _tasa_aprendizaje*distancia_obtenida.at(pos)*fv;
             }
-
         }
-
     }
-
 }
 
 /*!
@@ -119,8 +113,12 @@ double SOM::funcionVecindad( int fila, int columna, int fila_ganadora, int colum
     }
 
     double distancia = sqrt( pow( fila_ganadora - fila, 2.0 ) + pow( columna_ganadora - columna, 2.0 ) );
-
-    return exp( ( -1 )  * ( pow( abs( distancia ), 2.0 ) ) / ( 2.0 * pow( _radio_vecindad, 2.0 ) ) );
+    if( distancia < _radio_vecindad ) {
+        return 0.0;
+    } else {
+        return 1.0;
+    }
+    //return exp( ( -1 )  * ( pow( abs( distancia ), 2.0 ) ) / ( 2.0 * pow( _radio_vecindad, 2.0 ) ) );
 }
 
 /*!
