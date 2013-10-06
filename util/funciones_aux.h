@@ -470,10 +470,10 @@ static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QStr
 #ifndef FUNCIONESPARASOM
 #define FUNCIONESPARASOM
 
-static QVector<int> aproximacionLineal( int epocas_ini, int epocas_fin , int par_ini, int par_fin) {
+static QVector<int> aproximacionLineal( int epocas_ini, int epocas_fin , int par_ini, int par_fin ) {
     QVector<int> auxiliar;
     for(int i = 0 ; i < (epocas_fin - epocas_ini) ; i++) {
-        auxiliar.push_back(par_ini + ( (par_fin - par_ini) / (epocas_fin - epocas_ini ) ) * ( epocas_fin - epocas_ini ));
+        auxiliar.push_back( par_ini + ( (par_fin - par_ini) / (epocas_fin - epocas_ini ) ) * ( epocas_fin - epocas_ini ));
     }
     return auxiliar;
 }
