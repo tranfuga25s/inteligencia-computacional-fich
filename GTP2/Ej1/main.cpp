@@ -74,7 +74,10 @@ int main(int argc, char *argv[])
     particiones.particionarDatos();
 
     // Inicializo la red neuronal
-    QVector<int> neuronas_por_capas = stringAQVector( parametros.value( "capas" ).toString() );
+    QVector<int> neuronas_por_capas;
+    // Primer parametro es la cantidad de clases
+    neuronas_por_capas << parametros.value( "cant_clases" ).toInt();
+    neuronas_por_capas << stringAQVector( parametros.value( "codificacion_salida" ).toString() ).size();
 
     // Inicilizo la red radial
 
