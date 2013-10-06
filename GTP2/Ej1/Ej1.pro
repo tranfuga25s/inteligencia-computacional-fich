@@ -35,6 +35,7 @@ HEADERS +=  neurona.h \
 
 OTHER_FILES += parametros.cfg \
                iris.csv \
-               XOR-etra.csv
+               XOR-etra.csv \
+    XOR-extra.csv
 
 INCLUDEPATH += ../../util

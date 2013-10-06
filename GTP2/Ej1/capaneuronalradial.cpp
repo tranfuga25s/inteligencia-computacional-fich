@@ -67,7 +67,7 @@ void CapaNeuronalRadial::buscarCentroides( QVector<vector> &_datos_originales )
             QList<vector>::iterator p;
             for( p = clase->begin(); p != clase->end(); ++p ) {
 
-                double distancia_minima = 0;
+                double distancia_minima = 999999999;
                 int clase_elegida = -1;
 
                 // Busco que centroide tiene mas cerca
@@ -84,7 +84,9 @@ void CapaNeuronalRadial::buscarCentroides( QVector<vector> &_datos_originales )
                 // Cambio el patron de lugar si corresponde
                 if( _patrones_clase->indexOf( *clase ) != clase_elegida ) {
                     // Muevo el patron a la clase que le corresponde
-                    _patrones_clase->operator []( clase_elegida ).append( clase->takeAt( clase->indexOf( *p ) ) );
+                    //qDebug()<<clase_elegida;
+                    //qDebug()<<_patrones_clase->size();
+                    _patrones_clase->operator [](clase_elegida).append( clase->takeAt( clase->indexOf( *p ) ) );
                     //_patrones_clase->at( clase ).removeAt( p );
                     hubo_cambio = true;
                 }

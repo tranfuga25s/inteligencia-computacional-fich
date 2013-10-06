@@ -11,13 +11,14 @@ void NeuronaRadial::recalcularCentroide(QList<vector> lista )
 {
     vector suma;
 
+    //aca cambie los [] por append para suma y para _media
     foreach( vector punto, lista ) {
-        for (int i = 0; i < punto.size(); i++  ) {
-            suma[i] += punto.at(i);
+         for (int i = 0; i < punto.size(); i++ ) {
+            suma.append(punto.at(i));
         }
     }
     for( int i =0; i<suma.size(); i++ ) {
-        _media[i] = suma.at(i) / lista.size();
+        _media.append( suma.at(i) / lista.size());
     }
 
     float distancia = 0.0;
@@ -40,5 +41,6 @@ double NeuronaRadial::distanciaCentroide(vector punto)
 
 double NeuronaRadial::getSalida( vector punto )
 {
-    return exp( -1 * pow(distanciaCentroide(punto),2) / 2 * pow(_desviacion,2) );
+
+    return exp( ( -1.0 * pow(distanciaCentroide(punto),2.0) ) / ( 2.0 * pow(_desviacion,2.0) ) );
 }

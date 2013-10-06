@@ -24,7 +24,7 @@ public:
 
 private:
     vector _media; // Punto del centroide
-    float _desviacion;//Radio Gausseana
+    double _desviacion;//Radio Gausseana
 
     int _clase;
 

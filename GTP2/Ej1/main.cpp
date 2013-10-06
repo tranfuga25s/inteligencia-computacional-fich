@@ -202,7 +202,8 @@ int main(int argc, char *argv[])
                 && porcentaje_error > tolerancia_error )
         {
             // Inicio la etapa de entrenamiento
-            for(int i = 0; i<part_local.entrenamiento.size(); i++ )
+            qDebug()<< entradas.operator [](160 );
+            for(int i = 0; i < part_local.entrenamiento.size(); i++ )
             {
                 red.entrenarCapaNeuronalComun( entradas.at( part_local.entrenamiento.at(i) ), salidas.at( part_local.entrenamiento.at( i ) ) );
                 //red.mostrarPesos( pesos );
