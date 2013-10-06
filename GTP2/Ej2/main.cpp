@@ -102,6 +102,13 @@ int main(int argc, char *argv[])
     PBTamanoVecindad->setFormat( "%v neuronas de %m - %p%" );
     PBTamanoVecindad->setValue( tamano_vecindad_inicial );
 
+    QDockWidget *dockBarra5 = new QDockWidget( QString::fromUtf8( "Tasa de apredizaje" ) );
+    main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra5 );
+    QProgressBar *PBTasaAprendizaje = new QProgressBar( dockBarra5 );
+    dockBarra3->setWidget( PBTasaAprendizaje );
+
+    PBTasaAprendizaje->setRange( 0, 100 );
+    PBTasaAprendizaje->setFormat( "Tasa %v/100" );
 
     QDockWidget *dockBarra1 = new QDockWidget( "Epocas de Ordenamiento Global" );
     main.addDockWidget( Qt::TopDockWidgetArea, dockBarra1 );
@@ -114,6 +121,7 @@ int main(int argc, char *argv[])
     // Etapa de Ordenamiento Global
     som.setearRadioVecindad( tamano_vecindad_inicial );
     som.setearTasaAprendizaje( tasas.at( 0 ) );
+    PBTasaAprendizaje->setValue( tasas.at( 0 ) );
 
     for( int epoca=0; epoca<epocas.at(0); epoca++ ) {
         PBEpocasOrdenamiento->setValue( PBEpocasOrdenamiento->value() + 1 );
@@ -141,6 +149,7 @@ int main(int argc, char *argv[])
         som.setearTasaAprendizaje( tasa_aprendizajes.at( epoca ) );
         PBEpocasTransicion->setValue( PBEpocasTransicion->value() + 1 );
         PBTamanoVecindad->setValue( tamano_vecindad.at( epoca ) );
+        PBTasaAprendizaje->setValue( tasa_aprendizajes.at( epoca ) );
         for( int p=0; p<entradas.size(); p++ ) {
             som.entrenar( entradas.at( p ) );
             graf1->setearPuntos( som.obtenerPuntos() );
@@ -164,6 +173,7 @@ int main(int argc, char *argv[])
 
         som.setearTasaAprendizaje( tasa_aprendizajes.at( epoca ) );
         PBEpocasFino->setValue( epoca );
+        PBTasaAprendizaje->setValue( tasa_aprendizajes.at( epoca ) );
 
         for( int p=0; p<entradas.size(); p++ ) {
             som.entrenar( entradas.at( p ) );
