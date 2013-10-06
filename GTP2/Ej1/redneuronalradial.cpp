@@ -79,3 +79,12 @@ int RedNeuronalRadial::mapeadorSalidas(vector salidas)
     return _capaNeuronas->mapeadorSalidas(salidas);
 
 }
+
+/*!
+ * \brief RedNeuronalRadial::graficarClusters
+ * \param graf
+ */
+void RedNeuronalRadial::graficarClusters( GraficadorMdi *graf )
+{
+    _capaRadial->graficarClusters( graf );
+}

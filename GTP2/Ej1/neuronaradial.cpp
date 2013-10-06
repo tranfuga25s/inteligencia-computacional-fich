@@ -26,7 +26,7 @@ void NeuronaRadial::recalcularCentroide( QList<vector> lista )
 
     float distancia = 0.0;
     foreach( vector punto, lista ) {
-        float distancia_nueva = distanciaCentroide(punto);
+        float distancia_nueva = distanciaCentroide( punto );
         if( distancia_nueva > distancia ) { distancia = distancia_nueva; }
     }
     _desviacion = distancia;

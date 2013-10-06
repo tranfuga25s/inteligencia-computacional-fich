@@ -1,5 +1,6 @@
 #include <QVector>
 #include "capaneuronalradial.h"
+#include "cfloat"
 
 CapaNeuronalRadial::CapaNeuronalRadial( int cantidad_neuronas, int cantidad_entradas, int cantidad_clases )
 {
@@ -67,7 +68,7 @@ void CapaNeuronalRadial::buscarCentroides( QVector<vector> &_datos_originales )
             QList<vector>::iterator p;
             for( p = clase->begin(); p != clase->end(); ++p ) {
 
-                double distancia_minima = 999999999;
+                double distancia_minima = DBL_MAX;
                 int clase_elegida = -1;
 
                 // Busco que centroide tiene mas cerca
@@ -100,4 +101,24 @@ void CapaNeuronalRadial::buscarCentroides( QVector<vector> &_datos_originales )
     // Graficar? para ir viendo el proceso :p
 
 
+}
+
+/*!
+ * \brief CapaNeuronalRadial::graficarClusters
+ * \param graf
+ */
+void CapaNeuronalRadial::graficarClusters( GraficadorMdi *graf )
+{
+    matriz entradas;
+    QVector<int> salidas;
+    QVector<int> clases;
+    for( int i=0; i<_patrones_clase->size(); i++ ) {
+
+        for( int pos=0; pos<_patrones_clase->at( i ).size(); pos++ ) {
+            entradas.append( _patrones_clase->at( i ).value( pos ) );
+            salidas.append( i );
+        }
+        clases.append( i );
+    }
+    graf->agregarPuntosClasificados( entradas, salidas, clases );
 }

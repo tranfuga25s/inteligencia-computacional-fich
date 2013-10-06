@@ -28,6 +28,8 @@ public:
 
     void inicializarPesos() { _capaNeuronas->inicializarPesos(); }
 
+    void graficarClusters( GraficadorMdi *graf );
+
 
 private:
     CapaNeuronal *_capaNeuronas;

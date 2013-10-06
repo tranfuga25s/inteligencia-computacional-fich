@@ -2,6 +2,7 @@
 #define CAPANEURONALRADIAL_H
 
 #include "neuronaradial.h"
+#include "graficadormdi.h"
 
 class CapaNeuronalRadial
 {
@@ -15,6 +16,8 @@ public:
     QVector<double> getSalidas(vector entrada );
 
     void buscarCentroides( QVector<vector> &_datos_originales );
+
+    void graficarClusters( GraficadorMdi *graf );
 
 private:
     QVector<NeuronaRadial> *_neuronas;

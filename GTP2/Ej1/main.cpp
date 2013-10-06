@@ -182,6 +182,17 @@ int main(int argc, char *argv[])
     red.setearDatosOriginales( entradas, &salidas );
     red.buscarCentroides();
 
+    // Grafico la agrupacion que hizo
+    GraficadorMdi *graf = new GraficadorMdi( mdiArea );
+    mdiArea->addSubWindow( graf );
+    graf->setearTitulo( QString( "Agrupamientos según RB" ) );
+    graf->setearEjesEnGrafico();
+    graf->setearTituloEjeX( " X " );
+    graf->setearTituloEjeY( " Y " );
+    red.graficarClusters( graf );
+    mdiArea->tileSubWindows();
+
+    return a.exec();
 
     for( int p=0; p<particiones.cantidadDeParticiones(); p++ ) {
 
