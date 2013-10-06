@@ -14,7 +14,7 @@ typedef QVector< QVector<double> > matriz;
 
 #ifndef LEERARCHIVOENTRENAMIENTO
 #define LEERARCHIVOENTRENAMIENTO
-
+/*
 static bool leer_archivo_entrenamiento( QString direccion,
                                         matriz* vect_entradas,
                                         matriz* vect_salidas_deseadas,
@@ -65,7 +65,7 @@ static bool leer_archivo_entrenamiento( QString direccion,
     if( cant > 0 )
     { return true; } else { return false; }
 }
-
+*/
 #endif
 
 /*!
@@ -105,9 +105,10 @@ static bool leer_archivo_entrenamiento( QString direccion,
                 aux.push_back( divisiones.takeFirst().toDouble() );
             }
             vect_entradas->append( aux );
+            aux.clear();
             cant++;
         }
-        //qDebug() << "Leidas " << cant << " entradas de entrenamiento";
+        qDebug() << "Leidas " << cant << " entradas de entrenamiento";
         archivo_entrada.close();
     }
     if( cant > 0 )
@@ -126,7 +127,7 @@ static bool leer_archivo_entrenamiento( QString direccion,
  * \param vect_salidas_deseadas vector de salidas
  * \return Verdadero si se pudieron cargar al menos una entrada del archivo
  */
-static bool leer_archivo_entrenamiento( QString direccion,
+/*static bool leer_archivo_entrenamiento( QString direccion,
                                         matriz* vect_entradas,
                                         vector* vect_salidas_deseadas,
                                         int tam_entradas )
@@ -214,7 +215,7 @@ static bool leer_archivo_entrenamiento( QString direccion,
     if( cant > 0 )
     { return true; } else { return false; }
 }
-
+*/
 #endif
 
 //Escribe el archivo con la salida incluyendo las entradas anteriormente leidas
@@ -319,6 +320,7 @@ static QVector<int> randomizarEntradas( int tam_datos ) {
  * \param porcentaje_error Porcentaje de error a aplicar a la variación
  * \param tamano_entradas Cantidad de datos que poseen las entradas
  */
+/*
 static void generarArchivoAleatoriosPruebaRadial( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_variacion, int tamano_entradas ) {
     matriz entradas;
     vector salidas;
@@ -344,7 +346,7 @@ static void generarArchivoAleatoriosPruebaRadial( QString archivo_entrada, QStri
 
     }
     escribe_archivo_salida( archivo_salida, &entradas_nuevas, &salidas );
-}
+}*/
 
 /*!
  * \brief generarArchivoAleatoriosPrueba
@@ -354,7 +356,7 @@ static void generarArchivoAleatoriosPruebaRadial( QString archivo_entrada, QStri
  * \param porcentaje_variacion
  * \param tamano_entradas
  */
-
+/*
 static void generarArchivoAleatoriosPrueba( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_variacion, int tamano_entradas ) {
     matriz entradas;
     vector salidas;
@@ -385,7 +387,7 @@ static void generarArchivoAleatoriosPrueba( QString archivo_entrada, QString arc
 
     }
     escribe_archivo_salida( archivo_salida, &entradas_nuevas, &salidas );
-}
+}*/
 
 
 /*!
@@ -396,7 +398,7 @@ static void generarArchivoAleatoriosPrueba( QString archivo_entrada, QString arc
  * \param porcentaje_error Porcentaje de error a aplicar a la variación
  * \param tamano_entradas Cantidad de datos que poseen las entradas
  */
-
+/*
 static void generarArchivoAleatoriosEntrenamientoRadial( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_variacion, int tamano_entradas ) {
     matriz entradas;
     vector salidas;
@@ -422,7 +424,7 @@ static void generarArchivoAleatoriosEntrenamientoRadial( QString archivo_entrada
     }
     escribe_archivo_salida( archivo_salida, &entradas_nuevas, &salidas_nuevas );
 }
-
+*/
 
 #ifndef GENERARARCHIVOALEATORIOENTRENAMIENTO
 #define GENERARARCHIVOALEATORIOENTRENAMIENTO
@@ -434,6 +436,7 @@ static void generarArchivoAleatoriosEntrenamientoRadial( QString archivo_entrada
  * \param porcentaje_variacion
  * \param tamano_entradas
  */
+/*
 static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QString archivo_salida, int cantidad_extras, double porcentaje_variacion, int tamano_entradas ) {
     matriz entradas;
     vector salidas;
@@ -463,7 +466,7 @@ static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QStr
 
     }
     escribe_archivo_salida( archivo_salida, &entradas_nuevas, &salidas_nuevas );
-}
+}*/
 
 #endif
 
@@ -486,9 +489,9 @@ static QVector<double> aproximacionLineald( int epocas_ini, int epocas_fin , dou
     return auxiliar;
 }
 
-static int max_x_matriz(int columna,int distancia_obtenida,int cant_col) {
+static int max_x_matriz( int columna, int distancia_obtenida, int cant_col ) {
     int i = columna;
-    while (i <= (columna + distancia_obtenida) && i < cant_col)  {
+    while (i <= (columna+distancia_obtenida) && i < cant_col)  {
         i++;
     }
     return i;

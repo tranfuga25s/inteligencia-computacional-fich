@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
     qWarning() << "Archivo de lectura de datos originales: "<< archivo;
     if( ! leer_archivo_entrenamiento( archivo,
                                       &entradas,
-                                      parametros.value( "cantidad_entradas" ).toInt() )  ) {
+                                      parametros.value( "tamano_entradas" ).toInt() )  ) {
         qDebug() << "No se pudo encontrar el archivo de entrenamiento! cancelando!";
         abort();
     }

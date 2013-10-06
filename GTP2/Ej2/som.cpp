@@ -42,7 +42,7 @@ void SOM::entrenar( QVector<double> patron )
 
 double SOM::distancia( QVector<double> patron, int fila, int columna )
 {
-    double distancia;
+    double distancia = 0.0;
     for( int i=0; i<patron.size(); i++ ) {
         distancia += pow( patron.at( i ) - _som.at( columna ).at( fila ).at( i ), 2.0 );
     }
@@ -51,10 +51,10 @@ double SOM::distancia( QVector<double> patron, int fila, int columna )
 
 void SOM::actualizarPeso( int fila, int columna, double distancia_obtenida )
 {
-    int max_vec_x = max_x_matriz(columna,distancia_obtenida,_som.size());
-    int min_vec_x = min_x_matriz(columna,distancia_obtenida);
-    int max_vec_y = max_y_matriz(fila,distancia_obtenida,_som.at(0).size());
-    int min_vec_y = min_y_matriz(fila,distancia_obtenida);
+    int max_vec_x = max_x_matriz( columna, distancia_obtenida, _som.size() );
+    int min_vec_x = min_x_matriz( columna, distancia_obtenida  );
+    int max_vec_y = max_y_matriz( fila   , distancia_obtenida, _som.at(0).size() );
+    int min_vec_y = min_y_matriz( fila   , distancia_obtenida );
 
     for( int col=min_vec_x; col< max_vec_x; col++ ) {
 
