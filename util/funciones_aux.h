@@ -497,7 +497,7 @@ static int max_x_matriz( int columna, int distancia_obtenida, int cant_col ) {
     return i;
 }
 
-static int min_x_matriz(int columna,int distancia_obtenida) {
+static int min_x_matriz( int columna, int distancia_obtenida ) {
     int i = columna;
     while (i >= (columna - distancia_obtenida) && i > 0)  {
         i--;

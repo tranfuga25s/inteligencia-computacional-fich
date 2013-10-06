@@ -5,11 +5,13 @@
 NeuronaRadial::NeuronaRadial( int cantidad_entradas )
 {
     _cantidad_entradas = cantidad_entradas;
+    _media.reserve( cantidad_entradas );
 }
 
-void NeuronaRadial::recalcularCentroide(QList<vector> lista )
+void NeuronaRadial::recalcularCentroide( QList<vector> lista )
 {
-    vector suma;
+    vector suma( lista.at(0).size() );
+    _media.resize( lista.at(0).size() );
 
     //aca cambie los [] por append para suma y para _media
     foreach( vector punto, lista ) {
@@ -17,6 +19,7 @@ void NeuronaRadial::recalcularCentroide(QList<vector> lista )
             suma.append(punto.at(i));
         }
     }
+
     for( int i =0; i<suma.size(); i++ ) {
         _media.append( suma.at(i) / lista.size());
     }

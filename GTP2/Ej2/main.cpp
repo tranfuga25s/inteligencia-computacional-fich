@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
             a.processEvents();
         }
     }
-
+    return a.exec();
     // Etapa de transición
     QVector<int> tamano_vecindad = aproximacionLineal( epocas.at( 1 ), tamano_vecindad_inicial, 1 );
     QVector<double> tasa_aprendizajes = aproximacionLineald( epocas.at( 1 ), tasas.at( 0 ), tasas.at( 1 ) );
