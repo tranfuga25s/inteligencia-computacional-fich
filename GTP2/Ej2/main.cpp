@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
     QDockWidget *dockBarra5 = new QDockWidget( QString::fromUtf8( "Tasa de apredizaje" ) );
     main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra5 );
     QProgressBar *PBTasaAprendizaje = new QProgressBar( dockBarra5 );
-    dockBarra3->setWidget( PBTasaAprendizaje );
+    dockBarra5->setWidget( PBTasaAprendizaje );
 
     PBTasaAprendizaje->setRange( 0, 100 );
     PBTasaAprendizaje->setFormat( "Tasa %v/100" );
