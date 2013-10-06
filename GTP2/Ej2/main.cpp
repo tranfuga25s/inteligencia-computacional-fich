@@ -46,10 +46,19 @@ int main(int argc, char *argv[])
     QSettings parametros( "parametros.cfg", QSettings::IniFormat );
 
     GraficadorMdi *graf1 = new GraficadorMdi( mdiArea );
-    graf1->setearTitulo( QString::fromUtf8( "Porcentaje de error según particion ( entrenamiento )" ) );
-    graf1->setearTituloEjeX( QString::fromUtf8( "Epoca" ) );
-    graf1->setearTituloEjeY( QString::fromUtf8( "Porcentaje error" ) );
+    graf1->setearTitulo( QString::fromUtf8( "Organizacion" ) );
+    graf1->setearTituloEjeX( QString::fromUtf8( "X" ) );
+    graf1->setearTituloEjeY( QString::fromUtf8( "Y" ) );
+    graf1->setearEjesEnGrafico();
     mdiArea->addSubWindow( graf1 );
+    mdiArea->tileSubWindows();
+
+    GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );
+    graf2->setearTitulo( QString::fromUtf8( "Datos Originales" ) );
+    graf2->setearTituloEjeX( QString::fromUtf8( "X" ) );
+    graf2->setearTituloEjeY( QString::fromUtf8( "Y" ) );
+    graf2->setearEjesEnGrafico();
+    mdiArea->addSubWindow( graf2 );
     mdiArea->tileSubWindows();
 
     // Archivo de entrada
@@ -66,6 +75,9 @@ int main(int argc, char *argv[])
         qDebug() << "No se pudo encontrar el archivo de entrenamiento! cancelando!";
         abort();
     }
+
+    // Dibujo las entradas
+    graf2->agregarPuntos( entradas, "Datos originales" );
 
     // Inicializo el SOM
     SOM som( parametros.value( "som_tam_x", 2 ).toInt(),
@@ -89,10 +101,13 @@ int main(int argc, char *argv[])
 
             som.entrenar( entradas.at( p ) );
 
+            //graf1->setearPuntos( som.obtenerPuntos() );
+
         }
 
     }
 
+    return a.exec();
     // Etapa de transición
     QVector<int> tamano_vecindad = aproximacionLineal( epocas.at( 1 ), tamano_vecindad_inicial, 1 );
     QVector<double> tasa_aprendizajes = aproximacionLineald( epocas.at(0), epocas.at( 1 ), tasas.at( 0 ), tasas.at( 1 ) );
