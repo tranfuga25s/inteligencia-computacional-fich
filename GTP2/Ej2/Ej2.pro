@@ -14,15 +14,14 @@ TEMPLATE = app
 SOURCES +=  main.cpp \
             ../../util/graficador.cpp \
             ../../util/graficadormdi.cpp \
-            neuronaradial.cpp \
     som.cpp
 
 HEADERS +=  ../../util/graficador.h \
             ../../util/funciones_aux.h \
             ../../util/graficadormdi.h \
-            neuronaradial.h \
     som.h
 
 OTHER_FILES += parametros.cfg \
+               cuadrado.csv
 
 INCLUDEPATH += ../../util

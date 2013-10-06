@@ -286,6 +286,12 @@ void Graficador::setearTamanoFijo()
     myPlot->setAxisAutoScale( QwtPlot::yLeft, false );
 }
 
+void Graficador::setearPuntos( QVector<QPointF> puntos )
+{
+    // Busco la curva
+    curvas->operator [](0)->setSamples( puntos );
+}
+
 void Graficador::cambiarColor()
 {
     switch( this->color ) {

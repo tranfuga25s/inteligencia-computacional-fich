@@ -28,6 +28,7 @@ public:
     void dibujarRecta( int num_recta, vector pesos, QString nombre );
     void setearEjesEnGrafico();
     void setearTamanoFijo();
+    void setearPuntos( QVector<QPointF> puntos );
 
 private:
     QwtPlot *myPlot;
