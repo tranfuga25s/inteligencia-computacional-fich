@@ -22,6 +22,8 @@ HEADERS +=  ../../util/graficador.h \
     som.h
 
 OTHER_FILES += parametros.cfg \
-               cuadrado.csv
+               cuadrado.csv \
+               t.csv \
+               circulo.csv
 
 INCLUDEPATH += ../../util
