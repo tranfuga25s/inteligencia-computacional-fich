@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
     QVector<double> tasa_aprendizajes = aproximacionLineald( epocas.at(0), epocas.at( 1 ), tasas.at( 0 ), tasas.at( 1 ) );
 
     QDockWidget *dockBarra2 = new QDockWidget( "Epocas de transición" );
-    main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra2 );
+    main.addDockWidget( Qt::TopDockWidgetArea, dockBarra2 );
     QProgressBar *PBEpocasTransicion = new QProgressBar( dockBarra2 );
     dockBarra2->setWidget( PBEpocasTransicion );
 
@@ -149,11 +149,21 @@ int main(int argc, char *argv[])
     }
 
     // Etapa de ajuste fino
+    QDockWidget *dockBarra4 = new QDockWidget( "Epocas de ajuste fino" );
+    main.addDockWidget( Qt::TopDockWidgetArea, dockBarra4 );
+    QProgressBar *PBEpocasFino = new QProgressBar( dockBarra4 );
+    dockBarra4->setWidget( PBEpocasFino );
+
+    PBEpocasFino->setRange( 0, epocas.at( 2 ) );
+    PBEpocasFino->setFormat( "Epoca %v de %m - %p%" );
+
     som.setearRadioVecindad( 0 );
-    tasa_aprendizajes = aproximacionLineald( epocas.at( 1 ), epocas.at(2) , tasas.at( 1 ), tasas.at( 2 ) );
+    tasa_aprendizajes = aproximacionLineald( epocas.at( 1 ), epocas.at( 2 ), tasas.at( 1 ), tasas.at( 2 ) );
+
     for( int epoca=0; epoca<epocas.at(0); epoca++ ) {
 
         som.setearTasaAprendizaje( tasa_aprendizajes.at( epoca ) );
+        PBEpocasFino->setValue( epoca );
 
         for( int p=0; p<entradas.size(); p++ ) {
             som.entrenar( entradas.at( p ) );
