@@ -24,6 +24,8 @@ public:
     QVector<QPointF> obtenerPuntos();
 
 private:
+    // Estructura:
+    // fila, columna, elemento
     QVector< QVector< QVector<double> > > _som;
     int _radio_vecindad;
     double _tasa_aprendizaje;
