@@ -34,9 +34,10 @@ void RedNeuronalRadial::setearMomento( double momento )
  * \param entradas Puntos originales
  * \param clases Identificador de la case segun el patron de el otro parametro.
  */
-void RedNeuronalRadial::setearDatosOriginales( matriz *entradas, QVector<int> *clases )
+void RedNeuronalRadial::setearDatosOriginales( matriz entradas, QVector<int> *clases )
 {
-   _datos_originales = entradas;
+
+   _datos_originales = new QVector< QVector<double> >( entradas );
    _clases_originales = clases;
 }
 

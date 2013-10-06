@@ -15,7 +15,7 @@ public:
     void setearMomento(double momento);
     double getMomento() { return _capaNeuronas->getNeuronas()[0]->tasaMomento(); }
 
-    void setearDatosOriginales(matriz *entradas, QVector<int> *clases );
+    void setearDatosOriginales( matriz entradas, QVector<int> *clases );
 
     void buscarCentroides();
     void entrenarCapaNeuronalComun( QVector<double> entrada, int clase );

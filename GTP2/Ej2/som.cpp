@@ -29,8 +29,6 @@ void SOM::entrenar( QVector<double> patron )
     double distancia_minima = DBL_MAX;
     int fila_ganadora = -1;
     int columna_ganadora = -1;
-    int uf = 0;
-    int uc = 0;
 
     for( int f=0; f<_som.size(); f++ ) {
 
@@ -43,13 +41,10 @@ void SOM::entrenar( QVector<double> patron )
                 fila_ganadora = f;
                 columna_ganadora = c;
             }
-            uf = f;
-            uc = c;
-
         }
 
     }
-    if( columna_ganadora == -1 || fila_ganadora == -1 || distancia_minima > 3.0 ) {
+    if( columna_ganadora == -1 || fila_ganadora == -1 ) {
         abort();
     }
 

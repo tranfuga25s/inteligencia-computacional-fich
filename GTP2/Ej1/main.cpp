@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
     mdiArea->addSubWindow( graf1 );
     mdiArea->tileSubWindows();
 
-    if( stringAQVector( parametros.value( "codificacion_salida" ).toString() ).size() <= 2 ) {
+    /*if( stringAQVector( parametros.value( "codificacion_salida" ).toString() ).size() <= 2 ) {
         GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );
         mdiArea->addSubWindow( graf2 );
         graf2->showMaximized();
@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
         graf3->agregarPuntosClasificados( entradas2, salidas2, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
         mdiArea->tileSubWindows();
 
-    }
+    }*/
 
     QDockWidget *dockBarra1 = new QDockWidget( "Progreso de Particiones" );
     main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra1 );
@@ -179,7 +179,7 @@ int main(int argc, char *argv[])
     medidor_tiempo.start();
 
     // Busco los centroides
-    red.setearDatosOriginales( &entradas, &salidas );
+    red.setearDatosOriginales( entradas, &salidas );
     red.buscarCentroides();
 
     for( int p=0; p<particiones.cantidadDeParticiones(); p++ ) {
@@ -202,11 +202,11 @@ int main(int argc, char *argv[])
                 && porcentaje_error > tolerancia_error )
         {
             // Inicio la etapa de entrenamiento
-            qDebug()<< entradas.operator [](160 );
             for(int i = 0; i < part_local.entrenamiento.size(); i++ )
             {
-                red.entrenarCapaNeuronalComun( entradas.at( part_local.entrenamiento.at(i) ), salidas.at( part_local.entrenamiento.at( i ) ) );
-                //red.mostrarPesos( pesos );
+                vector prueba = entradas.at( part_local.entrenamiento.at(i) );
+                int salida = salidas.at( part_local.entrenamiento.at( i ) );
+                red.entrenarCapaNeuronalComun( prueba, salida );
             }
 
             // Verifico el error
