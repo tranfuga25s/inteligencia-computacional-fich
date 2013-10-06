@@ -352,10 +352,12 @@ int main(int argc, char *argv[])
         temp.append( entradas.at(i).at(0) );
         temp.append( entradas.at(i).at(1) );
         entradas1.append( temp );
-        vector temp2;
-        temp2.append( entradas.at(i).at(2) );
-        temp2.append( entradas.at(i).at(3) );
-        entradas2.append( temp2 );
+        if( entradas.at(i).size() > 2 ) {
+            vector temp2;
+            temp2.append( entradas.at(i).at(2) );
+            temp2.append( entradas.at(i).at(3) );
+            entradas2.append( temp2 );
+        }
         salidas1.append( nueva_salida.at( i ) );
         salidas2.append( nueva_salida.at( i ) );
     }
