@@ -127,7 +127,7 @@ static bool leer_archivo_entrenamiento( QString direccion,
  * \param vect_salidas_deseadas vector de salidas
  * \return Verdadero si se pudieron cargar al menos una entrada del archivo
  */
-/*static bool leer_archivo_entrenamiento( QString direccion,
+static bool leer_archivo_entrenamiento( QString direccion,
                                         matriz* vect_entradas,
                                         vector* vect_salidas_deseadas,
                                         int tam_entradas )
@@ -215,7 +215,7 @@ static bool leer_archivo_entrenamiento( QString direccion,
     if( cant > 0 )
     { return true; } else { return false; }
 }
-*/
+
 #endif
 
 //Escribe el archivo con la salida incluyendo las entradas anteriormente leidas
@@ -481,10 +481,10 @@ static QVector<int> aproximacionLineal( int epocas, int par_ini, int par_fin ) {
     return auxiliar;
 }
 
-static QVector<double> aproximacionLineald( int epocas_ini, int epocas_fin , double par_ini, double par_fin) {
+static QVector<double> aproximacionLineald( int epocas, double par_ini, double par_fin) {
     QVector<double> auxiliar;
-    for(int i = 0 ; i < (epocas_fin - epocas_ini) ; i++) {
-        auxiliar.push_back(par_ini + ( (par_fin - par_ini) / (epocas_fin - epocas_ini ) ) * ( epocas_fin - epocas_ini ));
+    for(int i = 0 ; i < epocas; i++) {
+        auxiliar.push_back( par_ini + ( (par_fin - par_ini) / (epocas ) ) * ( epocas ));
     }
     return auxiliar;
 }
