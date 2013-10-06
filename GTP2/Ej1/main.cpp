@@ -182,6 +182,7 @@ int main(int argc, char *argv[])
     red.setearDatosOriginales( entradas, &salidas );
     red.buscarCentroides();
 
+
     for( int p=0; p<particiones.cantidadDeParticiones(); p++ ) {
 
         Particionador::particion part_local = particiones.getParticion( p );

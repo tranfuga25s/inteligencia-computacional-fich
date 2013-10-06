@@ -16,12 +16,12 @@ void NeuronaRadial::recalcularCentroide( QList<vector> lista )
     //aca cambie los [] por append para suma y para _media
     foreach( vector punto, lista ) {
          for (int i = 0; i < punto.size(); i++ ) {
-            suma.append(punto.at(i));
+             suma[i] += punto.at(i);
         }
     }
 
     for( int i =0; i<suma.size(); i++ ) {
-        _media.append( suma.at(i) / lista.size());
+        _media[i] = suma.at(i) / lista.size();
     }
 
     float distancia = 0.0;

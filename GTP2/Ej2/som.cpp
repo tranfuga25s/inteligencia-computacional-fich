@@ -113,11 +113,8 @@ double SOM::funcionVecindad( int fila, int columna, int fila_ganadora, int colum
     }
 
     double distancia = sqrt( pow( fila_ganadora - fila, 2.0 ) + pow( columna_ganadora - columna, 2.0 ) );
-    if( distancia < _radio_vecindad ) {
-        return 0.0;
-    } else {
-        return 1.0;
-    }
+    qDebug() << exp( ( -1 )  * ( pow( distancia, 2.0 ) ) / ( 2.0 * pow( _radio_vecindad, 2.0 ) ) );
+    return 0.0;
     //return exp( ( -1 )  * ( pow( abs( distancia ), 2.0 ) ) / ( 2.0 * pow( _radio_vecindad, 2.0 ) ) );
 }
 
