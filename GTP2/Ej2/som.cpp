@@ -42,7 +42,11 @@ void SOM::entrenar( QVector<double> patron )
 
     }
 
-    actualizarPeso( fila_ganadora, columna_ganadora, distancia_minima );
+    // La distancia tiene que ser un vector de las mismas dimensiones
+    // que la entrada para "acercarlo" al patron
+    vector dif = diferenciaVector( patron, _som.at( fila_ganadora ).at( columna_ganadora ) );
+
+    actualizarPeso( fila_ganadora, columna_ganadora, dif );
 
 }
 
@@ -55,20 +59,20 @@ double SOM::distancia( QVector<double> patron, int fila, int columna )
     return sqrt( distancia );
 }
 
-void SOM::actualizarPeso( int fila, int columna, double distancia_obtenida )
+void SOM::actualizarPeso( int fila, int columna, QVector<double> distancia_obtenida )
 {
-    int max_vec_x = max_x_matriz( columna, distancia_obtenida, _som.size() );
-    int min_vec_x = min_x_matriz( columna, distancia_obtenida  );
-    int max_vec_y = max_y_matriz( fila   , distancia_obtenida, _som.at(0).size() );
-    int min_vec_y = min_y_matriz( fila   , distancia_obtenida );
+    int max_vec_x = max_x_matriz( columna, this->_radio_vecindad, _som.size() );
+    int min_vec_x = min_x_matriz( columna, this->_radio_vecindad );
+    int max_vec_y = max_y_matriz( fila   , this->_radio_vecindad, _som.at(0).size() );
+    int min_vec_y = min_y_matriz( fila   , this->_radio_vecindad );
 
     for( int col=min_vec_x; col< max_vec_x; col++ ) {
 
         for( int fil=min_vec_y; fil<max_vec_y; fil++ ) {
 
             for( int pos=0; pos<_som.at(col).at(fil).size(); pos++ ) {
-
-                _som[col][fil][pos] += _tasa_aprendizaje*distancia_obtenida*funcionVecindad( fil, col, fila, columna );
+                double fv = funcionVecindad( fil, col, fila, columna );
+                _som[col][fil][pos] += _tasa_aprendizaje*distancia_obtenida.at(pos)*fv;
 
             }
 
@@ -102,4 +106,13 @@ QVector<QPointF> SOM::obtenerPuntos()
         }
     }
     return temp;
+}
+
+QVector<double> SOM::diferenciaVector(QVector<double> val1, QVector<double> val2)
+{
+    QVector<double> ret;
+    for( int i=0; i<val1.size(); i++ ) {
+        ret.append( val2.at( i ) - val1.at( i ) );
+    }
+    return ret;
 }
