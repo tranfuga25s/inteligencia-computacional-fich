@@ -1,4 +1,7 @@
 #include <QCoreApplication>
+#include <QPointF>
+#include <QStringList>
+#include "../../../util/funciones_aux.h"
 
 int main(int argc, char *argv[])
 {
@@ -18,7 +21,7 @@ int main(int argc, char *argv[])
         temp2.pop_front();
         nombre_archivo = temp2.first();
     } else {
-        nombre_archivo = "cuadrado.csv";
+        nombre_archivo = "circulo.csv";
     }
 
     if( parametros.filter( "cantidad_puntos" ).size() != 0 ) {
@@ -47,7 +50,7 @@ int main(int argc, char *argv[])
             centro.append( punto );
         }
     } else {
-        qDebug() << "No se especifico el centro del curculo!";
+        qDebug() << "No se especifico el centro del circulo!";
         abort();
     }
 
@@ -67,9 +70,11 @@ int main(int argc, char *argv[])
     qDebug() << "Generando puntos ";
     while( cant_puntos > 0 ) {
         QPointF pt;
-        /// @TODO: Lucho, hacer funcion radial
-        pt.setX( valor_random( min_x, max_x ) );
-        pt.setY( valor_random( min_y, max_y ) );
+        double radio_pt = valor_random( 0.0, radio );
+        double angulo_pt = valor_random( 0.0, 365.0 );
+
+        pt.setX( centro.at(0).x() + radio_pt * cos( angulo_pt ) );
+        pt.setY( centro.at(0).y() + radio_pt * sin( angulo_pt ) );
         puntos.append( pt );
         cant_puntos--;
     }

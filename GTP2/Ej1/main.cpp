@@ -195,7 +195,7 @@ int main(int argc, char *argv[])
     red.graficarClusters( graf );
     mdiArea->tileSubWindows();
 
-    return a.exec();
+    //return a.exec();
 
     for( int p=0; p<particiones.cantidadDeParticiones(); p++ ) {
 
