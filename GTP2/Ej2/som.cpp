@@ -1,6 +1,7 @@
 #include "som.h"
 
 #include "math.h"
+#include "cfloat"
 
 SOM::SOM( int tamano_x, int tamano_y, int tamano_entradas )
 {
@@ -16,7 +17,7 @@ SOM::SOM( int tamano_x, int tamano_y, int tamano_entradas )
 
 void SOM::entrenar( QVector<double> patron )
 {
-    double distancia_minima = 0.0;
+    double distancia_minima = DBL_MAX;
     int fila_ganadora = -1;
     int columna_ganadora = -1;
 
