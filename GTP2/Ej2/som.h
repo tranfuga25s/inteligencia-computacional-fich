@@ -21,7 +21,7 @@ public:
     int radioVecindad() { return _radio_vecindad; }
     void setearTasaAprendizaje(double tasa){ _tasa_aprendizaje = tasa;}
 
-
+    QVector<QPointF> obtenerPuntos();
 
 private:
     QVector< QVector< QVector<double> > > _som;

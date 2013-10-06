@@ -90,7 +90,7 @@ void Graficador::agregarPuntos( QVector<double> x, QVector<double> y, QString no
     curve->attach( myPlot );
 
     // Refresco el grafico
-     myPlot->replot();
+    myPlot->replot();
 }
 
 void Graficador::agregarPuntos( matriz m1, QString nombre ) {
@@ -289,7 +289,32 @@ void Graficador::setearTamanoFijo()
 void Graficador::setearPuntos( QVector<QPointF> puntos )
 {
     // Busco la curva
-    curvas->operator [](0)->setSamples( puntos );
+    QwtPlotCurve *curva = curvas->value( 0 );
+    if( curva != 0 ) {
+        curva->setSamples( puntos );
+        myPlot->replot();
+    } else {
+        abort();
+    }
+}
+
+void Graficador::setearParaSOM()
+{
+    if( curvas->size() == 0 ) {
+        QwtPlotCurve *curva = new QwtPlotCurve( "SOM" );
+        curvas->insert( 0, curva );
+        curva->setRenderHint( QwtPlotItem::RenderAntialiased );
+        curva->setLegendAttribute( QwtPlotCurve::LegendShowLine , true );
+        cambiarColor();
+        curva->setPen( QPen( color ) );
+        curva->setSymbol( new QwtSymbol( QwtSymbol::Hexagon,
+                                         QBrush( (Qt::GlobalColor)this->color ),
+                                         QPen( Qt::NoPen ),
+                                         QSize( 8, 8 ) ) );
+        curva->attach( myPlot );
+        setearEjesEnGrafico();
+    }
+
 }
 
 void Graficador::cambiarColor()

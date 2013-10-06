@@ -1,5 +1,7 @@
 #include "som.h"
 
+#include <QPointF>
+
 #include "math.h"
 #include "cfloat"
 
@@ -9,6 +11,9 @@ SOM::SOM( int tamano_x, int tamano_y, int tamano_entradas )
         QVector< QVector<double> > temp;
         for( int f=0; f<tamano_y; f++ ) {
             QVector<double> temporal( tamano_entradas );
+            for(int t=0; t<tamano_entradas; t++ ) {
+                temporal[t] = valor_random( 0.5, 0.5 );
+            }
             temp.append( temporal );
         }
         _som.append( temp );
@@ -83,4 +88,18 @@ double SOM::funcionVecindad( int fila, int columna, int fila_ganadora, int colum
     double distancia = sqrt( pow( fila_ganadora - fila, 2.0 ) + pow( columna_ganadora - columna, 2.0 ) );
 
     return exp( ( -1 )  * ( pow( abs( distancia ), 2.0 ) ) / ( 2.0 * pow( _radio_vecindad, 2.0 ) ) );
+}
+
+QVector<QPointF> SOM::obtenerPuntos()
+{
+    QVector<QPointF> temp;
+    for( int col=0; col< _som.size(); col++ ) {
+        for( int fil=0; fil<_som.at(col).size(); fil++ ) {
+            QPointF punto;
+            punto.setX( _som.at(col).at(fil).at(0) );
+            punto.setY( _som.at(col).at(fil).at(1) );
+            temp.append( punto );
+        }
+    }
+    return temp;
 }

@@ -78,33 +78,50 @@ int main(int argc, char *argv[])
 
     // Dibujo las entradas
     graf2->agregarPuntos( entradas, "Datos originales" );
+    a.processEvents();
 
     // Inicializo el SOM
     SOM som( parametros.value( "som_tam_x", 2 ).toInt(),
              parametros.value( "som_tam_y", 2 ).toInt(),
              parametros.value( "tamano_entradas" ).toInt() );
 
+    graf1->setearParaSOM();
+    graf1->setearPuntos( som.obtenerPuntos() );
     qDebug() << endl << "---------------- /Comienza el entrenamiento/ ----------------";
 
     QVector<int> epocas = stringAQVector( parametros.value( "epocas" ).toString() );
     QVector<double> tasas = stringAQVectord( parametros.value( "tasa_aprendizaje" ).toString() );
     int tamano_vecindad_inicial = parametros.value( "radio_vecindad").toInt();
 
+    QDockWidget *dockBarra3 = new QDockWidget( "Tamaño Vecindad" );
+    main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra3 );
+    QProgressBar *PBTamanoVecindad = new QProgressBar( dockBarra3 );
+    dockBarra3->setWidget( PBTamanoVecindad );
+
+    PBTamanoVecindad->setRange( 0, parametros.value( "som_tam_x", 2 ).toInt() );
+    PBTamanoVecindad->setFormat( "%v neuronas de %m - %p%" );
+    PBTamanoVecindad->setValue( tamano_vecindad_inicial );
+
+
+    QDockWidget *dockBarra1 = new QDockWidget( "Epocas de Ordenamiento Global" );
+    main.addDockWidget( Qt::TopDockWidgetArea, dockBarra1 );
+    QProgressBar *PBEpocasOrdenamiento = new QProgressBar( dockBarra1 );
+    dockBarra1->setWidget( PBEpocasOrdenamiento );
+
+    PBEpocasOrdenamiento->setRange( 0, epocas.at( 0 ) );
+    PBEpocasOrdenamiento->setFormat( "Epoca %v de %m - %p%" );
 
     // Etapa de Ordenamiento Global
     som.setearRadioVecindad( tamano_vecindad_inicial );
     som.setearTasaAprendizaje( tasas.at( 0 ) );
 
     for( int epoca=0; epoca<epocas.at(0); epoca++ ) {
-
+        PBEpocasOrdenamiento->setValue( PBEpocasOrdenamiento->value() + 1 );
         for( int p=0; p<entradas.size(); p++ ) {
-
             som.entrenar( entradas.at( p ) );
-
-            //graf1->setearPuntos( som.obtenerPuntos() );
-
+            graf1->setearPuntos( som.obtenerPuntos() );
+            a.processEvents();
         }
-
     }
 
     return a.exec();
@@ -112,10 +129,23 @@ int main(int argc, char *argv[])
     QVector<int> tamano_vecindad = aproximacionLineal( epocas.at( 1 ), tamano_vecindad_inicial, 1 );
     QVector<double> tasa_aprendizajes = aproximacionLineald( epocas.at(0), epocas.at( 1 ), tasas.at( 0 ), tasas.at( 1 ) );
 
+    QDockWidget *dockBarra2 = new QDockWidget( "Epocas de transición" );
+    main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra2 );
+    QProgressBar *PBEpocasTransicion = new QProgressBar( dockBarra2 );
+    dockBarra2->setWidget( PBEpocasTransicion );
+
+    PBEpocasTransicion->setRange( 0, epocas.at( 1 ) );
+    PBEpocasTransicion->setFormat( "Epoca %v de %m - %p%" );
+
+
+
     for( int epoca=0; epoca<epocas.at(0); epoca++ ) {
 
         som.setearRadioVecindad( tamano_vecindad.at( epoca ) );
         som.setearTasaAprendizaje( tasa_aprendizajes.at( epoca ) );
+
+        PBEpocasTransicion->setValue( PBEpocasTransicion->value() + 1 );
+        PBTamanoVecindad->setValue( tamano_vecindad.at( epoca ) );
 
         for( int p=0; p<entradas.size(); p++ ) {
 

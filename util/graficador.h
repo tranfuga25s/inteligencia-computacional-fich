@@ -29,6 +29,7 @@ public:
     void setearEjesEnGrafico();
     void setearTamanoFijo();
     void setearPuntos( QVector<QPointF> puntos );
+    void setearParaSOM();
 
 private:
     QwtPlot *myPlot;
