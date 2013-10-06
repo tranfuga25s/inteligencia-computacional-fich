@@ -5,18 +5,21 @@
 NeuronaRadial::NeuronaRadial( int cantidad_entradas )
 {
     _cantidad_entradas = cantidad_entradas;
+    _media.reserve( cantidad_entradas );
 }
 
-void NeuronaRadial::recalcularCentroide(QList<vector> lista )
+void NeuronaRadial::recalcularCentroide( QList<vector> lista )
 {
-    vector suma;
+    vector suma( lista.at(0).size() );
+    _media.resize( lista.at(0).size() );
 
     foreach( vector punto, lista ) {
         for (int i = 0; i < punto.size(); i++  ) {
             suma[i] += punto.at(i);
         }
     }
-    for( int i =0; i<suma.size(); i++ ) {
+
+    for( int i=0; i<suma.size(); i++ ) {
         _media[i] = suma.at(i) / lista.size();
     }
 
