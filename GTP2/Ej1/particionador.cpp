@@ -32,11 +32,22 @@ void Particionador::particionarDatos()
         cantidad_prueba = _cantidad_datos - cantidad_entrenamiento;
         cantidad_entrenamiento-=cantidad_validacion;
     } else {
-        _cant_particiones = _cantidad_datos - _k;
-        cantidad_entrenamiento = _cantidad_datos - _k;
-        cantidad_validacion = floor( cantidad_entrenamiento * _porcentaje_validacion );
-        cantidad_prueba = _k;
-        cantidad_entrenamiento-=cantidad_validacion;
+        if (_k == 1){
+            _cant_particiones = _cantidad_datos - _k;
+            cantidad_entrenamiento = _cantidad_datos - _k;
+            cantidad_validacion = floor( cantidad_entrenamiento * _porcentaje_validacion );
+            cantidad_prueba = _k;
+            cantidad_entrenamiento-=cantidad_validacion;
+        }
+        else
+        {
+            _cant_particiones = (_cantidad_datos - _k)/_k;
+            cantidad_entrenamiento = _cantidad_datos - _k;
+            cantidad_validacion = floor( cantidad_entrenamiento * _porcentaje_validacion );
+            cantidad_prueba = _k;
+            cantidad_entrenamiento-=cantidad_validacion;
+        }
+
     }
 
     for( int p=0; p<_cant_particiones; p++ ) {

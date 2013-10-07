@@ -44,6 +44,5 @@ double NeuronaRadial::distanciaCentroide(vector punto)
 
 double NeuronaRadial::getSalida( vector punto )
 {
-
     return exp( ( -1.0 * pow(distanciaCentroide(punto),2.0) ) / ( 2.0 * pow(_desviacion,2.0) ) );
 }

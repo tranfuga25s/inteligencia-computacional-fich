@@ -14,13 +14,17 @@ TEMPLATE = app
 SOURCES +=  main.cpp \
             ../../util/graficador.cpp \
             ../../util/graficadormdi.cpp \
-    som.cpp
+            som.cpp
 
 HEADERS +=  ../../util/graficador.h \
             ../../util/funciones_aux.h \
             ../../util/graficadormdi.h \
-    som.h
+            som.h
 
 OTHER_FILES += parametros.cfg \
+               clouds.csv \
+               clouds.txt \
+               phoneme.csv \
+               phoneme.txt
 
 INCLUDEPATH += ../../util
