@@ -68,14 +68,18 @@ int main(int argc, char *argv[])
         }
     } else {
         qDebug() << "No se especificaron los vertices de la T! utilizando rpedeterminados";
-        vertices << QPointF(  0.25,  0.75 )
-                 << QPointF(  1.5 ,  0.75 )
-                 << QPointF(  1.5 ,  1.25 )
-                 << QPointF( -1.5 ,  1.25 )
-                 << QPointF( -1.5 ,  0.75 )
-                 << QPointF( -0.5 ,  0.75 )
-                 << QPointF( -0.5 , -1.25 )
-                 << QPointF(  0.5 , -1.25 );
+        vertices << QPointF(  0.25,  0.5 )
+                 << QPointF(  1.25 ,  0.5 )
+                 << QPointF(  1.25 ,  1.0)
+                 << QPointF( -1.25 ,  1.0 )
+                 << QPointF( -1.25 ,  0.5 )
+                 << QPointF( -0.25 ,  0.5 )
+                 << QPointF( -0.25 , -1.0 )
+                 << QPointF(  0.25 , -1.0 );
+                max_x = 1.0;
+                max_y = 1.25;
+                min_x = -1.0;
+                min_y = -1.25;
     }
 
     // Genero el poligono para comprobar la posicion
@@ -90,11 +94,15 @@ int main(int argc, char *argv[])
         QPointF pt;
         pt.setX( valor_random( min_x, max_x ) );
         pt.setY( valor_random( min_y, max_y ) );
-        if( poligono.contains( pt ) ) {
+        if( poligono.containsPoint( pt, Qt::OddEvenFill ) ) {
             puntos.append( pt );
             cant_puntos--;
         }
+
+
     }
+
+
 
     // Escribo el archio de salida
     QFile archivo( nombre_archivo );
