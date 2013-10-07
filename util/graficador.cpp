@@ -123,8 +123,12 @@ void Graficador::agregarPuntosClasificados( matriz entradas, vector salida, doub
         agregarPuntos( m1, "Entradas -1" );
         agregarPuntos( m2, "Entradas +1" );
     } else {
-        agregarPuntos( m1, QString( "Entradas %1" ).arg( limite_division-limite_division ) );
-        agregarPuntos( m2, QString( "Entradas %1" ).arg( limite_division+limite_division ) );
+        if( m1.size() > 0 )
+            agregarPuntos( m1, QString( "Entradas %1" ).arg( limite_division-limite_division ) );
+
+        if( m2.size() > 0 )
+            agregarPuntos( m2, QString( "Entradas %1" ).arg( limite_division+limite_division ) );
+
     }
 }
 
@@ -148,8 +152,11 @@ void Graficador::agregarPuntosClasificados( matriz entradas, matriz salida, doub
         agregarPuntos( m1, "Entradas -1" );
         agregarPuntos( m2, "Entradas +1" );
     } else {
-        agregarPuntos( m1, QString( "Entradas %1" ).arg( limite_division-limite_division ) );
-        agregarPuntos( m2, QString( "Entradas %1" ).arg( limite_division+limite_division ) );
+        if( m1.size() > 0 )
+            agregarPuntos( m1, QString( "Entradas %1" ).arg( limite_division-limite_division ) );
+
+        if( m2.size() > 0 )
+            agregarPuntos( m2, QString( "Entradas %1" ).arg( limite_division+limite_division ) );
     }
 }
 
@@ -173,8 +180,11 @@ void Graficador::agregarPuntosClasificados( matriz entradas, QVector<int> salida
         agregarPuntos( m1, "Entradas -1" );
         agregarPuntos( m2, "Entradas +1" );
     } else {
-        agregarPuntos( m1, QString( "Entradas %1" ).arg( limite_division-limite_division ) );
-        agregarPuntos( m2, QString( "Entradas %1" ).arg( limite_division+limite_division ) );
+        if( m1.size() > 0 )
+            agregarPuntos( m1, QString( "Entradas %1" ).arg( limite_division-limite_division ) );
+
+        if( m2.size() > 0 )
+            agregarPuntos( m2, QString( "Entradas %1" ).arg( limite_division+limite_division ) );
     }
 }
 

@@ -64,15 +64,15 @@ int main(int argc, char *argv[])
     if( ! leer_archivo_entrenamiento( archivo,
                                       &entradas,
                                       &salidas,
-                                      parametros.value( "cantidad_entradas" ).toInt())  ) {
+                                      parametros.value( "tamano_entradas" ).toInt())  ) {
         qDebug() << "No se pudo encontrar el archivo de entrenamiento! cancelando!";
         abort();
     }
 
     // Inicializo el SOM
-    SOM som( parametros.value( "som_tam_x", 2 ).toInt(),
-             parametros.value( "som_tam_y", 2 ).toInt(),
-             parametros.value( "tamano_entradas" ).toInt() );
+   /*    SOM som( parametros.value( "som_tam_x", 2 ).toInt(),
+                  parametros.value( "som_tam_y", 2 ).toInt(),
+                  parametros.value( "tamano_entradas" ).toInt() );
 
     qDebug() << endl << "---------------- /Comienza el entrenamiento/ ----------------";
 
@@ -173,10 +173,23 @@ int main(int argc, char *argv[])
             som.setearClase( fila, columna, clase );
         }
 
-    }
+    }*/
 
     // Mostrar resultado de la clasificacion
-
+    GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );
+    mdiArea->addSubWindow( graf2 );
+    graf2->showMaximized();
+    graf2->setearTitulo( "Datos originales" );
+    // Si el tamaño es = 2 => clouds
+    if( parametros.value( "tamano_entradas" ).toInt() > 2 ) {
+        // Grafico como para utilizar phoneme
+    } else {
+        // Grafico los datos de clouds
+        graf2->setearTituloEjeX( " X " );
+        graf2->setearTituloEjeY( " Y " );
+        graf2->agregarPuntosClasificados( entradas, salidas, 0.5 );
+    }
+    mdiArea->tileSubWindows();
 
  /*
     if( stringAQVector( parametros.value( "codificacion_salida" ).toString() ).size() <= 2 ) {
@@ -188,7 +201,7 @@ int main(int argc, char *argv[])
         graf2->setearTituloEjeX( " X " );
         graf2->setearTituloEjeY( " y " );
         graf2->agregarPuntosClasificados( entradas, salidas, 0.5 );
-        mdiArea->tileSubWindows();
+
     } else {
 
         matriz entradas1, entradas2;
