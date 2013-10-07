@@ -154,6 +154,45 @@ QVector<QPointF> SOM::obtenerPuntos()
     return temp;
 }
 
+bool SOM::cambiosSignificativos()
+{
+    //Calculo el error promedio y la desviacion estandar para la particion
+    double media = 0.0;
+    double desviacion_estandar = 0.0;
+    double aux = 0.0;
+
+
+    for (int i = 0 ; i < _ultimos_deltas.size() ; i++ ) {
+        for(int j = 0; j<_ultimos_deltas.at(i).size(); j++) {
+            media += _ultimos_deltas.at(i).at(j);
+        }
+    }
+    int cant_datos = _ultimos_deltas.size()*_ultimos_deltas.at(0).size();
+
+    media /= cant_datos;
+
+    for (int i = 0 ; i < _ultimos_deltas.size() ; i++ ) {
+        for(int j = 0; j<_ultimos_deltas.at(i).size(); j++) {
+            aux += pow( _ultimos_deltas.at(i).at(j) - media ,2.0);
+        }
+    }
+
+    desviacion_estandar = sqrt( (1.0 / (cant_datos - 1.0) ) * aux );
+
+
+    double varianza = (media + desviacion_estandar)*2.0;
+
+    varianza = varianza*0.5 + 1.0;
+
+    if(varianza > _tasa_aprendizaje) {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 
 /*!
  * \brief SOM::diferenciaVector

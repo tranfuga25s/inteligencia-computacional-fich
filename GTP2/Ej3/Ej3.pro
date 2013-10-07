@@ -11,10 +11,11 @@ CONFIG += qwt
 
 TEMPLATE = app
 
-SOURCES +=  main.cpp \
+SOURCES +=  \
             ../../util/graficador.cpp \
             ../../util/graficadormdi.cpp \
-            som.cpp
+            som.cpp \
+    main.cpp
 
 HEADERS +=  ../../util/graficador.h \
             ../../util/funciones_aux.h \

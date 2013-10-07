@@ -152,6 +152,7 @@ int main(int argc, char *argv[])
         }
         graf1->setearPuntos( som.obtenerPuntos() );
         a.processEvents();
+        som.cambiosSignificativos();
     }
 
     // Etapa de transición
@@ -198,6 +199,7 @@ int main(int argc, char *argv[])
             som.entrenar( entradas.at( p ) );
             graf1->setearPuntos( som.obtenerPuntos() );
             a.processEvents();
+            som.cambiosSignificativos();
         }
     }
 
@@ -220,6 +222,7 @@ int main(int argc, char *argv[])
             som.entrenar( entradas.at( p ) );
             graf1->setearPuntos( som.obtenerPuntos() );
             a.processEvents();
+            som.cambiosSignificativos();
         }
 
     }

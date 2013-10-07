@@ -69,17 +69,17 @@ int main(int argc, char *argv[])
     } else {
         qDebug() << "No se especificaron los vertices de la T! utilizando rpedeterminados";
         vertices << QPointF(  0.25,  0.5 )
-                 << QPointF(  1.25 ,  0.5 )
-                 << QPointF(  1.25 ,  1.0)
-                 << QPointF( -1.25 ,  1.0 )
-                 << QPointF( -1.25 ,  0.5 )
+                 << QPointF(  1.0 ,  0.5 )
+                 << QPointF(  1.0 ,  1.0)
+                 << QPointF( -1.0 ,  1.0 )
+                 << QPointF( -1.0 ,  0.5 )
                  << QPointF( -0.25 ,  0.5 )
                  << QPointF( -0.25 , -1.0 )
                  << QPointF(  0.25 , -1.0 );
                 max_x = 1.0;
-                max_y = 1.25;
+                max_y = 1.0;
                 min_x = -1.0;
-                min_y = -1.25;
+                min_y = -1.0;
     }
 
     // Genero el poligono para comprobar la posicion
