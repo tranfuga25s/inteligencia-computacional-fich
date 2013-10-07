@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
     graf1->setearPuntos( som.obtenerPuntos() );
     //graf1->deshabilitarEscalado();
 
-/*    GraficadorMdi *graf3 = new GraficadorMdi( mdiArea );
+    GraficadorMdi *graf3 = new GraficadorMdi( mdiArea );
     graf3->setearTitulo( QString::fromUtf8( "Funcion de vecindad" ) );
     graf3->setearTituloEjeX( QString::fromUtf8( "X" ) );
     graf3->setearTituloEjeY( QString::fromUtf8( "Y" ) );
@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
     graf3->agregarCurva( nx, ny, "Gauseana" );
     graf3->show();
     mdiArea->tileSubWindows();
-*/
+
     QVector<int> epocas = stringAQVector( parametros.value( "epocas" ).toString() );
     QVector<double> tasas = stringAQVectord( parametros.value( "tasa_aprendizaje" ).toString() );
     int tamano_vecindad_inicial = parametros.value( "radio_vecindad").toInt();
@@ -149,6 +149,8 @@ int main(int argc, char *argv[])
         PBEpocas->setValue( epoca );
         for( int p=0; p<entradas.size(); p++ ) {
             som.entrenar( entradas.at( p ) );
+            graf1->setearPuntos( som.obtenerPuntos() );
+            a.processEvents();
         }
         graf1->setearPuntos( som.obtenerPuntos() );
         a.processEvents();
@@ -164,7 +166,6 @@ int main(int argc, char *argv[])
     graf4->setearTituloEjeX( QString::fromUtf8( "X" ) );
     graf4->setearTituloEjeY( QString::fromUtf8( "Y" ) );
     mdiArea->addSubWindow( graf4 );
-    QVector<double> nx;
     nx.clear();
     for( int i=0; i<tasa_aprendizajes.size(); i++ ) { nx.append( i ); }
     graf4->agregarCurva( nx, tasa_aprendizajes, "Tasa Aprendizaje" );
@@ -177,7 +178,6 @@ int main(int argc, char *argv[])
     graf5->setearTituloEjeY( QString::fromUtf8( "Y" ) );
     mdiArea->addSubWindow( graf5 );
     nx.clear();
-    QVector<double> ny;
     ny.clear();
     for( int i=0; i<tamano_vecindad.size(); i++ ) { nx.append( i ); ny.append( tamano_vecindad.at( i ) ); }
     graf5->agregarCurva( nx, ny, "Tasa Aprendizaje" );

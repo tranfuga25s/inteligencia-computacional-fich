@@ -13,7 +13,7 @@ SOM::SOM( int tamano_x, int tamano_y, int tamano_entradas )
         for( int c=0; c<tamano_y; c++ ) {
             QVector<double> temporal( tamano_entradas );
             for(int t=0; t<tamano_entradas; t++ ) {
-                temporal[t] = valor_random( -0.01, 0.01 );
+                temporal[t] = valor_random( -1.0, 1.0 );
             }
             temp.append( temporal );
             temp_delta.append( 0.0 );
@@ -123,15 +123,13 @@ void SOM::actualizarPeso( int fila_ganadora, int columna_ganadora, QVector<doubl
 QVector<double> SOM::funcionVecindad( int fila, int columna, int fila_ganadora, int columna_ganadora )
 {
     QVector<double> temp;
-    /*
         temp << exp((-1)*(pow((double)(fila_ganadora-fila),2.0))/(2.0*pow(_radio_vecindad,2.0)))
              << exp((-1)*(pow((double)(columna_ganadora-columna),2.0))/(2.0*pow(_radio_vecindad,2.0)));
-    */
-    if( fila == fila_ganadora && columna == columna_ganadora ) {
+    /*if( fila == fila_ganadora && columna == columna_ganadora ) {
         temp << 1.0 << 1.0;
     } else {
         temp << 0.0 << 0.0;
-    }
+    }*/
     return temp;
 }
 
@@ -177,7 +175,7 @@ bool SOM::cambiosSignificativos()
         }
     }
 
-    desviacion_estandar = sqrt( (1.0 / (cant_datos - 1.0) ) * aux );
+    desviacion_estandar = sqrt( (1.0 / ((double)cant_datos - 1.0) ) * aux );
 
 
     double varianza = (media + desviacion_estandar)*2.0;
