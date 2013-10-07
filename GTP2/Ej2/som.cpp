@@ -29,12 +29,14 @@ void SOM::entrenar( QVector<double> patron )
     double distancia_minima = DBL_MAX;
     int fila_ganadora = -1;
     int columna_ganadora = -1;
+    //QVector<double> ultima_distancia;
 
     for( int f=0; f<_som.size(); f++ ) {
 
         for( int c=0; c<_som.at(f).size(); c++ ) {
 
-            double dist = distancia( patron, f, c );
+            double dist = this->distancia( patron, f, c );
+            //ultima_distancia << dist;
 
             if( dist <= distancia_minima ) {
                 distancia_minima = dist;
@@ -44,15 +46,18 @@ void SOM::entrenar( QVector<double> patron )
         }
 
     }
+    //qDebug() << ultima_distancia;
     if( columna_ganadora == -1 || fila_ganadora == -1 ) {
-        abort();
+        qDebug() << "Patron: " << patron << " no tuvo ninguna neurona ganadora. Distancia: "/*<<ultima_distancia*/;
+        //abort();
+    } else {
+
+        // La distancia tiene que ser un vector de las mismas dimensiones
+        // que la entrada para "acercarlo" al patron
+        vector dif = diferenciaVector( patron, _som.at( fila_ganadora ).at( columna_ganadora ) );
+
+        actualizarPeso( fila_ganadora, columna_ganadora, dif );
     }
-
-    // La distancia tiene que ser un vector de las mismas dimensiones
-    // que la entrada para "acercarlo" al patron
-    vector dif = diferenciaVector( patron, _som.at( fila_ganadora ).at( columna_ganadora ) );
-
-    actualizarPeso( fila_ganadora, columna_ganadora, dif );
 
 }
 
@@ -67,7 +72,7 @@ double SOM::distancia( QVector<double> patron, int fila, int columna )
 {
     double distancia = 0.0;
     for( int i=0; i<patron.size(); i++ ) {
-        distancia += pow( patron.at( i ) - _som.at( fila ).at( columna ).at( i ), 2.0 );
+        distancia += pow( ( patron.at( i ) - _som.at( fila ).at( columna ).at( i ) ), 2.0 );
     }
     return sqrt( distancia );
 }
@@ -89,9 +94,15 @@ void SOM::actualizarPeso( int fila, int columna, QVector<double> distancia_obten
 
         for( int col=min_vec_x; col<max_vec_x; col++ ) {
 
+            QVector<double> vecindad = funcionVecindad( fil, col, fila, columna );
+
             for( int pos=0; pos<_som.at(fil).at(col).size(); pos++ ) {
-                double fv = funcionVecindad( fil, col, fila, columna );
-                _som[fil][col][pos] -= _tasa_aprendizaje*distancia_obtenida.at(pos)*fv;
+
+                if( vecindad.at( pos ) > 0.2 ) {
+                    _som[fil][col][pos] -= _tasa_aprendizaje*
+                                           distancia_obtenida.at(pos)*
+                                           vecindad.at( pos );
+                }
             }
         }
     }
@@ -105,17 +116,12 @@ void SOM::actualizarPeso( int fila, int columna, QVector<double> distancia_obten
  * \param columna_ganadora
  * \return
  */
-double SOM::funcionVecindad( int fila, int columna, int fila_ganadora, int columna_ganadora )
+QVector<double> SOM::funcionVecindad( int fila, int columna, int fila_ganadora, int columna_ganadora )
 {
-
-    if( _radio_vecindad == 0 && fila != fila_ganadora && columna != columna_ganadora ) {
-        return 0.0;
-    }
-
-    double distancia = sqrt( pow( fila_ganadora - fila, 2.0 ) + pow( columna_ganadora - columna, 2.0 ) );
-    qDebug() << exp( ( -1 )  * ( pow( distancia, 2.0 ) ) / ( 2.0 * pow( _radio_vecindad, 2.0 ) ) );
-    return 0.0;
-    //return exp( ( -1 )  * ( pow( abs( distancia ), 2.0 ) ) / ( 2.0 * pow( _radio_vecindad, 2.0 ) ) );
+    QVector<double> temp;
+        temp << exp((-1)*(pow((double)(fila_ganadora-fila),2.0))/(2.0*pow(_radio_vecindad,2.0)))
+             << exp((-1)*(pow((double)(columna_ganadora-columna),2.0))/(2.0*pow(_radio_vecindad,2.0)));
+    return temp;
 }
 
 /*!
@@ -142,11 +148,11 @@ QVector<QPointF> SOM::obtenerPuntos()
  * \param val2
  * \return
  */
-QVector<double> SOM::diferenciaVector(QVector<double> val1, QVector<double> val2)
+QVector<double> SOM::diferenciaVector( QVector<double> val1, QVector<double> val2 )
 {
-    QVector<double> ret;
+    QVector<double> ret( val1.size() );
     for( int i=0; i<val1.size(); i++ ) {
-        ret.append( val2.at( i ) - val1.at( i ) );
+        ret[i] = val2.at( i ) - val1.at( i );
     }
     return ret;
 }

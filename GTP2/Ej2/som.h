@@ -15,7 +15,7 @@ public:
 
     void actualizarPeso(int fila, int columna, QVector<double> distancia_obtenida );
 
-    double funcionVecindad(int fila, int columna , int fila_ganadora, int columna_ganadora);
+    QVector<double> funcionVecindad( int fila, int columna , int fila_ganadora, int columna_ganadora );
 
     void setearRadioVecindad( int valor ) {_radio_vecindad = valor; }
     int radioVecindad() { return _radio_vecindad; }

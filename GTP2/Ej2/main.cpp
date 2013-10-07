@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
     mdiArea->addSubWindow( graf1 );
     mdiArea->tileSubWindows();
 
+
     GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );
     graf2->setearTitulo( QString::fromUtf8( "Datos Originales" ) );
     graf2->setearTituloEjeX( QString::fromUtf8( "X" ) );
@@ -85,9 +86,28 @@ int main(int argc, char *argv[])
              parametros.value( "som_tam_y", 2 ).toInt(),
              parametros.value( "tamano_entradas" ).toInt() );
 
+
+    som.setearRadioVecindad( parametros.value( "radio_vecindad").toInt() );
+
     graf1->setearParaSOM();
     graf1->setearPuntos( som.obtenerPuntos() );
-    qDebug() << endl << "---------------- /Comienza el entrenamiento/ ----------------";
+
+    GraficadorMdi *graf3 = new GraficadorMdi( mdiArea );
+    graf3->setearTitulo( QString::fromUtf8( "Funcion de vecindad" ) );
+    graf3->setearTituloEjeX( QString::fromUtf8( "X" ) );
+    graf3->setearTituloEjeY( QString::fromUtf8( "Y" ) );
+    mdiArea->addSubWindow( graf3 );
+    QVector<double> nx, ny;
+    int min = (-1)*parametros.value( "som_tam_x", 2 ).toInt() -1;
+    int max = parametros.value( "som_tam_x", 2 ).toInt() +1;
+    int medio = floor( ( max + min ) / 2 );
+    for( int i = min; i<max; i++ ) {
+        nx.append( i );
+        ny.append( som.funcionVecindad( i, medio, medio, medio ).first() );
+    }
+    graf3->agregarCurva( nx, ny, "Gauseana" );
+    graf3->show();
+    mdiArea->tileSubWindows();
 
     QVector<int> epocas = stringAQVector( parametros.value( "epocas" ).toString() );
     QVector<double> tasas = stringAQVectord( parametros.value( "tasa_aprendizaje" ).toString() );
@@ -102,7 +122,7 @@ int main(int argc, char *argv[])
     PBTamanoVecindad->setFormat( "%v neuronas de %m - %p%" );
     PBTamanoVecindad->setValue( tamano_vecindad_inicial );
 
-    QDockWidget *dockBarra5 = new QDockWidget( QString::fromUtf8( "Tasa de apredizaje" ) );
+    QDockWidget *dockBarra5 = new QDockWidget( QString::fromUtf8( "Tasa de aprendizaje" ) );
     main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra5 );
     QProgressBar *PBTasaAprendizaje = new QProgressBar( dockBarra5 );
     dockBarra5->setWidget( PBTasaAprendizaje );
@@ -134,9 +154,32 @@ int main(int argc, char *argv[])
 
     // Etapa de transición
     QVector<int> tamano_vecindad = aproximacionLineal( epocas.at( 1 ), tamano_vecindad_inicial, 1 );
-    QVector<double> tasa_aprendizajes = aproximacionLineald( epocas.at( 1 ), tasas.at( 0 ), tasas.at( 1 ) );
+    QVector<double> tasa_aprendizajes = aproximacionLineald( epocas.at( 1 ), tasas.at( 1 ), tasas.at( 2 ) );
 
-    dockBarra1->setWindowTitle( "Epocas de transición" );
+    GraficadorMdi *graf4 = new GraficadorMdi( mdiArea );
+    graf4->setearTitulo( QString::fromUtf8( "Tasa de aprendizaje" ) );
+    graf4->setearTituloEjeX( QString::fromUtf8( "X" ) );
+    graf4->setearTituloEjeY( QString::fromUtf8( "Y" ) );
+    mdiArea->addSubWindow( graf4 );
+    nx.clear();
+    for( int i=0; i<tasa_aprendizajes.size(); i++ ) { nx.append( i ); }
+    graf4->agregarCurva( nx, tasa_aprendizajes, "Tasa Aprendizaje" );
+    graf4->show();
+    mdiArea->tileSubWindows();
+
+    GraficadorMdi *graf5 = new GraficadorMdi( mdiArea );
+    graf5->setearTitulo( QString::fromUtf8( "Funcion de vecindad" ) );
+    graf5->setearTituloEjeX( QString::fromUtf8( "X" ) );
+    graf5->setearTituloEjeY( QString::fromUtf8( "Y" ) );
+    mdiArea->addSubWindow( graf5 );
+    nx.clear();
+    ny.clear();
+    for( int i=0; i<tamano_vecindad.size(); i++ ) { nx.append( i ); ny.append( tamano_vecindad.at( i ) ); }
+    graf5->agregarCurva( nx, ny, "Tasa Aprendizaje" );
+    graf5->show();
+    mdiArea->tileSubWindows();
+
+    dockBarra1->setWindowTitle( QString::fromUtf8( "Epocas de transición" ) );
 
     PBEpocas->setRange( 0, epocas.at( 1 ) );
     PBEpocas->setFormat( "Epoca %v de %m - %p%" );
@@ -161,7 +204,7 @@ int main(int argc, char *argv[])
     PBEpocas->setFormat( "Epoca %v de %m - %p%" );
 
     som.setearRadioVecindad( 0 );
-    tasa_aprendizajes = aproximacionLineald (epocas.at( 2 ), tasas.at( 1 ), tasas.at( 2 ) );
+    tasa_aprendizajes = aproximacionLineald( epocas.at( 2 ), tasas.at( 2 ), tasas.at( 3 ) );
 
     for( int epoca=0; epoca<epocas.at(2); epoca++ ) {
 
