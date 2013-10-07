@@ -9,14 +9,17 @@ SOM::SOM( int tamano_x, int tamano_y, int tamano_entradas )
 {
     for( int f=0; f<tamano_x; f++ ) {
         QVector< QVector<double> > temp;
+        QVector<double> temp_delta;
         for( int c=0; c<tamano_y; c++ ) {
             QVector<double> temporal( tamano_entradas );
             for(int t=0; t<tamano_entradas; t++ ) {
-                temporal[t] = valor_random( -0.5, 0.5 );
+                temporal[t] = valor_random( -0.01, 0.01 );
             }
             temp.append( temporal );
+            temp_delta.append( 0.0 );
         }
         _som.append( temp );
+        _ultimos_deltas.append( temp_delta );
     }
 }
 
@@ -29,16 +32,16 @@ void SOM::entrenar( QVector<double> patron )
     double distancia_minima = DBL_MAX;
     int fila_ganadora = -1;
     int columna_ganadora = -1;
-    double ultima_distancia;
+    QVector<double> ultima_distancia;
 
     for( int f=0; f<_som.size(); f++ ) {
 
         for( int c=0; c<_som.at(f).size(); c++ ) {
 
             double dist = this->distancia( patron, f, c );
-            ultima_distancia = dist;
+            ultima_distancia << dist;
 
-            if( dist <= distancia_minima ) {
+            if( dist < distancia_minima ) {
                 distancia_minima = dist;
                 fila_ganadora = f;
                 columna_ganadora = c;
@@ -46,7 +49,7 @@ void SOM::entrenar( QVector<double> patron )
         }
 
     }
-    //qDebug() << ultima_distancia;
+
     if( columna_ganadora == -1 || fila_ganadora == -1 ) {
         qDebug() << "Patron: " << patron << " no tuvo ninguna neurona ganadora. Distancia: "<<ultima_distancia;
         //abort();
@@ -74,7 +77,7 @@ double SOM::distancia( QVector<double> patron, int fila, int columna )
     for( int i=0; i<patron.size(); i++ ) {
         distancia += pow( ( patron.at( i ) - _som.at( fila ).at( columna ).at( i ) ), 2.0 );
     }
-    return sqrt( distancia );
+    return pow( distancia, 0.5 );
 }
 
 /*!
@@ -83,33 +86,26 @@ double SOM::distancia( QVector<double> patron, int fila, int columna )
  * \param columna
  * \param distancia_obtenida
  */
-void SOM::actualizarPeso( int fila, int columna, QVector<double> distancia_obtenida )
+void SOM::actualizarPeso( int fila_ganadora, int columna_ganadora, QVector<double> distancia_obtenida )
 {
-    int max_vec_x = max_x_matriz( columna, this->_radio_vecindad, _som.size() );
-    int min_vec_x = min_x_matriz( columna, this->_radio_vecindad );
-    int max_vec_y = max_y_matriz( fila   , this->_radio_vecindad, _som.at(0).size() );
-    int min_vec_y = min_y_matriz( fila   , this->_radio_vecindad );
+    int max_vec_x = max_x_matriz( fila_ganadora   , this->_radio_vecindad, _som.size() );
+    int min_vec_x = min_x_matriz( fila_ganadora   , this->_radio_vecindad );
+    int max_vec_y = max_y_matriz( columna_ganadora, this->_radio_vecindad, _som.at(0).size() );
+    int min_vec_y = min_y_matriz( columna_ganadora, this->_radio_vecindad );
 
-    for( int fil=min_vec_y; fil< max_vec_y; fil++ ) {
+    for( int fil=min_vec_x; fil<max_vec_x; fil++ ) {
 
-        for( int col=min_vec_x; col<max_vec_x; col++ ) {
+        for( int col=min_vec_y; col<max_vec_y; col++ ) {
 
-            QVector<double> vecindad = funcionVecindad( fil, col, fila, columna );
+            QVector<double> vecindad = funcionVecindad( fil, col, fila_ganadora, columna_ganadora );
 
             for( int pos=0; pos<_som.at(fil).at(col).size(); pos++ ) {
-
-                if( vecindad.at( pos ) > 0.15 ) {
-                    double dif =  _tasa_aprendizaje*
-                            distancia_obtenida.at(pos)*
-                            vecindad.at( pos );
-                    if( dif > 0.6 ) {
-                        abort();
-                    } else {
-                        qDebug() << dif;
-                        _som[fil][col][pos] += _tasa_aprendizaje*
-                                               distancia_obtenida.at(pos)*
-                                               vecindad.at( pos );
-                    }
+                if( vecindad.at( pos ) > _limite_vecindad ) {
+                        double temp = _tasa_aprendizaje*
+                                distancia_obtenida.at(pos)*
+                                vecindad.at( pos );
+                        _som[fil][col][pos] += temp;
+                        _ultimos_deltas[fil][col] = temp;
                 }
             }
         }
@@ -127,8 +123,15 @@ void SOM::actualizarPeso( int fila, int columna, QVector<double> distancia_obten
 QVector<double> SOM::funcionVecindad( int fila, int columna, int fila_ganadora, int columna_ganadora )
 {
     QVector<double> temp;
+    /*
         temp << exp((-1)*(pow((double)(fila_ganadora-fila),2.0))/(2.0*pow(_radio_vecindad,2.0)))
              << exp((-1)*(pow((double)(columna_ganadora-columna),2.0))/(2.0*pow(_radio_vecindad,2.0)));
+    */
+    if( fila == fila_ganadora && columna == columna_ganadora ) {
+        temp << 1.0 << 1.0;
+    } else {
+        temp << 0.0 << 0.0;
+    }
     return temp;
 }
 
@@ -147,8 +150,10 @@ QVector<QPointF> SOM::obtenerPuntos()
             temp.append( punto );
         }
     }
+    qSort( temp.begin(), temp.end(), SOM::menorque );
     return temp;
 }
+
 
 /*!
  * \brief SOM::diferenciaVector
@@ -160,7 +165,7 @@ QVector<double> SOM::diferenciaVector( QVector<double> val1, QVector<double> val
 {
     QVector<double> ret( val1.size() );
     for( int i=0; i<val1.size(); i++ ) {
-        ret[i] = val2.at( i ) - val1.at( i );
+        ret[i] = val1.at( i ) - val2.at( i );
     }
     return ret;
 }
