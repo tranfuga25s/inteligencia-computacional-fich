@@ -1,0 +1,68 @@
+                 #######################
+                 # The Clouds database #
+                 #######################
+
+
+1. Aim :
+
+    Study of the classifier behavior for heavy intersection of the class   
+    distributions and for high degree of nonlinearity of the class 
+    boundaries.
+
+2. Description :
+
+    Bidimentional distributions, two classes.
+      5000 patterns, 2500 in each class (50%).
+
+    - Class 0 : sum of three different gaussian distributions :
+
+      p(x|w0) = { p1(x|w0) + p2(x|w0) + 2*p3(x|w0) }/4, 
+
+      with
+      pj(x|w0) = (1/2pi)(1/s_jx)(1/s_jy) 
+                 * exp{ -(x-m_jx)^2/2s_jx^2 - (y-m_jy)^2/2s_jy^2 }
+
+      where
+      m_jx and m_jy are the x and y means of the j's distribution while
+      s_jx, s_jy are their x and y standard deviations:
+
+                   s_jx   s_jy   m_jx   m_jy
+      p1(x|w0)     0.2    0.2    0.0    0.0
+      p2(x|w0)     0.2    0.2    0.0    2.0
+      p3(x|w0)     0.2    1.0    0.2    1.0
+
+
+    - Class 1 : a single normal distributions :
+
+      p(x|w1) = (1/4pi) * exp{ -x^2/2 }
+
+    Problems of the same type were already studied in:
+    
+    P. Comon. Classification supervisee par reseaux multicouches.
+    In Traitement du Signal, 8(6):387--407, December 1991.
+    and in:
+    P. Comon. Classification Bayesienne Distribuee.
+    Revue Technique Thomson CSF, 22(4):543--561, 1990.
+
+    The graphical representation of this dataset is the file 'clouds.ps'.
+
+
+3. Best theoretical Bayes confusion : 
+
+          Class     0      1  
+           0      94.63   5.37
+           1      13.95  86.05
+
+    This provides 9.66% for the average Bayes error (with 0.05% accuracy).
+
+
+
+4. Confusion obtained with the k_NN classifier (Leave_One_Out).
+   k has been set to 5 in order to obtain 
+   the best averaged error rate : 10.94 +/- 1.2%.
+
+          Class         0              1  
+           0      92.8 +/- 1.0    7.2 +/- 1.0
+           1      14.7 +/- 1.4   85.3 +/- 1.4
+
+

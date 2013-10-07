@@ -130,22 +130,24 @@ int main(int argc, char *argv[])
     }
 
     // Comienzo el etiquetado
-     // Matrices de conteo de activacion
+    cant_clases =  parametros.value( "cant_clases" ).toInt();
+    // Matrices de conteo de activacion
     QVector< QVector< QVector<int> > > contadores;
     for( int clase=0; clase<cant_clases; clase++ ) {
-        QVector< QVector<int> > temp;
+        QVector< QVector<int> > temp( parametros.value( "som_tam_x", 2 ).toInt() ); // Pre reserva el espacio
         for( int f=0; f<contadores.at(clase).size(); f++ ) {
-            QVector<int> aux;
+            QVector<int> aux( parametros.value( "som_tam_x", 2 ).toInt() ); // Prereserva el espacio
             for( int c=0; c<contadores.at(clase).at(f).size() ; c++ ) {
-                aux[c] = 0;
+                aux[c] = 0; // pongo los contadores en cero
             }
             temp.append( aux );
         }
         contadores.append( temp );
     }
 
+    // Para cada patron busco cual es la neurona ganadora y aumento su contador
     QPair<int,int> pos;
-
+    // Recorro todas las entradas
     for( int entrada = 0; entrada < entradas.size(); entrada++ ) {
 
         pos = som.getNeuronaGanadora( entradas.at( entrada ) );
@@ -155,6 +157,7 @@ int main(int argc, char *argv[])
         contadores[clase][pos.first][pos.second] += 1;
     }
 
+    // Busco a que etiqueta corresponde cada uno viendo cual es el número de conteo de clase más alto
     for( int fila=0; fila<pos.first; fila++ ) {
         for( int columna=0; columna<pos.second; columna++ ) {
 
@@ -166,6 +169,7 @@ int main(int argc, char *argv[])
                     maximo = contadores.at( c ).at( columna ).at( fila );
                 }
             }
+            // Seteo la clase según corresponda
             som.setearClase( fila, columna, clase );
         }
 
@@ -175,12 +179,6 @@ int main(int argc, char *argv[])
 
 
  /*
-
-
-    int epoca = 0; // Contador de epocas
-    double porcentaje_error = 100.0; // Mucho sino sale
-    int cantidad_particiones_exitosas = 0;
-
     if( stringAQVector( parametros.value( "codificacion_salida" ).toString() ).size() <= 2 ) {
         GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );
         mdiArea->addSubWindow( graf2 );
