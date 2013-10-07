@@ -111,6 +111,7 @@ int main(int argc, char *argv[])
     mdiArea->addSubWindow( graf1 );
     mdiArea->tileSubWindows();
 
+    /*
     if( stringAQVector( parametros.value( "codificacion_salida" ).toString() ).size() <= 2 ) {
         GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );
         mdiArea->addSubWindow( graf2 );
@@ -156,7 +157,7 @@ int main(int argc, char *argv[])
         graf3->agregarPuntosClasificados( entradas2, salidas2, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
         mdiArea->tileSubWindows();
 
-    }
+    }*/
 
     QDockWidget *dockBarra1 = new QDockWidget( "Progreso de Particiones" );
     main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra1 );
