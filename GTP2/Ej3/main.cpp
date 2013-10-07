@@ -191,6 +191,7 @@ int main(int argc, char *argv[])
         // Grafico como para utilizar phoneme
         // Contiene 5 dimensiones
         matriz entradas1, entradas2, entradas3, entradas4, entradas5;
+        // ver porque el graficador necesita 2 dimensiones x elemento a graficar!
         for( int i=0; i < entradas.size(); i++ ) {
             vector temp1, temp2, temp3, temp4, temp5;
             temp1.append( entradas.at(i).at(0) );
