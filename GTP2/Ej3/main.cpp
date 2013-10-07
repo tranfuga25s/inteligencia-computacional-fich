@@ -64,15 +64,15 @@ int main(int argc, char *argv[])
     if( ! leer_archivo_entrenamiento( archivo,
                                       &entradas,
                                       &salidas,
-                                      parametros.value( "cantidad_entradas" ).toInt())  ) {
+                                      parametros.value( "tamano_entradas" ).toInt())  ) {
         qDebug() << "No se pudo encontrar el archivo de entrenamiento! cancelando!";
         abort();
     }
 
     // Inicializo el SOM
-    SOM som( parametros.value( "som_tam_x", 2 ).toInt(),
-             parametros.value( "som_tam_y", 2 ).toInt(),
-             parametros.value( "tamano_entradas" ).toInt() );
+   /*    SOM som( parametros.value( "som_tam_x", 2 ).toInt(),
+                  parametros.value( "som_tam_y", 2 ).toInt(),
+                  parametros.value( "tamano_entradas" ).toInt() );
 
     qDebug() << endl << "---------------- /Comienza el entrenamiento/ ----------------";
 
@@ -173,9 +173,83 @@ int main(int argc, char *argv[])
             som.setearClase( fila, columna, clase );
         }
 
-    }
+    }*/
 
     // Mostrar resultado de la clasificacion
+    // Si el tamaño es = 2 => clouds
+    if( parametros.value( "tamano_entradas" ).toInt() == 2 ) {
+        // Grafico los datos de clouds
+        GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );
+        mdiArea->addSubWindow( graf2 );
+        graf2->showMaximized();
+        graf2->setearTitulo( "Datos originales" );
+        graf2->setearTituloEjeX( " X " );
+        graf2->setearTituloEjeY( " Y " );
+        graf2->agregarPuntosClasificados( entradas, salidas, 0.5 );
+        mdiArea->tileSubWindows();
+    } else {
+        // Grafico como para utilizar phoneme
+        // Contiene 5 dimensiones
+        matriz entradas1, entradas2, entradas3, entradas4, entradas5;
+        // ver porque el graficador necesita 2 dimensiones x elemento a graficar!
+        for( int i=0; i < entradas.size(); i++ ) {
+            vector temp1, temp2, temp3, temp4, temp5;
+            temp1.append( entradas.at(i).at(0) );
+            entradas1.append( temp1 );
+            temp2.append( entradas.at(i).at(1) );
+            entradas2.append( temp2 );
+            temp3.append( entradas.at(i).at(2) );
+            entradas3.append( temp3 );
+            temp4.append( entradas.at(i).at(3) );
+            entradas4.append( temp4 );
+            temp5.append( entradas.at(i).at(4) );
+            entradas5.append( temp5 );
+        }
+        GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );
+        mdiArea->addSubWindow( graf2 );
+        graf2->showMaximized();
+        graf2->setearTitulo( "Datos originales - 1º Armonico" );
+        graf2->setearTituloEjeX( " X " );
+        graf2->setearTituloEjeY( " Y " );
+        graf2->agregarPuntosClasificados( entradas1, salidas, 0.5 );
+        mdiArea->tileSubWindows();
+
+        GraficadorMdi *graf3 = new GraficadorMdi( mdiArea );
+        mdiArea->addSubWindow( graf3 );
+        graf3->showMaximized();
+        graf3->setearTitulo( "Datos originales - 2º Armonico" );
+        graf3->setearTituloEjeX( " X " );
+        graf3->setearTituloEjeY( " Y " );
+        graf3->agregarPuntosClasificados( entradas2, salidas, 0.5 );
+        mdiArea->tileSubWindows();
+
+        GraficadorMdi *graf4 = new GraficadorMdi( mdiArea );
+        mdiArea->addSubWindow( graf4 );
+        graf4->showMaximized();
+        graf4->setearTitulo( "Datos originales - 3º Armonico" );
+        graf4->setearTituloEjeX( " X " );
+        graf4->setearTituloEjeY( " Y " );
+        graf4->agregarPuntosClasificados( entradas3, salidas, 0.5 );
+        mdiArea->tileSubWindows();
+
+        GraficadorMdi *graf5 = new GraficadorMdi( mdiArea );
+        mdiArea->addSubWindow( graf5 );
+        graf5->showMaximized();
+        graf5->setearTitulo( "Datos originales - 4º Armonico" );
+        graf5->setearTituloEjeX( " X " );
+        graf5->setearTituloEjeY( " Y " );
+        graf5->agregarPuntosClasificados( entradas4, salidas, 0.5 );
+        mdiArea->tileSubWindows();
+
+        GraficadorMdi *graf6 = new GraficadorMdi( mdiArea );
+        mdiArea->addSubWindow( graf6 );
+        graf6->showMaximized();
+        graf6->setearTitulo( "Datos originales - 5º Armonico" );
+        graf6->setearTituloEjeX( " X " );
+        graf6->setearTituloEjeY( " Y " );
+        graf6->agregarPuntosClasificados( entradas5, salidas, 0.5 );
+        mdiArea->tileSubWindows();
+    }
 
 
  /*
@@ -188,7 +262,7 @@ int main(int argc, char *argv[])
         graf2->setearTituloEjeX( " X " );
         graf2->setearTituloEjeY( " y " );
         graf2->agregarPuntosClasificados( entradas, salidas, 0.5 );
-        mdiArea->tileSubWindows();
+
     } else {
 
         matriz entradas1, entradas2;
