@@ -77,19 +77,17 @@ double Neurona::entrenamiento( QVector<double> entradas, double salidaDeseada )
 {
     double salida = evaluar( entradas );
 
-    if ( salida == salidaDeseada ) {
-        return 0.0;
-    } else {
-        // Ajusto los pesos
-        double error = salidaDeseada - salida;
 
-        //Caso del w0 y x0. x0 siempre es -1 no importa cuantas epocas haga
-        _pesos[0] = _pesos.at(0) + _tasa_aprendizaje*error*(-1.0);
+    // Ajusto los pesos
+    double error = salidaDeseada - salida;
 
-        for(int i=1 ; i<=entradas.size() ; i++) {
-            _pesos[i]=_pesos.at(i) + _tasa_aprendizaje*error*entradas.at(i-1);
-        }
+    //Caso del w0 y x0. x0 siempre es -1 no importa cuantas epocas haga
+    _pesos[0] = _pesos.at(0) + _tasa_aprendizaje*error*(-1.0);
 
-        return error;
+    for(int i=1 ; i<=entradas.size() ; i++) {
+        _pesos[i]=_pesos.at(i) + _tasa_aprendizaje*error*entradas.at(i-1);
     }
+
+    return error;
+
 }
