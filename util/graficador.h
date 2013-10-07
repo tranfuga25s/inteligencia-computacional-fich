@@ -30,6 +30,7 @@ public:
     void setearTamanoFijo();
     void setearPuntos( QVector<QPointF> puntos );
     void setearParaSOM();
+    void deshabilitarEscalado();
 
 private:
     QwtPlot *myPlot;

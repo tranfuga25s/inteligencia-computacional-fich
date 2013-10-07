@@ -91,6 +91,7 @@ int main(int argc, char *argv[])
 
     graf1->setearParaSOM();
     graf1->setearPuntos( som.obtenerPuntos() );
+    //graf1->deshabilitarEscalado();
 
     GraficadorMdi *graf3 = new GraficadorMdi( mdiArea );
     graf3->setearTitulo( QString::fromUtf8( "Funcion de vecindad" ) );
@@ -144,13 +145,14 @@ int main(int argc, char *argv[])
     PBTasaAprendizaje->setValue( tasas.at( 0 ) * 100 );
 
     for( int epoca=0; epoca<epocas.at(0); epoca++ ) {
-        PBEpocas->setValue( PBEpocas->value() + 1 );
+        PBEpocas->setValue( epoca );
         for( int p=0; p<entradas.size(); p++ ) {
             som.entrenar( entradas.at( p ) );
             graf1->setearPuntos( som.obtenerPuntos() );
             a.processEvents();
         }
     }
+    return a.exec();
 
     // Etapa de transición
     QVector<int> tamano_vecindad = aproximacionLineal( epocas.at( 1 ), tamano_vecindad_inicial, 1 );

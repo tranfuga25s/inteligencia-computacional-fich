@@ -313,8 +313,16 @@ void Graficador::setearParaSOM()
                                          QSize( 8, 8 ) ) );
         curva->attach( myPlot );
         setearEjesEnGrafico();
+
     }
 
+}
+
+void Graficador::deshabilitarEscalado() {
+    myPlot->setAxisAutoScale( QwtPlot::xBottom, false );
+    myPlot->setAxisAutoScale( QwtPlot::yLeft, false );
+    myPlot->setAxisScale( QwtPlot::xBottom, -1.1, 1.1 );
+    myPlot->setAxisScale( QwtPlot::yLeft  , -1.1, 1.1 );
 }
 
 void Graficador::cambiarColor()

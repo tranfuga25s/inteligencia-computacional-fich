@@ -50,8 +50,8 @@ int main(int argc, char *argv[])
             centro.append( punto );
         }
     } else {
-        qDebug() << "No se especifico el centro del circulo!";
-        abort();
+        qDebug() << "No se especifico el centro del circulo! utilizando 0,0";
+        centro << QPointF( 0.0, 0.0 );
     }
 
     // Busco el radio
@@ -62,8 +62,8 @@ int main(int argc, char *argv[])
         // Busco el punto del centro
         radio = temp2.first().toDouble();
     } else {
-        qDebug() << "No se especifico el radio del circulo!";
-        abort();
+        qDebug() << "No se especifico el radio del circulo! utilizando 1";
+        radio = 1.0;
     }
 
     QVector<QPointF> puntos;

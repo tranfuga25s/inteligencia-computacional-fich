@@ -29,14 +29,14 @@ void SOM::entrenar( QVector<double> patron )
     double distancia_minima = DBL_MAX;
     int fila_ganadora = -1;
     int columna_ganadora = -1;
-    //QVector<double> ultima_distancia;
+    double ultima_distancia;
 
     for( int f=0; f<_som.size(); f++ ) {
 
         for( int c=0; c<_som.at(f).size(); c++ ) {
 
             double dist = this->distancia( patron, f, c );
-            //ultima_distancia << dist;
+            ultima_distancia = dist;
 
             if( dist <= distancia_minima ) {
                 distancia_minima = dist;
@@ -48,7 +48,7 @@ void SOM::entrenar( QVector<double> patron )
     }
     //qDebug() << ultima_distancia;
     if( columna_ganadora == -1 || fila_ganadora == -1 ) {
-        qDebug() << "Patron: " << patron << " no tuvo ninguna neurona ganadora. Distancia: "/*<<ultima_distancia*/;
+        qDebug() << "Patron: " << patron << " no tuvo ninguna neurona ganadora. Distancia: "<<ultima_distancia;
         //abort();
     } else {
 
@@ -98,10 +98,18 @@ void SOM::actualizarPeso( int fila, int columna, QVector<double> distancia_obten
 
             for( int pos=0; pos<_som.at(fil).at(col).size(); pos++ ) {
 
-                if( vecindad.at( pos ) > 0.2 ) {
-                    _som[fil][col][pos] -= _tasa_aprendizaje*
-                                           distancia_obtenida.at(pos)*
-                                           vecindad.at( pos );
+                if( vecindad.at( pos ) > 0.15 ) {
+                    double dif =  _tasa_aprendizaje*
+                            distancia_obtenida.at(pos)*
+                            vecindad.at( pos );
+                    if( dif > 0.6 ) {
+                        abort();
+                    } else {
+                        qDebug() << dif;
+                        _som[fil][col][pos] += _tasa_aprendizaje*
+                                               distancia_obtenida.at(pos)*
+                                               vecindad.at( pos );
+                    }
                 }
             }
         }

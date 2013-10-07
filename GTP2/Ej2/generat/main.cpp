@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
         temp2.pop_front();
         nombre_archivo = temp2.first();
     } else {
-        nombre_archivo = "cuadrado.csv";
+        nombre_archivo = "t.csv";
     }
 
     if( parametros.filter( "cantidad_puntos" ).size() != 0 ) {
@@ -67,8 +67,15 @@ int main(int argc, char *argv[])
             vertices.append( punto );
         }
     } else {
-        qDebug() << "No se especificaron los vertices de la T!";
-        abort();
+        qDebug() << "No se especificaron los vertices de la T! utilizando rpedeterminados";
+        vertices << QPointF(  0.25,  0.75 )
+                 << QPointF(  1.5 ,  0.75 )
+                 << QPointF(  1.5 ,  1.25 )
+                 << QPointF( -1.5 ,  1.25 )
+                 << QPointF( -1.5 ,  0.75 )
+                 << QPointF( -0.5 ,  0.75 )
+                 << QPointF( -0.5 , -1.25 )
+                 << QPointF(  0.5 , -1.25 );
     }
 
     // Genero el poligono para comprobar la posicion

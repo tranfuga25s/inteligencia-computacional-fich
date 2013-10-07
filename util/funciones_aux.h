@@ -475,7 +475,6 @@ static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QStr
 
 static QVector<int> aproximacionLineal( int epocas, int par_ini, int par_fin ) {
     QVector<int> auxiliar;
-    qDebug() << "inicio: "<<par_ini<<" fin: "<<par_fin;
     int dif = ( par_fin - par_ini );
     for(int i = 0 ; i < epocas; i++) {
         auxiliar.append( ( ( i / epocas ) * dif ) + par_ini );
@@ -487,7 +486,6 @@ static QVector<int> aproximacionLineal( int epocas, int par_ini, int par_fin ) {
 static QVector<double> aproximacionLineald( double epocas, double par_ini, double par_fin) {
     QVector<double> auxiliar;
     double dif = ( par_fin - par_ini );
-    qDebug() << "dinicio: "<<par_ini<<" dfin: "<<par_fin;
     for(int i = 0 ; i < epocas; i++) {
         auxiliar.append( ( ( i / epocas ) * dif ) + par_ini );
         //auxiliar.push_back( par_ini + ( (par_fin - par_ini) / (epocas ) ) * ( epocas ));

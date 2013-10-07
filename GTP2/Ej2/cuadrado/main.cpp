@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
         temp2.pop_front();
         nombre_archivo = temp2.first();
     } else {
-        nombre_archivo = "cuadrado.csv";
+        nombre_archivo = "../cuadrado.csv";
     }
 
     if( parametros.filter( "cantidad_puntos" ).size() != 0 ) {
@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
         temp2.pop_front();
         cant_puntos = temp2.first().toInt();
     } else {
-        qDebug() << "NO se especifico el parametro cantidad_puntos, utilizando 100";
-        cant_puntos = 100;
+        qDebug() << "NO se especifico el parametro cantidad_puntos, utilizando 500";
+        cant_puntos = 500;
     }
 
     // Busco el radio
@@ -65,8 +65,13 @@ int main(int argc, char *argv[])
             vertices.append( punto );
         }
     } else {
-        qDebug() << "No se especificaron los vertices del rectangulo!";
-        abort();
+        qDebug() << "No se especificaron los vertices del rectangulo! usando predeterminados";
+        vertices << QPointF( 1.0, -1.0 )
+                 << QPointF( 1.0, 1.0 )
+                 << QPointF( -1.0, 1.0 )
+                 << QPointF( -1.0, -1.0 );
+        max_x = max_y = 1.0;
+        min_x = min_y = -1.0;
     }
 
     QVector<QPointF> puntos;
@@ -83,9 +88,12 @@ int main(int argc, char *argv[])
     QFile archivo( nombre_archivo );
     if( archivo.open( QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly ) ) {
         QTextStream out( &archivo );
+        int contador = 0;
         foreach( QPointF p, puntos ) {
             out << p.x() << ", " << p.y() << "\n";
+            contador++;
         }
+        qDebug() << "Escritos " << contador << " puntos ";
         archivo.flush();
         archivo.close();
         qDebug() << "archivo escrito: " << archivo.fileName();

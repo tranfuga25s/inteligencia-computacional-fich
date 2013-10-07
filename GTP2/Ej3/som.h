@@ -13,27 +13,24 @@ public:
 
     double distancia( QVector<double> patron, int fila, int columna );
 
-    void actualizarPeso(int fila, int columna, double distancia_obtenida );
+    void actualizarPeso(int fila, int columna, QVector<double> distancia_obtenida );
 
-    double funcionVecindad(int fila, int columna , int fila_ganadora, int columna_ganadora);
+    QVector<double> funcionVecindad( int fila, int columna , int fila_ganadora, int columna_ganadora );
 
     void setearRadioVecindad( int valor ) {_radio_vecindad = valor; }
     int radioVecindad() { return _radio_vecindad; }
     void setearTasaAprendizaje(double tasa){ _tasa_aprendizaje = tasa;}
 
-    void setearClase( int fila, int col, int clase );
-    int obtenerClase( int fila, int col );
-    int obtenerClase( QVector<double> patron ); // Obtengo la clase evaluando el patron
-
-    QPair<int,int> getNeuronaGanadora(QVector<double> patron);
-
+    QVector<QPointF> obtenerPuntos();
 
 private:
+    // Estructura:
+    // fila, columna, elemento
     QVector< QVector< QVector<double> > > _som;
-    QVector< QVector<int> > _som_clasificado;
     int _radio_vecindad;
     double _tasa_aprendizaje;
 
+    QVector<double> diferenciaVector( QVector<double> val1, QVector<double> val2 );
 };
 
 #endif // SOM_H
