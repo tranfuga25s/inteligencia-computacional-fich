@@ -77,7 +77,6 @@ double Neurona::entrenamiento( QVector<double> entradas, double salidaDeseada )
 {
     double salida = evaluar( entradas );
 
-
     // Ajusto los pesos
     double error = salidaDeseada - salida;
 
