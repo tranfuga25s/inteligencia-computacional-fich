@@ -1,7 +1,7 @@
 #include "entorno.h"
 
-Entorno::Entorno( QObject *parent, double k1, double k2, double k3, double k4, double prob_puerta ) :
-QObject(parent), _k1( k1 ), _k2( k2 ), _k3( k3 ), _k4( k4 )
+Entorno::Entorno( QObject *parent, double prob_puerta ) :
+QObject(parent)
 {
     _temperatura_externa = 0.0;
     _temperatura_interna = 0.0;
@@ -49,9 +49,15 @@ void Entorno::calcularNuevaTemperatura()
         }
     } else {
         if( _puerta_abierta ) {
-            nueva_temp = ?;
+            nueva_temp = 0.912 * temp_ant +
+                         0.088 * _temperatura_externa +
+                         0.604 * pow( _potencia, 2.0 ) -
+                         0.0121 * _voltaje;
         } else {
-            nueva_temp = ?;
+            nueva_temp = 0.169 * temp_ant +
+                         0.831 * _temperatura_externa +
+                         0.112 * pow( _potencia, 2.0 ) -
+                         0.002 * _voltaje;
         }
     }
 
