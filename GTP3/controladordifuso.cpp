@@ -1,9 +1,11 @@
 #include "controladordifuso.h"
 
-ControladorDifuso::ControladorDifuso(QObject *parent) :
+ControladorDifuso::ControladorDifuso( QObject *parent ) :
     QObject(parent)
 {
     _ultima_temp = 0.0;
+    _ultima_intensidad = 0.0;
+    _ultimo_voltaje = 0.0;
 }
 
 void ControladorDifuso::calcularProximoPaso()
@@ -28,23 +30,46 @@ void ControladorDifuso::calcularProximoPaso()
     QVector<int> reglas_intensidad = _reglas_intensidad.at( num_conjunto_entrada );
 
     // Voltaje
-    QVector<double> activacion_voltaje;
+    QVector<double> areas;
+    QVector<double> centroides;
+    for( int i=0; i<reglas_voltaje.size(); i++ ) {
+        areas.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->area( pertenencia_maxima ) );
+        centroides.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->centroide( pertenencia_maxima ) );
+    }
+    // Calculo el centroide de los centroides seleccionados por las reglas
+    double suma_areas = 0.0;
+    double suma_centroides = 0.0;
+    for( int i=0; i<areas.size(); i++ ) {
+        suma_areas += areas.at(i);
+        suma_centroides += centroides.at(i);
+    }
+    _ultimo_voltaje = suma_centroides/suma_areas;
 
     // Intensidad
+    areas.clear();
+    centroides.clear();
+    for( int i=0; i<reglas_intensidad.size(); i++ ) {
+        areas.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->area( pertenencia_maxima ) );
+        centroides.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->centroide( pertenencia_maxima ) );
+    }
 
+    // Calculo el centroide de los centroides seleccionados por las reglas
+    suma_areas = 0.0;
+    suma_centroides = 0.0;
+    for( int i=0; i<areas.size(); i++ ) {
+        suma_areas += areas.at(i);
+        suma_centroides += centroides.at(i);
+    }
 
-
-
-
-
+    _ultima_intensidad = suma_centroides/suma_areas;
 }
 
 
 double ControladorDifuso::getVoltaje()
-{ return 0.0; }
+{ return _ultimo_voltaje; }
 
 double ControladorDifuso::getIntensidad()
-{ return 0.0; }
+{ return _ultima_intensidad; }
 
 void ControladorDifuso::agregarConjuntoEntrada( QString nombre, QVector<double> posiciones )
 {
@@ -100,11 +125,25 @@ double TrapecioDifuso::centroide( double valor_y )
 {
 }
 
-
-TrapecioDifuso::TrapecioDifuso( double pos1, double pos2, double pos3, double pos4, QString nombre )
+/*!
+ * \brief TrapecioDifuso::area
+ * Calcula el área de el trapecio según la altura indicada
+ * \param valor_y
+ * \return
+ */
+double TrapecioDifuso::area( double valor_y )
 {
-
+    double area = 0.0;
+    area += ( ( pos2 - pos1 ) * valor_y ) / 2.0;
+    area += ( ( pos3 - pos2 ) * valor_y );
+    area += ( ( pos4 - pos3 ) * valor_y ) / 2.0;
+    return area;
 }
+
+
+TrapecioDifuso::TrapecioDifuso( double p1, double p2, double p3, double p4, QString nom )
+    : pos1( p1 ), pos2( p2 ), pos3( p3 ), pos4( p4 ), _nombre( nom )
+{}
 
 
 /**
@@ -115,4 +154,13 @@ TrapecioDifuso::TrapecioDifuso( double pos1, double pos2, double pos3, double po
  */
 double TrapecioDifuso::valorSalida( double valor_entrada )
 {
+    if( valor_entrada < pos1 || valor_entrada > pos4 ) {
+        return 0.0;
+    } else if( valor_entrada >= pos2 && valor_entrada <= pos3 ) {
+        return 1.0;
+    } else if( valor_entrada >= pos1 && valor_entrada <= pos2 ) {
+        return ( pos2 - pos1 ) * ( valor_entrada - pos1 );
+    } else if( valor_entrada >= pos3 && valor_entrada <= pos4 ) {
+        return ( ( ( pos4 - pos3 ) * ( valor_entrada - pos3 ) ) / -1.0 ) + 1.0;
+    }
 }

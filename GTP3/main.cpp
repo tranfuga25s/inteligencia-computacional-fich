@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
     parametros.beginGroup( "Entradas" );
     foreach( QString clave, parametros.allKeys() ) {
         // Clave es el nombre del grupo
-        controlador.agregarConjuntoEntrada( clave, stringAQVector( parametros.value( clave ).toString() ) );
+        controlador.agregarConjuntoEntrada( clave, stringAQVectord( parametros.value( clave ).toString() ) );
     }
     parametros.endGroup();
 
