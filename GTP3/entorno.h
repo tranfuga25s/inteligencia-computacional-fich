@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include <QVector>
+#include "funciones_aux.h"
 
 /*!
  * \brief The Entorno class

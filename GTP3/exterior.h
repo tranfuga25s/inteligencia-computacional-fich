@@ -2,6 +2,7 @@
 #define EXTERIOR_H
 
 #include <QObject>
+#include "funciones_aux.h"
 
 class Exterior : public QObject
 {

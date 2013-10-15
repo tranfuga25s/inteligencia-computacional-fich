@@ -554,4 +554,47 @@ static QVector<double> stringAQVectord( QString datos, QString separador = " " )
 
 #endif
 
+#ifndef FAM
+#define FAM
+
+static matriz correlacionMinima(vector entradas,vector salidas) {
+    matriz M;
+
+    for (int i = 0; i< entradas.size(); i++) {
+        vector temp1(salidas.size());
+        for (int j = 0; j < salidas.size(); j++) {
+            if (entradas.at(i) < salidas.at(i)) {
+                temp1.append(entradas.at(i));
+            }
+            else
+            {
+                temp1.append(salidas.at(i));
+            }
+        }
+        M.append(temp1);
+        temp1.clear();
+    }
+
+    return M;
+
+}
+
+static matriz correlacionProducto(vector entradas,vector salidas) {
+    matriz M;
+
+    for (int i = 0; i< entradas.size(); i++) {
+        vector temp2(salidas.size());
+        for (int j = 0; j < salidas.size(); j++) {
+            temp2.append(entradas.at(i)*salidas.at(j));
+        }
+        M.append(temp2);
+        temp2.clear();
+    }
+    return M;
+
+}
+
+#endif
+
+
 #endif // FUNCIONES_AUX_H
