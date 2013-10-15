@@ -2,15 +2,17 @@
 #define CONTROLADORDIFUSO_H
 
 #include <QObject>
+#include <QVector>
 
 class TrapecioDifuso {
 
+public:
     explicit TrapecioDifuso( double pos1, double pos2, double pos3, double pos4, QString nombre );
     double valorSalida( double valor_entrada );
     double centroide( double valor_y );
 
 
-public:
+private:
     double pos1;
     double pos2;
     double pos3;
@@ -26,15 +28,20 @@ public:
     void calcularProximoPaso();
     double getVoltaje();
     double getIntensidad();
+
     void setearTemperaturaInterior( double valor ) { _ultima_temp = valor; }
+
+    void agregarConjuntoEntrada( QString nombre, QVector<double> posiciones );
+    void agregarConjuntoSalidaVoltaje( QString nombre, QVector<double> posiciones );
+    void agregarConjuntoSalidaIntensidad( QString nombre, QVector<double> posiciones );
 
 private:
     double _ultima_temp;
 
-    QVector<TrapecioDifuso> _conjunto_entrada;
+    QVector<TrapecioDifuso *> _conjunto_entrada;
 
-    QVector<TrapecioDifuso> _conjunto_salida_voltaje;
-    QVector<TrapecioDifuso> _conjunto_salida_intensidad;
+    QVector<TrapecioDifuso *> _conjunto_salida_voltaje;
+    QVector<TrapecioDifuso *> _conjunto_salida_intensidad;
     
 };
 
