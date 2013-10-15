@@ -19,6 +19,7 @@ typedef QVector< QVector<double> > matriz;
 #include "funciones_aux.h"
 #include "entorno.h"
 #include "exterior.h"
+#include "graficadormdi.h"
 
 /*!
  * \brief main
@@ -37,6 +38,15 @@ int main(int argc, char *argv[])
     mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     main.setCentralWidget(mdiArea);
+
+    GraficadorMdi *grafTemperatura = new GraficadorMdi( mdiArea );
+    grafTemperatura->setearTitulo( QString::fromUtf8( "Temperatura Interior" ) );
+    grafTemperatura->setearTituloEjeX( QString::fromUtf8( "Tiempo" ) );
+    grafTemperatura->setearTituloEjeY( QString::fromUtf8( "Temperatura" ) );
+    mdiArea->addSubWindow( grafTemperatura );
+    grafTemperatura->show();
+    mdiArea->tileSubWindows();
+    grafTemperatura->setearParaSOM( "Temp" );
 
     // barra de progreso para mostrar el avance del tiempo
     QDockWidget *dockBarra = new QDockWidget( QString::fromUtf8( "Paso del tiempo" ) );
@@ -74,10 +84,21 @@ int main(int argc, char *argv[])
     int intervalo = parametros.value( "t_act").toInt();
     int cant_total = parametros.value("cant_segundos").toInt();
 
+    QVector<int> escala_tiempo;
+
     for( int i=0; i<cant_total; i+=intervalo ) {
+
+        escala_tiempo.append( i );
         // Genero todos los pasos para que se actualize la temperatura interior
 
         entorno.setearTemperaturaExterna( exterior.getTemperaturaExterior( i ) );
+
+        entorno.calcularTemperaturaTiempo();
+
+        grafTemperatura->setearPuntos( entorno.historicoTemperatura(), escala_tiempo );
+
+        PBTiempo->setValue( i+1 );
+
     }
 
     return a.exec();
