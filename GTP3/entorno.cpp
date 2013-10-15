@@ -45,5 +45,12 @@ void Entorno::calcularNuevaTemperatura()
 
 void Entorno::calcularPuertaAbierta()
 {
-    /// @TODO: Hacer!
+   double a = valor_random(1,_probabilidad_puerta_abierta);
+   if (fmod(a,_probabilidad_puerta_abierta) == 0.0) {
+       _puerta_abierta = true;
+   }
+   else
+   {
+       _puerta_abierta = false;
+   }
 }
