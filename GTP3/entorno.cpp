@@ -18,6 +18,7 @@ void Entorno::calcularTemperaturaTiempo()
 double Entorno::temperaturaActual()
 {
     // devuleve la temperatura del momento actual
+    return _historico_temperaturas.at( _historico_temperaturas.size() - 1 );
 }
 
 
@@ -25,8 +26,8 @@ void Entorno::calcularNuevaTemperatura()
 {
     // Calcula la temperatura nueva
     if( _puerta_abierta ) {
-
+        //_historico_temperaturas.append( );
     } else {
-
+        //_historico_temperaturas.append( );
     }
 }
