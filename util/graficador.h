@@ -29,6 +29,7 @@ public:
     void setearEjesEnGrafico();
     void setearTamanoFijo();
     void setearPuntos( QVector<QPointF> puntos );
+    void setearPuntos(QVector<double> puntos , QVector<int> escala_tiempo);
     void setearParaSOM();
     void deshabilitarEscalado();
 
