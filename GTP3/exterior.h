@@ -2,6 +2,7 @@
 #define EXTERIOR_H
 
 #include <QObject>
+#include <QVector>
 
 class Exterior : public QObject
 {
@@ -9,6 +10,11 @@ class Exterior : public QObject
 public:
     explicit Exterior(QObject *parent = 0);
     double getTemperaturaExterior( int segundo );
+    QVector<double> getHistoricoTemperatura() { return _historico; }
+
+private:
+    QVector<double> _historico;
+
 };
 
 #endif // EXTERIOR_H

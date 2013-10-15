@@ -48,6 +48,15 @@ int main(int argc, char *argv[])
     mdiArea->tileSubWindows();
     grafTemperatura->setearParaSOM( "Temp" );
 
+    GraficadorMdi *grafTemperaturaExterior = new GraficadorMdi( mdiArea );
+    grafTemperaturaExterior->setearTitulo( QString::fromUtf8( "Temperatura Exterior" ) );
+    grafTemperaturaExterior->setearTituloEjeX( QString::fromUtf8( "Tiempo" ) );
+    grafTemperaturaExterior->setearTituloEjeY( QString::fromUtf8( "Temperatura" ) );
+    mdiArea->addSubWindow( grafTemperaturaExterior );
+    grafTemperaturaExterior->show();
+    mdiArea->tileSubWindows();
+    grafTemperaturaExterior->setearParaSOM( "Temp" );
+
     // barra de progreso para mostrar el avance del tiempo
     QDockWidget *dockBarra = new QDockWidget( QString::fromUtf8( "Paso del tiempo" ) );
     main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra );
@@ -92,6 +101,7 @@ int main(int argc, char *argv[])
         entorno.calcularTemperaturaTiempo();
 
         grafTemperatura->setearPuntos( entorno.historicoTemperatura(), escala_tiempo );
+        grafTemperaturaExterior->setearPuntos( exterior.getHistoricoTemperatura(), escala_tiempo );
 
         PBTiempo->setValue( i+1 );
 
