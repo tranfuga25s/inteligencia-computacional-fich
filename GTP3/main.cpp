@@ -78,7 +78,8 @@ int main(int argc, char *argv[])
     Entorno entorno( 0, parametros.value("pa_puerta").toDouble() );
     // Seteo los valores iniciales
     entorno.setearTemperaturaExterna( parametros.value("temp_ext").toDouble() );
-    entorno.setearTemperaturaInterna( parametros.value("temp_int").toDouble() );
+    entorno.setearTemperaturaInterna( parametros.value("temp_ini_int").toDouble() );
+
 
     PBTiempo->setRange( 0, parametros.value("cant_segundos").toInt() );
     PBTiempo->setValue(0);
