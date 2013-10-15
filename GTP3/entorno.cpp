@@ -39,11 +39,23 @@ void Entorno::calcularNuevaTemperatura()
     } else {
         temp_ant = _temperatura_interna;
     }
-    if( _puerta_abierta ) {
-        nueva_temp = 0.912*temp_ant + 0.088*_temperatura_externa;
+
+    if( _voltaje == 0.0 && _potencia == 0.0 ) {
+        // estamos en un sistema sin control
+        if( _puerta_abierta ) {
+            nueva_temp = 0.912*temp_ant + 0.088*_temperatura_externa;
+        } else {
+            nueva_temp = 0.169*temp_ant + 0.831*_temperatura_externa;
+        }
     } else {
-        nueva_temp = 0.169*temp_ant + 0.831*_temperatura_externa;
+        if( _puerta_abierta ) {
+            nueva_temp = ?;
+        } else {
+            nueva_temp = ?;
+        }
     }
+
+
     _historico_temperaturas.append( nueva_temp );
 }
 

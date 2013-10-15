@@ -75,13 +75,7 @@ int main(int argc, char *argv[])
     ///ya codificadas describiendo los puntos de los trapecios
 
     // Genero el entorno que voy a controlar
-    Entorno entorno( 0,
-                     parametros.value("k1").toDouble(),
-                     parametros.value("k2").toDouble(),
-                     parametros.value("k3").toDouble(),
-                     parametros.value("k4").toDouble(),
-                     parametros.value("pa_puerta").toDouble()
-                   );
+    Entorno entorno( 0, parametros.value("pa_puerta").toDouble() );
     // Seteo los valores iniciales
     entorno.setearTemperaturaExterna( parametros.value("temp_ext").toDouble() );
     entorno.setearTemperaturaInterna( parametros.value("temp_int").toDouble() );

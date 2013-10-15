@@ -16,10 +16,6 @@ class Entorno : public QObject
     Q_OBJECT
 public:
     explicit Entorno( QObject *parent,
-                      double k1,
-                      double k2,
-                      double k3,
-                      double k4,
                       double prob_puerta );
     QVector<double> historicoTemperatura() { return _historico_temperaturas; }
     void calcularTemperaturaTiempo();
@@ -41,7 +37,6 @@ private:
     double _potencia;
     double _voltaje;
 
-    double _k1, _k2, _k3, _k4;
     double _probabilidad_puerta_abierta;
 
     QVector<double> _historico_temperaturas;
