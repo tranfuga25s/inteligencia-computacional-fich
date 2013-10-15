@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     QDockWidget *dockBarra = new QDockWidget( QString::fromUtf8( "Paso del tiempo" ) );
     main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra );
     QProgressBar *PBTiempo = new QProgressBar( dockBarra );
-    dockBarra3->setWidget( PBTiempo );
+    dockBarra->setWidget( PBTiempo );
 
     //Inicializo con una semilla aleatoria para la generacion de Aleatorios
     qsrand( QTime::currentTime().msec() );
@@ -67,7 +67,14 @@ int main(int argc, char *argv[])
 
     Exterior exterior;
 
+    int intervalo = parametros.value( "t_act").toInt();
+    int cant_total = parametros.value("cant_segundos").toInt();
 
+    for( int i=0; i<cant_total; i+=intervalo ) {
+        // Genero todos los pasos para que se actualize la temperatura interior
+
+        entorno.setearTemperaturaExterna( exterior.getTemperaturaExterior( i ) );
+    }
 
     return a.exec();
 

@@ -8,7 +8,7 @@ class Exterior : public QObject
     Q_OBJECT
 public:
     explicit Exterior(QObject *parent = 0);
-    void getTemperaturaExterior( int segundo );
+    double getTemperaturaExterior( int segundo );
 };
 
 #endif // EXTERIOR_H
