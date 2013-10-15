@@ -90,6 +90,9 @@ int main(int argc, char *argv[])
     PBTiempo->setValue(0);
 
     Exterior exterior;
+    exterior.setearTemperaturaSuperior( parametros.value("temp_ext_max").toDouble() );
+    exterior.setearTemperaturaInferior( parametros.value("temp_ext_min").toDouble() );
+    exterior.setearTiempoCambio( parametros.value("temp_ext_cambio").toInt() );
 
     ControladorDifuso controlador;
     /// @TODO: Agregar Cargas desde preferencia

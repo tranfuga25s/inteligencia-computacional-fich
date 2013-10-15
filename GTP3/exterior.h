@@ -13,8 +13,17 @@ public:
     double getTemperaturaExterior( int segundo );
     QVector<double> getHistoricoTemperatura() { return _historico; }
 
+    void setearTemperaturaSuperior( double temp ) { _max = temp; }
+    void setearTemperaturaInferior( double temp ) { _min = temp; }
+    void setearTiempoCambio( int cantidad_seg ) { _cant_seg = cantidad_seg; }
+
 private:
     QVector<double> _historico;
+    double _max;
+    double _min;
+    double _ultima_temp;
+    int _cant_seg;
+    int _ultimo_cambio;
 
 };
 

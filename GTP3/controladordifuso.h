@@ -9,6 +9,9 @@ class ControladorDifuso : public QObject
 public:
     explicit ControladorDifuso(QObject *parent = 0);
     void calcularProximoPaso();
+    double getVoltaje();
+    double getIntensidad();
+
 private:
     
 };
