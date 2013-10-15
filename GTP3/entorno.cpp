@@ -42,13 +42,13 @@ void Entorno::calcularNuevaTemperatura()
 
     if( _voltaje == 0.0 && _potencia == 0.0 ) {
         // estamos en un sistema sin control
-        if( _puerta_abierta ) {
+        if( _puerta_abierta == false ) {
             nueva_temp = 0.912*temp_ant + 0.088*_temperatura_externa;
         } else {
             nueva_temp = 0.169*temp_ant + 0.831*_temperatura_externa;
         }
     } else {
-        if( _puerta_abierta ) {
+        if( _puerta_abierta == false ) {
             nueva_temp = 0.912 * temp_ant +
                          0.088 * _temperatura_externa +
                          0.604 * pow( _potencia, 2.0 ) -
