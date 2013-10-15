@@ -39,14 +39,23 @@ double ControladorDifuso::getIntensidad()
 
 void ControladorDifuso::agregarConjuntoEntrada(QString nombre, QVector<double> posiciones)
 {
+    _conjunto_entrada.append(
+                new TrapecioDifuso( posiciones[0], posiciones[1], posiciones[2], posiciones[3], nombre )
+    );
 }
 
 void ControladorDifuso::agregarConjuntoSalidaVoltaje(QString nombre, QVector<double> posiciones)
 {
+    _conjunto_salida_voltaje.append(
+                new TrapecioDifuso( posiciones[0], posiciones[1], posiciones[2], posiciones[3], nombre )
+    );
 }
 
 void ControladorDifuso::agregarConjuntoSalidaIntensidad(QString nombre, QVector<double> posiciones)
 {
+    _conjunto_salida_intensidad.append(
+                new TrapecioDifuso( posiciones[0], posiciones[1], posiciones[2], posiciones[3], nombre )
+    );
 }
 
 
