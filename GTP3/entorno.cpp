@@ -29,10 +29,16 @@ void Entorno::calcularNuevaTemperatura()
     // Calcula la temperatura nueva
     calcularPuertaAbierta(); // Verifica si la puerta está abierta o no según la probabilidad
     double nueva_temp = 0.0;
-    if( _puerta_abierta ) {
-        /// @TODO: Agregar formula segun guía
+    double temp_ant = 0.0;
+    if( _historico_temperaturas.size() > 2 ) {
+        temp_ant = _historico_temperaturas.at( _historico_temperaturas.size() - 2 );
     } else {
-        /// @TODO: Agregar formula segun guía
+        temp_ant = _temperatura_interna;
+    }
+    if( _puerta_abierta ) {
+        nueva_temp = 0.912*temp_ant + 0.088*_temperatura_externa;
+    } else {
+        nueva_temp = 0.169*temp_ant + 0.831*_temperatura_externa;
     }
     _historico_temperaturas.append( nueva_temp );
 }

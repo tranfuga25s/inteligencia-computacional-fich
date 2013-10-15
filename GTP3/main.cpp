@@ -92,7 +92,9 @@ int main(int argc, char *argv[])
         entorno.calcularTemperaturaTiempo();
 
         grafTemperatura->setearPuntos( entorno.historicoTemperatura(), escala_tiempo );
+
         PBTiempo->setValue( i+1 );
+
     }
 
     return a.exec();
