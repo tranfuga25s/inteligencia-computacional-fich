@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QVector>
+#include "funciones_aux.h"
 
 class Exterior : public QObject
 {

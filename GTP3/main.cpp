@@ -69,6 +69,10 @@ int main(int argc, char *argv[])
     // Cargo los parametros del ejercicio
     QSettings parametros( "parametros.cfg", QSettings::IniFormat );
 
+    /// @TODO
+    ///faltaria definir la matriz de entradas y la de salidas que estarian
+    ///ya codificadas describiendo los puntos de los trapecios
+
     // Genero el entorno que voy a controlar
     Entorno entorno( 0,
                      parametros.value("k1").toDouble(),
