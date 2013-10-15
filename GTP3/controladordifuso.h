@@ -11,8 +11,10 @@ public:
     void calcularProximoPaso();
     double getVoltaje();
     double getIntensidad();
+    void setearTemperaturaInterior( double valor ) { _ultima_temp = valor; }
 
 private:
+    double _ultima_temp;
     
 };
 

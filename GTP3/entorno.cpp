@@ -20,7 +20,11 @@ void Entorno::calcularTemperaturaTiempo()
 double Entorno::temperaturaActual()
 {
     // devuleve la temperatura del momento actual
-    return _historico_temperaturas.at( _historico_temperaturas.size() - 1 );
+    if( _historico_temperaturas.size() > 0 ) {
+        return _historico_temperaturas.at( _historico_temperaturas.size() - 1 );
+    } else {
+        return _temperatura_interna;
+    }
 }
 
 
