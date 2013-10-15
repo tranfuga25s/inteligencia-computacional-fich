@@ -17,7 +17,8 @@ typedef QVector<double> vector;
 typedef QVector< QVector<double> > matriz;
 
 #include "funciones_aux.h"
-
+#include "entorno.h"
+#include "exterior.h"
 
 /*!
  * \brief main
@@ -37,11 +38,34 @@ int main(int argc, char *argv[])
     mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     main.setCentralWidget(mdiArea);
 
+    // barra de progreso para mostrar el avance del tiempo
+    QDockWidget *dockBarra = new QDockWidget( QString::fromUtf8( "Paso del tiempo" ) );
+    main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra );
+    QProgressBar *PBTiempo = new QProgressBar( dockBarra );
+    dockBarra3->setWidget( PBTiempo );
+
     //Inicializo con una semilla aleatoria para la generacion de Aleatorios
     qsrand( QTime::currentTime().msec() );
 
     // Cargo los parametros del ejercicio
     QSettings parametros( "parametros.cfg", QSettings::IniFormat );
+
+    // Genero el entorno que voy a controlar
+    Entorno entorno( 0,
+                     parametros.value("k1").toDouble(),
+                     parametros.value("k2").toDouble(),
+                     parametros.value("k3").toDouble(),
+                     parametros.value("k4").toDouble(),
+                     parametros.value("pa_puerta").toDouble()
+                   );
+    // Seteo los valores iniciales
+    entorno.setearTemperaturaExterna( parametros.value("temp_ext").toDouble() );
+    entorno.setearTemperaturaInterna( parametros.value("temp_int").toDouble() );
+
+    PBTiempo->setRange( 0, parametros.value("cant_segundos").toInt() );
+    PBTiempo->setValue(0);
+
+    Exterior exterior;
 
 
 

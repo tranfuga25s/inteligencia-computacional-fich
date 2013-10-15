@@ -14,13 +14,15 @@ TEMPLATE = app
 SOURCES +=  main.cpp \
     ../util/graficador.cpp \
     ../util/graficadormdi.cpp \
-    entorno.cpp
+    entorno.cpp \
+    exterior.cpp
 
 HEADERS += \
     ../util/funciones_aux.h \
     ../util/graficador.h \
     ../util/graficadormdi.h \
-    entorno.h
+    entorno.h \
+    exterior.h
 
 
 OTHER_FILES += parametros.cfg \
