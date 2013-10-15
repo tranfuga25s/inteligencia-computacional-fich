@@ -99,10 +99,33 @@ int main(int argc, char *argv[])
 
     parametros.beginGroup( "Salidas" );
     parametros.beginGroup( "voltaje" );
-
+    foreach( QString clave, parametros.allKeys() ) {
+        // Clave es el nombre del grupo
+        controlador.agregarConjuntoSalidaVoltaje( clave, stringAQVectord( parametros.value( clave ).toString() ) );
+    }
     parametros.endGroup();
     parametros.beginGroup("intensidad");
+    foreach( QString clave, parametros.allKeys() ) {
+        // Clave es el nombre del grupo
+        controlador.agregarConjuntoSalidaIntensidad( clave, stringAQVectord( parametros.value( clave ).toString() ) );
+    }
+    parametros.endGroup();
+    parametros.endGroup();
 
+    parametros.beginGroup( "Reglas" );
+    parametros.beginGroup( "voltaje" );
+    foreach( QString clave, parametros.allKeys() ) {
+        foreach( int conjunto_salida, stringAQVector( parametros.value( clave ).toString() ) ) {
+            controlador.agregarReglaVoltaje( clave.toInt(), conjunto_salida );
+        }
+    }
+    parametros.endGroup();
+    parametros.beginGroup("intensidad");
+    foreach( QString clave, parametros.allKeys() ) {
+        foreach( int conjunto_salida, stringAQVector( parametros.value( clave ).toString() ) ) {
+            controlador.agregarReglaIntensidad( clave.toInt(), conjunto_salida );
+        }
+    }
     parametros.endGroup();
     parametros.endGroup();
 
