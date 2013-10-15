@@ -7,20 +7,22 @@
 QT       += core widgets
 TARGET = GTP3
 CONFIG   += console
-CONFIG += qwt
+CONFIG   += qwt
 
 TEMPLATE = app
 
 SOURCES +=  main.cpp \
     ../util/graficador.cpp \
-    ../util/graficadormdi.cpp
+    ../util/graficadormdi.cpp \
+    entorno.cpp
 
 HEADERS += \
     ../util/funciones_aux.h \
     ../util/graficador.h \
-    ../util/graficadormdi.h
+    ../util/graficadormdi.h \
+    entorno.h
 
 
 OTHER_FILES += parametros.cfg \
 
-INCLUDEPATH += ../../util
+INCLUDEPATH += ../util
