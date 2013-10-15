@@ -46,6 +46,7 @@ int main(int argc, char *argv[])
     mdiArea->addSubWindow( grafTemperatura );
     grafTemperatura->show();
     mdiArea->tileSubWindows();
+    grafTemperatura->setearParaSOM( "Temp" );
 
     // barra de progreso para mostrar el avance del tiempo
     QDockWidget *dockBarra = new QDockWidget( QString::fromUtf8( "Paso del tiempo" ) );
@@ -88,9 +89,10 @@ int main(int argc, char *argv[])
 
         entorno.setearTemperaturaExterna( exterior.getTemperaturaExterior( i ) );
 
+        entorno.calcularTemperaturaTiempo();
 
         grafTemperatura->setearPuntos( entorno.historicoTemperatura(), escala_tiempo );
-        PBTiempo->setValue( i );
+        PBTiempo->setValue( i+1 );
     }
 
     return a.exec();

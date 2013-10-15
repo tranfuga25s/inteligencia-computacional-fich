@@ -317,10 +317,10 @@ void Graficador::setearPuntos( QVector<double> puntos, QVector<int> escala_tiemp
     this->setearPuntos( datos );
 }
 
-void Graficador::setearParaSOM()
+void Graficador::setearParaSOM( QString nombre )
 {
     if( curvas->size() == 0 ) {
-        QwtPlotCurve *curva = new QwtPlotCurve( "SOM" );
+        QwtPlotCurve *curva = new QwtPlotCurve( nombre );
         curvas->insert( 0, curva );
         curva->setRenderHint( QwtPlotItem::RenderAntialiased );
         curva->setLegendAttribute( QwtPlotCurve::LegendShowLine , true );

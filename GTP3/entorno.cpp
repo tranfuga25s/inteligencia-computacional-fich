@@ -14,6 +14,7 @@ QObject(parent), _k1( k1 ), _k2( k2 ), _k3( k3 ), _k4( k4 )
 void Entorno::calcularTemperaturaTiempo()
 {
     // Agrega un nuevo elemento al historial
+    calcularNuevaTemperatura();
 }
 
 double Entorno::temperaturaActual()
