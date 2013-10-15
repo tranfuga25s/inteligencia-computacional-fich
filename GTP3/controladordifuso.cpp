@@ -28,6 +28,7 @@ void ControladorDifuso::calcularProximoPaso()
     QVector<int> reglas_intensidad = _reglas_intensidad.at( num_conjunto_entrada );
 
     // Voltaje
+    QVector<double> activacion_voltaje;
 
     // Intensidad
 

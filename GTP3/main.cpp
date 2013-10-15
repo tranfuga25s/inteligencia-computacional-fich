@@ -90,7 +90,21 @@ int main(int argc, char *argv[])
     exterior.setearTiempoCambio( parametros.value("temp_ext_cambio").toInt() );
 
     ControladorDifuso controlador;
-    /// @TODO: Agregar Cargas desde preferencia
+    parametros.beginGroup( "Entradas" );
+    foreach( QString clave, parametros.allKeys() ) {
+        // Clave es el nombre del grupo
+        controlador.agregarConjuntoEntrada( clave, stringAQVector( parametros.value( clave ).toString() ) );
+    }
+    parametros.endGroup();
+
+    parametros.beginGroup( "Salidas" );
+    parametros.beginGroup( "voltaje" );
+
+    parametros.endGroup();
+    parametros.beginGroup("intensidad");
+
+    parametros.endGroup();
+    parametros.endGroup();
 
     int intervalo = parametros.value( "t_act").toInt();
     int cant_total = parametros.value("cant_segundos").toInt();
