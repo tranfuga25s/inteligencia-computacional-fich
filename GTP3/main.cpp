@@ -20,6 +20,7 @@ typedef QVector< QVector<double> > matriz;
 #include "entorno.h"
 #include "exterior.h"
 #include "graficadormdi.h"
+#include "controladordifuso.h"
 
 /*!
  * \brief main
@@ -90,6 +91,9 @@ int main(int argc, char *argv[])
 
     Exterior exterior;
 
+    ControladorDifuso controlador;
+    /// @TODO: Agregar Cargas desde preferencia
+
     int intervalo = parametros.value( "t_act").toInt();
     int cant_total = parametros.value("cant_segundos").toInt();
 
@@ -98,12 +102,19 @@ int main(int argc, char *argv[])
     for( int i=0; i<cant_total; i+=intervalo ) {
 
         escala_tiempo.append( i );
-        // Genero todos los pasos para que se actualize la temperatura interior
 
+        // Coloco la temperatura interior en el controlador
+        controlador.setearTemperaturaInterior( entorno.temperaturaActual() );
+
+        // Genero todos los pasos para que se actualize la temperatura interior
         entorno.setearTemperaturaExterna( exterior.getTemperaturaExterior( i ) );
+        entorno.setearPotenciaEstufa( controlador.getIntensidad() );
+        entorno.setearVoltajeRefrigeracion( controlador.getVoltaje() );
+        // La puerta se maneja de manera interna
 
         entorno.calcularTemperaturaTiempo();
 
+        // Grafico el paso
         grafTemperatura->setearPuntos( entorno.historicoTemperatura(), escala_tiempo );
         grafTemperaturaExterior->setearPuntos( exterior.getHistoricoTemperatura(), escala_tiempo );
 

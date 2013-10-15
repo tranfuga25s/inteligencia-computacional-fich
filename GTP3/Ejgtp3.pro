@@ -15,14 +15,16 @@ SOURCES +=  main.cpp \
     ../util/graficador.cpp \
     ../util/graficadormdi.cpp \
     entorno.cpp \
-    exterior.cpp
+    exterior.cpp \
+    controladordifuso.cpp
 
 HEADERS += \
     ../util/funciones_aux.h \
     ../util/graficador.h \
     ../util/graficadormdi.h \
     entorno.h \
-    exterior.h
+    exterior.h \
+    controladordifuso.h
 
 
 OTHER_FILES += parametros.cfg \
