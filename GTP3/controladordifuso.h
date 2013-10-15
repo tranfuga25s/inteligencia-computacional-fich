@@ -35,6 +35,9 @@ public:
     void agregarConjuntoSalidaVoltaje( QString nombre, QVector<double> posiciones );
     void agregarConjuntoSalidaIntensidad( QString nombre, QVector<double> posiciones );
 
+    void agregarReglaVoltaje( int conjunto_entrada, int conjunto_salida );
+    void agregarReglaIntensidad( int conjunto_entrada, int conjunto_salida );
+
 private:
     double _ultima_temp;
 
@@ -42,6 +45,11 @@ private:
 
     QVector<TrapecioDifuso *> _conjunto_salida_voltaje;
     QVector<TrapecioDifuso *> _conjunto_salida_intensidad;
+
+    // El primer vector refleja el trapecio de entrada activado
+    // La segunda dimension es que conjuntos de salida tenemos que activar y verificar
+    QVector< QVector<int> > _reglas_voltaje;
+    QVector< QVector<int> > _reglas_intensidad;
     
 };
 

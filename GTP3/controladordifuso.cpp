@@ -23,6 +23,14 @@ void ControladorDifuso::calcularProximoPaso()
     }
 
     // Ejecucion de las reglas
+    // Activo las reglas que estén relacionadas con el conjunto de entrada elegido antes
+    QVector<int> reglas_voltaje = _reglas_voltaje.at( num_conjunto_entrada );
+    QVector<int> reglas_intensidad = _reglas_intensidad.at( num_conjunto_entrada );
+
+    // Voltaje
+
+    // Intensidad
+
 
 
 
@@ -37,25 +45,47 @@ double ControladorDifuso::getVoltaje()
 double ControladorDifuso::getIntensidad()
 { return 0.0; }
 
-void ControladorDifuso::agregarConjuntoEntrada(QString nombre, QVector<double> posiciones)
+void ControladorDifuso::agregarConjuntoEntrada( QString nombre, QVector<double> posiciones )
 {
     _conjunto_entrada.append(
                 new TrapecioDifuso( posiciones[0], posiciones[1], posiciones[2], posiciones[3], nombre )
     );
 }
 
-void ControladorDifuso::agregarConjuntoSalidaVoltaje(QString nombre, QVector<double> posiciones)
+void ControladorDifuso::agregarConjuntoSalidaVoltaje( QString nombre, QVector<double> posiciones )
 {
     _conjunto_salida_voltaje.append(
                 new TrapecioDifuso( posiciones[0], posiciones[1], posiciones[2], posiciones[3], nombre )
     );
+    // Agrego esto para poder mapear las reglas
+    QVector<int> temp;
+    _reglas_voltaje.append( temp );
 }
 
-void ControladorDifuso::agregarConjuntoSalidaIntensidad(QString nombre, QVector<double> posiciones)
+void ControladorDifuso::agregarConjuntoSalidaIntensidad( QString nombre, QVector<double> posiciones )
 {
     _conjunto_salida_intensidad.append(
                 new TrapecioDifuso( posiciones[0], posiciones[1], posiciones[2], posiciones[3], nombre )
-    );
+                );
+    // Agrego esto para poder mapear las reglas
+    QVector<int> temp;
+    _reglas_intensidad.append( temp );
+}
+
+void ControladorDifuso::agregarReglaVoltaje( int conjunto_entrada, int conjunto_salida )
+{
+    if( conjunto_entrada < _conjunto_entrada.size() &&
+            conjunto_salida < _conjunto_salida_voltaje.size() ) {
+        _reglas_voltaje[conjunto_entrada].append( conjunto_salida );
+    }
+}
+
+void ControladorDifuso::agregarReglaIntensidad( int conjunto_entrada, int conjunto_salida )
+{
+    if( conjunto_entrada < _conjunto_entrada.size() &&
+            conjunto_salida < _conjunto_salida_intensidad.size() ) {
+        _reglas_intensidad[conjunto_entrada].append( conjunto_salida );
+    }
 }
 
 
