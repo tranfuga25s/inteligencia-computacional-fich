@@ -58,6 +58,15 @@ int main(int argc, char *argv[])
     mdiArea->tileSubWindows();
     grafTemperaturaExterior->setearParaSOM( "Temp" );
 
+    GraficadorMdi *grafTemperaturaDeseada = new GraficadorMdi( mdiArea );
+    grafTemperaturaDeseada->setearTitulo( QString::fromUtf8( "Temperatura Deseada" ) );
+    grafTemperaturaDeseada->setearTituloEjeX( QString::fromUtf8( "Tiempo" ) );
+    grafTemperaturaDeseada->setearTituloEjeY( QString::fromUtf8( "Temperatura" ) );
+    mdiArea->addSubWindow( grafTemperaturaDeseada );
+    grafTemperaturaDeseada->show();
+    mdiArea->tileSubWindows();
+    grafTemperaturaDeseada->setearParaSOM( "Temp" );
+
     // barra de progreso para mostrar el avance del tiempo
     QDockWidget *dockBarra = new QDockWidget( QString::fromUtf8( "Paso del tiempo" ) );
     main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra );
@@ -88,6 +97,11 @@ int main(int argc, char *argv[])
     exterior.setearTemperaturaSuperior( parametros.value("temp_ext_max").toDouble() );
     exterior.setearTemperaturaInferior( parametros.value("temp_ext_min").toDouble() );
     exterior.setearTiempoCambio( parametros.value("temp_ext_cambio").toInt() );
+
+    Exterior deseada;
+    deseada.setearTemperaturaInferior( parametros.value("temp_deseada_max").toDouble() );
+    deseada.setearTemperaturaSuperior( parametros.value("temp_deseada_min").toDouble() );
+    deseada.setearTiempoCambio( parametros.value("temp_deseada_cambio").toInt() );
 
     ControladorDifuso controlador;
     parametros.beginGroup( "Entradas" );
@@ -140,6 +154,7 @@ int main(int argc, char *argv[])
 
         // Coloco la temperatura interior en el controlador
         controlador.setearTemperaturaInterior( entorno.temperaturaActual() );
+        controlador.setearTemperaturaDeseada ( deseada.getTemperatura( i ) );
 
         // Genero todos los pasos para que se actualize la temperatura interior
         entorno.setearTemperaturaExterna( exterior.getTemperaturaExterior( i ) );
@@ -152,6 +167,7 @@ int main(int argc, char *argv[])
         // Grafico el paso
         grafTemperatura->setearPuntos( entorno.historicoTemperatura(), escala_tiempo );
         grafTemperaturaExterior->setearPuntos( exterior.getHistoricoTemperatura(), escala_tiempo );
+        grafTemperaturaDeseada->setearPuntos( deseada.getHistoricoTemperatura(), escala_tiempo );
 
         PBTiempo->setValue( i+1 );
 
