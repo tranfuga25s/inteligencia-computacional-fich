@@ -344,6 +344,13 @@ void Graficador::deshabilitarEscalado() {
     myPlot->setAxisScale( QwtPlot::yLeft  , -1.1, 1.1 );
 }
 
+void Graficador::agregarTrapezoide( QVector<double> valores, QString nombre )
+{
+    QVector<double> temp;
+    temp << 0.0 << 1.0 << 1.0 << 0.0;
+    agregarCurva( valores, temp, nombre );
+}
+
 void Graficador::cambiarColor()
 {
     switch( this->color ) {

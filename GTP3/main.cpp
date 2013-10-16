@@ -67,6 +67,30 @@ int main(int argc, char *argv[])
     mdiArea->tileSubWindows();
     grafTemperaturaDeseada->setearParaSOM( "Temp" );
 
+    GraficadorMdi *grafConjuntoEntrada = new GraficadorMdi( mdiArea );
+    grafConjuntoEntrada->setearTitulo( QString::fromUtf8( "Conjuntos de entrada" ) );
+    grafConjuntoEntrada->setearTituloEjeX( QString::fromUtf8( "Diferencia Temperatura" ) );
+    grafConjuntoEntrada->setearTituloEjeY( QString::fromUtf8( "Valor de Activación" ) );
+    mdiArea->addSubWindow( grafConjuntoEntrada );
+    grafConjuntoEntrada->show();
+    mdiArea->tileSubWindows();
+
+    GraficadorMdi *grafConjuntoSalidaVoltaje = new GraficadorMdi( mdiArea );
+    grafConjuntoSalidaVoltaje->setearTitulo( QString::fromUtf8( "Conjuntos de salida voltaje" ) );
+    grafConjuntoSalidaVoltaje->setearTituloEjeX( QString::fromUtf8( "Diferencia Temperatura" ) );
+    grafConjuntoSalidaVoltaje->setearTituloEjeY( QString::fromUtf8( "Valor de Activación" ) );
+    mdiArea->addSubWindow( grafConjuntoSalidaVoltaje );
+    grafConjuntoSalidaVoltaje->show();
+    mdiArea->tileSubWindows();
+
+    GraficadorMdi *grafConjuntoSalidaIntensidad = new GraficadorMdi( mdiArea );
+    grafConjuntoSalidaIntensidad->setearTitulo( QString::fromUtf8( "Conjuntos de salida intensidad" ) );
+    grafConjuntoSalidaIntensidad->setearTituloEjeX( QString::fromUtf8( "Diferencia Temperatura" ) );
+    grafConjuntoSalidaIntensidad->setearTituloEjeY( QString::fromUtf8( "Valor de Activación" ) );
+    mdiArea->addSubWindow( grafConjuntoSalidaIntensidad );
+    grafConjuntoSalidaIntensidad->show();
+    mdiArea->tileSubWindows();
+
     // barra de progreso para mostrar el avance del tiempo
     QDockWidget *dockBarra = new QDockWidget( QString::fromUtf8( "Paso del tiempo" ) );
     main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra );
@@ -105,7 +129,9 @@ int main(int argc, char *argv[])
     parametros.beginGroup( "Entradas" );
     foreach( QString clave, parametros.allKeys() ) {
         // Clave es el nombre del grupo
-        controlador.agregarConjuntoEntrada( clave, stringAQVectord( parametros.value( clave ).toString() ) );
+        QVector<double> temp = stringAQVectord( parametros.value( clave ).toString() );
+        grafConjuntoEntrada->agregarTrapezoide( temp, clave );
+        controlador.agregarConjuntoEntrada( clave, temp );
     }
     parametros.endGroup();
 
@@ -113,13 +139,17 @@ int main(int argc, char *argv[])
     parametros.beginGroup( "voltaje" );
     foreach( QString clave, parametros.allKeys() ) {
         // Clave es el nombre del grupo
-        controlador.agregarConjuntoSalidaVoltaje( clave, stringAQVectord( parametros.value( clave ).toString() ) );
+        QVector<double> temp = stringAQVectord( parametros.value( clave ).toString() );
+        grafConjuntoSalidaIntensidad->agregarTrapezoide( temp, clave );
+        controlador.agregarConjuntoSalidaVoltaje( clave, temp );
     }
     parametros.endGroup();
     parametros.beginGroup("intensidad");
     foreach( QString clave, parametros.allKeys() ) {
         // Clave es el nombre del grupo
-        controlador.agregarConjuntoSalidaIntensidad( clave, stringAQVectord( parametros.value( clave ).toString() ) );
+        QVector<double> temp = stringAQVectord( parametros.value( clave ).toString() );
+        grafConjuntoSalidaIntensidad->agregarTrapezoide( temp, clave );
+        controlador.agregarConjuntoSalidaIntensidad( clave, temp );
     }
     parametros.endGroup();
     parametros.endGroup();
@@ -154,6 +184,9 @@ int main(int argc, char *argv[])
         controlador.setearTemperaturaInterior( entorno.temperaturaActual() );
         controlador.setearTemperaturaDeseada ( deseada.getTemperatura( i ) );
 
+        // Hago el calculo de los valores
+        //controlador.calcularProximoPaso();
+
         // Genero todos los pasos para que se actualize la temperatura interior
         entorno.setearTemperaturaExterna( exterior.getTemperatura( i ) );
         entorno.setearPotenciaEstufa( controlador.getIntensidad() );
@@ -172,5 +205,4 @@ int main(int argc, char *argv[])
     }
 
     return a.exec();
-
 }

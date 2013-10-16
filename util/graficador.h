@@ -32,6 +32,7 @@ public:
     void setearPuntos( QVector<double>  puntos , QVector<int> escala_tiempo );
     void setearParaSOM( QString nombre = "SOM" );
     void deshabilitarEscalado();
+    void agregarTrapezoide( QVector<double> valores, QString nombre );
 
 private:
     QwtPlot *myPlot;

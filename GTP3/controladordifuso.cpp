@@ -12,13 +12,17 @@ ControladorDifuso::ControladorDifuso( QObject *parent ) :
 void ControladorDifuso::calcularProximoPaso()
 {
     // Fuzzificacion
+
+    // La variable de entrada es la diferencia entre la temperatura actual y la deseada
+    double variable_entrada = _ultima_temp - _ultima_deseada;
+
     // Me devolverá que conjunto de las entradas con que valor de activacion tiene cada uno
     // Para cada trapecio del conjunto de entradas
     // calcular la pertenencia de cada uno y me quedo con que trapecio era
     double pertenencia_maxima = -1.0;
     int num_conjunto_entrada = -1;
     for( int i=0; i<_conjunto_entrada.size(); i++ ) {
-        double pertenencia = _conjunto_entrada.at(i)->valorSalida( _ultima_temp );
+        double pertenencia = _conjunto_entrada.at(i)->valorSalida( variable_entrada );
         if( pertenencia >= pertenencia_maxima ) {
             pertenencia_maxima = pertenencia;
             num_conjunto_entrada = i;
@@ -27,7 +31,7 @@ void ControladorDifuso::calcularProximoPaso()
 
     // Ejecucion de las reglas
     // Activo las reglas que estén relacionadas con el conjunto de entrada elegido antes
-    QVector<int> reglas_voltaje = _reglas_voltaje.at( num_conjunto_entrada );
+    QVector<int> reglas_voltaje    = _reglas_voltaje   .at( num_conjunto_entrada );
     QVector<int> reglas_intensidad = _reglas_intensidad.at( num_conjunto_entrada );
 
     // Voltaje
