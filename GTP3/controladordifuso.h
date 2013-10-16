@@ -31,6 +31,7 @@ public:
     double getIntensidad();
 
     void setearTemperaturaInterior( double valor ) { _ultima_temp = valor; }
+    void setearTemperaturaDeseada( double valor ) { _ultima_deseada = valor; }
 
     void agregarConjuntoEntrada( QString nombre, QVector<double> posiciones );
     void agregarConjuntoSalidaVoltaje( QString nombre, QVector<double> posiciones );
@@ -41,6 +42,7 @@ public:
 
 private:
     double _ultima_temp;
+    double _ultima_deseada;
     double _ultima_intensidad;
     double _ultimo_voltaje;
 

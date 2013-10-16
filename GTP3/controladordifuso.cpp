@@ -6,6 +6,7 @@ ControladorDifuso::ControladorDifuso( QObject *parent ) :
     _ultima_temp = 0.0;
     _ultima_intensidad = 0.0;
     _ultimo_voltaje = 0.0;
+    _ultima_deseada = 0.0;
 }
 
 void ControladorDifuso::calcularProximoPaso()

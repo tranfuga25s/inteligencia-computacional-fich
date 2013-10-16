@@ -10,7 +10,7 @@ class Exterior : public QObject
     Q_OBJECT
 public:
     explicit Exterior(QObject *parent = 0);
-    double getTemperaturaExterior( int segundo );
+    double getTemperatura( int segundo );
     QVector<double> getHistoricoTemperatura() { return _historico; }
 
     void setearTemperaturaSuperior( double temp ) { _max = temp; }
