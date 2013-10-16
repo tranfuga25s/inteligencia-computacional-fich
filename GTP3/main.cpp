@@ -79,10 +79,6 @@ int main(int argc, char *argv[])
     // Cargo los parametros del ejercicio
     QSettings parametros( "parametros.cfg", QSettings::IniFormat );
 
-    /// @TODO
-    ///faltaria definir la matriz de entradas y la de salidas que estarian
-    ///ya codificadas describiendo los puntos de los trapecios
-
     // Genero el entorno que voy a controlar
     Entorno entorno( 0, parametros.value("pa_puerta").toDouble() );
     // Seteo los valores iniciales
@@ -93,11 +89,13 @@ int main(int argc, char *argv[])
     PBTiempo->setRange( 0, parametros.value("cant_segundos").toInt() );
     PBTiempo->setValue(0);
 
+    // Objeto de la temperatura exterior y sus cambios
     Exterior exterior;
     exterior.setearTemperaturaSuperior( parametros.value("temp_ext_max").toDouble() );
     exterior.setearTemperaturaInferior( parametros.value("temp_ext_min").toDouble() );
     exterior.setearTiempoCambio( parametros.value("temp_ext_cambio").toInt() );
 
+    // Objeto que controla la temperatura deseada y sus cambios
     Exterior deseada;
     deseada.setearTemperaturaInferior( parametros.value("temp_deseada_max").toDouble() );
     deseada.setearTemperaturaSuperior( parametros.value("temp_deseada_min").toDouble() );
