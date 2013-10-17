@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     mdiArea->addSubWindow( grafTemperatura );
     grafTemperatura->show();
     mdiArea->tileSubWindows();
-    grafTemperatura->setearParaSOM( "Temp" );
+    grafTemperatura->setearParaTrapezoide();
 
     GraficadorMdi *grafTemperaturaExterior = new GraficadorMdi( mdiArea );
     grafTemperaturaExterior->setearTitulo( QString::fromUtf8( "Temperatura Exterior" ) );
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     mdiArea->addSubWindow( grafTemperaturaExterior );
     grafTemperaturaExterior->show();
     mdiArea->tileSubWindows();
-    grafTemperaturaExterior->setearParaSOM( "Temp" );
+    grafTemperaturaExterior->setearParaTrapezoide();
 
     GraficadorMdi *grafTemperaturaDeseada = new GraficadorMdi( mdiArea );
     grafTemperaturaDeseada->setearTitulo( QString::fromUtf8( "Temperatura Deseada" ) );
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     mdiArea->addSubWindow( grafTemperaturaDeseada );
     grafTemperaturaDeseada->show();
     mdiArea->tileSubWindows();
-    grafTemperaturaDeseada->setearParaSOM( "Temp" );
+    grafTemperaturaDeseada->setearParaTrapezoide();
 
     GraficadorMdi *grafConjuntoEntrada = new GraficadorMdi( mdiArea );
     grafConjuntoEntrada->setearTitulo( QString::fromUtf8( "Conjuntos de entrada" ) );
@@ -90,6 +90,24 @@ int main(int argc, char *argv[])
     mdiArea->addSubWindow( grafConjuntoSalidaIntensidad );
     grafConjuntoSalidaIntensidad->show();
     mdiArea->tileSubWindows();
+
+    GraficadorMdi *grafIntensidad = new GraficadorMdi( mdiArea );
+    grafIntensidad->setearTitulo( QString::fromUtf8( "Aplicacion de Corriente" ) );
+    grafIntensidad->setearTituloEjeX( QString::fromUtf8( "Tiempo" ) );
+    grafIntensidad->setearTituloEjeY( QString::fromUtf8( "Corriente" ) );
+    mdiArea->addSubWindow( grafIntensidad );
+    grafIntensidad->show();
+    mdiArea->tileSubWindows();
+    grafIntensidad->setearParaTrapezoide();
+
+    GraficadorMdi *grafVoltaje = new GraficadorMdi( mdiArea );
+    grafVoltaje->setearTitulo( QString::fromUtf8( "Aplicacion de voltaje" ) );
+    grafVoltaje->setearTituloEjeX( QString::fromUtf8( "Tiempo" ) );
+    grafVoltaje->setearTituloEjeY( QString::fromUtf8( "Voltaje" ) );
+    mdiArea->addSubWindow( grafVoltaje );
+    grafVoltaje->show();
+    mdiArea->tileSubWindows();
+    grafVoltaje->setearParaTrapezoide();
 
     // barra de progreso para mostrar el avance del tiempo
     QDockWidget *dockBarra = new QDockWidget( QString::fromUtf8( "Paso del tiempo" ) );
@@ -169,7 +187,7 @@ int main(int argc, char *argv[])
         }
     }
     parametros.endGroup();
-    parametros.endGroup();
+    parametros.endGroup();//Reglas
 
     int intervalo = parametros.value( "t_act").toInt();
     int cant_total = parametros.value("cant_segundos").toInt();
@@ -185,20 +203,22 @@ int main(int argc, char *argv[])
         controlador.setearTemperaturaDeseada ( deseada.getTemperatura( i ) );
 
         // Hago el calculo de los valores
-        //controlador.calcularProximoPaso();
+        controlador.calcularProximoPaso();
 
         // Genero todos los pasos para que se actualize la temperatura interior
         entorno.setearTemperaturaExterna( exterior.getTemperatura( i ) );
         entorno.setearPotenciaEstufa( controlador.getIntensidad() );
         entorno.setearVoltajeRefrigeracion( controlador.getVoltaje() );
-        // La puerta se maneja de manera interna
 
+        // La puerta se maneja de manera interna
         entorno.calcularTemperaturaTiempo();
 
         // Grafico el paso
         grafTemperatura->setearPuntos( entorno.historicoTemperatura(), escala_tiempo );
         grafTemperaturaExterior->setearPuntos( exterior.getHistoricoTemperatura(), escala_tiempo );
         grafTemperaturaDeseada->setearPuntos( deseada.getHistoricoTemperatura(), escala_tiempo );
+        grafIntensidad->setearPuntos( controlador.historicoIntensidad(), escala_tiempo );
+        grafVoltaje->setearPuntos( controlador.historicoVoltaje(), escala_tiempo );
 
         PBTiempo->setValue( i+1 );
 

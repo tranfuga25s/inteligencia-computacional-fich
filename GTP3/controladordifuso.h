@@ -13,7 +13,6 @@ public:
     double area( double valor_y );
     QString nombre() { return _nombre; }
 
-private:
     double pos1;
     double pos2;
     double pos3;
@@ -40,6 +39,9 @@ public:
     void agregarReglaVoltaje( int conjunto_entrada, int conjunto_salida );
     void agregarReglaIntensidad( int conjunto_entrada, int conjunto_salida );
 
+    QVector<double> historicoVoltaje() { return _historico_voltaje; }
+    QVector<double> historicoIntensidad() { return _historico_intensidad; }
+
 private:
     double _ultima_temp;
     double _ultima_deseada;
@@ -55,6 +57,9 @@ private:
     // La segunda dimension es que conjuntos de salida tenemos que activar y verificar
     QVector< QVector<int> > _reglas_voltaje;
     QVector< QVector<int> > _reglas_intensidad;
+
+    QVector<double> _historico_voltaje;
+    QVector<double> _historico_intensidad;
     
 };
 

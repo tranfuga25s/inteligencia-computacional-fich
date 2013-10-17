@@ -31,6 +31,7 @@ public:
     void setearPuntos( QVector<QPointF> puntos );
     void setearPuntos( QVector<double>  puntos , QVector<int> escala_tiempo );
     void setearParaSOM( QString nombre = "SOM" );
+    void setearParaTrapezoide();
     void deshabilitarEscalado();
     void agregarTrapezoide( QVector<double> valores, QString nombre );
 

@@ -67,7 +67,7 @@ void Entorno::calcularNuevaTemperatura()
 
 void Entorno::calcularPuertaAbierta()
 {
-   double a = valor_random( 1, _probabilidad_puerta_abierta );
+   double a = valor_random( _probabilidad_puerta_abierta , 1 );
    if ( fmod( a, _probabilidad_puerta_abierta ) == 0.0 ) {
        _puerta_abierta = true;
        qDebug() << "Puerta abierta";

@@ -1,6 +1,8 @@
 #include "controladordifuso.h"
 
 #include <QMessageBox>
+#include <math.h>
+#include <QDebug>
 
 ControladorDifuso::ControladorDifuso( QObject *parent ) :
     QObject(parent)
@@ -17,6 +19,12 @@ void ControladorDifuso::calcularProximoPaso()
 
     // La variable de entrada es la diferencia entre la temperatura actual y la deseada
     double variable_entrada = _ultima_temp - _ultima_deseada;
+    qDebug() << "dif: "<<variable_entrada;
+    if( variable_entrada < _conjunto_entrada.at(0)->pos1 ) {
+        variable_entrada = _conjunto_entrada.at(0)->pos1 + 0.0001;
+    } else if( variable_entrada > _conjunto_entrada.at( _conjunto_entrada.size() - 1 )->pos4 ) {
+        variable_entrada = _conjunto_entrada.at(_conjunto_entrada.size()-1)->pos4 - 0.0001;
+    }
 
     // Me devolverá que conjunto de las entradas con que valor de activacion tiene cada uno
     // Para cada trapecio del conjunto de entradas
@@ -25,50 +33,77 @@ void ControladorDifuso::calcularProximoPaso()
     int num_conjunto_entrada = -1;
     for( int i=0; i<_conjunto_entrada.size(); i++ ) {
         double pertenencia = _conjunto_entrada.at(i)->valorSalida( variable_entrada );
-        if( pertenencia >= pertenencia_maxima ) {
+        if( pertenencia > pertenencia_maxima ) {
             pertenencia_maxima = pertenencia;
             num_conjunto_entrada = i;
         }
     }
+    qDebug() << "ganador: "<< num_conjunto_entrada;
 
     // Ejecucion de las reglas
     // Activo las reglas que estén relacionadas con el conjunto de entrada elegido antes
     QVector<int> reglas_voltaje    = _reglas_voltaje   .at( num_conjunto_entrada );
     QVector<int> reglas_intensidad = _reglas_intensidad.at( num_conjunto_entrada );
 
-    // Voltaje
-    QVector<double> areas;
-    QVector<double> centroides;
-    for( int i=0; i<reglas_voltaje.size(); i++ ) {
-        areas.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->area( pertenencia_maxima ) );
-        centroides.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->centroide( pertenencia_maxima ) );
-    }
-    // Calculo el centroide de los centroides seleccionados por las reglas
-    double suma_areas = 0.0;
-    double suma_centroides = 0.0;
-    for( int i=0; i<areas.size(); i++ ) {
-        suma_areas += areas.at(i);
-        suma_centroides += centroides.at(i);
-    }
-    _ultimo_voltaje = suma_centroides/suma_areas;
+    //qDebug() << "I: " << reglas_intensidad << "V: " << reglas_voltaje;
 
-    // Intensidad
-    areas.clear();
-    centroides.clear();
-    for( int i=0; i<reglas_intensidad.size(); i++ ) {
-        areas.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->area( pertenencia_maxima ) );
-        centroides.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->centroide( pertenencia_maxima ) );
+    if (reglas_voltaje.size() == 0) {
+        _ultimo_voltaje = 0.0;
     }
+    else {
+        // Voltaje
+        QVector<double> areas;
+        QVector<double> centroides;
+        QVector<double> desplazamientos;
+        for( int i=0; i<reglas_voltaje.size(); i++ ) {
+            areas.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->area( pertenencia_maxima ) );
+            centroides.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->centroide( pertenencia_maxima ) );
+            desplazamientos.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->pos1 );
+        }
+        // Calculo el centroide de los centroides seleccionados por las reglas
+        double suma_areas = 0.0;
+        double suma_centroides = 0.0;
+        for( int i=0; i<areas.size(); i++ ) {
+            suma_areas += areas.at(i);
+            suma_centroides += areas.at(i) * ( desplazamientos.at(i) + centroides.at(i) );
+        }
+        _ultimo_voltaje = suma_centroides/suma_areas;
+        _historico_voltaje.append( _ultimo_voltaje );
 
-    // Calculo el centroide de los centroides seleccionados por las reglas
-    suma_areas = 0.0;
-    suma_centroides = 0.0;
-    for( int i=0; i<areas.size(); i++ ) {
-        suma_areas += areas.at(i);
-        suma_centroides += centroides.at(i);
     }
 
-    _ultima_intensidad = suma_centroides/suma_areas;
+
+    qDebug() << "ultimo voltaje: "<<_ultimo_voltaje;
+
+    if (reglas_intensidad.size() == 0) {
+        _ultima_intensidad = 0.0;
+    }
+    else {
+        // Intensidad
+        QVector<double> areas;
+        QVector<double> centroides;
+        QVector<double> desplazamientos;
+        for( int i=0; i<reglas_intensidad.size(); i++ ) {
+            areas.append( _conjunto_salida_intensidad.at( reglas_intensidad.at( i ) )->area( pertenencia_maxima ) );
+            centroides.append( _conjunto_salida_intensidad.at( reglas_intensidad.at( i ) )->centroide( pertenencia_maxima ) );
+            desplazamientos.append( _conjunto_salida_intensidad.at( reglas_intensidad.at( i ) )->pos1 );
+        }
+
+        // Calculo el centroide de los centroides seleccionados por las reglas
+        double suma_areas = 0.0;
+        double suma_centroides = 0.0;
+        for( int i=0; i<areas.size(); i++ ) {
+            suma_areas += areas.at(i);
+            suma_centroides += areas.at(i) * ( desplazamientos.at(i) + centroides.at(i) );
+        }
+        if( suma_areas == 0.0 ) { abort(); }
+        _ultima_intensidad = suma_centroides/suma_areas;
+        _historico_intensidad.append( _ultima_intensidad );
+    }
+
+
+    qDebug() << "corriente: "<<_ultima_intensidad;
+
 }
 
 
@@ -144,7 +179,10 @@ void ControladorDifuso::agregarReglaIntensidad( int conjunto_entrada, int conjun
  */
 double TrapecioDifuso::centroide( double valor_y )
 {
-
+    double a = pos3 - pos2;
+    double b = pos4 - pos1;
+    double c = pos2 - pos1;
+    return (valor_y * ( 2 * a + b)) / (3 * ( a + b ));
 }
 
 /*!
@@ -181,8 +219,22 @@ double TrapecioDifuso::valorSalida( double valor_entrada )
     } else if( valor_entrada >= pos2 && valor_entrada <= pos3 ) {
         return 1.0;
     } else if( valor_entrada >= pos1 && valor_entrada <= pos2 ) {
-        return ( pos2 - pos1 ) * ( valor_entrada - pos1 );
+        if (pos1 == pos2) {
+            return 1.0;
+        }
+        else
+        {
+          return ( valor_entrada - pos1 ) / ( pos2 - pos1 );
+        }
     } else if( valor_entrada >= pos3 && valor_entrada <= pos4 ) {
-        return ( ( ( pos4 - pos3 ) * ( valor_entrada - pos3 ) ) / -1.0 ) + 1.0;
+        if (pos3 == pos4) {
+            return 1.0;
+        }
+        else
+        {
+            return ( (pos3 - valor_entrada) / ( pos4 - pos3 ) ) + 1.0;
+        }
+
     }
+    abort();
 }

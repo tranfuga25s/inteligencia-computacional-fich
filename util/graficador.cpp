@@ -337,6 +337,24 @@ void Graficador::setearParaSOM( QString nombre )
 
 }
 
+void Graficador::setearParaTrapezoide()
+{
+    if( curvas->size() == 0 ) {
+        QwtPlotCurve *curva = new QwtPlotCurve();
+        curvas->insert( 0, curva );
+        curva->setRenderHint( QwtPlotItem::RenderAntialiased );
+        curva->setItemAttribute( QwtPlotItem::Legend, false );
+        cambiarColor();
+        curva->setPen( QPen( color ) );
+        curva->setSymbol( new QwtSymbol( QwtSymbol::Hexagon,
+                                         QBrush( (Qt::GlobalColor)this->color ),
+                                         QPen( Qt::NoPen ),
+                                         QSize( 8, 8 ) ) );
+        curva->attach( myPlot );
+    }
+
+}
+
 void Graficador::deshabilitarEscalado() {
     myPlot->setAxisAutoScale( QwtPlot::xBottom, false );
     myPlot->setAxisAutoScale( QwtPlot::yLeft, false );
