@@ -13,7 +13,7 @@ public:
     double getTemperatura( int segundo );
     QVector<double> getHistoricoTemperatura() { return _historico; }
 
-    void setearTemperaturaSuperior( double temp ) { _max = temp; }
+    void setearTemperaturaSuperior( double temp ) { _max = temp; _ultima_temp = _max; }
     void setearTemperaturaInferior( double temp ) { _min = temp; }
     void setearTiempoCambio( int cantidad_seg ) { _cant_seg = cantidad_seg; }
 

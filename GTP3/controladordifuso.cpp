@@ -1,5 +1,7 @@
 #include "controladordifuso.h"
 
+#include <QMessageBox>
+
 ControladorDifuso::ControladorDifuso( QObject *parent ) :
     QObject(parent)
 {
@@ -81,6 +83,10 @@ void ControladorDifuso::agregarConjuntoEntrada( QString nombre, QVector<double> 
     _conjunto_entrada.append(
                 new TrapecioDifuso( posiciones[0], posiciones[1], posiciones[2], posiciones[3], nombre )
     );
+    // Agrego esto para poder mapear las reglas
+    QVector<int> temp;
+    _reglas_intensidad.append( temp );
+    _reglas_voltaje.append( temp );
 }
 
 void ControladorDifuso::agregarConjuntoSalidaVoltaje( QString nombre, QVector<double> posiciones )
@@ -88,19 +94,13 @@ void ControladorDifuso::agregarConjuntoSalidaVoltaje( QString nombre, QVector<do
     _conjunto_salida_voltaje.append(
                 new TrapecioDifuso( posiciones[0], posiciones[1], posiciones[2], posiciones[3], nombre )
     );
-    // Agrego esto para poder mapear las reglas
-    QVector<int> temp;
-    _reglas_voltaje.append( temp );
 }
 
 void ControladorDifuso::agregarConjuntoSalidaIntensidad( QString nombre, QVector<double> posiciones )
 {
     _conjunto_salida_intensidad.append(
                 new TrapecioDifuso( posiciones[0], posiciones[1], posiciones[2], posiciones[3], nombre )
-                );
-    // Agrego esto para poder mapear las reglas
-    QVector<int> temp;
-    _reglas_intensidad.append( temp );
+    );
 }
 
 void ControladorDifuso::agregarReglaVoltaje( int conjunto_entrada, int conjunto_salida )
@@ -108,6 +108,14 @@ void ControladorDifuso::agregarReglaVoltaje( int conjunto_entrada, int conjunto_
     if( conjunto_entrada < _conjunto_entrada.size() &&
             conjunto_salida < _conjunto_salida_voltaje.size() ) {
         _reglas_voltaje[conjunto_entrada].append( conjunto_salida );
+    } else {
+        QMessageBox::critical( 0, "Error",
+          QString::fromUtf8("Intentando cargar regla para el conjunto de entrada %1 y salida %2 pero entradas tiene %3 elementos y salidas voltaje tiene %4" )
+                            .arg( conjunto_entrada )
+                            .arg( conjunto_salida )
+                            .arg( _conjunto_entrada.size() )
+                            .arg( _conjunto_salida_voltaje.size() ) );
+          abort();
     }
 }
 
@@ -116,6 +124,14 @@ void ControladorDifuso::agregarReglaIntensidad( int conjunto_entrada, int conjun
     if( conjunto_entrada < _conjunto_entrada.size() &&
             conjunto_salida < _conjunto_salida_intensidad.size() ) {
         _reglas_intensidad[conjunto_entrada].append( conjunto_salida );
+    } else {
+        QMessageBox::critical( 0, "Error",
+          QString::fromUtf8("Intentando cargar regla para el conjunto de entrada %1 y salida %2 pero entradas tiene %3 elementos y salidas intensidad tiene %4" )
+                            .arg( conjunto_entrada )
+                            .arg( conjunto_salida )
+                            .arg( _conjunto_entrada.size() )
+                            .arg( _conjunto_salida_intensidad.size() ) );
+          abort();
     }
 }
 
