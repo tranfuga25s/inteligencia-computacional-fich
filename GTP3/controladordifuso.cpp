@@ -138,12 +138,13 @@ void ControladorDifuso::agregarReglaIntensidad( int conjunto_entrada, int conjun
 
 /*!
  * \brief TrapecioDifuso::centroide
- * Calcula el centroide de el trapecio considerando que se trunca en valor_entrada
+ * Calcula el centroide de el trapecio considerando que se trunca en valor_y
  * \param valor_y
  * \return
  */
 double TrapecioDifuso::centroide( double valor_y )
 {
+
 }
 
 /*!

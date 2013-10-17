@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
     foreach( QString clave, parametros.allKeys() ) {
         // Clave es el nombre del grupo
         QVector<double> temp = stringAQVectord( parametros.value( clave ).toString() );
-        grafConjuntoSalidaIntensidad->agregarTrapezoide( temp, clave );
+        grafConjuntoSalidaVoltaje->agregarTrapezoide( temp, clave );
         controlador.agregarConjuntoSalidaVoltaje( clave, temp );
     }
     parametros.endGroup();
