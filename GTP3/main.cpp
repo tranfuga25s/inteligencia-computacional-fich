@@ -209,12 +209,12 @@ int main(int argc, char *argv[])
 
         // Genero todos los pasos para que se actualize la temperatura interior
         entorno.setearTemperaturaExterna( exterior.getTemperatura( i ) );
-        entorno.setearPotenciaEstufa( controlador.getIntensidad() );
+        entorno.setearPotenciaEstufa( controlador.getIntensidad() ); //En realidad en la formula es la corriente
         entorno.setearVoltajeRefrigeracion( controlador.getVoltaje() );
 
         //Actualizo el estado de la puerta
         entorno.calcularPuertaAbierta(i);
-
+        //Calculo la nueva temperatura
         entorno.calcularTemperaturaTiempo();
 
         // Grafico el paso

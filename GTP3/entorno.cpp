@@ -31,7 +31,6 @@ double Entorno::temperaturaActual()
 void Entorno::calcularNuevaTemperatura()
 {
     // Calcula la temperatura nueva
-    //calcularPuertaAbierta(); // Verifica si la puerta está abierta o no según la probabilidad
     double nueva_temp = 0.0;
     double temp_ant = 0.0;
     if( _historico_temperaturas.size() > 2 ) {

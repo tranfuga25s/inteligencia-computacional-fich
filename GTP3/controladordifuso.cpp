@@ -60,14 +60,14 @@ void ControladorDifuso::calcularProximoPaso()
         for( int i=0; i<reglas_voltaje.size(); i++ ) {
             areas.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->area( pertenencia_maxima ) );
             centroides.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->centroide( pertenencia_maxima ) );
-            desplazamientos.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->pos1 );
+            desplazamientos.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->pos1 );//para mantener las posiciones
         }
         // Calculo el centroide de los centroides seleccionados por las reglas
         double suma_areas = 0.0;
         double suma_centroides = 0.0;
         for( int i=0; i<areas.size(); i++ ) {
             suma_areas += areas.at(i);
-            suma_centroides += areas.at(i) * ( desplazamientos.at(i) + centroides.at(i) );
+            suma_centroides += areas.at(i) * _conjunto_entrada.at(i)->valorSalida( variable_entrada );//( desplazamientos.at(i) + centroides.at(i) );
         }
         _ultimo_voltaje = suma_centroides/suma_areas;
         _historico_voltaje.append( _ultimo_voltaje );
@@ -88,7 +88,7 @@ void ControladorDifuso::calcularProximoPaso()
         for( int i=0; i<reglas_intensidad.size(); i++ ) {
             areas.append( _conjunto_salida_intensidad.at( reglas_intensidad.at( i ) )->area( pertenencia_maxima ) );
             centroides.append( _conjunto_salida_intensidad.at( reglas_intensidad.at( i ) )->centroide( pertenencia_maxima ) );
-            desplazamientos.append( _conjunto_salida_intensidad.at( reglas_intensidad.at( i ) )->pos1 );
+            desplazamientos.append( _conjunto_salida_intensidad.at( reglas_intensidad.at( i ) )->pos1 );//para mantener las posiciones
         }
 
         // Calculo el centroide de los centroides seleccionados por las reglas
@@ -96,9 +96,9 @@ void ControladorDifuso::calcularProximoPaso()
         double suma_centroides = 0.0;
         for( int i=0; i<areas.size(); i++ ) {
             suma_areas += areas.at(i);
-            suma_centroides += areas.at(i) * ( desplazamientos.at(i) + centroides.at(i) );
+            suma_centroides += areas.at(i) * _conjunto_entrada.at(i)->valorSalida( variable_entrada );//( desplazamientos.at(i) + centroides.at(i) );
         }
-        if( suma_areas == 0.0 ) { abort(); }
+        //if( suma_areas == 0.0 ) { abort(); }
         _ultima_intensidad = suma_centroides/suma_areas;
         _historico_intensidad.append( _ultima_intensidad );
     }
