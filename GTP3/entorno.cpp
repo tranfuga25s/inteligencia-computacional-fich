@@ -31,7 +31,7 @@ double Entorno::temperaturaActual()
 void Entorno::calcularNuevaTemperatura()
 {
     // Calcula la temperatura nueva
-    calcularPuertaAbierta(); // Verifica si la puerta está abierta o no según la probabilidad
+    //calcularPuertaAbierta(); // Verifica si la puerta está abierta o no según la probabilidad
     double nueva_temp = 0.0;
     double temp_ant = 0.0;
     if( _historico_temperaturas.size() > 2 ) {
@@ -65,10 +65,9 @@ void Entorno::calcularNuevaTemperatura()
     _historico_temperaturas.append( nueva_temp );
 }
 
-void Entorno::calcularPuertaAbierta()
+void Entorno::calcularPuertaAbierta(int tiempo)
 {
-   double a = valor_random( _probabilidad_puerta_abierta , 1 );
-   if ( fmod( a, _probabilidad_puerta_abierta ) == 0.0 ) {
+   if ( fmod( tiempo, _probabilidad_puerta_abierta ) == 0.0 ) {
        _puerta_abierta = true;
        qDebug() << "Puerta abierta";
    } else {

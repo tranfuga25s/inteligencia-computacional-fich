@@ -21,6 +21,7 @@ public:
 
     double temperaturaActual();
     int tiempo() { return _historico_temperaturas.size(); }
+    void calcularPuertaAbierta(int tiempo);
 
 public slots:
     void setearTemperaturaInterna( double temperatura ) { _temperatura_interna = temperatura; }
@@ -41,7 +42,7 @@ private:
     QVector<double> _historico_temperaturas;
 
     void calcularNuevaTemperatura();
-    void calcularPuertaAbierta();
+
 
 };
 

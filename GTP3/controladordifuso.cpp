@@ -20,6 +20,8 @@ void ControladorDifuso::calcularProximoPaso()
     // La variable de entrada es la diferencia entre la temperatura actual y la deseada
     double variable_entrada = _ultima_temp - _ultima_deseada;
     qDebug() << "dif: "<<variable_entrada;
+
+    //Para evitar nans
     if( variable_entrada < _conjunto_entrada.at(0)->pos1 ) {
         variable_entrada = _conjunto_entrada.at(0)->pos1 + 0.0001;
     } else if( variable_entrada > _conjunto_entrada.at( _conjunto_entrada.size() - 1 )->pos4 ) {
@@ -42,7 +44,7 @@ void ControladorDifuso::calcularProximoPaso()
 
     // Ejecucion de las reglas
     // Activo las reglas que estén relacionadas con el conjunto de entrada elegido antes
-    QVector<int> reglas_voltaje    = _reglas_voltaje   .at( num_conjunto_entrada );
+    QVector<int> reglas_voltaje    = _reglas_voltaje.at( num_conjunto_entrada );
     QVector<int> reglas_intensidad = _reglas_intensidad.at( num_conjunto_entrada );
 
     //qDebug() << "I: " << reglas_intensidad << "V: " << reglas_voltaje;
