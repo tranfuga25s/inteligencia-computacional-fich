@@ -23,7 +23,6 @@ public:
     int tiempo() { return _historico_temperaturas.size(); }
     void calcularPuertaAbierta(int tiempo);
 
-public slots:
     void setearTemperaturaInterna( double temperatura ) { _temperatura_interna = temperatura; }
     void setearTemperaturaExterna( double temperatura ) { _temperatura_externa = temperatura; }
     void setearPotenciaEstufa( double potencia ) { _potencia = potencia; }

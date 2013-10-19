@@ -37,15 +37,17 @@ void ControladorDifuso::calcularProximoPaso()
             num_conjunto_entrada = i;
         }
     }
-    qDebug() << "ganador: "<< num_conjunto_entrada;
+    //qDebug() << "ganador: "<< num_conjunto_entrada;
 
     // Ejecucion de las reglas
     // Activo las reglas que estén relacionadas con el conjunto de entrada elegido antes
     QVector<int> reglas_voltaje    = _reglas_voltaje.at( num_conjunto_entrada );
     QVector<int> reglas_intensidad = _reglas_intensidad.at( num_conjunto_entrada );
 
-    //qDebug() << "I: " << reglas_intensidad << "V: " << reglas_voltaje;
+    qDebug() << "I: " << reglas_intensidad << "V: " << reglas_voltaje;
 
+    _ultimo_voltaje = 0.0;
+    _ultima_intensidad = 0.0;
 
     if (reglas_voltaje.size() != 0) {
         // Voltaje
@@ -63,13 +65,9 @@ void ControladorDifuso::calcularProximoPaso()
             suma_centroides += areas.at(i) * centroides.at(i);
         }
         _ultimo_voltaje = suma_centroides/suma_areas;
-        _historico_voltaje.append( _ultimo_voltaje );
+    }
 
-    }
-    else
-    {
-        _ultimo_voltaje = 0.0;
-    }
+    _historico_voltaje.append( _ultimo_voltaje );
 
     if (reglas_intensidad.size() != 0) {
         // Intensidad
@@ -87,17 +85,12 @@ void ControladorDifuso::calcularProximoPaso()
             suma_areas += areas.at(i);
             suma_centroides += areas.at(i) * centroides.at(i);
         }
-
         _ultima_intensidad = suma_centroides/suma_areas;
-        _historico_intensidad.append( _ultima_intensidad );
 
     }
-    else
-    {
-        _ultima_intensidad = 0.0;
-    }
+    _historico_intensidad.append( _ultima_intensidad );
 
-    qDebug() << "ultimo voltaje: "<<_ultimo_voltaje << "ultima corriente: " << _ultima_intensidad;
+    //qDebug() << "ultimo voltaje: "<<_ultimo_voltaje << "ultima corriente: " << _ultima_intensidad;
 
 }
 
