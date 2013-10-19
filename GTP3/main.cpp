@@ -205,8 +205,6 @@ int main(int argc, char *argv[])
         // Hago el calculo de los valores
         controlador.calcularProximoPaso();
 
-
-
         // Genero todos los pasos para que se actualize la temperatura interior
         entorno.setearTemperaturaExterna( exterior.getTemperatura( i ) );
         entorno.setearPotenciaEstufa( controlador.getIntensidad() ); //En realidad en la formula es la corriente

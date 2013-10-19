@@ -33,11 +33,9 @@ void Entorno::calcularNuevaTemperatura()
     // Calcula la temperatura nueva
     double nueva_temp = 0.0;
     double temp_ant = 0.0;
-    if( _historico_temperaturas.size() > 2 ) {
-        temp_ant = _historico_temperaturas.at( _historico_temperaturas.size() - 2 );
-    } else {
-        temp_ant = _temperatura_interna;
-    }
+
+    //Cargo la temperatura anterior
+    temp_ant = temperaturaActual();
 
     if( _voltaje == 0.0 && _potencia == 0.0 ) {
         // estamos en un sistema sin control
@@ -60,8 +58,8 @@ void Entorno::calcularNuevaTemperatura()
         }
     }
 
-
     _historico_temperaturas.append( nueva_temp );
+
 }
 
 void Entorno::calcularPuertaAbierta(int tiempo)
