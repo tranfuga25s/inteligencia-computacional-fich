@@ -12,7 +12,7 @@ Exterior::Exterior(QObject *parent) :
 
 double Exterior::getTemperatura( int segundo )
 {
-    if( segundo >= _ultimo_cambio + _cant_seg ) {
+    if( segundo > _ultimo_cambio + _cant_seg ) {
         _ultimo_cambio = segundo;
         if( _historico.at( _historico.size() - 1 ) == _max ) {
             _ultima_temp = _min;
