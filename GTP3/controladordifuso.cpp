@@ -198,7 +198,7 @@ double TrapecioDifuso::centroide( )
 //    }
 
     //No importa
-    return ( (pos4 + pos1) * 0.5); //Formula del punto medio
+    return ( (pos4 + pos1) * 0.5); //Formula del punto medio http://es.wikipedia.org/wiki/Punto_medio
 
 }
 
