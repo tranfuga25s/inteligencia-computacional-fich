@@ -5,7 +5,7 @@ Exterior::Exterior(QObject *parent) :
 {
     _ultimo_cambio = 0;
     _cant_seg = 1;
-    _max = 22.0;
+    _max = 23.0;
     _min = 19.0;
     _ultima_temp = _min;
 }

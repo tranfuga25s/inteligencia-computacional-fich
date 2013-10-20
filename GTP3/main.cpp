@@ -207,7 +207,7 @@ int main(int argc, char *argv[])
 
         // Genero todos los pasos para que se actualize la temperatura interior
         entorno.setearTemperaturaExterna( exterior.getTemperatura( i ) );
-        entorno.setearPotenciaEstufa( controlador.getIntensidad() ); //En realidad en la formula es la corriente
+        entorno.setearPotenciaEstufa( controlador.getIntensidad() );
         entorno.setearVoltajeRefrigeracion( controlador.getVoltaje() );
 
         //Actualizo el estado de la puerta
@@ -215,16 +215,16 @@ int main(int argc, char *argv[])
         //Calculo la nueva temperatura
         entorno.calcularTemperaturaTiempo();
 
-        // Grafico el paso
-        grafTemperatura->setearPuntos( entorno.historicoTemperatura(), escala_tiempo );
-        grafTemperaturaExterior->setearPuntos( exterior.getHistoricoTemperatura(), escala_tiempo );
-        grafTemperaturaDeseada->setearPuntos( deseada.getHistoricoTemperatura(), escala_tiempo );
-        grafIntensidad->setearPuntos( controlador.historicoIntensidad(), escala_tiempo );
-        grafVoltaje->setearPuntos( controlador.historicoVoltaje(), escala_tiempo );
-
         PBTiempo->setValue( i+1 );
 
     }
+
+    // Grafico los resultados
+    grafTemperatura->setearPuntos( entorno.historicoTemperatura(), escala_tiempo );
+    grafTemperaturaExterior->setearPuntos( exterior.getHistoricoTemperatura(), escala_tiempo );
+    grafTemperaturaDeseada->setearPuntos( deseada.getHistoricoTemperatura(), escala_tiempo );
+    grafIntensidad->setearPuntos( controlador.historicoIntensidad(), escala_tiempo );
+    grafVoltaje->setearPuntos( controlador.historicoVoltaje(), escala_tiempo );
 
     return a.exec();
 }

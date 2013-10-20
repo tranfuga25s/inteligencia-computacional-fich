@@ -67,7 +67,7 @@ void ControladorDifuso::calcularProximoPaso()
         _ultimo_voltaje = suma_centroides/suma_areas;
     }
 
-    _historico_voltaje.append( _ultimo_voltaje );
+
 
     if (reglas_intensidad.size() != 0) {
         // Intensidad
@@ -88,6 +88,9 @@ void ControladorDifuso::calcularProximoPaso()
         _ultima_intensidad = suma_centroides/suma_areas;
 
     }
+
+    //Actualizo los historicos
+    _historico_voltaje.append( _ultimo_voltaje );
     _historico_intensidad.append( _ultima_intensidad );
 
     //qDebug() << "ultimo voltaje: "<<_ultimo_voltaje << "ultima corriente: " << _ultima_intensidad;
@@ -167,25 +170,27 @@ void ControladorDifuso::agregarReglaIntensidad( int conjunto_entrada, int conjun
  */
 double TrapecioDifuso::centroide( double valor_y )
 {
-    double a = pos3 - pos2;
-    double b = pos4 - pos1;
-    double c = pos2 - pos1;
+    double uno = pos2-pos1;
+    double dos = pos4-pos3;
 
-    if ( (pos2-pos1) == (pos4-pos3)) {
+    if ( uno == dos ) {
         //Si es regular
-        return (pos4 + pos1) * 0.5;
+        return (pos1 + (pos4 - pos1) * 0.5);
     }
     else
     {
-        if (pos3 == pos2) {
-            //Triangulo
-            return (pos4 + pos1) *0.5;
+        if(pos3 == pos2) {
+            //Caso que sea un triangulo obtuso
+            return (pos1 + (pos4 - pos1) * 0.5);
         }
         else
         {
             //Trapecio Irregular
-            qDebug() << "TRAPECIO IRREGULAR";
-            return (valor_y * ( 2 * a + b)) / (3 * ( a + b ));
+            qDebug() << "TRAPECIO IRREGULAR " << uno << "  " << dos;
+
+            double a = pos3 - pos2;
+            double b = pos4 - pos1;
+            return (pos1 + (valor_y * ( 2 * a + b)) / (3 * ( a + b )));
         }
     }
 }
