@@ -17,6 +17,9 @@ public:
     void setearTemperaturaInferior( double temp ) { _min = temp; }
     void setearTiempoCambio( int cantidad_seg ) { _cant_seg = cantidad_seg; }
 
+    double retornaUltimaTemp() {return _ultima_temp;}
+
+
 private:
     QVector<double> _historico;
     double _max;
