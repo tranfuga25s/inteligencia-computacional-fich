@@ -15,7 +15,7 @@ ControladorDifuso::ControladorDifuso( QObject *parent ) :
 
 void ControladorDifuso::calcularProximoPaso()
 {
-    // DeFuzzificacion
+    // Fuzzificacion
 
     //qDebug() << "ULTIMA TEMPERATURA: "<<_ultima_temp;
 
@@ -39,6 +39,8 @@ void ControladorDifuso::calcularProximoPaso()
     }
     //qDebug() << "ganador: "<< num_conjunto_entrada;
 
+    //Defuzzificacion
+
     // Ejecucion de las reglas
     // Activo las reglas que estén relacionadas con el conjunto de entrada elegido antes
     QVector<int> reglas_voltaje    = _reglas_voltaje.at( num_conjunto_entrada );
@@ -55,7 +57,7 @@ void ControladorDifuso::calcularProximoPaso()
         QVector<double> centroides;
         for( int i=0; i<reglas_voltaje.size(); i++ ) {
             areas.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->area( pertenencia_maxima ) );
-            centroides.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->centroide( pertenencia_maxima ) );
+            centroides.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->centroide() );
         }
         // Calculo el centroide de los centroides seleccionados por las reglas
         double suma_areas = 0.0;
@@ -75,7 +77,7 @@ void ControladorDifuso::calcularProximoPaso()
         QVector<double> centroides;
         for( int i=0; i<reglas_intensidad.size(); i++ ) {
             areas.append( _conjunto_salida_intensidad.at( reglas_intensidad.at( i ) )->area( pertenencia_maxima ) );
-            centroides.append( _conjunto_salida_intensidad.at( reglas_intensidad.at( i ) )->centroide( pertenencia_maxima ) );
+            centroides.append( _conjunto_salida_intensidad.at( reglas_intensidad.at( i ) )->centroide() );
         }
 
         // Calculo el centroide de los centroides seleccionados por las reglas
@@ -168,31 +170,36 @@ void ControladorDifuso::agregarReglaIntensidad( int conjunto_entrada, int conjun
  * \param valor_y
  * \return
  */
-double TrapecioDifuso::centroide( double valor_y )
+double TrapecioDifuso::centroide( )
 {
-    double uno = pos2-pos1;
-    double dos = pos4-pos3;
+//    double uno = fabs(pos2-pos1);
+//    double dos = fabs(pos4-pos3);
 
-    if ( uno == dos ) {
-        //Si es regular
-        return (pos1 + (pos4 - pos1) * 0.5);
-    }
-    else
-    {
-        if(pos3 == pos2) {
-            //Caso que sea un triangulo obtuso
-            return (pos1 + (pos4 - pos1) * 0.5);
-        }
-        else
-        {
-            //Trapecio Irregular
-            qDebug() << "TRAPECIO IRREGULAR " << uno << "  " << dos;
+//    if ( uno == dos ) {
+//        //Si es regular
+//        return (pos1 + (pos4 - pos1) * 0.5);
+//    }
+//    else
+//    {
+//        if(pos3 == pos2) {
+//            //Caso que sea un triangulo obtuso
+//            return (pos1 + (pos4 - pos1) * 0.5);
+//        }
+//        else
+//        {
+//            //Trapecio Irregular
+//            qDebug() << "TRAPECIO IRREGULAR " << uno << "  " << dos;
 
-            double a = pos3 - pos2;
-            double b = pos4 - pos1;
-            return (pos1 + (valor_y * ( 2 * a + b)) / (3 * ( a + b )));
-        }
-    }
+//            abort();
+//            double a = pos3 - pos2;
+//            double b = pos4 - pos1;
+//            return (pos1 + (valor_y * ( 2 * a + b)) / (3 * ( a + b )));
+//        }
+//    }
+
+    //No importa
+    return ( (pos4 - pos1) * 0.5);
+
 }
 
 /*!

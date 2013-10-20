@@ -9,7 +9,7 @@ class TrapecioDifuso {
 public:
     explicit TrapecioDifuso( double p1, double p2, double p3, double p4, QString nom );
     double valorSalida( double valor_entrada );
-    double centroide( double valor_y );
+    double centroide();
     double area( double valor_y );
     QString nombre() { return _nombre; }
 
