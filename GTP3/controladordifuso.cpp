@@ -172,34 +172,8 @@ void ControladorDifuso::agregarReglaIntensidad( int conjunto_entrada, int conjun
  */
 double TrapecioDifuso::centroide( )
 {
-//    double uno = fabs(pos2-pos1);
-//    double dos = fabs(pos4-pos3);
-
-//    if ( uno == dos ) {
-//        //Si es regular
-//        return (pos1 + (pos4 - pos1) * 0.5);
-//    }
-//    else
-//    {
-//        if(pos3 == pos2) {
-//            //Caso que sea un triangulo obtuso
-//            return (pos1 + (pos4 - pos1) * 0.5);
-//        }
-//        else
-//        {
-//            //Trapecio Irregular
-//            qDebug() << "TRAPECIO IRREGULAR " << uno << "  " << dos;
-
-//            abort();
-//            double a = pos3 - pos2;
-//            double b = pos4 - pos1;
-//            return (pos1 + (valor_y * ( 2 * a + b)) / (3 * ( a + b )));
-//        }
-//    }
-
-    //No importa
-    return ( (pos4 + pos1) * 0.5); //Formula del punto medio http://es.wikipedia.org/wiki/Punto_medio
-
+    //Formula del punto medio http://es.wikipedia.org/wiki/Punto_medio
+    return ( (pos4 + pos1) * 0.5);
 }
 
 /*!
