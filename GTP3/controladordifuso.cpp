@@ -87,7 +87,12 @@ void ControladorDifuso::calcularProximoPaso()
             suma_areas += areas.at(i);
             suma_centroides += areas.at(i) * centroides.at(i);
         }
-        _ultima_intensidad = suma_centroides/suma_areas;
+
+        //Escalado correcto para 220 volts
+        // v=C*i^2
+        double aux = (suma_centroides/suma_areas) * 220;
+
+        _ultima_intensidad = -0.000037*pow(aux,2.0)+0.017*aux+0.069;
 
     }
 
@@ -185,9 +190,9 @@ double TrapecioDifuso::centroide( )
 double TrapecioDifuso::area( double valor_y )
 {
     double area = 0.0;
-    area += ( ( pos2 - pos1 ) * valor_y ) / 2.0;
-    area += ( ( pos3 - pos2 ) * valor_y );
-    area += ( ( pos4 - pos3 ) * valor_y ) / 2.0;
+    area += ( fabs( pos2 - pos1 ) * valor_y ) / 2.0;
+    area += ( fabs( pos3 - pos2 ) * valor_y );
+    area += ( fabs( pos4 - pos3 ) * valor_y ) / 2.0;
     return area;
 }
 
