@@ -12,6 +12,7 @@ public:
     double centroide();
     double area( double valor_y );
     QString nombre() { return _nombre; }
+    QString mostrar() { return QString( "( %1, %2, %3, %4 )").arg( QString::number( pos1 ), QString::number( pos2 ), QString::number( pos3 ), QString::number( pos4 ) ); }
 
     double pos1;
     double pos2;

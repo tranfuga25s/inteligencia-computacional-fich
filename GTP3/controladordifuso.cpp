@@ -19,7 +19,7 @@ void ControladorDifuso::calcularProximoPaso()
 
     //qDebug() << "ULTIMA TEMPERATURA: "<<_ultima_temp;
 
-    //qDebug()<< "DESEADA" <<_ultima_deseada;
+    qDebug()<< "DESEADA" <<_ultima_deseada;
 
     // La variable de entrada es la diferencia entre la temperatura actual y la deseada
     double variable_entrada = _ultima_temp - _ultima_deseada;
@@ -28,79 +28,87 @@ void ControladorDifuso::calcularProximoPaso()
     // Me devolverá que conjunto de las entradas con que valor de activacion tiene cada uno
     // Para cada trapecio del conjunto de entradas
     // calcular la pertenencia de cada uno y me quedo con que trapecio era
-    double pertenencia_maxima = -1.0;
-    int num_conjunto_entrada = -1;
+    QVector<double> pertenencias;
     for( int i=0; i<_conjunto_entrada.size(); i++ ) {
-        double pertenencia = _conjunto_entrada.at(i)->valorSalida( variable_entrada );
-        if( pertenencia > pertenencia_maxima ) {
-            pertenencia_maxima = pertenencia;
-            num_conjunto_entrada = i;
-        }
+        pertenencias.append( _conjunto_entrada.at(i)->valorSalida( variable_entrada ) );
     }
-    //qDebug() << "ganador: "<< num_conjunto_entrada;
 
     //Defuzzificacion
 
-    // Ejecucion de las reglas
-    // Activo las reglas que estén relacionadas con el conjunto de entrada elegido antes
-    QVector<int> reglas_voltaje    = _reglas_voltaje.at( num_conjunto_entrada );
-    QVector<int> reglas_intensidad = _reglas_intensidad.at( num_conjunto_entrada );
-
-    qDebug() << "I: " << reglas_intensidad << "V: " << reglas_voltaje;
+    QVector<double> areas_voltaje;
+    QVector<double> centroides_voltaje;
+    QVector<double> areas_intensidad;
+    QVector<double> centroides_intensidad;
 
     _ultimo_voltaje = 0.0;
     _ultima_intensidad = 0.0;
 
-    if (reglas_voltaje.size() != 0) {
-        // Voltaje
-        QVector<double> areas;
-        QVector<double> centroides;
-        for( int i=0; i<reglas_voltaje.size(); i++ ) {
-            areas.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->area( pertenencia_maxima ) );
-            centroides.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->centroide() );
+    // Ejecucion de las reglas
+    for( int j=0; j<pertenencias.size(); j++ ) {
+
+        if( pertenencias.at(j) == 0.0 ) { continue; }
+
+        int num_conjunto_entrada = j;
+        double pertenencia_maxima = pertenencias.at(j);
+        // Activo las reglas que estén relacionadas con el conjunto de entrada elegido antes
+        QVector<int> reglas_voltaje    = _reglas_voltaje.at( num_conjunto_entrada );
+        QVector<int> reglas_intensidad = _reglas_intensidad.at( num_conjunto_entrada );
+
+        qDebug() << "I: " << reglas_intensidad << "V: " << reglas_voltaje;
+
+
+        if (reglas_voltaje.size() != 0) {
+            // Voltaje
+            for( int i=0; i<reglas_voltaje.size(); i++ ) {
+                areas_voltaje.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->area( pertenencia_maxima ) );
+                centroides_voltaje.append( _conjunto_salida_voltaje.at( reglas_voltaje.at( i ) )->centroide() );
+            }
+
         }
-        // Calculo el centroide de los centroides seleccionados por las reglas
-        double suma_areas = 0.0;
-        double suma_centroides = 0.0;
-        for( int i=0; i<areas.size(); i++ ) {
-            suma_areas += areas.at(i);
-            suma_centroides += areas.at(i) * centroides.at(i);
+
+        if (reglas_intensidad.size() != 0) {
+            // Intensidad
+            for( int i=0; i<reglas_intensidad.size(); i++ ) {
+                areas_intensidad.append( _conjunto_salida_intensidad.at( reglas_intensidad.at( i ) )->area( pertenencia_maxima ) );
+                centroides_intensidad.append( _conjunto_salida_intensidad.at( reglas_intensidad.at( i ) )->centroide() );
+            }
+
+
         }
-        _ultimo_voltaje = suma_centroides/suma_areas;
     }
 
-
-
-    if (reglas_intensidad.size() != 0) {
-        // Intensidad
-        QVector<double> areas;
-        QVector<double> centroides;
-        for( int i=0; i<reglas_intensidad.size(); i++ ) {
-            areas.append( _conjunto_salida_intensidad.at( reglas_intensidad.at( i ) )->area( pertenencia_maxima ) );
-            centroides.append( _conjunto_salida_intensidad.at( reglas_intensidad.at( i ) )->centroide() );
-        }
-
-        // Calculo el centroide de los centroides seleccionados por las reglas
-        double suma_areas = 0.0;
-        double suma_centroides = 0.0;
-        for( int i=0; i<areas.size(); i++ ) {
-            suma_areas += areas.at(i);
-            suma_centroides += areas.at(i) * centroides.at(i);
-        }
-
-        //Escalado correcto para 220 volts
-        // v=C*i^2
-        double aux = (suma_centroides/suma_areas) * 220;
-
-        _ultima_intensidad = -0.000037*pow(aux,2.0)+0.017*aux+0.069;
-
+    // Calculo el centroide de los centroides seleccionados por las reglas
+    double suma_areas_voltaje = 0.0;
+    double suma_centroides_voltaje = 0.0;
+    for( int i=0; i<areas_voltaje.size(); i++ ) {
+        suma_areas_voltaje += areas_voltaje.at(i);
+        suma_centroides_voltaje += areas_voltaje.at(i) * centroides_voltaje.at(i);
     }
+    if( suma_areas_voltaje == 0.0 ) {
+        _ultimo_voltaje = 0.0;
+    } else {
+        _ultimo_voltaje = suma_centroides_voltaje/suma_areas_voltaje;
+    }
+
+    // Calculo el centroide de los centroides seleccionados por las reglas
+    double suma_areas_intensidad = 0.0;
+    double suma_centroides_intensidad = 0.0;
+    for( int i=0; i<areas_intensidad.size(); i++ ) {
+        suma_areas_intensidad += areas_intensidad.at(i);
+        suma_centroides_intensidad += areas_intensidad.at(i) * centroides_intensidad.at(i);
+    }
+    if( suma_areas_intensidad == 0.0 ) {
+        _ultima_intensidad = 0.0;
+    } else {
+        _ultima_intensidad = ( suma_centroides_intensidad/suma_areas_intensidad);
+    }
+
 
     //Actualizo los historicos
     _historico_voltaje.append( _ultimo_voltaje );
     _historico_intensidad.append( _ultima_intensidad );
 
-    //qDebug() << "ultimo voltaje: "<<_ultimo_voltaje << "ultima corriente: " << _ultima_intensidad;
+    qDebug() << "ultimo voltaje: "<<_ultimo_voltaje << "ultima corriente: " << _ultima_intensidad;
 
 }
 

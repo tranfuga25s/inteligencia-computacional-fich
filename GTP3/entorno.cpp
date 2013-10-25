@@ -1,4 +1,5 @@
 #include "entorno.h"
+#include "funciones_aux.h"
 
 Entorno::Entorno( QObject *parent, double prob_puerta ) :
 QObject(parent)
@@ -37,14 +38,14 @@ void Entorno::calcularNuevaTemperatura()
     //Cargo la temperatura anterior
     temp_ant = temperaturaActual();
 
-    if( _voltaje == 0.0 && _potencia == 0.0 ) {
-        // estamos en un sistema sin control
-        if( _puerta_abierta == false ) {
-            nueva_temp = 0.912*temp_ant + 0.088*_temperatura_externa;
-        } else {
-            nueva_temp = 0.169*temp_ant + 0.831*_temperatura_externa;
-        }
-    } else {
+//    if( _voltaje == 0.0 && _potencia == 0.0 ) {
+//        // estamos en un sistema sin control
+//        if( _puerta_abierta == false ) {
+//            nueva_temp = 0.912*temp_ant + 0.088*_temperatura_externa;
+//        } else {
+//            nueva_temp = 0.169*temp_ant + 0.831*_temperatura_externa;
+//        }
+//    } else {
         if( _puerta_abierta == false ) {
             nueva_temp = 0.912 * temp_ant +
                          0.088 * _temperatura_externa +
@@ -56,7 +57,7 @@ void Entorno::calcularNuevaTemperatura()
                          0.112 * pow( _potencia, 2.0 ) -
                          0.002 * _voltaje;
         }
-    }
+    //}
 
     _historico_temperaturas.append( nueva_temp );
 
@@ -64,7 +65,8 @@ void Entorno::calcularNuevaTemperatura()
 
 void Entorno::calcularPuertaAbierta(int tiempo)
 {
-   if ( fmod( tiempo, _probabilidad_puerta_abierta ) == 0.0 ) {
+   double aux = valor_random(0,_probabilidad_puerta_abierta);
+   if ( fmod(aux , _probabilidad_puerta_abierta ) == 0.0 ) {
        _puerta_abierta = true;
        qDebug() << "Puerta abierta";
    } else {
