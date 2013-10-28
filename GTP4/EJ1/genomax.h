@@ -20,10 +20,9 @@ public:
     int size() { return _fenotipo.size(); }
     void mutar( int pos ) { _fenotipo[pos] = !_fenotipo.at( pos ); }
     double getX() { return _x; }
-    void cruza(GenomaX &a, GenomaX &b);
-    bool at( int pos ) {return _fenotipo.at( pos); }
-    bool & operator[] ( int i ) {return *_fenotipo[i];}
-    void setX(double valor) { _x = valor; aFenotipo();}
+    bool at( int pos ) { return _fenotipo.at( pos ); }
+    bool & operator[] ( int i ) { return _fenotipo[i]; }
+    void setX( double valor ) { _x = valor; aFenotipo();}
     void mostrasFeneotipo();
 
 private:
