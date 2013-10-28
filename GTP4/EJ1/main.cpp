@@ -57,6 +57,7 @@ int main(int argc, char *argv[])
     // Cargo los parametros del ejercicio
     QSettings parametros( "parametros.cfg", QSettings::IniFormat );
 
+    QVector<GenomaX> poblacion;
 
 
     return a.exec();
