@@ -17,28 +17,28 @@ public:
     GenomaX();
     void aFenotipo();
     void aGenotipo();
-    int size() { return _fenotipo.size(); }
-    void mutar( int pos ) { _fenotipo[pos] = !_fenotipo.at( pos ); }
+    int size() { return _genotipo.size(); }
+    void mutar( int pos ) { _genotipo[pos] = !_genotipo.at( pos ); }
     double getX() { return _x; }
-    bool at( int pos ) { return _fenotipo.at( pos ); }
-    bool & operator[] ( int i ) { return _fenotipo[i]; }
-    void setX( double valor ) { _x = valor; aFenotipo();}
+    bool at( int pos ) { return _genotipo.at( pos ); }
+    bool & operator[] ( int i ) { return _genotipo[i]; }
+    void setX( double valor ) { _x = valor; aGenotipo();}
     void mostrasFeneotipo();
 
 private:
-    double _x; // Genotipo
-    QVector<bool> _fenotipo;
+    double _x; // Fenotipo
+    QVector<bool> _genotipo;
 };
 
 GenomaX::GenomaX() {
-    _fenotipo.clear();
+    _genotipo.clear();
     for(int i = 0; i < 20 ; i++) {
-        _fenotipo.append(false);
+        _genotipo.append(false);
     }
     _x = 0.0;
 }
 
-void GenomaX::aFenotipo() {
+void GenomaX::aGenotipo() {
     // Convierte el doble en una cadena de bits
     // Tomo la parte entera y la convierto a cadena de bits
     // Tomo la parte decimal y la convierto a cadena de bits
@@ -46,17 +46,14 @@ void GenomaX::aFenotipo() {
     int x_aux_entero = floor(_x);
     double x_aux_decimal = (_x - floor(_x) * pow(10,cant_decimal));
 
-    qDebug() << floor(fmod(x_aux_entero,2.0));
-
-
     //Parte Entera
     for (int i = cant_entera - 1 ; i>=0 ; i--) {
         if(floor(fmod(x_aux_entero,2.0)) == 1.0) {
-            _fenotipo[i] = true;
+            _genotipo[i] = true;
         }
         else
         {
-            _fenotipo[i]  = false;
+            _genotipo[i]  = false;
         }
 
         x_aux_entero = x_aux_entero/2.0;
@@ -65,11 +62,11 @@ void GenomaX::aFenotipo() {
     //Parte decimal
     for (int i = cant_entera ; i < cant_entera + cant_decimal ; i++) {
         if(floor(fmod(x_aux_decimal,2.0)) == 1.0) {
-            _fenotipo[i] = true;
+            _genotipo[i] = true;
         }
         else
         {
-            _fenotipo[i] = false;
+            _genotipo[i] = false;
         }
 
         x_aux_decimal = x_aux_decimal/2.0;
@@ -78,16 +75,16 @@ void GenomaX::aFenotipo() {
 
 }
 
-void GenomaX::aGenotipo() {
+void GenomaX::aFenotipo() {
     // Convierte la cadena de bits en un numero doble
     double temporal = 0.0;
     for( int i=cant_entera; i>=0; i-- ) {
-        if (_fenotipo.at(i)) {
+        if (_genotipo.at(i)) {
             temporal += pow( 2.0, cant_entera - i );
         }
     }
-    for( int i=cant_entera; i<_fenotipo.size(); i++ ) {
-        if (_fenotipo.at(i)) {
+    for( int i=cant_entera; i<_genotipo.size(); i++ ) {
+        if (_genotipo.at(i)) {
             temporal += pow( 2.0, (-1)*(i - cant_entera) );
         }
     }
@@ -97,7 +94,7 @@ void GenomaX::aGenotipo() {
 void mutar( GenomaX &g ) {
     int pos = valor_random( 0, g.size() );
     g.mutar( pos );
-    g.aGenotipo();
+    g.aFenotipo();
 }
 
 void cruza( GenomaX &a, GenomaX &b ) {
@@ -119,7 +116,7 @@ void cruza( GenomaX &a, GenomaX &b ) {
 }
 
 void GenomaX::mostrasFeneotipo() {
-    qDebug() << "Fenotipo:" << _fenotipo;
+    qDebug() << "Genotipo:" << _genotipo;
 }
 
 
