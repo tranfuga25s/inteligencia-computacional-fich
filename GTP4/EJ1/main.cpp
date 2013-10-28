@@ -17,6 +17,7 @@ typedef QVector<double> vector;
 typedef QVector< QVector<double> > matriz;
 
 #include "funciones_aux.h"
+#include "genomax.h"
 
 /*!
  * \brief main
@@ -58,6 +59,14 @@ int main(int argc, char *argv[])
     QSettings parametros( "parametros.cfg", QSettings::IniFormat );
 
     QVector<GenomaX> poblacion;
+
+    GenomaX Prueba1, Prueba2;
+    Prueba1.setX(128);
+    Prueba2.setX(256);
+
+    Prueba1.mostrasFeneotipo();
+    Prueba2.mostrasFeneotipo();
+
 
 
     return a.exec();

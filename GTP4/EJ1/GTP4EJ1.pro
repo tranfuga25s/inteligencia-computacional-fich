@@ -7,7 +7,8 @@ TEMPLATE = app
 
 SOURCES +=  main.cpp
 
-OTHER_FILES += parametros.cfg
+OTHER_FILES += parametros.cfg \
+    parametros.cfg
 
 INCLUDEPATH += ../../util
 
