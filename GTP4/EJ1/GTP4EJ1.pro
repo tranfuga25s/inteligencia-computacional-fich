@@ -10,3 +10,6 @@ SOURCES +=  main.cpp
 OTHER_FILES += parametros.cfg
 
 INCLUDEPATH += ../../util
+
+HEADERS += \
+    genomax.h
