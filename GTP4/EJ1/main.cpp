@@ -62,8 +62,8 @@ int main(int argc, char *argv[])
 
     GenomaX Prueba1, Prueba2;
 
-    Prueba1.setX(128);
-    Prueba2.setX(256);
+    Prueba1.setX( 128 );
+    Prueba2.setX( 256 );
 
     Prueba1.mostrasFeneotipo();
     Prueba2.mostrasFeneotipo();

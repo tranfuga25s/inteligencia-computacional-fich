@@ -31,8 +31,7 @@ private:
 };
 
 GenomaX::GenomaX() {
-    _fenotipo.reserve(20);
-
+    _fenotipo.clear();
     for(int i = 0; i < 20 ; i++) {
         _fenotipo.append(false);
     }
