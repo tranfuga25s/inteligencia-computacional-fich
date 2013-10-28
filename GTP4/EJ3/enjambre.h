@@ -13,7 +13,7 @@ public:
     QVector<Particula> devuelveEnjambre() {return _enjambre;}
 private:
     QVector<Particula> _enjambre;
-    double _mejor_y;
+    QVector<double> _mejor_y;//Necesito guardar para poder calcular el error
     double _tolerancia;
 };
 

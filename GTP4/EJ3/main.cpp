@@ -66,7 +66,8 @@ int main(int argc, char *argv[])
     /*
      *Estaria buenisimo poder especificar en las configuraciones directamente
      *la funcion y despues pasarla como parametro tambien
-     *pero quizas necesitariamos un interprete
+     *pero quizas necesitariamos un parser. Otra forma pero mas cabeza seria escribir
+     *las funciones en evaluarFuncion y comentar las que no se usen
      */
 
     enj.optimizar();
