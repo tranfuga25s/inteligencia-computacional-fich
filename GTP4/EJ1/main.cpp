@@ -63,6 +63,9 @@ int main(int argc, char *argv[])
     Poblacion<GenomaX> pob;
     int cant_total = parametros.value( "cant_elementos" ).toInt();
     pob.setearTotal( cant_total );
+
+    pob.setearElitismo( parametros.value( "elitismo", false ).toBool() );
+
     double max = parametros.value( "max" ).toDouble();
     double min = parametros.value( "min" ).toDouble();
     for( int i=0; i<cant_total; i++ ) {
