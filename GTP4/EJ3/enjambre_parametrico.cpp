@@ -113,6 +113,8 @@ int enjambre_parametrico::optimizar()
 
         cant_iteraciones++;
 
+        qDebug() << "Error: " << error;
+
 
     } while (error >= _tolerancia);
 
