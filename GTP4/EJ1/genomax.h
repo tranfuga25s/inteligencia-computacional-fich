@@ -4,7 +4,6 @@
 #define cant_entera 10
 #define cant_decimal 10
 
-
 #include <QVector>
 #include <funciones_aux.h>
 
@@ -15,15 +14,17 @@ class GenomaX
 {
 public:
     GenomaX();
+    GenomaX( const GenomaX &origin );
+    GenomaX( GenomaX& origin );
     void aFenotipo();
     void aGenotipo();
     int size() { return _genotipo.size(); }
     void mutar( int pos ) { _genotipo[pos] = !_genotipo.at( pos ); }
-    double getX() { return _x; }
+    double getX() const { return _x; }
     bool at( int pos ) { return _genotipo.at( pos ); }
     bool & operator[] ( int i ) { return _genotipo[i]; }
-    void setX( double valor ) { _x = valor; aGenotipo();}
-    void mostrasFeneotipo();
+    void setX( double valor );
+    void mostrarFeneotipo();
 
 private:
     double _x; // Fenotipo
@@ -36,6 +37,21 @@ GenomaX::GenomaX() {
         _genotipo.append(false);
     }
     _x = 0.0;
+}
+
+GenomaX::GenomaX( const GenomaX& origin ) {
+    _x = origin.getX();
+    aGenotipo();
+}
+
+GenomaX::GenomaX( GenomaX &origin ) {
+    this->_x = origin.getX();
+    aGenotipo();
+}
+
+void GenomaX::setX(double valor) {
+    this->_x = valor;
+    aGenotipo();
 }
 
 void GenomaX::aGenotipo() {
@@ -115,8 +131,17 @@ void cruza( GenomaX &a, GenomaX &b ) {
 
 }
 
-void GenomaX::mostrasFeneotipo() {
-    qDebug() << "Genotipo:" << _genotipo;
+void GenomaX::mostrarFeneotipo() {
+    QString salida;
+    salida.append( QString( "Genotipo:%1:" ).arg( _x ) );
+    foreach( bool val, _genotipo ) {
+        if( val ) {
+            salida.append( "1" );
+        } else {
+            salida.append( "0" );
+        }
+    }
+    qDebug() << salida;
 }
 
 

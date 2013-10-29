@@ -5,7 +5,8 @@ CONFIG   += qwt
 
 TEMPLATE = app
 
-SOURCES +=  main.cpp
+SOURCES +=  main.cpp \
+    poblacion.cpp
 
 OTHER_FILES += parametros.cfg \
     parametros.cfg
@@ -13,4 +14,5 @@ OTHER_FILES += parametros.cfg \
 INCLUDEPATH += ../../util
 
 HEADERS += \
-    genomax.h
+    genomax.h \
+    poblacion.h
