@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     grafTemperatura->setearParaTrapezoide();*/
 
     // barra de progreso para mostrar el avance del tiempo
-    QDockWidget *dockBarra = new QDockWidget( QString::fromUtf8( "Paso del tiempo" ) );
+    QDockWidget *dockBarra = new QDockWidget( QString::fromUtf8( "Evaluaciones" ) );
     main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra );
     QProgressBar *PBTiempo = new QProgressBar( dockBarra );
     dockBarra->setWidget( PBTiempo );
@@ -78,14 +78,19 @@ int main(int argc, char *argv[])
 
     int iteracciones_maximas = parametros.value( "iteracciones_maximas", 1000 ).toInt();
     int iteracciones = 0;
+    PBTiempo->setRange( 0, iteracciones_maximas );
 
-    pob.evaluar();
+    pob.evaluarPoblacion();
 
-    while( pob.mejorIndividuo() > fitnes_necesario && iteracciones <= iteracciones_maximas ) {
+    while( pob.mejorFitnes() > fitnes_necesario
+        && iteracciones <= iteracciones_maximas ) {
+
         pob.seleccionarPadres();
-        pob.generarHijos();
-        pob.evaluar();
+        //pob.generarHijos();
+        pob.evaluarPoblacion();
+
         iteracciones++;
+        PBTiempo->setValue( iteracciones );
     }
 
     return a.exec();
