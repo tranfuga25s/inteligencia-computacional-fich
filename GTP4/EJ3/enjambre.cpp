@@ -57,23 +57,22 @@ int enjambre::optimizar()
             vel_aux = _enjambre[i].devolverVelocidad()
                     + c1 * r1 * (_enjambre[i].devolverMejorPosicion() - _enjambre[i].devolverPosicion())
                     + c2 * r2 * (_mejor_y.last() -  _enjambre[i].devolverPosicion());
-            _enjambre[i].setearVelocidad(vel_aux);
+
+            //controlo que la velocidad no supere vmax = (x_max - x_min)
+            double vMax = _X_max - _X_min;
+            if(vel_aux < vMax) {
+               _enjambre[i].setearVelocidad(vel_aux);
+            }
+            else
+            {
+                _enjambre[i].setearVelocidad(vMax);
+            }
+
 
             //Posicion
             double pos_aux = 0.0;
             pos_aux =  _enjambre[i].devolverPosicion() + _enjambre[i].devolverVelocidad();
-
-            //Controlo no sobrepasar los limites
-            if ( pos_aux <= _X_max && pos_aux >= _X_min ) {
-                //Dentro de los limites
-                _enjambre[i].setPosicion(pos_aux);
-            }
-            else
-            {
-                //Estrategia: Borro las particulas que se van de dominio con la correccion
-                _enjambre.remove(i);
-            }
-
+            _enjambre[i].setPosicion(pos_aux);
 
         }
 

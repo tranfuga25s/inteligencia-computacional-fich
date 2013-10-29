@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     //QSettings parametros( "parametros.cfg", QSettings::IniFormat );
 
     //Funcion 1
-    int cant_particulas1 = 1024;
+    int cant_particulas1 = 50;
     double x1_max = 512.0;
     double x1_min = -512.0;
     double tasa_error1 = 0.1;
@@ -66,10 +66,9 @@ int main(int argc, char *argv[])
     qDebug() << "Cantidad de Iteraciones: " << it1;
     qDebug() << "Minimo de la Funcion: " << funcion1.devuelveValorMinimoGlobal();
     qDebug() << "Posicion del Minimo: " << funcion1.devuelvePosicionMinimoGlobal();
-    qDebug() << "Cantidad de Particulas Finales: " << funcion1.devuelveCantidadParticulas();
 
     //Funcion 2 (tomo 1000 valores entre 0 y 20)
-    int cant_particulas2 = 1000;
+    int cant_particulas2 = 10;
     double x2_max = 20.0;
     double x2_min = 0.0;
     double tasa_error2 = 0.1;
@@ -84,10 +83,9 @@ int main(int argc, char *argv[])
     qDebug() << "Cantidad de Iteraciones: " << it2;
     qDebug() << "Minimo de la Funcion: " << funcion2.devuelveValorMinimoGlobal();
     qDebug() << "Posicion del Minimo: " << funcion2.devuelvePosicionMinimoGlobal();
-    qDebug() << "Cantidad de Particulas Finales: " << funcion2.devuelveCantidadParticulas();
 
     //Funcion 3
-    int cant_particulas3 = 200;
+    int cant_particulas3 = 20;
     double x3_max = 100.0;
     double x3_min = -100.0;
     double y3_max = 100.0;
@@ -104,8 +102,6 @@ int main(int argc, char *argv[])
     qDebug() << "Cantidad de Iteraciones: " << it3;
     qDebug() << "Minimo de la Funcion: " << funcion3.devuelveValorMinimoGlobal();
     qDebug() << "Posicion del Minimo: " << funcion3.devuelvePosicionMinimoGlobal();
-    qDebug() << "Cantidad de Particulas Finales: " << funcion3.devuelveCantidadParticulas();
-
 
     return a.exec();
 }
