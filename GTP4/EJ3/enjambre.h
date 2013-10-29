@@ -7,14 +7,18 @@
 class enjambre
 {
 public:
-    enjambre(double num_part,double x_min,double x_max,double tolerancia);
-    void optimizar(int opc);
-    double evaluarFuncion(double posicion,int opc);
-    QVector<Particula> devuelveEnjambre() {return _enjambre;}
+    enjambre(double num_part,double x_min,double x_max,double tolerancia,int opc);
+    void optimizar();
+    double evaluarFuncion(double posicion);
+    double devuelvePosicionMinimoGlobal() {return _mejor_y.last();}
+    double devuelveValorMinimoGlobal() {return evaluarFuncion(_mejor_y.last());}
 private:
     QVector<Particula> _enjambre;
     QVector<double> _mejor_y;//Necesito guardar para poder calcular el error
     double _tolerancia;
+
+    //Para poder optar por las funciones
+    int _opc;
 };
 
 #endif // ENJAMBRE_H

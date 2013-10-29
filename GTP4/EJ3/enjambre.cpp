@@ -1,6 +1,6 @@
 #include "enjambre.h"
 
-enjambre::enjambre(double num_part, double x_min, double x_max, double tolerancia)
+enjambre::enjambre(double num_part, double x_min, double x_max, double tolerancia, int opc)
 {
     //Particulas
     for (int i = 0; i<num_part; i++) {
@@ -8,9 +8,12 @@ enjambre::enjambre(double num_part, double x_min, double x_max, double toleranci
     }
     //Tolerancia seteada
     _tolerancia = tolerancia;
+
+    //Opcion de funcion a evaluar
+    _opc = opc;
 }
 
-void enjambre::optimizar(int opc)
+void enjambre::optimizar()
 {
     //opc me indica que funcion estoy usando
     double error = 100.0;//Empieza con el maximo error asi itera
@@ -20,11 +23,11 @@ void enjambre::optimizar(int opc)
         for(int i=0 ; i<_enjambre.size() ; i++){
 
             //Actualizo la mejor de la particula
-            if(evaluarFuncion(_enjambre[i].devolverPosicion(),opc) < evaluarFuncion(_enjambre[i].devolverMejorPosicion(),opc) ) {
+            if(evaluarFuncion(_enjambre[i].devolverPosicion()) < evaluarFuncion(_enjambre[i].devolverMejorPosicion()) ) {
                 _enjambre[i].setMejorPosicion(_enjambre[i].devolverPosicion());
             }
             //Actualizo la mejor global
-            if( evaluarFuncion(_enjambre[i].devolverMejorPosicion(),opc) < evaluarFuncion(_mejor_y.last(),opc) ) {
+            if( evaluarFuncion(_enjambre[i].devolverMejorPosicion()) < evaluarFuncion(_mejor_y.last()) ) {
                 _mejor_y.append( _enjambre[i].devolverMejorPosicion() );//Guardo todos los mejores y
             }
 
@@ -58,8 +61,8 @@ void enjambre::optimizar(int opc)
          */
         if (_mejor_y.size() >= 2) {
 
-            error = fabs( evaluarFuncion(_mejor_y[_mejor_y.size() - 1],opc) - evaluarFuncion(_mejor_y[_mejor_y.size() - 2],opc) )
-                    / fabs( evaluarFuncion(_mejor_y[_mejor_y.size() - 1],opc) );
+            error = fabs( evaluarFuncion(_mejor_y[_mejor_y.size() - 1]) - evaluarFuncion(_mejor_y[_mejor_y.size() - 2]) )
+                    / fabs( evaluarFuncion(_mejor_y[_mejor_y.size() - 1]) );
 
         }
 
@@ -67,11 +70,11 @@ void enjambre::optimizar(int opc)
     } while (error >= _tolerancia);
 }
 
-double enjambre::evaluarFuncion(double posicion, int opc)
+double enjambre::evaluarFuncion(double posicion)
 {
     //La opcion indica cual de la funciones se evaluaria
     double valor_retorno = 0.0;
-    switch (opc) {
+    switch (_opc) {
     case 1:
         //Funcion 1
         valor_retorno = -1.0 * posicion * sin( sqrt( fabs( posicion ) ) );

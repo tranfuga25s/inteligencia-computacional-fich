@@ -60,13 +60,13 @@ int main(int argc, char *argv[])
     //QSettings parametros( "parametros.cfg", QSettings::IniFormat );
 
     //Funcion 1
-    enjambre funcion1(1024,512.0,-512.0,5.0);
-    funcion1.optimizar(1);
+    enjambre funcion1(1024,512.0,-512.0,5.0,1);
+    funcion1.optimizar();
 
 
     //Funcion 2 (tomo 1000 valores entre 0 y 20)
-    enjambre funcion2(1000,20.0,0.0,5.0);
-    funcion2.optimizar(2);
+    enjambre funcion2(1000,20.0,0.0,5.0,2);
+    funcion2.optimizar();
 
 
     enjambre_parametrico funcion3(200,100.0,-100.0,100.0,-100.0,5.0);
