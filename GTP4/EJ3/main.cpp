@@ -29,29 +29,20 @@ typedef QVector< QVector<double> > matriz;
  */
 int main(int argc, char *argv[])
 {
-    QApplication a( argc, argv );
-    QMainWindow main;
-    a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
-    main.showMaximized();
-    QMdiArea *mdiArea = new QMdiArea;
-    mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    main.setCentralWidget(mdiArea);
+      QApplication a( argc, argv );
+//    QMainWindow main;
+//    a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
+//    main.showMaximized();
+//    QMdiArea *mdiArea = new QMdiArea;
+//    mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+//    mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+//    main.setCentralWidget(mdiArea);
 
-    /*GraficadorMdi *grafTemperatura = new GraficadorMdi( mdiArea );
-    grafTemperatura->setearTitulo( QString::fromUtf8( "Temperatura Interior" ) );
-    grafTemperatura->setearTituloEjeX( QString::fromUtf8( "Tiempo" ) );
-    grafTemperatura->setearTituloEjeY( QString::fromUtf8( "Temperatura" ) );
-    mdiArea->addSubWindow( grafTemperatura );
-    grafTemperatura->show();
-    mdiArea->tileSubWindows();
-    grafTemperatura->setearParaTrapezoide();*/
-
-    // barra de progreso para mostrar el avance del tiempo
-    QDockWidget *dockBarra = new QDockWidget( QString::fromUtf8( "Paso del tiempo" ) );
-    main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra );
-    QProgressBar *PBTiempo = new QProgressBar( dockBarra );
-    dockBarra->setWidget( PBTiempo );
+//    // barra de progreso para mostrar el avance del tiempo
+//    QDockWidget *dockBarra = new QDockWidget( QString::fromUtf8( "Paso del tiempo" ) );
+//    main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra );
+//    QProgressBar *PBTiempo = new QProgressBar( dockBarra );
+//    dockBarra->setWidget( PBTiempo );
 
     //Inicializo con una semilla aleatoria para la generacion de Aleatorios
     qsrand( QTime::currentTime().msec() );
@@ -63,7 +54,7 @@ int main(int argc, char *argv[])
     int cant_particulas1 = 1024;
     double x1_max = 512.0;
     double x1_min = -512.0;
-    double tasa_error1 = 1.0;
+    double tasa_error1 = 0.1;
 
     enjambre funcion1(cant_particulas1,x1_max,x1_min,tasa_error1,1);
     int it1 = funcion1.optimizar();
@@ -75,12 +66,13 @@ int main(int argc, char *argv[])
     qDebug() << "Cantidad de Iteraciones: " << it1;
     qDebug() << "Minimo de la Funcion: " << funcion1.devuelveValorMinimoGlobal();
     qDebug() << "Posicion del Minimo: " << funcion1.devuelvePosicionMinimoGlobal();
+    qDebug() << "Cantidad de Particulas Finales: " << funcion1.devuelveCantidadParticulas();
 
     //Funcion 2 (tomo 1000 valores entre 0 y 20)
     int cant_particulas2 = 1000;
     double x2_max = 20.0;
     double x2_min = 0.0;
-    double tasa_error2 = 1.0;
+    double tasa_error2 = 0.1;
 
     enjambre funcion2(cant_particulas2,x2_max,x2_min,tasa_error2,2);
     int it2 = funcion2.optimizar();
@@ -92,6 +84,7 @@ int main(int argc, char *argv[])
     qDebug() << "Cantidad de Iteraciones: " << it2;
     qDebug() << "Minimo de la Funcion: " << funcion2.devuelveValorMinimoGlobal();
     qDebug() << "Posicion del Minimo: " << funcion2.devuelvePosicionMinimoGlobal();
+    qDebug() << "Cantidad de Particulas Finales: " << funcion2.devuelveCantidadParticulas();
 
     //Funcion 3
     int cant_particulas3 = 200;
@@ -99,7 +92,7 @@ int main(int argc, char *argv[])
     double x3_min = -100.0;
     double y3_max = 100.0;
     double y3_min = -100.0;
-    double tasa_error3 = 1.0;
+    double tasa_error3 = 0.1;
 
     enjambre_parametrico funcion3(cant_particulas3,x3_max,x3_min,y3_max,y3_min,tasa_error3);
     int it3 = funcion3.optimizar();
@@ -111,6 +104,7 @@ int main(int argc, char *argv[])
     qDebug() << "Cantidad de Iteraciones: " << it3;
     qDebug() << "Minimo de la Funcion: " << funcion3.devuelveValorMinimoGlobal();
     qDebug() << "Posicion del Minimo: " << funcion3.devuelvePosicionMinimoGlobal();
+    qDebug() << "Cantidad de Particulas Finales: " << funcion3.devuelveCantidadParticulas();
 
 
     return a.exec();

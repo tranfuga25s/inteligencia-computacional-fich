@@ -11,14 +11,14 @@ void particula_parametrica::inicializar(double xmin, double xmax, double ymin, d
     //X
     _posicion_x = valor_random(xmin,xmax);
     //Mejor posicion inicial
-    _mejor_posicion_x = -1.0;
+    _mejor_posicion_x = _posicion_x;
     //Velocidad inicial
     _velocidad_x = 0.0;//???
 
     //Y
     _posicion_y = valor_random(ymin,ymax);
     //Mejor posicion inicial
-    _mejor_posicion_y = -1.0;
+    _mejor_posicion_y = _posicion_y;
     //Velocidad inicial
     _velocidad_y = 0.0;//???
 }

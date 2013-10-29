@@ -12,10 +12,12 @@ public:
     double evaluarFuncion(double posicion);
     double devuelvePosicionMinimoGlobal() {return _mejor_y.last();}
     double devuelveValorMinimoGlobal() {return evaluarFuncion(_mejor_y.last());}
+    int devuelveCantidadParticulas() {return _enjambre.size();}
 private:
     QVector<Particula> _enjambre;
     QVector<double> _mejor_y;//Necesito guardar para poder calcular el error
     double _tolerancia;
+    double _X_max,_X_min;
 
     //Para poder optar por las funciones
     int _opc;

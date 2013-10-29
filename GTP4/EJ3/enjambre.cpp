@@ -4,14 +4,18 @@ enjambre::enjambre(double num_part, double x_min, double x_max, double toleranci
 {
     _enjambre.clear();
 
+    //Limites
+    _X_max = x_max;
+    _X_min = x_min;
+
     //Particulas
     for (int i = 0; i<num_part; i++) {
         Particula Auxiliar;
-        Auxiliar.inicializar(x_min,x_max);
+        Auxiliar.inicializar(_X_min,_X_max);
         _enjambre.append(Auxiliar);
     }
     //mejor_y inicial aleatorio
-    _mejor_y.append(_enjambre[valor_random(0,num_part)].devolverPosicion());
+    _mejor_y.append(_enjambre[valor_random(0.0,num_part)].devolverPosicion());
 
     //Tolerancia seteada
     _tolerancia = tolerancia;
@@ -58,7 +62,18 @@ int enjambre::optimizar()
             //Posicion
             double pos_aux = 0.0;
             pos_aux =  _enjambre[i].devolverPosicion() + _enjambre[i].devolverVelocidad();
-            _enjambre[i].setPosicion(pos_aux);
+
+            //Controlo no sobrepasar los limites
+            if ( pos_aux <= _X_max && pos_aux >= _X_min ) {
+                //Dentro de los limites
+                _enjambre[i].setPosicion(pos_aux);
+            }
+            else
+            {
+                //Estrategia: Borro las particulas que se van de dominio con la correccion
+                _enjambre.remove(i);
+            }
+
 
         }
 
@@ -69,8 +84,8 @@ int enjambre::optimizar()
          */
         if (_mejor_y.size() >= 2) {
 
-            error = fabs( evaluarFuncion(_mejor_y[_mejor_y.size() - 1]) - evaluarFuncion(_mejor_y[_mejor_y.size() - 2]) )
-                    / fabs( evaluarFuncion(_mejor_y[_mejor_y.size() - 1]) );
+            error = fabs( evaluarFuncion(_mejor_y.at(_mejor_y.size() - 1)) - evaluarFuncion(_mejor_y.at(_mejor_y.size() - 2)) )
+                    / fabs( evaluarFuncion(_mejor_y.at(_mejor_y.size() - 1)) );
 
         }
 
@@ -93,7 +108,7 @@ double enjambre::evaluarFuncion(double posicion)
         break;
     case 2:
         //Funcion 2
-        valor_retorno = posicion + 5 * sin( 3 * posicion ) + 8 * cos( 5 * posicion );
+        valor_retorno = posicion + 5.0 * sin( 3.0 * posicion ) + 8.0 * cos( 5.0 * posicion );
         break;
     }
 
