@@ -74,5 +74,19 @@ int main(int argc, char *argv[])
         pob.append( temp );
     }
 
+    double fitnes_necesario = parametros.value( "fitnes_necesario", 0.0 ).toDouble();
+
+    int iteracciones_maximas = parametros.value( "iteracciones_maximas", 1000 ).toInt();
+    int iteracciones = 0;
+
+    pob.evaluar();
+
+    while( pob.mejorIndividuo() > fitnes_necesario && iteracciones <= iteracciones_maximas ) {
+        pob.seleccionarPadres();
+        pob.generarHijos();
+        pob.evaluar();
+        iteracciones++;
+    }
+
     return a.exec();
 }

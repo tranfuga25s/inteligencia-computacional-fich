@@ -35,11 +35,4 @@ private:
     
 };
 
-template<typename T> Poblacion<T>::Poblacion() :
-    QVector<T>()
-{
-    _elitismo = false;
-    _cantidad_total = 0.0;
-    _metodo_seleccion = Ruleta;
-}
 #endif // POBLACION_H
