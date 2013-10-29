@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     double x1_min = -512.0;
     double tasa_error1 = 0.1;
 
-    enjambre funcion1(cant_particulas1,x1_max,x1_min,tasa_error1,1);
+    enjambre funcion1(cant_particulas1,x1_min,x1_max,tasa_error1,1);
     int it1 = funcion1.optimizar();
 
     qDebug() << "-----Funcion 1-----";
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     double x2_min = 0.0;
     double tasa_error2 = 0.1;
 
-    enjambre funcion2(cant_particulas2,x2_max,x2_min,tasa_error2,2);
+    enjambre funcion2(cant_particulas2,x2_min,x2_max,tasa_error2,2);
     int it2 = funcion2.optimizar();
 
     qDebug() << "-----Funcion 2-----";
@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
     double y3_min = -100.0;
     double tasa_error3 = 0.1;
 
-    enjambre_parametrico funcion3(cant_particulas3,x3_max,x3_min,y3_max,y3_min,tasa_error3);
+    enjambre_parametrico funcion3(cant_particulas3,x3_min,x3_max,y3_min,y3_max,tasa_error3);
     int it3 = funcion3.optimizar();
 
     qDebug() << "-----Funcion 3-----";
