@@ -10,20 +10,21 @@ enjambre::enjambre(double num_part, double x_min, double x_max, double toleranci
     _tolerancia = tolerancia;
 }
 
-void enjambre::optimizar()
+void enjambre::optimizar(int opc)
 {
-    double error = 0.0;
+    //opc me indica que funcion estoy usando
+    double error = 100.0;//Empieza con el maximo error asi itera
 
     do {
         //Comparaciones
         for(int i=0 ; i<_enjambre.size() ; i++){
 
             //Actualizo la mejor de la particula
-            if(evaluarFuncion(_enjambre[i].devolverPosicion()) < evaluarFuncion(_enjambre[i].devolverMejorPosicion()) ) {
+            if(evaluarFuncion(_enjambre[i].devolverPosicion(),opc) < evaluarFuncion(_enjambre[i].devolverMejorPosicion(),opc) ) {
                 _enjambre[i].setMejorPosicion(_enjambre[i].devolverPosicion());
             }
             //Actualizo la mejor global
-            if( evaluarFuncion(_enjambre[i].devolverMejorPosicion()) < evaluarFuncion(_mejor_y.last())) {
+            if( evaluarFuncion(_enjambre[i].devolverMejorPosicion(),opc) < evaluarFuncion(_mejor_y.last(),opc) ) {
                 _mejor_y.append( _enjambre[i].devolverMejorPosicion() );//Guardo todos los mejores y
             }
 
@@ -55,14 +56,31 @@ void enjambre::optimizar()
          *Lo que estaria haciendo aca seria calcular el error en base a como varia la funcion
          *desde el ultimo _mejor_y y el anterior _mejor_y a ese
          */
-        error = 0.0;
-        error = fabs(evaluarFuncion(_mejor_y[_mejor_y.size() - 1]) - evaluarFuncion(_mejor_y[_mejor_y.size() - 2]) )
-                / fabs( evaluarFuncion(_mejor_y[_mejor_y.size() - 1]) );
+        if (_mejor_y.size() >= 2) {
 
-    } while (error < _tolerancia);
+            error = fabs( evaluarFuncion(_mejor_y[_mejor_y.size() - 1],opc) - evaluarFuncion(_mejor_y[_mejor_y.size() - 2],opc) )
+                    / fabs( evaluarFuncion(_mejor_y[_mejor_y.size() - 1],opc) );
+
+        }
+
+
+    } while (error >= _tolerancia);
 }
 
-double enjambre::evaluarFuncion(double posicion)
+double enjambre::evaluarFuncion(double posicion, int opc)
 {
-    //Seria la funcion a minimizar
+    //La opcion indica cual de la funciones se evaluaria
+    double valor_retorno = 0.0;
+    switch (opc) {
+    case 1:
+        //Funcion 1
+        valor_retorno = -1.0 * posicion * sin( sqrt( fabs( posicion ) ) );
+        break;
+    case 2:
+        //Funcion 2
+        valor_retorno = posicion + 5 * sin( 3 * posicion ) + 8 * cos( 5 * posicion );
+        break;
+    }
+
+    return valor_retorno;
 }

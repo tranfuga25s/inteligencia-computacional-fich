@@ -7,11 +7,11 @@ TEMPLATE = app
 
 SOURCES +=  main.cpp \
     particula.cpp \
-    enjambre.cpp
+    enjambre.cpp \
+    particula_parametrica.cpp \
+    enjambre_parametrico.cpp
 
-OTHER_FILES += parametros.cfg \
-    parametros.cfg \
-    parametros.cfg
+OTHER_FILES +=
 
 INCLUDEPATH += ../../util
 
@@ -19,4 +19,6 @@ HEADERS += \
     genomax.h \
     particula.h \
     ../../util/funciones_aux.h \
-    enjambre.h
+    enjambre.h \
+    particula_parametrica.h \
+    enjambre_parametrico.h

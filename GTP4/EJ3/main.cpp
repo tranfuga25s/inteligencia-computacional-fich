@@ -18,6 +18,7 @@ typedef QVector< QVector<double> > matriz;
 
 #include "funciones_aux.h"
 #include "enjambre.h"
+#include "enjambre_parametrico.h"
 
 /*!
  * \brief main
@@ -56,22 +57,20 @@ int main(int argc, char *argv[])
     qsrand( QTime::currentTime().msec() );
 
     // Cargo los parametros del ejercicio
-    QSettings parametros( "parametros.cfg", QSettings::IniFormat );
+    //QSettings parametros( "parametros.cfg", QSettings::IniFormat );
 
-    enjambre enj(parametros.value("cant_particulas").toDouble(),
-                 parametros.value("xmax").toDouble(),
-                 parametros.value("xmin").toDouble(),
-                 parametros.value("tolerancia").toDouble());
+    //Funcion 1
+    enjambre funcion1(1024,512.0,-512.0,5.0);
+    funcion1.optimizar(1);
 
-    /*
-     *Estaria buenisimo poder especificar en las configuraciones directamente
-     *la funcion y despues pasarla como parametro tambien
-     *pero quizas necesitariamos un parser. Otra forma pero mas cabeza seria escribir
-     *las funciones en evaluarFuncion y comentar las que no se usen
-     */
 
-    enj.optimizar();
+    //Funcion 2 (tomo 1000 valores entre 0 y 20)
+    enjambre funcion2(1000,20.0,0.0,5.0);
+    funcion2.optimizar(2);
 
+
+    enjambre_parametrico funcion3(200,100.0,-100.0,100.0,-100.0,5.0);
+    funcion3.optimizar();
 
     return a.exec();
 }
