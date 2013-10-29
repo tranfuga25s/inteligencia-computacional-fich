@@ -60,17 +60,58 @@ int main(int argc, char *argv[])
     //QSettings parametros( "parametros.cfg", QSettings::IniFormat );
 
     //Funcion 1
-    enjambre funcion1(1024,512.0,-512.0,5.0,1);
-    funcion1.optimizar();
+    int cant_particulas1 = 1024;
+    double x1_max = 512.0;
+    double x1_min = -512.0;
+    double tasa_error1 = 1.0;
 
+    enjambre funcion1(cant_particulas1,x1_max,x1_min,tasa_error1,1);
+    int it1 = funcion1.optimizar();
+
+    qDebug() << "-----Funcion 1-----";
+    qDebug() << "Cantidad de Particulas: " << cant_particulas1;
+    qDebug() << "Limites: X(" << x1_min << "," << x1_max << ")";
+    qDebug() << "Tasa de error: " << tasa_error1 << "%";
+    qDebug() << "Cantidad de Iteraciones: " << it1;
+    qDebug() << "Minimo de la Funcion: " << funcion1.devuelveValorMinimoGlobal();
+    qDebug() << "Posicion del Minimo: " << funcion1.devuelvePosicionMinimoGlobal();
 
     //Funcion 2 (tomo 1000 valores entre 0 y 20)
-    enjambre funcion2(1000,20.0,0.0,5.0,2);
-    funcion2.optimizar();
+    int cant_particulas2 = 1000;
+    double x2_max = 20.0;
+    double x2_min = 0.0;
+    double tasa_error2 = 1.0;
 
+    enjambre funcion2(cant_particulas2,x2_max,x2_min,tasa_error2,2);
+    int it2 = funcion2.optimizar();
 
-    enjambre_parametrico funcion3(200,100.0,-100.0,100.0,-100.0,5.0);
-    funcion3.optimizar();
+    qDebug() << "-----Funcion 2-----";
+    qDebug() << "Cantidad de Particulas: " << cant_particulas2;
+    qDebug() << "Limites: X(" << x2_min << "," << x2_max << ")";
+    qDebug() << "Tasa de error: " << tasa_error2 << "%";
+    qDebug() << "Cantidad de Iteraciones: " << it2;
+    qDebug() << "Minimo de la Funcion: " << funcion2.devuelveValorMinimoGlobal();
+    qDebug() << "Posicion del Minimo: " << funcion2.devuelvePosicionMinimoGlobal();
+
+    //Funcion 3
+    int cant_particulas3 = 200;
+    double x3_max = 100.0;
+    double x3_min = -100.0;
+    double y3_max = 100.0;
+    double y3_min = -100.0;
+    double tasa_error3 = 1.0;
+
+    enjambre_parametrico funcion3(cant_particulas3,x3_max,x3_min,y3_max,y3_min,tasa_error3);
+    int it3 = funcion3.optimizar();
+
+    qDebug() << "-----Funcion 3-----";
+    qDebug() << "Cantidad de Particulas: " << cant_particulas3;
+    qDebug() << "Limites: X(" << x3_min << "," << x3_max << ") Y(" << y3_min << "," << y3_max << ")";
+    qDebug() << "Tasa de error: " << tasa_error3 << "%";
+    qDebug() << "Cantidad de Iteraciones: " << it3;
+    qDebug() << "Minimo de la Funcion: " << funcion3.devuelveValorMinimoGlobal();
+    qDebug() << "Posicion del Minimo: " << funcion3.devuelvePosicionMinimoGlobal();
+
 
     return a.exec();
 }

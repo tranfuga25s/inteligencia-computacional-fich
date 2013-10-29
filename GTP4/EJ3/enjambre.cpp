@@ -2,10 +2,17 @@
 
 enjambre::enjambre(double num_part, double x_min, double x_max, double tolerancia, int opc)
 {
+    _enjambre.clear();
+
     //Particulas
     for (int i = 0; i<num_part; i++) {
-        _enjambre[i].inicializar(x_min,x_max);
+        Particula Auxiliar;
+        Auxiliar.inicializar(x_min,x_max);
+        _enjambre.append(Auxiliar);
     }
+    //mejor_y inicial aleatorio
+    _mejor_y.append(_enjambre[valor_random(0,num_part)].devolverPosicion());
+
     //Tolerancia seteada
     _tolerancia = tolerancia;
 
@@ -13,11 +20,12 @@ enjambre::enjambre(double num_part, double x_min, double x_max, double toleranci
     _opc = opc;
 }
 
-void enjambre::optimizar()
+int enjambre::optimizar()
 {
     //opc me indica que funcion estoy usando
     double error = 100.0;//Empieza con el maximo error asi itera
 
+    int cant_iteraciones = 0;
     do {
         //Comparaciones
         for(int i=0 ; i<_enjambre.size() ; i++){
@@ -66,8 +74,12 @@ void enjambre::optimizar()
 
         }
 
+        cant_iteraciones++;
+
 
     } while (error >= _tolerancia);
+
+    return cant_iteraciones;
 }
 
 double enjambre::evaluarFuncion(double posicion)

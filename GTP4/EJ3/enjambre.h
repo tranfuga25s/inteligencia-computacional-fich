@@ -8,7 +8,7 @@ class enjambre
 {
 public:
     enjambre(double num_part,double x_min,double x_max,double tolerancia,int opc);
-    void optimizar();
+    int optimizar();
     double evaluarFuncion(double posicion);
     double devuelvePosicionMinimoGlobal() {return _mejor_y.last();}
     double devuelveValorMinimoGlobal() {return evaluarFuncion(_mejor_y.last());}

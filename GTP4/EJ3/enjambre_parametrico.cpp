@@ -2,18 +2,29 @@
 
 enjambre_parametrico::enjambre_parametrico(double num_part,double x_min,double x_max,double y_min,double y_max,double tolerancia)
 {
+    _enjambre_par.clear();
+
     //Particulas
     for (int i = 0; i<num_part; i++) {
-        _enjambre_par[i].inicializar(x_min,x_max,y_min,y_max);
+        particula_parametrica Auxiliar;
+        Auxiliar.inicializar(x_min,x_max,y_min,y_max);
+        _enjambre_par.append(Auxiliar);
     }
+    //mejor_y_x y _mejor_y_y inicial aleatorio
+    double aleatorio = valor_random(0,num_part);
+    _mejor_y_x.append(_enjambre_par[aleatorio].devolverPosicionX());
+    _mejor_y_y.append(_enjambre_par[aleatorio].devolverPosicionY());
+
     //Tolerancia seteada
     _tolerancia = tolerancia;
 }
 
-void enjambre_parametrico::optimizar()
+int enjambre_parametrico::optimizar()
 {
     //opc me indica que funcion estoy usando
     double error = 100.0;//Empieza con el maximo error asi itera
+
+    int cant_iteraciones = 0;
 
     do {
         //Comparaciones
@@ -84,8 +95,12 @@ void enjambre_parametrico::optimizar()
 
         }
 
+        cant_iteraciones++;
+
 
     } while (error >= _tolerancia);
+
+    return cant_iteraciones;
 }
 
 double enjambre_parametrico::evaluarFuncion(double posicion_x,double posicion_y)
