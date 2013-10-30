@@ -2,7 +2,9 @@
 #define POBLACION_H
 
 #include <QVector>
+#include <QMap>
 #include "evaluador.h"
+#include <cfloat>
 
 template<typename T> class Poblacion : public QVector<T>
 {
@@ -28,18 +30,24 @@ public:
 
     double mejorFitnes() const { return _mejor_fitness; }
 
+    void setearBrechaGeneracional( double valor ) { _brecha_generacional = valor; }
+    double brechaGeneracional() const { return _brecha_generacional; }
+
     void evaluarPoblacion();
     void seleccionarPadres();
 
 private:
     int _cantidad_total;
-    bool _elitismo;
+
     double _mejor_fitness;
     int _pos_mejor_fitness;
+
     MetodoSeleccion _metodo_seleccion;
+    bool _elitismo;
+    double _brecha_generacional;
 
     QVector<double> _fitness;
-    QVector<bool> _no_eliminar;
+    QVector<T> _nuevos_padres;
 
     void ruleta();
     void ventaneo();
@@ -82,13 +90,11 @@ template<typename T>
 void Poblacion<T>::seleccionarPadres()
 {
     // inicializo el vector de posiciones a no tocar
-    for( int i=0; i<this->size(); i++ ) {
-        _no_eliminar[i]=false;
-    }
+    _nuevos_padres.clear();
 
     // Me aseguro el elitismo para cualquier metodo
     if( _elitismo ) {
-        _no_eliminar[_pos_mejor_fitness]=true;
+        _nuevos_padres.append( this->at( _pos_mejor_fitness ) );
     }
 
     // Recorro el vector y selecciono segun el metodo elegido
@@ -102,16 +108,92 @@ void Poblacion<T>::seleccionarPadres()
 template<typename T>
 void Poblacion<T>::ruleta()
 {
+    QVector<double> _probabilidades( this->size() );
+
+    // Busco el maximo y minimo de los fitnes
+    double minimo = DBL_MAX;
+    for( int i=0; i<this->size(); i++ ) {
+        if( _fitness[i] < minimo ) {
+            minimo = _fitness[i];
+        }
+    }
+
+    int tam_nueva_generacion = floor( this->size() * _brecha_generacional );
+
+    for( int j=0; j<tam_nueva_generacion; j++ ) {
+
+        // Genero la escala para la ruleta y las probabilidades de cada uno
+        _probabilidades.clear();
+        _probabilidades.reserve( this->size() );
+        for( int i=0; i<this->size(); i++ ) {
+            _probabilidades[i] = ( _fitness[i] - minimo ) / ( _mejor_fitness - minimo ); // Interpolacion
+        }
+
+        // Armo el vector de indices de la ruleta
+        QVector<int> ruleta( this->size() );
+        for( int i=0; i<_probabilidades.size(); i++ ) {
+            // Calculo cuantos elementos de la ruleta le corresponden
+            int cant = floor( _probabilidades.at( i ) / 100 );
+            // Lleno la ruleta con los indices
+            for( int j=0; j<cant; j++ ) {
+                ruleta.append( i );
+            }
+
+        }
+
+        int azar = valor_random( 0, ruleta.size() );
+
+        // Coloco el seleccionado en la población de padres
+        _nuevos_padres.append( this->at( azar ) );
+        // Lo elimino de la poblacion actual para rehacer el sistema actual
+        this->remove( azar );
+
+    }
+
+
 }
 
 template<typename T>
 void Poblacion<T>::ventaneo()
 {
+    // Hago un mapa que me ordene los datos de fitness de cada uno
+    // El mapa contiene el fitnes y la posicion en el vector
+    // El mapa al estar implementado como un arbol, se auto ordena al insertar elementos.
+    QMap<double,int> orden;
+    for( int i=0; i<this->size(); i++ ) {
+        orden.insert( _fitness.at(i), i );
+    }
+
+    int tam_nueva_generacion = floor( this->size() * _brecha_generacional );
+
+    for( int j=0; j<tam_nueva_generacion; j++ ) {
+
+        // Calculo el tamaño de la ventana a utilizar
+        int tam_ventana = ( this->size() - ( j * ( this->size() / tam_nueva_generacion ) ) );
+
+        int azar = valor_random( 0, tam_ventana );
+
+
+        // La lista esta ordenada en ascendente, o sea que el fitnes mayor está en las utlimas posiciones
+        QList<int> indices_ordenados = orden.values();
+        int pos_actual = indices_ordenados.at( indices_ordenados.size() - azar );
+
+        // Agrego la posicion al vector de padres
+        _nuevos_padres.append( this->at( pos_actual ) );
+
+        // Saco el elemento sacado de la lista de orden
+        orden.remove( indices_ordenados.at( indices_ordenados.size() - azar ) );
+
+        // lo elimino de los proximos candidatos
+        this->remove( pos_actual );
+    }
+
 }
 
 template<typename T>
 void Poblacion<T>::torneo()
 {
+
 }
 
 #endif // POBLACION_H
