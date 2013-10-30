@@ -147,6 +147,7 @@ void Poblacion<T>::ruleta()
         _nuevos_padres.append( this->at( azar ) );
         // Lo elimino de la poblacion actual para rehacer el sistema actual
         this->remove( azar );
+        _fitness.remove( azar );
 
     }
 
@@ -186,6 +187,9 @@ void Poblacion<T>::ventaneo()
 
         // lo elimino de los proximos candidatos
         this->remove( pos_actual );
+        // Elimino su fitness
+        _fitness.remove( pos_actual );
+
     }
 
 }
@@ -193,7 +197,44 @@ void Poblacion<T>::ventaneo()
 template<typename T>
 void Poblacion<T>::torneo()
 {
+    int tam_nueva_generacion = floor( this->size() * _brecha_generacional );
 
+    for( int j=0; j<tam_nueva_generacion; j++ ) {
+
+        // Elijo cuatro participantes y los hago competir
+        int pos1 = valor_random( 0, this->size() );
+        int pos2 = valor_random( 0, this->size() );
+        int pos3 = valor_random( 0, this->size() );
+        int pos4 = valor_random( 0, this->size() );
+
+        int ganador1 = 0;
+        int ganador2 = 0;
+
+        if( _fitness.at( pos1 ) > _fitness.at( pos2 ) ) {
+            ganador1 = pos1;
+        } else {
+            ganador1 = pos2;
+        }
+        if( _fitness.at( pos3 ) > _fitness.at( pos4 ) ) {
+            ganador2 = pos3;
+        } else {
+            ganador2 = pos4;
+        }
+        int ganador = 0;
+        if( _fitness.at( ganador1 ) > _fitness.at( ganador2 ) ) {
+            ganador = ganador1;
+        } else {
+            ganador = ganador2;
+        }
+
+        // lo coloco con los padres
+        _nuevos_padres.append( this->at( ganador ) );
+        // Lo elimino de los elementos actuale
+        this->remove( ganador );
+        // Elimino su fitness
+        _fitness.remove( ganador );
+
+    }
 }
 
 #endif // POBLACION_H
