@@ -18,6 +18,7 @@ typedef QVector< QVector<double> > matriz;
 
 #include "funciones_aux.h"
 #include "genomax.h"
+#include "poblacion.h"
 
 /*!
  * \brief main
@@ -47,7 +48,7 @@ int main(int argc, char *argv[])
     grafTemperatura->setearParaTrapezoide();*/
 
     // barra de progreso para mostrar el avance del tiempo
-    QDockWidget *dockBarra = new QDockWidget( QString::fromUtf8( "Paso del tiempo" ) );
+    QDockWidget *dockBarra = new QDockWidget( QString::fromUtf8( "Evaluaciones" ) );
     main.addDockWidget( Qt::BottomDockWidgetArea, dockBarra );
     QProgressBar *PBTiempo = new QProgressBar( dockBarra );
     dockBarra->setWidget( PBTiempo );
@@ -58,15 +59,39 @@ int main(int argc, char *argv[])
     // Cargo los parametros del ejercicio
     QSettings parametros( "parametros.cfg", QSettings::IniFormat );
 
-    QVector<GenomaX> poblacion;
+    // Inicializo la poblacion
+    Poblacion<GenomaX> pob;
+    int cant_total = parametros.value( "cant_elementos" ).toInt();
+    pob.setearTotal( cant_total );
 
-    GenomaX Prueba1, Prueba2;
+    pob.setearElitismo( parametros.value( "elitismo", false ).toBool() );
 
-    Prueba1.setX( 128 );
-    Prueba2.setX( 256 );
+    double max = parametros.value( "max" ).toDouble();
+    double min = parametros.value( "min" ).toDouble();
+    for( int i=0; i<cant_total; i++ ) {
+        GenomaX temp;
+        temp.setX( valor_random( min, max ) );
+        pob.append( temp );
+    }
 
-    Prueba1.mostrasFeneotipo();
-    Prueba2.mostrasFeneotipo();
+    double fitnes_necesario = parametros.value( "fitnes_necesario", 0.0 ).toDouble();
+
+    int iteracciones_maximas = parametros.value( "iteracciones_maximas", 1000 ).toInt();
+    int iteracciones = 0;
+    PBTiempo->setRange( 0, iteracciones_maximas );
+
+    pob.evaluarPoblacion();
+
+    while( pob.mejorFitnes() > fitnes_necesario
+        && iteracciones <= iteracciones_maximas ) {
+
+        pob.seleccionarPadres();
+        //pob.generarHijos();
+        pob.evaluarPoblacion();
+
+        iteracciones++;
+        PBTiempo->setValue( iteracciones );
+    }
 
     return a.exec();
 }

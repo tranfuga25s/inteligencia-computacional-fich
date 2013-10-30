@@ -13,4 +13,6 @@ OTHER_FILES += parametros.cfg \
 INCLUDEPATH += ../../util
 
 HEADERS += \
-    genomax.h
+    genomax.h \
+    poblacion.h \
+    evaluador.h
