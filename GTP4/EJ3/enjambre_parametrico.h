@@ -11,7 +11,6 @@ public:
     double evaluarFuncion(double posicion_x,double posicion_y);
     QPair<double,double> devuelvePosicionMinimoGlobal() {return qMakePair(_mejor_y_x.last(),_mejor_y_y.last());}
     double devuelveValorMinimoGlobal() {return evaluarFuncion(_mejor_y_x.last(),_mejor_y_y.last());}
-    int devuelveCantidadParticulas() {return _enjambre_par.size();}
 private:
     QVector<particula_parametrica> _enjambre_par;
     QVector<double> _mejor_y_x;//Mejor posicion global en x

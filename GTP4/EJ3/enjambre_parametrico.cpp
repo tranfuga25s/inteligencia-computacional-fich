@@ -65,37 +65,46 @@ int enjambre_parametrico::optimizar()
             vel_aux_x = _enjambre_par[i].devolverVelocidadX()
                     + c1 * r1_x * (_enjambre_par[i].devolverMejorPosicionX() - _enjambre_par[i].devolverPosicionX())
                     + c2 * r2_x * (_mejor_y_x.last() -  _enjambre_par[i].devolverPosicionX());
-            _enjambre_par[i].setearVelocidadX(vel_aux_x);
+
+            //controlo que la velocidad no supere vmax = (x_max - x_min)
+            double vMax_x = _X_max - _X_min;
+            if(vel_aux_x < vMax_x) {
+               _enjambre_par[i].setearVelocidadX(vel_aux_x);
+            }
+            else
+            {
+                _enjambre_par[i].setearVelocidadX(vMax_x);
+            }
+
+
 
             //Y
             double vel_aux_y = 0.0;
             vel_aux_y = _enjambre_par[i].devolverVelocidadY()
                     + c1 * r1_y * (_enjambre_par[i].devolverMejorPosicionY() - _enjambre_par[i].devolverPosicionY())
                     + c2 * r2_y * (_mejor_y_y.last() -  _enjambre_par[i].devolverPosicionY());
-            _enjambre_par[i].setearVelocidadY(vel_aux_y);
+
+            //controlo que la velocidad no supere vmax = (x_max - x_min)
+            double vMax_y = _Y_max - _Y_min;
+            if(vel_aux_y < vMax_y) {
+               _enjambre_par[i].setearVelocidadY(vel_aux_y);
+            }
+            else
+            {
+               _enjambre_par[i].setearVelocidadY(vMax_y);
+            }
 
             //Posicion
 
             //X
             double pos_aux_x = 0.0;
             pos_aux_x =  _enjambre_par[i].devolverPosicionX() + _enjambre_par[i].devolverVelocidadX();
-
+            _enjambre_par[i].setPosicionX(pos_aux_x);
 
             //Y
             double pos_aux_y = 0.0;
             pos_aux_y =  _enjambre_par[i].devolverPosicionY() + _enjambre_par[i].devolverVelocidadY();
-
-             //Controlo no sobrepasar los limites
-            if ( pos_aux_x <= _X_max && pos_aux_x >= _X_min && pos_aux_y <= _Y_max && pos_aux_y >= _Y_min) {
-                //Dentro de los limites
-                _enjambre_par[i].setPosicionX(pos_aux_x);
-                _enjambre_par[i].setPosicionY(pos_aux_y);
-            }
-            else
-            {
-                //Estrategia: Borro las particulas que se van de dominio con la correccion
-                _enjambre_par.remove(i);
-            }
+            _enjambre_par[i].setPosicionY(pos_aux_y);
 
         }
 
@@ -113,7 +122,7 @@ int enjambre_parametrico::optimizar()
 
         cant_iteraciones++;
 
-        qDebug() << "Error: " << error;
+        //qDebug() << "Error: " << error;
 
 
     } while (error >= _tolerancia);
