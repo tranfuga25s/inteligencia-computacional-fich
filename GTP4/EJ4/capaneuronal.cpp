@@ -18,12 +18,12 @@ void CapaNeuronal::setearTasaAprendizaje( double tasa )
     }
 }
 
-void CapaNeuronal::setearMomento(double momento)
-{
-    for( int i=0; i<neuronas.size(); i++ ) {
-        neuronas[i]->setearMomento( momento );
-    }
-}
+//void CapaNeuronal::setearMomento(double momento)
+//{
+//    for( int i=0; i<neuronas.size(); i++ ) {
+//        neuronas[i]->setearMomento( momento );
+//    }
+//}
 
 /*!
  * \brief CapaNeuronal::inicializarPesos
@@ -33,6 +33,19 @@ void CapaNeuronal::inicializarPesos()
 {
     for( int i=0; i<neuronas.size(); i++ ) {
         neuronas[i]->inicializarPesos();
+    }
+}
+
+/*!
+ * \brief CapaNeuronal::setearPesos
+ * Setea los pesos por copia
+ *\param pesos
+ */
+
+void CapaNeuronal::setearPesos(QVector<double> pesos)
+{
+    for( int i=0; i<neuronas.size(); i++ ) {
+        neuronas[i]->seteaPesos(pesos);
     }
 }
 

@@ -20,9 +20,10 @@ public:
     void setearTasaAprendizaje( double tasa ) { _tasa_aprendizaje = tasa; }
     double tasaAprendizaje() { return _tasa_aprendizaje; }
 
-    void setearMomento( double momento ) { _momento = momento; }
-    double tasaMomento() { return _momento; }
+//    void setearMomento( double momento ) { _momento = momento; }
+//    double tasaMomento() { return _momento; }
 
+    int cantidadPesos() {return _pesos.size();}
 
     int cantidadEntradas() { return _cantidad_entradas; }
 

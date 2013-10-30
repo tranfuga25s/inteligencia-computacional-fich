@@ -21,7 +21,6 @@ typedef QVector< QVector<double> > matriz;
 
 #include "funciones_aux.h"
 #include "neurona.h"
-#include "particionador.h"
 #include "enjambre.h"
 
 /*!
@@ -158,7 +157,11 @@ int main(int argc, char *argv[])
 
     qDebug() << "Tiempo medido: " << milisegundos << " ms";
 
-    //ACA TENDRIA QUE COPIARLE LOS PESOS OPTIMIZADOS A LA RED NEURONAL
+    //Copio los pesos optimizados
+
+    red.setearPesos(psonn.devuelvePosiciones());
+
+    //Pruebo la red
 
     QVector<int> nueva_salida;
     for( int i=0; i<entradas.size(); i++ ) {

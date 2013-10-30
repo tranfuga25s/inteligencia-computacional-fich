@@ -10,7 +10,9 @@ SOURCES +=  main.cpp \
     enjambre.cpp \
     redneuronal.cpp \
     neurona.cpp \
-    capaneuronal.cpp
+    capaneuronal.cpp \
+    ../../util/graficador.cpp \
+    ../../util/graficadormdi.cpp
 
 OTHER_FILES += \
     parametros.cfg \
@@ -25,4 +27,6 @@ HEADERS += \
     enjambre.h \
     redneuronal.h \
     neurona.h \
-    capaneuronal.h
+    capaneuronal.h \
+    ../../util/graficador.h \
+    ../../util/graficadormdi.h

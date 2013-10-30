@@ -14,6 +14,8 @@ public:
     void setearTasaAprendizaje( double tasa );
     void setearMomento ( double momento );
     void inicializarPesos();
+    void setearPesos(QVector<double> pesos);
+    int cantidadPesos () {return neuronas.size() * neuronas.at(0)->cantidadPesos();} //Devuelve la cantidad de pesos de la capa
 
     void evaluar( vector entradas );
 

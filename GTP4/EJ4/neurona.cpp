@@ -6,7 +6,7 @@ Neurona::Neurona( int cantidad_entradas )
     _tasa_aprendizaje = 0.25;
     _cantidad_entradas = cantidad_entradas;
     _ultima_salida = 0.0;
-    _delta = 0.0;
+    //_delta = 0.0;
    // qDebug() << "Nueva neurona";
 }
 

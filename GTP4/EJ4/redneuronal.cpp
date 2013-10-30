@@ -28,16 +28,16 @@ void RedNeuronal::setearTasaAprendizaje( double tasa )
     }
 }
 
-/*!
- * \brief RedNeuronal::setearMomento
- * \param momento
- */
-void RedNeuronal::setearMomento(double momento)
-{
-    for( int i=0; i<capas.size(); i++ ) {
-        capas[i]->setearMomento( momento );
-    }
-}
+///*!
+// * \brief RedNeuronal::setearMomento
+// * \param momento
+// */
+//void RedNeuronal::setearMomento(double momento)
+//{
+//    for( int i=0; i<capas.size(); i++ ) {
+//        capas[i]->setearMomento( momento );
+//    }
+//}
 
 /*!
  * \brief RedNeuronal::inicializarPesos
@@ -47,6 +47,31 @@ void RedNeuronal::inicializarPesos()
 {
     for( int i=0; i<capas.size(); i++ ) {
         capas[i]->inicializarPesos();
+    }
+}
+
+/*!
+ * \brief RedNeuronal::setearPesos
+ * Setea los pesos de la red por copia
+ */
+void RedNeuronal::setearPesos(QVector<double> pesos)
+{
+    for( int i=0; i<capas.size(); i++ ) {
+        //Sera indistinto el a que neurona le asigno a cada peso???
+        int cant_a_borrar = capas.at(i)->cantidadPesos();
+        QVector<double> pesos_aux;
+
+        //Copio
+        for(int j = 0; j<cant_a_borrar; j++) {
+            pesos_aux.append(pesos.at(i));
+        }
+
+        //Elimino
+        for(int j = 0; j<cant_a_borrar; j++) {
+            pesos.remove(i);
+        }
+
+        capas[i]->setearPesos(pesos_aux);
     }
 }
 

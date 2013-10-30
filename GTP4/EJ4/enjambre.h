@@ -12,6 +12,7 @@ public:
     double evaluarFuncion(double posicion);
     double devuelvePosicionMinimoGlobal() {return _mejor_y.last();}
     double devuelveValorMinimoGlobal() {return evaluarFuncion(_mejor_y.last());}
+    QVector<double> devuelvePosiciones();
 private:
     QVector<Particula> _enjambre;
     QVector<double> _mejor_y;//Necesito guardar para poder calcular el error

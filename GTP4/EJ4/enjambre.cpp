@@ -101,3 +101,20 @@ double enjambre::evaluarFuncion(double posicion)
 
     return valor_retorno;
 }
+
+//!
+//! \brief enjambre::devuelvePosiciones
+//! Va a devolver todas las posiciones en un vector para luego ponerlas como peso en una red neuronal
+//! \return
+//!
+
+QVector<double> enjambre::devuelvePosiciones()
+{
+    QVector<double> Auxiliar;
+
+    for (int i = 0; i<_enjambre.size() ; i++) {
+        Auxiliar.append(_enjambre[i].devolverPosicion());
+    }
+
+    return Auxiliar;
+}
