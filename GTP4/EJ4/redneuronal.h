@@ -13,15 +13,15 @@ public:
     int cantidadCapas() { return capas.size(); }
 
     void setearTasaAprendizaje( double tasa );
-    void setearMomento(double momento);
-    double getMomento() { return capas[0]->getNeuronas()[0]->tasaMomento(); }
+    //void setearMomento(double momento);
+    //double getMomento() { return capas[0]->getNeuronas()[0]->tasaMomento(); }
+
 
     void inicializarPesos();
+    int cantidadPesos();
+    void setearPesos(QVector<double> pesos);
 
     vector forwardPass( vector entradas );//forward pass
-    void backwardPass(vector entradas, double salida );//backward pass
-
-    void entrenamiento(vector entradas, double salidas );
 
     void setearCodificacion( QVector<int> codif );
     QVector<int> mostrarCodificacionSalida() { return codif_salidas; }

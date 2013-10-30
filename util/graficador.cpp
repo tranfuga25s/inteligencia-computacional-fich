@@ -196,6 +196,7 @@ void Graficador::agregarPuntosClasificados( matriz entradas, QVector<int> salida
  */
 void Graficador::agregarPuntosClasificados( matriz entradas, QVector<int> salida, QVector<int> codificacion_salida )
 {
+    //QVector<matriz> superentrada( codificacion_salida.size() );
     QVector<matriz> superentrada( codificacion_salida.size() );
     for( int i=0; i<entradas.size(); i++ ) {
         superentrada[salida.at(i)].append( entradas.at(i) );
