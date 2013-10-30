@@ -19,10 +19,10 @@ public:
 
     vector getSalidas();
 
-    void corregirPesos( vector entradas );
+//    void corregirPesos( vector entradas );
 
-    void corregirDeltas( int num_nueronas, double error );
-    double getDeltas( int num_neurona );
+//    void corregirDeltas( int num_nueronas, double error );
+//    double getDeltas( int num_neurona );
 
     QVector<Neurona *> getNeuronas() { return neuronas; }
     

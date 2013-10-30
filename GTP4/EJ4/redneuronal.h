@@ -19,9 +19,9 @@ public:
     void inicializarPesos();
 
     vector forwardPass( vector entradas );//forward pass
-    void backwardPass(vector entradas, double salida );//backward pass
+//    void backwardPass(vector entradas, double salida );//backward pass
 
-    void entrenamiento(vector entradas, double salidas );
+//    void entrenamiento(vector entradas, double salidas );
 
     void setearCodificacion( QVector<int> codif );
     QVector<int> mostrarCodificacionSalida() { return codif_salidas; }
