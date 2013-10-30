@@ -35,6 +35,7 @@ public:
 
     void evaluarPoblacion();
     void seleccionarPadres();
+    void generarHijos();
 
 private:
     int _cantidad_total;
@@ -234,6 +235,34 @@ void Poblacion<T>::torneo()
         // Elimino su fitness
         _fitness.remove( ganador );
 
+    }
+}
+
+template<typename T>
+void Poblacion<T>::generarHijos()
+{
+    while( this->size() < _cantidad_total ) {
+
+        int p1 = valor_random( 0, _nuevos_padres.size() );
+        int p2 = valor_random( 0, _nuevos_padres.size() );
+
+        T hijo1 = _nuevos_padres.at( p1 );
+        T hijo2 = _nuevos_padres.at( p2 );
+
+        cruza( hijo1, hijo2 );
+
+        double prob1 = valor_random( 0.0, 100.0 );
+        double prob2 = valor_random( 0.0, 100.0 );
+
+        if( fmod( prob1, _probabilidad_mutacion ) == 0 ) {
+            mutar( hijo1 );
+        }
+        if( fmod( prob2, _probabilidad_mutacion ) == 0 ) {
+            mutar( hijo2 );
+        }
+
+        this->append( hijo1 );
+        this->append( hijo2 );
     }
 }
 

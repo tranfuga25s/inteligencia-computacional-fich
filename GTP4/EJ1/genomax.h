@@ -107,13 +107,13 @@ void GenomaX::aFenotipo() {
 }
 
 
-void mutar( GenomaX &g ) {
+static void mutar( GenomaX &g ) {
     int pos = valor_random( 0, g.size() );
     g.mutar( pos );
     g.aFenotipo();
 }
 
-void cruza( GenomaX &a, GenomaX &b ) {
+static void cruza( GenomaX &a, GenomaX &b ) {
     //Asumimos que tienen la misma profundidad de bits los genomas
 
     int pos = valor_random( 0, a.size() );

@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
         && iteracciones <= iteracciones_maximas ) {
 
         pob.seleccionarPadres();
-        //pob.generarHijos();
+        pob.generarHijos();
         pob.evaluarPoblacion();
 
         iteracciones++;
