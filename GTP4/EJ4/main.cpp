@@ -91,10 +91,10 @@ int main(int argc, char *argv[])
     qDebug() << "Cantidad de Particulas: " << ( cant_particulas );
 
     double xmax = parametros.value( "xmax" ).toDouble();
-    qDebug() << "Limite Superior: " << ( xmax ) << "%";
+    qDebug() << "Limite Superior: " << ( xmax );
 
     double xmin = parametros.value( "xmin" ).toDouble();
-    qDebug() << "Limite Inferior: " << ( xmin ) << "%";
+    qDebug() << "Limite Inferior: " << ( xmin );
 
     enjambre psonn(cant_particulas,xmin,xmax,tolerancia_error);
 
@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
     QElapsedTimer medidor_tiempo;
     medidor_tiempo.start();
 
-    psonn.optimizar();
+    //psonn.optimizar();
 
     qint64 milisegundos = medidor_tiempo.elapsed();
 
@@ -159,7 +159,10 @@ int main(int argc, char *argv[])
 
     //Copio los pesos optimizados
 
-    red.setearPesos(psonn.devuelvePosiciones());
+    red.inicializarPesos();
+    //red.setearPesos(psonn.devuelvePosiciones());
+    qDebug() << "CANTIDAD PESOS RED: " << red.cantidadPesos();
+
 
     //Pruebo la red
 

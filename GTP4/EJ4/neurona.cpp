@@ -15,7 +15,7 @@ void Neurona::inicializarPesos()
     //El termino cantidad_entradad+1 es porque reservo el lugar en el w para el bias
     for( int i = 0; i<_cantidad_entradas+1; i++ ) {
         _pesos.push_back( valor_random( -0.5, 0.5 ) );
-        _var_pesos_ant.push_back(0.0);
+        //_var_pesos_ant.push_back(0.0);
     }
     _ultima_salida = 0.0;
 }
@@ -27,7 +27,7 @@ QVector<double> Neurona::devuelvePesos()
 
 void Neurona::seteaPesos(QVector<double> pesos)
 {
-    _pesos = pesos;
+     _pesos = pesos;
 }
 
 double Neurona::evaluar( QVector<double> entradas )

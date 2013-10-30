@@ -50,28 +50,43 @@ void RedNeuronal::inicializarPesos()
     }
 }
 
+//!
+//! \brief RedNeuronal::cantidadPesos
+//!Retorna la cantidad de pesos en la red
+//! \return
+//!
+int RedNeuronal::cantidadPesos()
+{
+    int suma = 0;
+    for( int i=0; i<capas.size(); i++ ) {
+        suma+=capas.at(i)->cantidadPesos();
+    }
+    return suma;
+}
+
 /*!
  * \brief RedNeuronal::setearPesos
  * Setea los pesos de la red por copia
  */
 void RedNeuronal::setearPesos(QVector<double> pesos)
 {
+    int inicio = 0;
+    int cant;
+
     for( int i=0; i<capas.size(); i++ ) {
         //Sera indistinto el a que neurona le asigno a cada peso???
-        int cant_a_borrar = capas.at(i)->cantidadPesos();
+        cant = capas.at(i)->cantidadPesos();
+
         QVector<double> pesos_aux;
 
         //Copio
-        for(int j = 0; j<cant_a_borrar; j++) {
-            pesos_aux.append(pesos.at(i));
+        for(int j = 0; j<cant; j++) {
+            pesos_aux.append(pesos.at(inicio + j));
         }
 
-        //Elimino
-        for(int j = 0; j<cant_a_borrar; j++) {
-            pesos.remove(i);
-        }
+        inicio += (capas.at(i)->cantidadPesos() - 1);
 
-        capas[i]->setearPesos(pesos_aux);
+        capas.at(i)->setearPesos(pesos_aux);
     }
 }
 

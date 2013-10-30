@@ -45,9 +45,9 @@ public:
 private:
     int _cantidad_entradas;
     double _tasa_aprendizaje;
-    double _momento;
+    //double _momento;
     QVector<double> _pesos;
-    QVector<double> _var_pesos_ant;
+    //QVector<double> _var_pesos_ant;
     double _ultima_salida;
     //double _delta;
     

@@ -16,8 +16,9 @@ public:
     //void setearMomento(double momento);
     //double getMomento() { return capas[0]->getNeuronas()[0]->tasaMomento(); }
 
-    void inicializarPesos();
 
+    void inicializarPesos();
+    int cantidadPesos();
     void setearPesos(QVector<double> pesos);
 
     vector forwardPass( vector entradas );//forward pass
