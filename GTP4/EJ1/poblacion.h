@@ -33,6 +33,9 @@ public:
     void setearBrechaGeneracional( double valor ) { _brecha_generacional = valor; }
     double brechaGeneracional() const { return _brecha_generacional; }
 
+    void setearProbabilidadMutacion( double valor ) { _probabilidad_mutacion = valor; }
+    double probabilidadMutacion() { return _probabilidad_mutacion; }
+
     void evaluarPoblacion();
     void seleccionarPadres();
     void generarHijos();
@@ -46,6 +49,7 @@ private:
     MetodoSeleccion _metodo_seleccion;
     bool _elitismo;
     double _brecha_generacional;
+    double _probabilidad_mutacion;
 
     QVector<double> _fitness;
     QVector<T> _nuevos_padres;
@@ -64,6 +68,7 @@ Poblacion<T>::Poblacion() : QVector<T>()
     _metodo_seleccion = Ruleta;
     _mejor_fitness = 0.0;
     _pos_mejor_fitness = -1;
+    _probabilidad_mutacion = 0.0;
 }
 
 template<typename T>
@@ -241,6 +246,8 @@ void Poblacion<T>::torneo()
 template<typename T>
 void Poblacion<T>::generarHijos()
 {
+
+
     while( this->size() < _cantidad_total ) {
 
         int p1 = valor_random( 0, _nuevos_padres.size() );
