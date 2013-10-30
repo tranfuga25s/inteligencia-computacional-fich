@@ -65,6 +65,9 @@ int main(int argc, char *argv[])
     pob.setearTotal( cant_total );
 
     pob.setearElitismo( parametros.value( "elitismo", false ).toBool() );
+    pob.setearBrechaGeneracional( parametros.value( "brecha_generacional" ).toInt() );
+    pob.setearProbabilidadMutacion( parametros.value( "probabilidad_mutacion").toDouble() );
+    pob.setearModoSeleccionPadres( (Poblacion<GenomaX>::MetodoSeleccion)parametros.value( "metodo_seleccion" ).toInt() );
 
     double max = parametros.value( "max" ).toDouble();
     double min = parametros.value( "min" ).toDouble();
