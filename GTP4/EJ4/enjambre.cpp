@@ -22,7 +22,8 @@ enjambre::enjambre(double num_part, double x_min, double x_max, double toleranci
 
     //Inicializo la red con los parametros pasados
     _redpso =  &red;
-    //_redpso->setearPesos(this->devuelvePosiciones());
+    //Le pongo las posiciones del pso como pesos en la red
+    _redpso->setearPesos(this->devuelvePosiciones());
 
     //Copio las salidas deseadas y las entradas para poder comparar
     _entradas = entradas;
@@ -41,11 +42,11 @@ int enjambre::optimizar()
         for(int i=0 ; i<_enjambre.size() ; i++){
 
             //Actualizo la mejor de la particula
-            if(evaluarFuncion(_enjambre[i].devolverPosicion()) < evaluarFuncion(_enjambre[i].devolverMejorPosicion()) ) {
+            if(evaluarFuncion(_enjambre[i].devolverPosicion(),i) < evaluarFuncion(_enjambre[i].devolverMejorPosicion(),i) ) {
                 _enjambre[i].setMejorPosicion(_enjambre[i].devolverPosicion());
             }
             //Actualizo la mejor global
-            if( evaluarFuncion(_enjambre[i].devolverMejorPosicion()) < evaluarFuncion(_mejor_y.last()) ) {
+            if( evaluarFuncion(_enjambre[i].devolverMejorPosicion(),i) < evaluarFuncion(_mejor_y.last(),i) ) {
                 _mejor_y.append( _enjambre[i].devolverMejorPosicion() );//Guardo todos los mejores y
             }
 
@@ -93,8 +94,8 @@ int enjambre::optimizar()
          */
         if (_mejor_y.size() >= 2) {
 
-            error = fabs( evaluarFuncion(_mejor_y.at(_mejor_y.size() - 1)) - evaluarFuncion(_mejor_y.at(_mejor_y.size() - 2)) )
-                    / fabs( evaluarFuncion(_mejor_y.at(_mejor_y.size() - 1)) );
+            error = fabs( evaluarFuncion(_mejor_y.at(_mejor_y.size() - 1)) - evaluarFuncion(_mejor_y.at(_mejor_y.size() - 2)))
+                    / fabs( evaluarFuncion(_mejor_y.at(_mejor_y.size() - 1)));
 
         }
 
@@ -108,8 +109,27 @@ int enjambre::optimizar()
 
 double enjambre::evaluarFuncion(double posicion)
 {
-    //En primera instancia tendria que cargar posicion como uno de los pesos de la red y el resto dejar los que estaban
-    //Guardando los pesos anteriores???
+    //Tendria que poder copiar lo que me pasan como posicion a un nuevo peso despues evaluar
+
+    //Hago un feedforward de la red y comparo las salidas obtenidas con las que son correctas
+
+    QVector<int> salida_entr;
+    for( int i=0; i<_salidas.size(); i++ ) {
+        salida_entr.append( _redpso->mapeadorSalidas( _redpso->forwardPass( _entradas.at(i) ) ) );
+    }
+    int errores = 0;
+    for(int i=0;i<_salidas.size();i++) {
+        if ( _salidas.at(i) != salida_entr.at(i) ) {
+            errores++;
+        }
+    }
+
+    return errores;
+}
+
+double enjambre::evaluarFuncion(double posicion,int pos)
+{
+    //Tendria que poder copiar lo que me pasan como posicion a un nuevo peso despues evaluar
 
     //Hago un feedforward de la red y comparo las salidas obtenidas con las que son correctas
 

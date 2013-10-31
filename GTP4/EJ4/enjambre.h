@@ -11,6 +11,7 @@ public:
     enjambre(double num_part, double x_min, double x_max, double tolerancia,RedNeuronal &red,matriz entradas,vector salidas);
     int optimizar();
     double evaluarFuncion(double posicion);
+    double evaluarFuncion(double posicion,int pos);
     double devuelvePosicionMinimoGlobal() {return _mejor_y.last();}
     double devuelveValorMinimoGlobal() {return evaluarFuncion(_mejor_y.last());}
     QVector<double> devuelvePosiciones();
