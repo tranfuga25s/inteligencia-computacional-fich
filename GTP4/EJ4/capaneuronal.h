@@ -19,6 +19,11 @@ public:
 
     void evaluar( vector entradas );
 
+    CapaNeuronal& operator = (CapaNeuronal const &capa) {
+        neuronas = capa.neuronas;
+        return *this;
+    }
+
     vector getSalidas();
 
 //    void corregirPesos( vector entradas );

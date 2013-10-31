@@ -1,6 +1,6 @@
 #include "enjambre.h"
 
-enjambre::enjambre(double num_part, double x_min, double x_max, double tolerancia)
+enjambre::enjambre(double num_part, double x_min, double x_max, double tolerancia, RedNeuronal &red,matriz entradas ,vector salidas)
 {
     _enjambre.clear();
 
@@ -19,6 +19,14 @@ enjambre::enjambre(double num_part, double x_min, double x_max, double toleranci
 
     //Tolerancia seteada
     _tolerancia = tolerancia;
+
+    //Inicializo la red con los parametros pasados
+    _redpso =  &red;
+    //_redpso->setearPesos(this->devuelvePosiciones());
+
+    //Copio las salidas deseadas y las entradas para poder comparar
+    _entradas = entradas;
+    _salidas = salidas;
 
 }
 
@@ -74,6 +82,10 @@ int enjambre::optimizar()
 
         }
 
+        //Una vez que actualizo todas las posiciones, actualizo nuevamente los pesos de la red neuronal
+
+        _redpso->setearPesos(this->devuelvePosiciones());
+
         //Porcentaje de error
         /*
          *Lo que estaria haciendo aca seria calcular el error en base a como varia la funcion
@@ -96,10 +108,23 @@ int enjambre::optimizar()
 
 double enjambre::evaluarFuncion(double posicion)
 {
-    //La opcion indica cual de la funciones se evaluaria
-    double valor_retorno = 0.0;
+    //En primera instancia tendria que cargar posicion como uno de los pesos de la red y el resto dejar los que estaban
+    //Guardando los pesos anteriores???
 
-    return valor_retorno;
+    //Hago un feedforward de la red y comparo las salidas obtenidas con las que son correctas
+
+    QVector<int> salida_entr;
+    for( int i=0; i<_salidas.size(); i++ ) {
+        salida_entr.append( _redpso->mapeadorSalidas( _redpso->forwardPass( _entradas.at(i) ) ) );
+    }
+    int errores = 0;
+    for(int i=0;i<_salidas.size();i++) {
+        if ( _salidas.at(i) != salida_entr.at(i) ) {
+            errores++;
+        }
+    }
+
+    return errores;
 }
 
 //!

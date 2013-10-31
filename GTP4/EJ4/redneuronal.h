@@ -5,17 +5,22 @@
 #include <capaneuronal.h>
 #include "funciones_aux.h"
 
-class RedNeuronal : public QObject
+class RedNeuronal
 {
-    Q_OBJECT
 public:
-    RedNeuronal( int cant_capas, QVector<int> cantidad_neuronas, int cant_entradas, QObject *parent = 0);
+    RedNeuronal( int cant_capas, QVector<int> cantidad_neuronas, int cant_entradas);
+    RedNeuronal();//Constructor Vacio
     int cantidadCapas() { return capas.size(); }
 
     void setearTasaAprendizaje( double tasa );
     //void setearMomento(double momento);
     //double getMomento() { return capas[0]->getNeuronas()[0]->tasaMomento(); }
 
+    RedNeuronal& operator = (RedNeuronal const &red) {
+        capas = red.capas;
+        codif_salidas = red.codif_salidas;
+        return *this;
+    }
 
     void inicializarPesos();
     int cantidadPesos();

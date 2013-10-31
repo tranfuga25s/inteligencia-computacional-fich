@@ -73,14 +73,15 @@ int main(int argc, char *argv[])
     QVector<int> neuronas_por_capas = stringAQVector( parametros.value( "capas" ).toString() );
     RedNeuronal red( neuronas_por_capas.size(),
                      neuronas_por_capas,
-                     parametros.value("cantidad_entradas").toInt(),
-                     main.centralWidget() );
+                     parametros.value("cantidad_entradas").toInt());
 
     red.setearTasaAprendizaje( parametros.value( "tasa_aprendizaje" ).toDouble() );
     qDebug() << "Tasa de aprendizaje: " << parametros.value( "tasa_aprendizaje" ).toDouble();
 
     red.setearCodificacion( stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
     qDebug() << "Codificacion salida: " << red.mostrarCodificacionSalida();
+
+    qDebug() << "CANTIDAD PESOS RED: " << red.cantidadPesos();
 
     // Inicializo el enjambre de particulas
 
@@ -96,7 +97,19 @@ int main(int argc, char *argv[])
     double xmin = parametros.value( "xmin" ).toDouble();
     qDebug() << "Limite Inferior: " << ( xmin );
 
-    enjambre psonn(cant_particulas,xmin,xmax,tolerancia_error);
+    red.inicializarPesos();
+
+    enjambre psonn(cant_particulas,
+                   xmin,
+                   xmax,
+                   tolerancia_error,
+                   red,
+                   entradas,
+                   salidas);
+
+    //Copio los pesos del enjambre a la red
+
+    //red.setearPesos(psonn.devuelvePosiciones());
 
     qDebug() << endl << "---------------- /Comienza el entrenamiento/ ----------------";
 
@@ -110,59 +123,18 @@ int main(int argc, char *argv[])
         graf2->setearTituloEjeY( " y " );
         graf2->agregarPuntosClasificados( entradas, salidas, 0.5 );
         mdiArea->tileSubWindows();
-    } else {
-        matriz entradas1, entradas2;
-        vector salidas1, salidas2;
-        for( int i=0; i < entradas.size(); i++ ) {
-            vector temp;
-            temp.append( entradas.at(i).at(0) );
-            temp.append( entradas.at(i).at(1) );
-            entradas1.append( temp );
-            vector temp2;
-            temp2.append( entradas.at(i).at(2) );
-            temp2.append( entradas.at(i).at(3) );
-            entradas2.append( temp2 );
-            salidas1.append( salidas.at( i ) );
-            salidas2.append( salidas.at( i ) );
-        }
-
-        GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );
-        mdiArea->addSubWindow( graf2 );
-        graf2->showMaximized();
-        graf2->setearTitulo( "Datos originales" );
-        //graf2->setearEjesEnGrafico();
-        graf2->setearTituloEjeX( "Longitud" );
-        graf2->setearTituloEjeY( "Ancho" );
-        graf2->agregarPuntosClasificados( entradas1, salidas1, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
-
-        GraficadorMdi *graf3 = new GraficadorMdi( mdiArea );
-        mdiArea->addSubWindow( graf3 );
-        graf3->showMaximized();
-        graf3->setearTitulo( "Datos originales" );
-        //graf3->setearEjesEnGrafico();
-        graf3->setearTituloEjeX( "Petalos" );
-        graf3->setearTituloEjeY( "Sepalos" );
-        graf3->agregarPuntosClasificados( entradas2, salidas2, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
-        mdiArea->tileSubWindows();
-
     }
+
 
     // Mido el tiempo
     QElapsedTimer medidor_tiempo;
     medidor_tiempo.start();
 
-    //psonn.optimizar();
+    psonn.optimizar();
 
     qint64 milisegundos = medidor_tiempo.elapsed();
 
     qDebug() << "Tiempo medido: " << milisegundos << " ms";
-
-    //Copio los pesos optimizados
-
-    red.inicializarPesos();
-    //red.setearPesos(psonn.devuelvePosiciones());
-    qDebug() << "CANTIDAD PESOS RED: " << red.cantidadPesos();
-
 
     //Pruebo la red
 
@@ -181,39 +153,8 @@ int main(int argc, char *argv[])
         graf4->setearTituloEjeY( " y " );
         graf4->agregarPuntosClasificados( entradas, nueva_salida, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
         //graf4->agregarPuntosClasificados( entradas, nueva_salida );
-    } else {
-
-        matriz entradas1, entradas2;
-        vector salidas1, salidas2;
-        for( int i=0; i < entradas.size(); i++ ) {
-            vector temp;
-            temp.append( entradas.at(i).at(0) );
-            temp.append( entradas.at(i).at(1) );
-            entradas1.append( temp );
-            vector temp2;
-            temp2.append( entradas.at(i).at(2) );
-            temp2.append( entradas.at(i).at(3) );
-            entradas2.append( temp2 );
-            salidas1.append( nueva_salida.at( i ) );
-            salidas2.append( nueva_salida.at( i ) );
-        }
-
-        GraficadorMdi *graf4 = new GraficadorMdi( mdiArea );
-        mdiArea->addSubWindow( graf4 );
-        graf4->showMaximized();
-        graf4->setearTitulo( "Datos evaluados con red neuronal" );
-        graf4->setearTituloEjeX( "Largo" );
-        graf4->setearTituloEjeY( "Ancho" );
-        graf4->agregarPuntosClasificados( entradas1, salidas1, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
-
-        GraficadorMdi *graf5 = new GraficadorMdi( mdiArea );
-        mdiArea->addSubWindow( graf5 );
-        graf5->showMaximized();
-        graf5->setearTitulo( "Datos evaluados con red neuronal" );
-        graf5->setearTituloEjeX( "Petalos" );
-        graf5->setearTituloEjeY( "Sepalos" );
-        graf5->agregarPuntosClasificados( entradas2, salidas2, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
     }
+
     mdiArea->tileSubWindows();
 
     arch.close();

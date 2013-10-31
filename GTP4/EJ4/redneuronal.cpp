@@ -2,8 +2,7 @@
 
 #include <cfloat>
 
-RedNeuronal::RedNeuronal(int cantidad_capas , QVector<int> cantidad_neuronas ,int cantidad_entradas,QObject *parent) :
-QObject(parent)
+RedNeuronal::RedNeuronal(int cantidad_capas , QVector<int> cantidad_neuronas , int cantidad_entradas)
 {
     if( cantidad_capas != 0 ) {
         capas.reserve( cantidad_capas );
@@ -16,6 +15,7 @@ QObject(parent)
         }
     }
 }
+
 
 /*!
  * \brief RedNeuronal::setearTasaAprendizaje
