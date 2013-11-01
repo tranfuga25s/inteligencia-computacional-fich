@@ -1,7 +1,6 @@
 #ifndef CAPANEURONAL_H
 #define CAPANEURONAL_H
 
-#include <QObject>
 #include "neurona.h"
 #include "funciones_aux.h"
 

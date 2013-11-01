@@ -5,12 +5,14 @@
 RedNeuronal::RedNeuronal(int cantidad_capas , QVector<int> cantidad_neuronas , int cantidad_entradas)
 {
     if( cantidad_capas != 0 ) {
-        capas.reserve( cantidad_capas );
+        //capas.resize( cantidad_capas );
         for (int i = 0 ; i < cantidad_capas ; i++ ){
             if ( i == 0 ){
-                capas.insert( i, new CapaNeuronal( cantidad_neuronas[i], cantidad_entradas) );
+                //capas.insert( i, new CapaNeuronal( cantidad_neuronas[i], cantidad_entradas) );
+                capas.append(new CapaNeuronal( cantidad_neuronas[i], cantidad_entradas) );
             } else {
-                capas.insert( i, new CapaNeuronal( cantidad_neuronas[i], cantidad_neuronas[i-1] ) );
+                //capas.insert( i, new CapaNeuronal( cantidad_neuronas[i], cantidad_neuronas[i-1] ) );
+                capas.append( new CapaNeuronal( cantidad_neuronas[i], cantidad_neuronas[i-1] ) );
             }
         }
     }

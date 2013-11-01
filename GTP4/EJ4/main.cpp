@@ -97,6 +97,7 @@ int main(int argc, char *argv[])
     graf2->agregarPuntosClasificados( entradas, salidas, 0.5 );
     mdiArea->tileSubWindows();
 
+
     // Inicializo el enjambre de particulas
 
     double tolerancia_error = parametros.value( "tolerancia_error" ).toDouble();

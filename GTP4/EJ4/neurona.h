@@ -11,7 +11,7 @@ class Neurona
 public:
 
 
-    Neurona( int cantidadEntradas = 1 );
+    Neurona( int cantidadEntradas = 0);
 
     void inicializarPesos();
     QVector<double> devuelvePesos();
@@ -19,9 +19,6 @@ public:
 
     void setearTasaAprendizaje( double tasa ) { _tasa_aprendizaje = tasa; }
     double tasaAprendizaje() { return _tasa_aprendizaje; }
-
-//    void setearMomento( double momento ) { _momento = momento; }
-//    double tasaMomento() { return _momento; }
 
     int cantidadPesos() {return _pesos.size();}
 

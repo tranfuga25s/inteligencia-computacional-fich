@@ -11,7 +11,7 @@ enjambre::enjambre(double num_part, double x_min, double x_max, double toleranci
     //Particulas
     for (int i = 0; i<num_part; i++) {
         Particula Auxiliar;
-        Auxiliar.inicializar(_X_min,_X_max,_redpso->cantidadPesos());
+        Auxiliar.inicializar(_X_min,_X_max,num_part);
         _enjambre.append(Auxiliar);
     }
     //mejor_y inicial aleatorio
@@ -66,16 +66,14 @@ int enjambre::optimizar()
                 double r2 = valor_random(0.0,1.0);
 
                 //Velocidad
-                vel_aux[j] = 0.0;
-                vel_aux[j] = _enjambre[i].devolverVelocidad().at(j)
+                vel_aux.append(_enjambre[i].devolverVelocidad().at(j)
                         + c1 * r1 * (_enjambre[i].devolverMejoresPesos().at(j) - _enjambre[i].devolverPesos().at(j))
-                        + c2 * r2 * (_mejores_pesos_globales.last().at(j) -  _enjambre[i].devolverPesos().at(j));
+                        + c2 * r2 * (_mejores_pesos_globales.last().at(j) -  _enjambre[i].devolverPesos().at(j)) );
 
                 _enjambre[i].setearVelocidad(vel_aux[j],j);
 
                 //Posicion
-                pos_aux[j] = 0.0;
-                pos_aux[j] =  _enjambre[i].devolverPesos().at(j) + _enjambre[i].devolverVelocidad().at(j);
+                pos_aux.append( _enjambre[i].devolverPesos().at(j) + _enjambre[i].devolverVelocidad().at(j) );
                 _enjambre[i].setPesos(pos_aux[j],j);
             }
         }

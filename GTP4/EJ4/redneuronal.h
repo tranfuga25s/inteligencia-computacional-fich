@@ -9,6 +9,7 @@ class RedNeuronal
 {
 public:
     RedNeuronal( int cant_capas, QVector<int> cantidad_neuronas, int cant_entradas);
+
     int cantidadCapas() { return capas.size(); }
 
     void setearTasaAprendizaje( double tasa );

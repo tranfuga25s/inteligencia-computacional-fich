@@ -4,10 +4,10 @@
 #
 #-------------------------------------------------
 
-QT       += core
+QT       += core widgets
 TARGET = Ej3
 CONFIG   += console
-CONFIG += qwt
+CONFIG   += qwt
 
 TEMPLATE = app
 

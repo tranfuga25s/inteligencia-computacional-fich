@@ -4,6 +4,7 @@
 CapaNeuronal::CapaNeuronal(int cant_neuronas, int cant_entradas )
 {
     //qDebug() << "Nueva capa neuronal";
+    //neuronas.resize(cant_neuronas);
     if( cant_neuronas != 0 ) {
         for (int i = 0 ; i < cant_neuronas ; i++ ){
             neuronas.append( new Neurona( cant_entradas ) );
@@ -13,17 +14,10 @@ CapaNeuronal::CapaNeuronal(int cant_neuronas, int cant_entradas )
 
 void CapaNeuronal::setearTasaAprendizaje( double tasa )
 {
-    for( int i=0; i<neuronas.size(); i++ ) {
+    for( int i=0; i<cantidadNeuronas(); i++ ) {
         neuronas[i]->setearTasaAprendizaje( tasa );
     }
 }
-
-//void CapaNeuronal::setearMomento(double momento)
-//{
-//    for( int i=0; i<neuronas.size(); i++ ) {
-//        neuronas[i]->setearMomento( momento );
-//    }
-//}
 
 /*!
  * \brief CapaNeuronal::inicializarPesos
