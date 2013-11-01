@@ -19,6 +19,7 @@ typedef QVector< QVector<double> > matriz;
 #include "funciones_aux.h"
 #include "genomax.h"
 #include "poblacion.h"
+#include "graficadormdi.h"
 
 /*!
  * \brief main
@@ -38,14 +39,32 @@ int main(int argc, char *argv[])
     mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     main.setCentralWidget(mdiArea);
 
-    /*GraficadorMdi *grafTemperatura = new GraficadorMdi( mdiArea );
-    grafTemperatura->setearTitulo( QString::fromUtf8( "Temperatura Interior" ) );
-    grafTemperatura->setearTituloEjeX( QString::fromUtf8( "Tiempo" ) );
-    grafTemperatura->setearTituloEjeY( QString::fromUtf8( "Temperatura" ) );
-    mdiArea->addSubWindow( grafTemperatura );
-    grafTemperatura->show();
+    GraficadorMdi *grafFuncion = new GraficadorMdi( mdiArea );
+    grafFuncion->setearTitulo( QString::fromUtf8( "Funcion" ) );
+    grafFuncion->setearTituloEjeX( QString::fromUtf8( "X" ) );
+    grafFuncion->setearTituloEjeY( QString::fromUtf8( "Y" ) );
+    mdiArea->addSubWindow( grafFuncion );
+    grafFuncion->show();
     mdiArea->tileSubWindows();
-    grafTemperatura->setearParaTrapezoide();*/
+
+    GraficadorMdi *grafFitnes = new GraficadorMdi( mdiArea );
+    grafFitnes->setearTitulo( QString::fromUtf8( "Evolucion Fitnes" ) );
+    grafFitnes->setearTituloEjeX( QString::fromUtf8( "Generacion" ) );
+    grafFitnes->setearTituloEjeY( QString::fromUtf8( "fitness" ) );
+    mdiArea->addSubWindow( grafFitnes );
+    grafFitnes->show();
+    mdiArea->tileSubWindows();
+    grafFitnes->setearParaSOM();
+
+    GraficadorMdi *grafPuntos = new GraficadorMdi( mdiArea );
+    grafPuntos->setearTitulo( QString::fromUtf8( "Puntos a evaluar" ) );
+    grafPuntos->setearTituloEjeX( QString::fromUtf8( "Posicion" ) );
+    grafPuntos->setearTituloEjeY( QString::fromUtf8( "Y" ) );
+    mdiArea->addSubWindow( grafPuntos );
+    grafPuntos->show();
+    mdiArea->tileSubWindows();
+    //grafPuntos->setearParaSOM();
+   // grafPuntos->setearEjesEnGrafico();
 
     // barra de progreso para mostrar el avance del tiempo
     QDockWidget *dockBarra = new QDockWidget( QString::fromUtf8( "Evaluaciones" ) );
@@ -61,21 +80,32 @@ int main(int argc, char *argv[])
 
     // Inicializo la poblacion
     Poblacion<GenomaX> pob;
-    int cant_total = parametros.value( "cant_elementos" ).toInt();
+    int cant_total = parametros.value( "cantidad_elementos" ).toInt();
     pob.setearTotal( cant_total );
 
     pob.setearElitismo( parametros.value( "elitismo", false ).toBool() );
-    pob.setearBrechaGeneracional( parametros.value( "brecha_generacional" ).toInt() );
+    pob.setearBrechaGeneracional( parametros.value( "brecha_generacional" ).toDouble() );
     pob.setearProbabilidadMutacion( parametros.value( "probabilidad_mutacion").toDouble() );
     pob.setearModoSeleccionPadres( (Poblacion<GenomaX>::MetodoSeleccion)parametros.value( "metodo_seleccion" ).toInt() );
 
     double max = parametros.value( "max" ).toDouble();
     double min = parametros.value( "min" ).toDouble();
+    pob.setearMinMax( min, max );
     for( int i=0; i<cant_total; i++ ) {
         GenomaX temp;
-        temp.setX( valor_random( min, max ) );
+        double valor = valor_random( min, max );
+        temp.setX( valor );
         pob.append( temp );
     }
+
+    // Grafico la funcion
+    QVector<double> posy, posx;
+    for( double i=min; i<max; i++ ) {
+        posx.append( i );
+        posy.append( evaluar( i ) );
+    }
+    grafFuncion->agregarCurva( posx, posy, "funcion" );
+    a.processEvents();
 
     double fitnes_necesario = parametros.value( "fitnes_necesario", 0.0 ).toDouble();
 
@@ -84,17 +114,45 @@ int main(int argc, char *argv[])
     PBTiempo->setRange( 0, iteracciones_maximas );
 
     pob.evaluarPoblacion();
+    a.processEvents();
 
-    while( pob.mejorFitnes() > fitnes_necesario
+    QVector<double> histFitness;
+    QVector<int> histIteracion;
+    histFitness.append( pob.mejorFitnes() );
+    histIteracion.append( 0 );
+
+    while( pob.mejorFitnes() <= fitnes_necesario
         && iteracciones <= iteracciones_maximas ) {
 
         pob.seleccionarPadres();
+        a.processEvents();
+
         pob.generarHijos();
+        a.processEvents();
+
         pob.evaluarPoblacion();
+        a.processEvents();
 
         iteracciones++;
         PBTiempo->setValue( iteracciones );
+
+        histFitness.append( pob.mejorFitnes() );
+        histIteracion.append( iteracciones );
+        grafFitnes->setearPuntos( histFitness, histIteracion );
+        a.processEvents();
+
+        QVector<double> x, y;
+        for( int i=0; i<pob.size(); i++ ) {
+            y.append( i );
+            x.append( pob.at( i ).getX() );
+        }
+        grafPuntos->agregarCurva( x, y, QString( "generacion %1" ).arg( iteracciones ) );
+
     }
+
+    qDebug() << "Mejor Fitness: " << pob.mejorFitnes();
+    qDebug() << "Posicion Minimo: " << pob.posicionMinimo();
+    qDebug() << "Minimo: " << evaluar(pob.posicionMinimo());
 
     return a.exec();
 }

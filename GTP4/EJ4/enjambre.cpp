@@ -1,6 +1,6 @@
 #include "enjambre.h"
 
-enjambre::enjambre(double num_part, double x_min, double x_max, double tolerancia, RedNeuronal &red,matriz entradas ,vector salidas)
+enjambre::enjambre(double num_part, double x_min, double x_max, double tolerancia,int max_iteraciones, RedNeuronal *red, matriz entradas , vector salidas)
 {
     _enjambre.clear();
 
@@ -11,19 +11,20 @@ enjambre::enjambre(double num_part, double x_min, double x_max, double toleranci
     //Particulas
     for (int i = 0; i<num_part; i++) {
         Particula Auxiliar;
-        Auxiliar.inicializar(_X_min,_X_max);
+        Auxiliar.inicializar(_X_min,_X_max,_redpso->cantidadPesos());
         _enjambre.append(Auxiliar);
     }
     //mejor_y inicial aleatorio
-    _mejor_y.append(_enjambre[valor_random(0.0,num_part)].devolverPosicion());
+    _mejores_pesos_globales.append(_enjambre[valor_random(0.0,num_part)].devolverPesos());
 
     //Tolerancia seteada
     _tolerancia = tolerancia;
 
+    //Maximo de iteraciones permitidas
+    _max_iter = max_iteraciones;
+
     //Inicializo la red con los parametros pasados
-    _redpso =  &red;
-    //Le pongo las posiciones del pso como pesos en la red
-    _redpso->setearPesos(this->devuelvePosiciones());
+    _redpso =  red;
 
     //Copio las salidas deseadas y las entradas para poder comparar
     _entradas = entradas;
@@ -42,76 +43,72 @@ int enjambre::optimizar()
         for(int i=0 ; i<_enjambre.size() ; i++){
 
             //Actualizo la mejor de la particula
-            if(evaluarFuncion(_enjambre[i].devolverPosicion(),i) < evaluarFuncion(_enjambre[i].devolverMejorPosicion(),i) ) {
-                _enjambre[i].setMejorPosicion(_enjambre[i].devolverPosicion());
+            if(evaluarFuncion(_enjambre[i].devolverPesos()) < evaluarFuncion(_enjambre[i].devolverMejoresPesos()) ) {
+                _enjambre[i].setMejoresPesos(_enjambre[i].devolverPesos());
             }
             //Actualizo la mejor global
-            if( evaluarFuncion(_enjambre[i].devolverMejorPosicion(),i) < evaluarFuncion(_mejor_y.last(),i) ) {
-                _mejor_y.append( _enjambre[i].devolverMejorPosicion() );//Guardo todos los mejores y
+            if( evaluarFuncion(_enjambre[i].devolverMejoresPesos()) < evaluarFuncion(_mejores_pesos_globales.last()) ) {
+                _mejores_pesos_globales.append( _enjambre[i].devolverMejoresPesos() );//Guardo todos los mejores y
             }
 
         }
         //Actualizaciones
         for(int i = 0 ; i < _enjambre.size() ; i++){
 
-            double c1 = 2.0;//Propuesto por Kennedy and Eberhart
-            double c2 = 2.0;//Propuesto por Kennedy and Eberhart
-            double r1 = valor_random(0.0,1.0);
-            double r2 = valor_random(0.0,1.0);
+            QVector<double> vel_aux;
+            QVector<double> pos_aux;
 
-            //Velocidad
-            double vel_aux = 0.0;
-            vel_aux = _enjambre[i].devolverVelocidad()
-                    + c1 * r1 * (_enjambre[i].devolverMejorPosicion() - _enjambre[i].devolverPosicion())
-                    + c2 * r2 * (_mejor_y.last() -  _enjambre[i].devolverPosicion());
+            for(int j=0 ; j< _enjambre[i].cantPesos() ; j++) {
 
-            //controlo que la velocidad no supere vmax = (x_max - x_min)
-            double vMax = _X_max - _X_min;
-            if(vel_aux < vMax) {
-               _enjambre[i].setearVelocidad(vel_aux);
+                double c1 = 2.0;//Propuesto por Kennedy and Eberhart
+                double c2 = 2.0;//Propuesto por Kennedy and Eberhart
+                double r1 = valor_random(0.0,1.0);
+                double r2 = valor_random(0.0,1.0);
+
+                //Velocidad
+                vel_aux[j] = 0.0;
+                vel_aux[j] = _enjambre[i].devolverVelocidad().at(j)
+                        + c1 * r1 * (_enjambre[i].devolverMejoresPesos().at(j) - _enjambre[i].devolverPesos().at(j))
+                        + c2 * r2 * (_mejores_pesos_globales.last().at(j) -  _enjambre[i].devolverPesos().at(j));
+
+                _enjambre[i].setearVelocidad(vel_aux[j],j);
+
+                //Posicion
+                pos_aux[j] = 0.0;
+                pos_aux[j] =  _enjambre[i].devolverPesos().at(j) + _enjambre[i].devolverVelocidad().at(j);
+                _enjambre[i].setPesos(pos_aux[j],j);
             }
-            else
-            {
-                _enjambre[i].setearVelocidad(vMax);
-            }
-
-
-            //Posicion
-            double pos_aux = 0.0;
-            pos_aux =  _enjambre[i].devolverPosicion() + _enjambre[i].devolverVelocidad();
-            _enjambre[i].setPosicion(pos_aux);
-
         }
 
-        //Una vez que actualizo todas las posiciones, actualizo nuevamente los pesos de la red neuronal
+        //Una vez que actualizo todas los pesos en las partuculas, los copio red neuronal
 
-        _redpso->setearPesos(this->devuelvePosiciones());
+        _redpso->setearPesos(_mejores_pesos_globales.last());
 
         //Porcentaje de error
         /*
          *Lo que estaria haciendo aca seria calcular el error en base a como varia la funcion
          *desde el ultimo _mejor_y y el anterior _mejor_y a ese
          */
-        if (_mejor_y.size() >= 2) {
+        if (_mejores_pesos_globales.size() >= 2) {
 
-            error = fabs( evaluarFuncion(_mejor_y.at(_mejor_y.size() - 1)) - evaluarFuncion(_mejor_y.at(_mejor_y.size() - 2)))
-                    / fabs( evaluarFuncion(_mejor_y.at(_mejor_y.size() - 1)));
+            error = fabs( evaluarFuncion(_mejores_pesos_globales.at(_mejores_pesos_globales.size() - 1)) - evaluarFuncion(_mejores_pesos_globales.at(_mejores_pesos_globales.size() - 2)))
+                    / fabs( evaluarFuncion(_mejores_pesos_globales.at(_mejores_pesos_globales.size() - 1)));
 
         }
 
         cant_iteraciones++;
 
 
-    } while (error >= _tolerancia);
+    } while (error >= _tolerancia && cant_iteraciones < _max_iter);
 
     return cant_iteraciones;
 }
 
-double enjambre::evaluarFuncion(double posicion)
+double enjambre::evaluarFuncion(QVector<double> pesos)
 {
-    //Tendria que poder copiar lo que me pasan como posicion a un nuevo peso despues evaluar
+    //Hago un feedforward de la red con los pesos que recive la funcion
 
-    //Hago un feedforward de la red y comparo las salidas obtenidas con las que son correctas
+    _redpso->setearPesos(pesos);
 
     QVector<int> salida_entr;
     for( int i=0; i<_salidas.size(); i++ ) {
@@ -127,39 +124,3 @@ double enjambre::evaluarFuncion(double posicion)
     return errores;
 }
 
-double enjambre::evaluarFuncion(double posicion,int pos)
-{
-    //Tendria que poder copiar lo que me pasan como posicion a un nuevo peso despues evaluar
-
-    //Hago un feedforward de la red y comparo las salidas obtenidas con las que son correctas
-
-    QVector<int> salida_entr;
-    for( int i=0; i<_salidas.size(); i++ ) {
-        salida_entr.append( _redpso->mapeadorSalidas( _redpso->forwardPass( _entradas.at(i) ) ) );
-    }
-    int errores = 0;
-    for(int i=0;i<_salidas.size();i++) {
-        if ( _salidas.at(i) != salida_entr.at(i) ) {
-            errores++;
-        }
-    }
-
-    return errores;
-}
-
-//!
-//! \brief enjambre::devuelvePosiciones
-//! Va a devolver todas las posiciones en un vector para luego ponerlas como peso en una red neuronal
-//! \return
-//!
-
-QVector<double> enjambre::devuelvePosiciones()
-{
-    QVector<double> Auxiliar;
-
-    for (int i = 0; i<_enjambre.size() ; i++) {
-        Auxiliar.append(_enjambre[i].devolverPosicion());
-    }
-
-    return Auxiliar;
-}

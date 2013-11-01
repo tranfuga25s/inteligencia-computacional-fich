@@ -30,6 +30,7 @@ public:
     void setearTamanoFijo();
     void setearPuntos( QVector<QPointF> puntos );
     void setearPuntos( QVector<double>  puntos , QVector<int> escala_tiempo );
+    void setearPuntos( QVector<double> puntos, QVector<double> puntos2 );
     void setearParaSOM( QString nombre = "SOM" );
     void setearParaTrapezoide();
     void deshabilitarEscalado();

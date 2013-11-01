@@ -68,7 +68,6 @@ int enjambre::optimizar()
                 _enjambre[i].setearVelocidad(vMax);
             }
 
-
             //Posicion
             double pos_aux = 0.0;
             pos_aux =  _enjambre[i].devolverPosicion() + _enjambre[i].devolverVelocidad();
@@ -91,7 +90,7 @@ int enjambre::optimizar()
         cant_iteraciones++;
 
 
-    } while (error >= _tolerancia);
+    } while (error >= _tolerancia); //Agregar el control de maximo de iteraciones
 
     return cant_iteraciones;
 }

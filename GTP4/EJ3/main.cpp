@@ -103,5 +103,5 @@ int main(int argc, char *argv[])
     qDebug() << "Minimo de la Funcion: " << funcion3.devuelveValorMinimoGlobal();
     qDebug() << "Posicion del Minimo: " << funcion3.devuelvePosicionMinimoGlobal();
 
-    return a.exec();
+    return 0;
 }

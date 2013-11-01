@@ -7,18 +7,19 @@ class Particula
 {
 public:
     Particula();
-    void inicializar(double min,double max);
-    double devolverPosicion() {return _posicion;}
-    double devolverMejorPosicion() {return _mejor_posicion;}
-    void setPosicion(double posicion) {_posicion = posicion;}
-    void setMejorPosicion(double posicion) {_mejor_posicion = posicion;}
-    void setearVelocidad(double velocidad) {_velocidad = velocidad;}
-    double devolverVelocidad() {return _velocidad;}
+    void inicializar(double min,double max,int tam);
+    QVector<double> devolverPesos() {return _pesos;}
+    QVector<double> devolverMejoresPesos() {return _mejores_pesos;}
+    void setPesos(double peso,int pos) {_pesos[pos] = peso;}
+    void setMejoresPesos(QVector<double> pesos) {_mejores_pesos = pesos;}
+    void setearVelocidad(double velocidad,int j) {_velocidad[j] = velocidad;}
+    QVector<double> devolverVelocidad() {return _velocidad;}
+    double cantPesos() {return _pesos.size();}
 
 private:
-    double _posicion;
-    double _mejor_posicion;
-    double _velocidad;
+    QVector<double> _pesos;
+    QVector<double> _mejores_pesos;
+    QVector<double> _velocidad;
 };
 
 #endif // PARTICULA_H

@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QTextStream>
 #include <math.h>
+#include <QTime>
 
 typedef QVector<double> vector;
 typedef QVector< QVector<double> > matriz;
@@ -272,6 +273,31 @@ static double valor_random(double min,double max)
         double rango = max - min;
         return (aleatorio*rango) + min;
     }
+}
+
+/*!
+ * \brief valor_random
+ * Funcion para generar un valor aleatorio entre min y max
+ * \param min
+ * \param max
+ * \return
+ */
+static int valor_random_int( int min, int max )
+{
+    //qsrand( QTime::currentTime().msec() );
+    /*int aleatorio = qrand() % max;
+
+    if ( min > max )
+    {
+        int rango = min - max;
+        return (aleatorio*rango) + max;
+    }
+    else
+    {
+        int rango = max - min;
+        return (aleatorio*rango) + min;
+    }*/
+    return qrand() % max;
 }
 
 /*!

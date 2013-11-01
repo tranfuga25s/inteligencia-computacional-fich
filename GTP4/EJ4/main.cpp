@@ -88,6 +88,9 @@ int main(int argc, char *argv[])
     double tolerancia_error = parametros.value( "tolerancia_error" ).toDouble();
     qDebug() << "Error de corte: " << ( tolerancia_error ) << "%";
 
+    int iteraciones = parametros.value( "iter" ).toDouble();
+    qDebug() << "Cantidad de iteraciones Maximas: " << ( iteraciones );
+
     int cant_particulas = parametros.value( "cant_part" ).toInt();
     qDebug() << "Cantidad de Particulas: " << ( cant_particulas );
 
@@ -103,7 +106,8 @@ int main(int argc, char *argv[])
                    xmin,
                    xmax,
                    tolerancia_error,
-                   red,
+                   iteraciones,
+                   &red,
                    entradas,
                    salidas);
 

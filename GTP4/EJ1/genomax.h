@@ -2,7 +2,7 @@
 #define GENOMA_H
 
 #define cant_entera 10
-#define cant_decimal 10
+#define cant_decimal 4
 
 #include <QVector>
 #include <funciones_aux.h>
@@ -22,9 +22,9 @@ public:
     void mutar( int pos ) { _genotipo[pos] = !_genotipo.at( pos ); }
     double getX() const { return _x; }
     bool at( int pos ) { return _genotipo.at( pos ); }
-    bool & operator[] ( int i ) { return _genotipo[i]; }
+    void setearGenoma( int i, bool valor) { _genotipo[i] = valor; }
     void setX( double valor );
-    void mostrarFeneotipo();
+    void mostrarGenotipo();
 
 private:
     double _x; // Fenotipo
@@ -33,14 +33,14 @@ private:
 
 GenomaX::GenomaX() {
     _genotipo.clear();
-    for(int i = 0; i < 20 ; i++) {
+    for(int i = 0; i < cant_decimal + cant_entera + 1; i++) {
         _genotipo.append(false);
     }
     _x = 0.0;
 }
 
 GenomaX::GenomaX( const GenomaX& origin ) {
-    _x = origin.getX();
+    this->_x = origin.getX();
     aGenotipo();
 }
 
@@ -49,8 +49,8 @@ GenomaX::GenomaX( GenomaX &origin ) {
     aGenotipo();
 }
 
-void GenomaX::setX(double valor) {
-    this->_x = valor;
+void GenomaX::setX( double valor ) {
+    _x = valor;
     aGenotipo();
 }
 
@@ -59,8 +59,21 @@ void GenomaX::aGenotipo() {
     // Tomo la parte entera y la convierto a cadena de bits
     // Tomo la parte decimal y la convierto a cadena de bits
 
+    if( _genotipo.size() == 0 ) {
+        for(int i = 0; i < 20 ; i++) {
+            _genotipo.append(false);
+        }
+    }
+
     int x_aux_entero = floor(_x);
     double x_aux_decimal = (_x - floor(_x) * pow(10,cant_decimal));
+
+    // Positivo o negativo
+    if( _x > 0.0 ) {
+        _genotipo[_genotipo.size()-1] = true;
+    } else {
+        _genotipo[_genotipo.size()-1] = false;
+    }
 
     //Parte Entera
     for (int i = cant_entera - 1 ; i>=0 ; i--) {
@@ -99,11 +112,15 @@ void GenomaX::aFenotipo() {
             temporal += pow( 2.0, cant_entera - i );
         }
     }
-    for( int i=cant_entera; i<_genotipo.size(); i++ ) {
+    for( int i=cant_entera; i<cant_entera + cant_decimal; i++ ) {
         if (_genotipo.at(i)) {
             temporal += pow( 2.0, (-1)*(i - cant_entera) );
         }
     }
+    if( _genotipo.at( _genotipo.size() -1 ) == false ) {
+        temporal *= (-1.0);
+    }
+    _x = temporal;
 }
 
 
@@ -116,22 +133,26 @@ static void mutar( GenomaX &g ) {
 static void cruza( GenomaX &a, GenomaX &b ) {
     //Asumimos que tienen la misma profundidad de bits los genomas
 
-    int pos = valor_random( 0, a.size() );
+    int pos = valor_random_int( 0, a.size() );
 
     GenomaX auxA = a;
     GenomaX auxB = b;
 
     for (int i = pos; i<a.size(); i++) {
-        auxB[i] = a.at(i);
-        auxA[i] = b.at(i);
+        auxB.setearGenoma( i, a.at(i) );
+        auxA.setearGenoma( i, b.at(i) );
     }
+    a.aFenotipo();
+    b.aFenotipo();
 
     a = auxA;
     b = auxB;
 
+    a.aFenotipo();
+    b.aFenotipo();
 }
 
-void GenomaX::mostrarFeneotipo() {
+void GenomaX::mostrarGenotipo() {
     QString salida;
     salida.append( QString( "Genotipo:%1:" ).arg( _x ) );
     foreach( bool val, _genotipo ) {

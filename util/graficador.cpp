@@ -196,7 +196,7 @@ void Graficador::agregarPuntosClasificados( matriz entradas, QVector<int> salida
  */
 void Graficador::agregarPuntosClasificados( matriz entradas, QVector<int> salida, QVector<int> codificacion_salida )
 {
-    //QVector<matriz> superentrada( codificacion_salida.size() );
+
     QVector<matriz> superentrada( codificacion_salida.size() );
     for( int i=0; i<entradas.size(); i++ ) {
         superentrada[salida.at(i)].append( entradas.at(i) );
@@ -310,6 +310,15 @@ void Graficador::setearPuntos( QVector<QPointF> puntos )
 }
 
 void Graficador::setearPuntos( QVector<double> puntos, QVector<int> escala_tiempo )
+{
+    QVector<QPointF> datos;
+    for( int i=0; i<puntos.size(); i++ ) {
+        datos.append( QPointF( escala_tiempo.at(i), puntos.at(i) ) );
+    }
+    this->setearPuntos( datos );
+}
+
+void Graficador::setearPuntos( QVector<double> puntos, QVector<double> escala_tiempo )
 {
     QVector<QPointF> datos;
     for( int i=0; i<puntos.size(); i++ ) {

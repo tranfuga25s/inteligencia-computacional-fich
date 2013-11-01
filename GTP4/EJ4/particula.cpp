@@ -5,13 +5,16 @@ Particula::Particula()
 {
 }
 
-void Particula::inicializar(double min, double max)
+void Particula::inicializar(double min, double max, int tam)
 {
     //Posicion de a particula inicial
-    _posicion = valor_random(min,max);
-    //Mejor posicion inicial (Otro random para poder comparar)
-    _mejor_posicion = valor_random(min,max);
-    //Velocidad inicial
-    _velocidad = 0.0;//???
+    for (int i = 0 ; i < tam ; i++) {
+        _pesos[i] = valor_random(min,max);
+        //Mejor posicion inicial (Otro random para poder comparar)
+        _mejores_pesos[i] = valor_random(min,max);
+        //Velocidad inicial
+        _velocidad[i] = 0.0;//???
+    }
+
 }
 

@@ -5,6 +5,7 @@
 #include <QMap>
 #include "evaluador.h"
 #include <cfloat>
+#include "funciones_aux.h"
 
 template<typename T> class Poblacion : public QVector<T>
 {
@@ -29,12 +30,15 @@ public:
     int modoSeleccionPadres() const { return _metodo_seleccion; }
 
     double mejorFitnes() const { return _mejor_fitness; }
+    double posicionMinimo() {return this->at(_pos_mejor_fitness).getX();}
 
     void setearBrechaGeneracional( double valor ) { _brecha_generacional = valor; }
     double brechaGeneracional() const { return _brecha_generacional; }
 
-    void setearProbabilidadMutacion( double valor ) { _probabilidad_mutacion = valor; }
-    double probabilidadMutacion() { return _probabilidad_mutacion; }
+    void setearProbabilidadMutacion( int valor ) { _probabilidad_mutacion = valor; }
+    int probabilidadMutacion() { return _probabilidad_mutacion; }
+
+    void setearMinMax( double min, double max ) { _min = min; _max = max; }
 
     void evaluarPoblacion();
     void seleccionarPadres();
@@ -49,7 +53,10 @@ private:
     MetodoSeleccion _metodo_seleccion;
     bool _elitismo;
     double _brecha_generacional;
-    double _probabilidad_mutacion;
+    int _probabilidad_mutacion;
+
+    double _max;
+    double _min;
 
     QVector<double> _fitness;
     QVector<T> _nuevos_padres;
@@ -68,27 +75,36 @@ Poblacion<T>::Poblacion() : QVector<T>()
     _metodo_seleccion = Ruleta;
     _mejor_fitness = 0.0;
     _pos_mejor_fitness = -1;
-    _probabilidad_mutacion = 0.0;
+    _probabilidad_mutacion = 0;
+    _min = 0.0;
+    _max = 0.0;
 }
 
 template<typename T>
 void Poblacion<T>::setearTotal( int cantidad_total )
 {
     _cantidad_total = cantidad_total;
-    _fitness.reserve( _cantidad_total );
+    _fitness.resize( _cantidad_total );
 }
 
 template<typename T>
 void Poblacion<T>::evaluarPoblacion()
 {
+    _fitness.clear();
+    _fitness.resize( this->size() );
+    _mejor_fitness = (-1.0)*DBL_MAX;
     // recorro todo el vector y veo cual es el mejor valor
     for( int i=0; i<this->size(); i++ ) {
         double temp = evaluar( this->at( i ).getX() );
+        temp = (-1.0)*temp; // fit = -y
         if( temp > _mejor_fitness ) {
             _mejor_fitness = temp;
             _pos_mejor_fitness = i;
         }
         _fitness[i] = temp;
+    }
+    if( _pos_mejor_fitness == -1 ) {
+        abort();
     }
 }
 
@@ -101,6 +117,9 @@ void Poblacion<T>::seleccionarPadres()
     // Me aseguro el elitismo para cualquier metodo
     if( _elitismo ) {
         _nuevos_padres.append( this->at( _pos_mejor_fitness ) );
+        this->remove( _pos_mejor_fitness );
+        _fitness.remove( _pos_mejor_fitness );
+        //_pos_mejor_fitness = -1;
     }
 
     // Recorro el vector y selecciono segun el metodo elegido
@@ -163,17 +182,19 @@ void Poblacion<T>::ruleta()
 template<typename T>
 void Poblacion<T>::ventaneo()
 {
-    // Hago un mapa que me ordene los datos de fitness de cada uno
-    // El mapa contiene el fitnes y la posicion en el vector
-    // El mapa al estar implementado como un arbol, se auto ordena al insertar elementos.
-    QMap<double,int> orden;
-    for( int i=0; i<this->size(); i++ ) {
-        orden.insert( _fitness.at(i), i );
-    }
+
 
     int tam_nueva_generacion = floor( this->size() * _brecha_generacional );
 
     for( int j=0; j<tam_nueva_generacion; j++ ) {
+
+        // Hago un mapa que me ordene los datos de fitness de cada uno
+        // El mapa contiene el fitnes y la posicion en el vector
+        // El mapa al estar implementado como un arbol, se auto ordena al insertar elementos.
+        QMap<double,int> orden;
+        for( int i=0; i<this->size(); i++ ) {
+            orden.insertMulti( _fitness.at(i), i );
+        }
 
         // Calculo el tamaño de la ventana a utilizar
         int tam_ventana = ( this->size() - ( j * ( this->size() / tam_nueva_generacion ) ) );
@@ -183,13 +204,13 @@ void Poblacion<T>::ventaneo()
 
         // La lista esta ordenada en ascendente, o sea que el fitnes mayor está en las utlimas posiciones
         QList<int> indices_ordenados = orden.values();
-        int pos_actual = indices_ordenados.at( indices_ordenados.size() - azar );
+        int pos_actual = indices_ordenados.at( indices_ordenados.size() - azar -1 );
 
         // Agrego la posicion al vector de padres
         _nuevos_padres.append( this->at( pos_actual ) );
 
         // Saco el elemento sacado de la lista de orden
-        orden.remove( indices_ordenados.at( indices_ordenados.size() - azar ) );
+        orden.remove( indices_ordenados.at( indices_ordenados.size() - azar -1 ) );
 
         // lo elimino de los proximos candidatos
         this->remove( pos_actual );
@@ -208,10 +229,22 @@ void Poblacion<T>::torneo()
     for( int j=0; j<tam_nueva_generacion; j++ ) {
 
         // Elijo cuatro participantes y los hago competir
-        int pos1 = valor_random( 0, this->size() );
-        int pos2 = valor_random( 0, this->size() );
-        int pos3 = valor_random( 0, this->size() );
-        int pos4 = valor_random( 0, this->size() );
+        QVector<int> posiciones;
+        for( int i=0; i<this->size(); i++ ) {
+            posiciones.append( i );
+        }
+        int p = valor_random( 0, posiciones.size() );
+        int pos1 = posiciones.at( p );
+        posiciones.remove( p );
+        p = valor_random( 0, posiciones.size() );
+        int pos2 = posiciones.at( p );
+        posiciones.remove( p );
+        p = valor_random( 0, posiciones.size() );
+        int pos3 = posiciones.at( p );
+        posiciones.remove( p );
+        p = valor_random( 0, posiciones.size() );
+        int pos4 = posiciones.at( p );
+        posiciones.clear();
 
         int ganador1 = 0;
         int ganador2 = 0;
@@ -247,29 +280,50 @@ template<typename T>
 void Poblacion<T>::generarHijos()
 {
 
+    this->clear();
+    _pos_mejor_fitness = -1;
+
+    if( _elitismo ) {
+        this->append( _nuevos_padres.at( 0 ) );
+        _pos_mejor_fitness = 0;
+    }
+
+    // Genero la brecha generacional copiando los padres para convervar las buenas soluciones
+    for( int i=0; i<_nuevos_padres.size(); i++ ) {
+        this->append( _nuevos_padres.at( i ) );
+    }
 
     while( this->size() < _cantidad_total ) {
 
-        int p1 = valor_random( 0, _nuevos_padres.size() );
-        int p2 = valor_random( 0, _nuevos_padres.size() );
+        int p1 = valor_random_int( 0, _nuevos_padres.size() );
+        int p2 = valor_random_int( 0, _nuevos_padres.size() );
+        while( p1 == p2 ) {
+            p2 = valor_random_int( 0, _nuevos_padres.size() );
+        }
 
         T hijo1 = _nuevos_padres.at( p1 );
         T hijo2 = _nuevos_padres.at( p2 );
 
         cruza( hijo1, hijo2 );
 
-        double prob1 = valor_random( 0.0, 100.0 );
-        double prob2 = valor_random( 0.0, 100.0 );
+        int  prob1 = valor_random_int( 0, 100 );
+        int  prob2 = valor_random_int( 0, 100 );
 
-        if( fmod( prob1, _probabilidad_mutacion ) == 0 ) {
+        if( prob1 != 0 && prob1 % ( 100 - _probabilidad_mutacion ) == 0 ) {
             mutar( hijo1 );
+            //qDebug() << "mutacion";
         }
-        if( fmod( prob2, _probabilidad_mutacion ) == 0 ) {
+        if( prob2 != 0 && prob2 % ( 100 - _probabilidad_mutacion ) == 0 ) {
             mutar( hijo2 );
+            //qDebug() << "mutacion";
         }
 
-        this->append( hijo1 );
-        this->append( hijo2 );
+        if( hijo1.getX() >= _min && hijo1.getX() <= _max ) {
+            this->append( hijo1 );
+        }
+        if( hijo2.getX() >= _min && hijo2.getX() <= _max ) {
+            this->append( hijo2 );
+        }
     }
 }
 

@@ -5,7 +5,9 @@ CONFIG   += qwt
 
 TEMPLATE = app
 
-SOURCES +=  main.cpp
+SOURCES +=  main.cpp \
+    ../../util/graficador.cpp \
+    ../../util/graficadormdi.cpp
 
 OTHER_FILES += parametros.cfg \
     parametros.cfg
@@ -15,4 +17,7 @@ INCLUDEPATH += ../../util
 HEADERS += \
     genomax.h \
     poblacion.h \
-    evaluador.h
+    evaluador.h \
+    ../../util/graficador.h \
+    ../../util/graficadormdi.h \
+    ../../util/funciones_aux.h

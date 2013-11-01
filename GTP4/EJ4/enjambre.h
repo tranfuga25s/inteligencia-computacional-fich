@@ -8,17 +8,15 @@
 class enjambre
 {
 public:
-    enjambre(double num_part, double x_min, double x_max, double tolerancia,RedNeuronal &red,matriz entradas,vector salidas);
+    enjambre(double num_part, double x_min, double x_max, double tolerancia,int max_iteraciones,RedNeuronal *red,matriz entradas,vector salidas);
     int optimizar();
-    double evaluarFuncion(double posicion);
-    double evaluarFuncion(double posicion,int pos);
-    double devuelvePosicionMinimoGlobal() {return _mejor_y.last();}
-    double devuelveValorMinimoGlobal() {return evaluarFuncion(_mejor_y.last());}
-    QVector<double> devuelvePosiciones();
+    double evaluarFuncion(QVector<double> pesos);
+    QVector<double> devuelveMejoresPesos() {return _mejores_pesos_globales.last();}
 private:
-    QVector<Particula> _enjambre;
-    QVector<double> _mejor_y;//Necesito guardar para poder calcular el error
+    QVector<Particula> _enjambre;//Enjambre de particulas con posiciones como pesos
+    QVector< QVector<double> > _mejores_pesos_globales;//Vector de vectores historicos de mejores posiciones (Pesos)
     double _tolerancia;
+    int _max_iter;
     double _X_max,_X_min;
 
     RedNeuronal *_redpso;
