@@ -71,7 +71,24 @@ int enjambre::optimizar()
             //Posicion
             double pos_aux = 0.0;
             pos_aux =  _enjambre[i].devolverPosicion() + _enjambre[i].devolverVelocidad();
-            _enjambre[i].setPosicion(pos_aux);
+            //Controlo que no se vaya de dominio
+            if(pos_aux >= _X_min && pos_aux <= _X_max) {
+                //En Dominio
+                _enjambre[i].setPosicion(pos_aux);
+            }
+            else
+            {
+                if(pos_aux <= _X_min) {
+                    //Es menor
+                    _enjambre[i].setPosicion(_X_min);
+                }
+                else
+                {
+                    //Es mayor
+                    _enjambre[i].setPosicion(_X_max);
+                }
+            }
+
 
         }
 

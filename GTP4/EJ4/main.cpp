@@ -81,7 +81,21 @@ int main(int argc, char *argv[])
     red.setearCodificacion( stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
     qDebug() << "Codificacion salida: " << red.mostrarCodificacionSalida();
 
+    //Inicializo la red
+    red.inicializarPesos();
+
     qDebug() << "CANTIDAD PESOS RED: " << red.cantidadPesos();
+
+    //Grafico los datos originales
+    GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );
+    mdiArea->addSubWindow( graf2 );
+    graf2->showMaximized();
+    graf2->setearTitulo( "Datos originales" );
+    graf2->setearEjesEnGrafico();
+    graf2->setearTituloEjeX( " X " );
+    graf2->setearTituloEjeY( " y " );
+    graf2->agregarPuntosClasificados( entradas, salidas, 0.5 );
+    mdiArea->tileSubWindows();
 
     // Inicializo el enjambre de particulas
 
@@ -100,8 +114,6 @@ int main(int argc, char *argv[])
     double xmin = parametros.value( "xmin" ).toDouble();
     qDebug() << "Limite Inferior: " << ( xmin );
 
-    red.inicializarPesos();
-
     enjambre psonn(cant_particulas,
                    xmin,
                    xmax,
@@ -111,24 +123,9 @@ int main(int argc, char *argv[])
                    entradas,
                    salidas);
 
-    //Copio los pesos del enjambre a la red
 
-    //red.setearPesos(psonn.devuelvePosiciones());
 
     qDebug() << endl << "---------------- /Comienza el entrenamiento/ ----------------";
-
-    if( stringAQVector( parametros.value( "codificacion_salida" ).toString() ).size() <= 2 ) {
-        GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );
-        mdiArea->addSubWindow( graf2 );
-        graf2->showMaximized();
-        graf2->setearTitulo( "Datos originales" );
-        graf2->setearEjesEnGrafico();
-        graf2->setearTituloEjeX( " X " );
-        graf2->setearTituloEjeY( " y " );
-        graf2->agregarPuntosClasificados( entradas, salidas, 0.5 );
-        mdiArea->tileSubWindows();
-    }
-
 
     // Mido el tiempo
     QElapsedTimer medidor_tiempo;
@@ -140,24 +137,22 @@ int main(int argc, char *argv[])
 
     qDebug() << "Tiempo medido: " << milisegundos << " ms";
 
-    //Pruebo la red
+    qDebug() << endl << "---------------- /Prueba de a Red/ ----------------";
 
     QVector<int> nueva_salida;
     for( int i=0; i<entradas.size(); i++ ) {
         nueva_salida.append( red.mapeadorSalidas( red.forwardPass( entradas.at(i) ) ) );
     }
 
-    if( stringAQVector( parametros.value( "codificacion_salida" ).toString() ).size() <= 2 ) {
-        GraficadorMdi *graf4 = new GraficadorMdi( mdiArea );
-        mdiArea->addSubWindow( graf4 );
-        graf4->showMaximized();
-        graf4->setearTitulo( "Datos evaluados con red neuronal" );
-        graf4->setearEjesEnGrafico();
-        graf4->setearTituloEjeX( " X " );
-        graf4->setearTituloEjeY( " y " );
-        graf4->agregarPuntosClasificados( entradas, nueva_salida, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
-        //graf4->agregarPuntosClasificados( entradas, nueva_salida );
-    }
+    GraficadorMdi *graf4 = new GraficadorMdi( mdiArea );
+    mdiArea->addSubWindow( graf4 );
+    graf4->showMaximized();
+    graf4->setearTitulo( "Datos evaluados con red neuronal" );
+    graf4->setearEjesEnGrafico();
+    graf4->setearTituloEjeX( " X " );
+    graf4->setearTituloEjeY( " y " );
+    graf4->agregarPuntosClasificados( entradas, nueva_salida, stringAQVector( parametros.value( "codificacion_salida" ).toString() ) );
+    //graf4->agregarPuntosClasificados( entradas, nueva_salida );
 
     mdiArea->tileSubWindows();
 

@@ -9,18 +9,9 @@ class RedNeuronal
 {
 public:
     RedNeuronal( int cant_capas, QVector<int> cantidad_neuronas, int cant_entradas);
-    RedNeuronal();//Constructor Vacio
     int cantidadCapas() { return capas.size(); }
 
     void setearTasaAprendizaje( double tasa );
-    //void setearMomento(double momento);
-    //double getMomento() { return capas[0]->getNeuronas()[0]->tasaMomento(); }
-
-    RedNeuronal& operator = (RedNeuronal const &red) {
-        capas = red.capas;
-        codif_salidas = red.codif_salidas;
-        return *this;
-    }
 
     void inicializarPesos();
     int cantidadPesos();
@@ -32,10 +23,8 @@ public:
     QVector<int> mostrarCodificacionSalida() { return codif_salidas; }
 
     int mapeadorSalidas( vector salidas );
-    vector mapeadorInverso(double valor );
 
-    void mostrarPesos( QTextStream &pesos );
-    
+
 private:
     QVector<CapaNeuronal *> capas;
     QVector<int> codif_salidas;

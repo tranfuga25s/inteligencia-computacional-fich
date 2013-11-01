@@ -99,12 +99,44 @@ int enjambre_parametrico::optimizar()
             //X
             double pos_aux_x = 0.0;
             pos_aux_x =  _enjambre_par[i].devolverPosicionX() + _enjambre_par[i].devolverVelocidadX();
-            _enjambre_par[i].setPosicionX(pos_aux_x);
+            //Controlo que no se vaya de dominio
+            if(pos_aux_x >= _X_min && pos_aux_x <= _X_max) {
+                //En Dominio
+                _enjambre_par[i].setPosicionX(pos_aux_x);
+            }
+            else
+            {
+                if(pos_aux_x <= _X_min) {
+                    //Es menor
+                    _enjambre_par[i].setPosicionX(_X_min);
+                }
+                else
+                {
+                    //Es mayor
+                    _enjambre_par[i].setPosicionX(_X_max);
+                }
+            }
 
             //Y
             double pos_aux_y = 0.0;
             pos_aux_y =  _enjambre_par[i].devolverPosicionY() + _enjambre_par[i].devolverVelocidadY();
-            _enjambre_par[i].setPosicionY(pos_aux_y);
+            //Controlo que no se vaya de dominio
+            if(pos_aux_y >= _Y_min && pos_aux_y <= _Y_max) {
+                //En Dominio
+                _enjambre_par[i].setPosicionY(pos_aux_y);
+            }
+            else
+            {
+                if(pos_aux_y <= _X_min) {
+                    //Es menor
+                    _enjambre_par[i].setPosicionY(_Y_min);
+                }
+                else
+                {
+                    //Es mayor
+                    _enjambre_par[i].setPosicionY(_Y_max);
+                }
+            }
 
         }
 

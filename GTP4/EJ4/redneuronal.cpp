@@ -58,8 +58,8 @@ void RedNeuronal::inicializarPesos()
 int RedNeuronal::cantidadPesos()
 {
     int suma = 0;
-    for( int i=0; i<capas.size(); i++ ) {
-        suma+=capas.at(i)->cantidadPesos();
+    for( int i=0; i<cantidadCapas(); i++ ) {
+        suma+=capas[i]->cantidadPesos();
     }
     return suma;
 }
@@ -103,59 +103,6 @@ vector RedNeuronal::forwardPass( vector entradas )
     }
     return capas[capas.size()-1]->getSalidas();
 }
-
-///*!
-// * \brief RedNeuronal::backwardPass
-// * Metodo para hacer la correccion de los deltas para todas las capas y corregir los pesos
-// * \param entradas
-// * \param salidas
-// */
-//void RedNeuronal::backwardPass( vector entradas, double salida_deseada )
-//{
-//    vector salida = forwardPass( entradas );
-
-//    vector salida_deseada_vector = mapeadorInverso( salida_deseada );
-
-//    // CORRECCION DELTAS ULTIMA CAPA
-//    for( int i=0; i<salida_deseada_vector.size(); i++ ) {
-
-//        double error = salida_deseada_vector.at( i ) - salida.at( i );
-//        double derivada = Neurona::funcionActivacionDerivada( salida.at(i) );
-//        double delta = error * derivada;
-//        capas[capas.size()-1]->getNeuronas()[i]->setDelta( delta );
-
-//    }
-
-//    // CORRECCION DELTAS RESTANTES CAPAS
-//    //Recorro desde la penultima capa hasta la primera
-//    for( int c = capas.size()-2 ; c >= 0 ; c-- ) {
-//        //Recorro todas las neuronas de la capa
-//        for (int n = 0 ; n < capas[c]->cantidadNeuronas() ; n++ ) {
-
-//            capas[c]->corregirDeltas( n, capas[c+1]->getDeltas(n) );
-//        }
-
-//    }
-//    //UNA VEZ QUE CORREGI LOS DELTAS DE LA RED CORRIJO LOS PESOS
-//    capas[0]->corregirPesos( entradas );
-//    for( int c=1; c<capas.size(); c++ ) {
-//        capas[c]->corregirPesos( capas[c-1]->getSalidas() );
-//        //qDebug() << capas[c]->getNeuronas()[0]->devuelvePesos();
-//    }
-//    return;
-
-//}
-
-///*!
-// * \brief RedNeuronal::entrenamiento
-// * \param entradas
-// * \param salidas
-// */
-//void RedNeuronal::entrenamiento( vector entradas, double salidas )
-//{
-//    forwardPass( entradas );
-//    backwardPass( entradas , salidas );
-//}
 
 /*!
  * \brief RedNeuronal::setearCodificacion
@@ -203,48 +150,5 @@ int RedNeuronal::mapeadorSalidas(vector salidas)
 
 }
 
-/*!
- * \brief RedNeuronal::mapeadorInverso
- * \param valor
- * \return
- */
-vector RedNeuronal::mapeadorInverso( double valor )
-{
-    vector retorno;
-    if( codif_salidas.size() == 1 ) {
-        retorno.append( valor );
-        return retorno;
-    }
-    // Los valores que tiene que contener los vectores de
-    // comparación para las neuronas tienen que ser acordes a la funcion
-    // de activación que se esté uilizando
-    for( int i=0; i<codif_salidas.size(); i++ ) {
-        if( valor == codif_salidas.at( i ) ) {
-            retorno.insert( i, 1.0  );
-        } else {
-            retorno.insert( i, -1.0 );
-        }
-    }
-    return retorno;
-}
 
-void RedNeuronal::mostrarPesos( QTextStream &pesos )
-{
-//    for (int c = 0 ; c < capas.size() ; c++) {
-//        for (int n = 0 ; n < capas[c]->getNeuronas().size() ; n++) {
-//            for (int p = 0 ; p < capas[c]->getNeuronas()[n]->devuelvePesos().size() ; p++ ) {
-//                qDebug() << c << n << p << capas[c]->getNeuronas()[n]->devuelvePesos().at(p);
-//            }
-//        }
-//    }
-    pesos <<
-     capas[0]->getNeuronas()[0]->devuelvePesos().at(0) << ", " <<
-     capas[0]->getNeuronas()[0]->devuelvePesos().at(1) << ", " <<
-     capas[0]->getNeuronas()[0]->devuelvePesos().at(2) << ", " <<
-     capas[0]->getNeuronas()[1]->devuelvePesos().at(0) << ", " <<
-     capas[0]->getNeuronas()[1]->devuelvePesos().at(1) << ", " <<
-     capas[0]->getNeuronas()[1]->devuelvePesos().at(2) << ", " <<
-     capas[1]->getNeuronas()[0]->devuelvePesos().at(0) << ", " <<
-     capas[1]->getNeuronas()[0]->devuelvePesos().at(1) << ", " <<
-     capas[1]->getNeuronas()[0]->devuelvePesos().at(2) << "\n";
-}
+
