@@ -11,7 +11,8 @@ SOURCES +=  main.cpp \
     particula_parametrica.cpp \
     enjambre_parametrico.cpp
 
-OTHER_FILES +=
+OTHER_FILES += \
+    parametros.cfg
 
 INCLUDEPATH += ../../util
 

@@ -9,9 +9,10 @@ class enjambre
 {
 public:
     enjambre(double num_part, double x_min, double x_max, double tolerancia,int max_iteraciones,RedNeuronal *red,matriz entradas,vector salidas);
-    int optimizar();
+    bool optimizar();
     double evaluarFuncion(QVector<double> pesos);
     QVector<double> devuelveMejoresPesos() {return _mejores_pesos_globales.last();}
+    double cantidadErroresEnMinimo() {return evaluarFuncion(_mejores_pesos_globales.last());}
 private:
     QVector<Particula> _enjambre;//Enjambre de particulas con posiciones como pesos
     QVector< QVector<double> > _mejores_pesos_globales;//Vector de vectores historicos de mejores posiciones (Pesos)

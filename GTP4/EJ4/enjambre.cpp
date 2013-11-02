@@ -32,7 +32,7 @@ enjambre::enjambre(double num_part, double x_min, double x_max, double toleranci
 
 }
 
-int enjambre::optimizar()
+bool enjambre::optimizar()
 {
     //opc me indica que funcion estoy usando
     double error = 100.0;//Empieza con el maximo error asi itera
@@ -87,19 +87,29 @@ int enjambre::optimizar()
          *Lo que estaria haciendo aca seria calcular el error en base a como varia la funcion
          *desde el ultimo _mejor_y y el anterior _mejor_y a ese
          */
-        if (_mejores_pesos_globales.size() >= 2) {
+//        if (_mejores_pesos_globales.size() >= 2) {
 
-            error = fabs( evaluarFuncion(_mejores_pesos_globales.at(_mejores_pesos_globales.size() - 1)) - evaluarFuncion(_mejores_pesos_globales.at(_mejores_pesos_globales.size() - 2)))
-                    / fabs( evaluarFuncion(_mejores_pesos_globales.at(_mejores_pesos_globales.size() - 1)));
+//            error = fabs( evaluarFuncion(_mejores_pesos_globales.at(_mejores_pesos_globales.size() - 1)) - evaluarFuncion(_mejores_pesos_globales.at(_mejores_pesos_globales.size() - 2)))
+//                    / fabs( evaluarFuncion(_mejores_pesos_globales.at(_mejores_pesos_globales.size() - 1)));
 
-        }
+//        }
+
+        error = evaluarFuncion(_mejores_pesos_globales.last());
 
         cant_iteraciones++;
 
 
     } while (error >= _tolerancia && cant_iteraciones < _max_iter);
 
-    return cant_iteraciones;
+    if (error < _tolerancia) {
+        //Sale por tolerancia
+        return true;
+    }
+    else
+    {
+        //Sale por cantidad de operaciones
+        return false;
+    }
 }
 
 double enjambre::evaluarFuncion(QVector<double> pesos)

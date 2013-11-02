@@ -25,7 +25,6 @@ public:
 
     int mapeadorSalidas( vector salidas );
 
-
 private:
     QVector<CapaNeuronal *> capas;
     QVector<int> codif_salidas;

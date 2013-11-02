@@ -154,3 +154,4 @@ int RedNeuronal::mapeadorSalidas(vector salidas)
 
 
 
+

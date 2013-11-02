@@ -94,14 +94,22 @@ int main(int argc, char *argv[])
     graf2->setearEjesEnGrafico();
     graf2->setearTituloEjeX( " X " );
     graf2->setearTituloEjeY( " y " );
-    graf2->agregarPuntosClasificados( entradas, salidas, 0.5 );
+    graf2->agregarPuntosClasificados( entradas, salidas, red.mostrarCodificacionSalida() );
     mdiArea->tileSubWindows();
 
 
     // Inicializo el enjambre de particulas
 
     double tolerancia_error = parametros.value( "tolerancia_error" ).toDouble();
-    qDebug() << "Error de corte: " << ( tolerancia_error ) << "%";
+    if (tolerancia_error > 100) {
+        qDebug() << "Cantidad de errores de evaluacion permitidos: " << ( tolerancia_error );
+    }
+    else
+    {
+        qDebug() << "Error de corte: " << ( tolerancia_error ) << "%";
+    }
+
+
 
     int iteraciones = parametros.value( "iter" ).toDouble();
     qDebug() << "Cantidad de iteraciones Maximas: " << ( iteraciones );
@@ -132,11 +140,24 @@ int main(int argc, char *argv[])
     QElapsedTimer medidor_tiempo;
     medidor_tiempo.start();
 
-    psonn.optimizar();
+    bool motivo_salida = psonn.optimizar();
 
     qint64 milisegundos = medidor_tiempo.elapsed();
 
     qDebug() << "Tiempo medido: " << milisegundos << " ms";
+
+    //Calculo el error promedio y la desviacion estandar para todo
+    double error = psonn.cantidadErroresEnMinimo();
+    qDebug() <<"Cantidad de Errores: " << error ;
+
+    if (motivo_salida == true) {
+        qDebug() << "Motivo Salida: TOLERANCIA";
+    }
+    else
+    {
+        qDebug() << "Motivo Salida: CANTIDAD DE ITERACIONES";
+    }
+
 
     qDebug() << endl << "---------------- /Prueba de a Red/ ----------------";
 
