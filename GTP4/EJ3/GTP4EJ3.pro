@@ -9,7 +9,9 @@ SOURCES +=  main.cpp \
     particula.cpp \
     enjambre.cpp \
     particula_parametrica.cpp \
-    enjambre_parametrico.cpp
+    enjambre_parametrico.cpp \
+    ../../util/graficador.cpp \
+    ../../util/graficadormdi.cpp
 
 OTHER_FILES += \
     parametros.cfg
@@ -22,4 +24,6 @@ HEADERS += \
     ../../util/funciones_aux.h \
     enjambre.h \
     particula_parametrica.h \
-    enjambre_parametrico.h
+    enjambre_parametrico.h \
+    ../../util/graficador.h \
+    ../../util/graficadormdi.h
