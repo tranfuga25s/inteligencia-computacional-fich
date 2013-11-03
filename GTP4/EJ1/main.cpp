@@ -118,8 +118,14 @@ int main(int argc, char *argv[])
 
     QVector<double> histFitness;
     QVector<int> histIteracion;
+    QVector<double> histPromFitnes;
     histFitness.append( pob.mejorFitnes() );
     histIteracion.append( 0 );
+    histPromFitnes.append( pob.mejorFitnes() );
+
+    double mejor_fitness = 0.0;
+    double pos_mejor_fitness = 0.0;
+    int generacion_mejor_fitness = -1;
 
     while( pob.mejorFitnes() <= fitnes_necesario
         && iteracciones <= iteracciones_maximas ) {
@@ -142,17 +148,27 @@ int main(int argc, char *argv[])
         a.processEvents();
 
         QVector<double> x, y;
+        double sumatoria = 0.0;
         for( int i=0; i<pob.size(); i++ ) {
             y.append( i );
             x.append( pob.at( i ).getX() );
+            sumatoria += pob.at( i ).getX();
         }
+        sumatoria /=  pob.size();
+        histPromFitnes.append( sumatoria );
         grafPuntos->agregarCurva( x, y, QString( "generacion %1" ).arg( iteracciones ) );
+
+        if( mejor_fitness <= pob.mejorFitnes() ) {
+            mejor_fitness = pob.mejorFitnes();
+            pos_mejor_fitness = pob.posicionMinimo();
+            generacion_mejor_fitness = iteracciones;
+        }
 
     }
 
-    qDebug() << "Mejor Fitness: " << pob.mejorFitnes();
-    qDebug() << "Posicion Minimo: " << pob.posicionMinimo();
-    qDebug() << "Minimo: " << evaluar(pob.posicionMinimo());
-
+    qDebug() << "Mejor Fitness: " << mejor_fitness;
+    qDebug() << "Posicion Minimo: " << pos_mejor_fitness;
+    qDebug() << "Minimo: " << evaluar( pos_mejor_fitness );
+    qDebug() << "Generacion: " << generacion_mejor_fitness;
     return a.exec();
 }
