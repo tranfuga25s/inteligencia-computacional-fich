@@ -1,8 +1,8 @@
 #ifndef GENOMA_H
 #define GENOMA_H
 
-#define cant_entera 8
-#define cant_decimal 5
+#define cant_entera 10 // 2^10 = 1024
+#define cant_decimal 5 // Hasta 5 elementos de la posicion decimal
 
 #include <QVector>
 #include <funciones_aux.h>

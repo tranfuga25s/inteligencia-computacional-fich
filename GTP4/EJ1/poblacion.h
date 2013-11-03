@@ -100,7 +100,9 @@ void Poblacion<T>::evaluarPoblacion()
     // recorro todo el vector y veo cual es el mejor valor
     for( int i=0; i<this->size(); i++ ) {
         double temp = evaluar( this->at( i ).getX() );
+        // VEO QUE ESTÉ BIEN ESTA FUNCION!
         temp = (-1.0)*temp;                                /// fit = -y
+        //
         if( temp > _mejor_fitness ) {
             _mejor_fitness = temp;
             _pos_mejor_fitness = i;
