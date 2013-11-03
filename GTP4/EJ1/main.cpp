@@ -96,6 +96,7 @@ int main(int argc, char *argv[])
     pob.setearBrechaGeneracional( parametros.value( "brecha_generacional" ).toDouble() );
     pob.setearProbabilidadMutacion( parametros.value( "probabilidad_mutacion").toDouble() );
     pob.setearModoSeleccionPadres( (Poblacion<GenomaX>::MetodoSeleccion)parametros.value( "metodo_seleccion" ).toInt() );
+    pob.setearPorcentajeCantidadDePadres( parametros.value( "cantidad_padres" ).toDouble() );
 
     double max = parametros.value( "max" ).toDouble();
     double min = parametros.value( "min" ).toDouble();
@@ -161,11 +162,11 @@ int main(int argc, char *argv[])
         for( int i=0; i<pob.size(); i++ ) {
             y.append( i );
             x.append( pob.at( i ).getX() );
-            sumatoria += evaluar( pob.at( i ).getX() );
+            sumatoria += (-1.0)*evaluar( pob.at( i ).getX() );
         }
         sumatoria /=  pob.size();
         histPromFitnes.append( sumatoria );
-        grafPuntos->agregarCurva( x, y, QString( "generacion %1" ).arg( iteracciones ) );
+        grafPuntos->agregarCurva( x, y, QString( "Gen%1" ).arg( iteracciones ) );
 
         if( mejor_fitness <= pob.mejorFitnes() ) {
             mejor_fitness = pob.mejorFitnes();

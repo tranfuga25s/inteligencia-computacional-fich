@@ -38,6 +38,9 @@ public:
     void setearProbabilidadMutacion( int valor ) { _probabilidad_mutacion = valor; }
     int probabilidadMutacion() { return _probabilidad_mutacion; }
 
+    void setearPorcentajeCantidadDePadres( double valor ) { _cantidad_padres = valor; }
+    int  cantidadDePadres() { return floor( _cantidad_total * _cantidad_padres ); }
+
     void setearMinMax( double min, double max ) { _min = min; _max = max; }
 
     void evaluarPoblacion();
@@ -53,6 +56,7 @@ private:
     MetodoSeleccion _metodo_seleccion;
     bool _elitismo;
     double _brecha_generacional;
+    double _cantidad_padres;
     int _probabilidad_mutacion;
 
     double _max;
@@ -111,7 +115,7 @@ void Poblacion<T>::evaluarPoblacion()
 template<typename T>
 void Poblacion<T>::seleccionarPadres()
 {
-    // inicializo el vector de posiciones a no tocar
+    // inicializo el vector de padres a utilizar
     _nuevos_padres.clear();
 
     // Me aseguro el elitismo para cualquier metodo
@@ -143,7 +147,7 @@ void Poblacion<T>::ruleta()
         }
     }
 
-    int tam_nueva_generacion = floor( this->size() * _brecha_generacional );
+    int tam_nueva_generacion = this->cantidadDePadres();
 
     for( int j=0; j<tam_nueva_generacion; j++ ) {
 
@@ -182,9 +186,7 @@ void Poblacion<T>::ruleta()
 template<typename T>
 void Poblacion<T>::ventaneo()
 {
-
-
-    int tam_nueva_generacion = floor( this->size() * _brecha_generacional );
+    int tam_nueva_generacion = this->cantidadDePadres();
 
     for( int j=0; j<tam_nueva_generacion; j++ ) {
 
@@ -224,26 +226,28 @@ void Poblacion<T>::ventaneo()
 template<typename T>
 void Poblacion<T>::torneo()
 {
-    int tam_nueva_generacion = floor( this->size() * _brecha_generacional );
+    int tam_nueva_generacion = this->cantidadDePadres();
 
     for( int j=0; j<tam_nueva_generacion; j++ ) {
 
         // Elijo cuatro participantes y los hago competir
-        QVector<int> posiciones;
+        QMap<double,int> mposiciones;
         for( int i=0; i<this->size(); i++ ) {
-            posiciones.append( i );
+            mposiciones.insertMulti( _fitness.at(i), i );
         }
+        QList<int> posiciones = mposiciones.values(); // Valores ordenados
+
         int p = valor_random( 0, posiciones.size() );
-        int pos1 = posiciones.at( p );
-        posiciones.remove( p );
+        int pos1 = posiciones.takeAt( p );
+        //posiciones.remove( p );
         p = valor_random( 0, posiciones.size() );
-        int pos2 = posiciones.at( p );
-        posiciones.remove( p );
+        int pos2 = posiciones.takeAt( p );
+        //posiciones.remove( p );
         p = valor_random( 0, posiciones.size() );
-        int pos3 = posiciones.at( p );
-        posiciones.remove( p );
+        int pos3 = posiciones.takeAt( p );
+        //posiciones.remove( p );
         p = valor_random( 0, posiciones.size() );
-        int pos4 = posiciones.at( p );
+        int pos4 = posiciones.takeAt( p );
         posiciones.clear();
 
         int ganador1 = 0;
@@ -289,7 +293,11 @@ void Poblacion<T>::generarHijos()
     }
 
     // Genero la brecha generacional copiando los padres para convervar las buenas soluciones
-    for( int i=0; i<_nuevos_padres.size(); i++ ) {
+    int brecha = floor( this->_cantidad_total * this->_brecha_generacional );
+    if( brecha > _nuevos_padres.size() ) {
+        brecha = _nuevos_padres.size();
+    }
+    for( int i=0; i<brecha; i++ ) {
         this->append( _nuevos_padres.at( i ) );
     }
 
