@@ -11,8 +11,7 @@ SOURCES +=  main.cpp \
 
 OTHER_FILES += parametros.cfg
 
-INCLUDEPATH += ../../util \
-               ../EJ1
+INCLUDEPATH += ../../util
 
 HEADERS += evaluador.h \
            genomaxy.h \

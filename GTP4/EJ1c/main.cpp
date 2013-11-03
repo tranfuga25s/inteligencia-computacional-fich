@@ -18,8 +18,9 @@ typedef QVector< QVector<double> > matriz;
 
 #include "funciones_aux.h"
 #include "genomaxy.h"
-#include "poblacion.h"
-#include "graficadormdi.h"
+#include "../EJ1/poblacion.h"
+#include "evaluador.h"
+#include "../../util/graficadormdi.h"
 
 /*!
  * \brief main
@@ -38,14 +39,6 @@ int main(int argc, char *argv[])
     mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     main.setCentralWidget(mdiArea);
-
-    GraficadorMdi *grafFuncion = new GraficadorMdi( mdiArea );
-    grafFuncion->setearTitulo( QString::fromUtf8( "Funcion" ) );
-    grafFuncion->setearTituloEjeX( QString::fromUtf8( "X" ) );
-    grafFuncion->setearTituloEjeY( QString::fromUtf8( "Y" ) );
-    mdiArea->addSubWindow( grafFuncion );
-    grafFuncion->show();
-    mdiArea->tileSubWindows();
 
     GraficadorMdi *grafFitnes = new GraficadorMdi( mdiArea );
     grafFitnes->setearTitulo( QString::fromUtf8( "Evolucion Mejor Fitness" ) );
@@ -105,17 +98,10 @@ int main(int argc, char *argv[])
         GenomaXY temp;
         double valor = valor_random( min, max );
         temp.setX( valor );
+        valor = valor_random( min, max );
+        temp.setY( valor );
         pob.append( temp );
     }
-
-    // Grafico la funcion
-    QVector<double> posy, posx;
-    for( double i=min; i<max; i++ ) {
-        posx.append( i );
-        posy.append( evaluar( i ) );
-    }
-    grafFuncion->agregarCurva( posx, posy, "funcion" );
-    a.processEvents();
 
     double fitnes_necesario = parametros.value( "fitnes_necesario", 0.0 ).toDouble();
 
@@ -134,7 +120,8 @@ int main(int argc, char *argv[])
     histPromFitnes.append( pob.mejorFitnes() );
 
     double mejor_fitness = 0.0;
-    double pos_mejor_fitness = 0.0;
+    double pos_mejor_fitness_x = 0.0;
+    double pos_mejor_fitness_y = 0.0;
     int generacion_mejor_fitness = -1;
 
     while( pob.mejorFitnes() <= fitnes_necesario
@@ -157,20 +144,17 @@ int main(int argc, char *argv[])
         grafFitnes->setearPuntos( histFitness, histIteracion );
         a.processEvents();
 
-        QVector<double> x, y;
         double sumatoria = 0.0;
         for( int i=0; i<pob.size(); i++ ) {
-            y.append( i );
-            x.append( pob.at( i ).getX() );
-            sumatoria += (-1.0)*evaluar( pob.at( i ).getX() );
+            sumatoria += (-1.0)*evaluar( pob.at( i ) );
         }
         sumatoria /=  pob.size();
         histPromFitnes.append( sumatoria );
-        grafPuntos->agregarCurva( x, y, QString( "Gen%1" ).arg( iteracciones ) );
 
         if( mejor_fitness <= pob.mejorFitnes() ) {
             mejor_fitness = pob.mejorFitnes();
-            pos_mejor_fitness = pob.posicionMinimo();
+            pos_mejor_fitness_x = pob.posicionMinimoX();
+            pos_mejor_fitness_y = pob.posicionMinimoY();
             generacion_mejor_fitness = iteracciones;
         }
         grafPromedio->setearPuntos( histPromFitnes, histIteracion );
@@ -178,8 +162,8 @@ int main(int argc, char *argv[])
     }
 
     qDebug() << "Mejor Fitness: " << mejor_fitness;
-    qDebug() << "Posicion Minimo: " << pos_mejor_fitness;
-    qDebug() << "Minimo: " << evaluar( pos_mejor_fitness );
+    qDebug() << "Posicion Minimo: " << pos_mejor_fitness_x <<", "<<pos_mejor_fitness_y;
+    qDebug() << "Minimo: " << evaluar( pos_mejor_fitness_x, pos_mejor_fitness_y );
     qDebug() << "Generacion: " << generacion_mejor_fitness;
     return a.exec();
 }
