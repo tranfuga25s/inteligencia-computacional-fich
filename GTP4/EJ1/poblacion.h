@@ -141,9 +141,13 @@ void Poblacion<T>::ruleta()
 
     // Busco el maximo y minimo de los fitnes
     double minimo = DBL_MAX;
+    double maximo = (-1.0)*DBL_MAX;
     for( int i=0; i<this->size(); i++ ) {
-        if( _fitness[i] < minimo ) {
-            minimo = _fitness[i];
+        if( _fitness.at( i ) < minimo ) {
+            minimo = _fitness.at(i);
+        }
+        if( _fitness[i] > maximo ) {
+            maximo = _fitness.at(i);
         }
     }
 
@@ -153,9 +157,9 @@ void Poblacion<T>::ruleta()
 
         // Genero la escala para la ruleta y las probabilidades de cada uno
         _probabilidades.clear();
-        _probabilidades.reserve( this->size() );
+        _probabilidades.resize( this->size() );
         for( int i=0; i<this->size(); i++ ) {
-            _probabilidades[i] = ( _fitness[i] - minimo ) / ( _mejor_fitness - minimo ); // Interpolacion
+            _probabilidades[i] = ( _fitness[i] - minimo ) / ( maximo - minimo ); // Interpolacion
         }
 
         // Armo el vector de indices de la ruleta
@@ -170,7 +174,7 @@ void Poblacion<T>::ruleta()
 
         }
 
-        int azar = valor_random( 0, ruleta.size() );
+        int azar = valor_random_int( 0, ruleta.size() );
 
         // Coloco el seleccionado en la población de padres
         _nuevos_padres.append( this->at( azar ) );
@@ -201,7 +205,7 @@ void Poblacion<T>::ventaneo()
         // Calculo el tamaño de la ventana a utilizar
         int tam_ventana = ( this->size() - ( j * ( this->size() / tam_nueva_generacion ) ) );
 
-        int azar = valor_random( 0, tam_ventana );
+        int azar = valor_random_int( 0, tam_ventana );
 
 
         // La lista esta ordenada en ascendente, o sea que el fitnes mayor está en las utlimas posiciones
