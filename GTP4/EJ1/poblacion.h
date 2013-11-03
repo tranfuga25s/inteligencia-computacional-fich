@@ -30,7 +30,7 @@ public:
     int modoSeleccionPadres() const { return _metodo_seleccion; }
 
     double mejorFitnes() const { return _mejor_fitness; }
-    double posicionMinimo() {return this->at(_pos_mejor_fitness).getX();}
+    double posicionMinimo() { return this->at(_pos_mejor_fitness).getX(); }
 
     void setearBrechaGeneracional( double valor ) { _brecha_generacional = valor; }
     double brechaGeneracional() const { return _brecha_generacional; }
@@ -96,7 +96,7 @@ void Poblacion<T>::evaluarPoblacion()
     // recorro todo el vector y veo cual es el mejor valor
     for( int i=0; i<this->size(); i++ ) {
         double temp = evaluar( this->at( i ).getX() );
-        temp = (-1.0)*temp; // fit = -y
+        temp = (-1.0)*temp;                                /// fit = -y
         if( temp > _mejor_fitness ) {
             _mejor_fitness = temp;
             _pos_mejor_fitness = i;
@@ -119,7 +119,7 @@ void Poblacion<T>::seleccionarPadres()
         _nuevos_padres.append( this->at( _pos_mejor_fitness ) );
         this->remove( _pos_mejor_fitness );
         _fitness.remove( _pos_mejor_fitness );
-        //_pos_mejor_fitness = -1;
+        _pos_mejor_fitness = -1;
     }
 
     // Recorro el vector y selecciono segun el metodo elegido

@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     mdiArea->tileSubWindows();
 
     GraficadorMdi *grafFitnes = new GraficadorMdi( mdiArea );
-    grafFitnes->setearTitulo( QString::fromUtf8( "Evolucion Fitnes" ) );
+    grafFitnes->setearTitulo( QString::fromUtf8( "Evolucion Mejor Fitness" ) );
     grafFitnes->setearTituloEjeX( QString::fromUtf8( "Generacion" ) );
     grafFitnes->setearTituloEjeY( QString::fromUtf8( "fitness" ) );
     mdiArea->addSubWindow( grafFitnes );
@@ -65,6 +65,15 @@ int main(int argc, char *argv[])
     mdiArea->tileSubWindows();
     //grafPuntos->setearParaSOM();
    // grafPuntos->setearEjesEnGrafico();
+
+    GraficadorMdi *grafPromedio = new GraficadorMdi( mdiArea );
+    grafPromedio->setearTitulo( QString::fromUtf8( "Fitness Promedio" ) );
+    grafPromedio->setearTituloEjeX( QString::fromUtf8( "Posicion" ) );
+    grafPromedio->setearTituloEjeY( QString::fromUtf8( "Y" ) );
+    mdiArea->addSubWindow( grafPromedio );
+    grafPromedio->show();
+    mdiArea->tileSubWindows();
+    grafPromedio->setearParaSOM();
 
     // barra de progreso para mostrar el avance del tiempo
     QDockWidget *dockBarra = new QDockWidget( QString::fromUtf8( "Evaluaciones" ) );
@@ -152,7 +161,7 @@ int main(int argc, char *argv[])
         for( int i=0; i<pob.size(); i++ ) {
             y.append( i );
             x.append( pob.at( i ).getX() );
-            sumatoria += pob.at( i ).getX();
+            sumatoria += evaluar( pob.at( i ).getX() );
         }
         sumatoria /=  pob.size();
         histPromFitnes.append( sumatoria );
@@ -163,6 +172,7 @@ int main(int argc, char *argv[])
             pos_mejor_fitness = pob.posicionMinimo();
             generacion_mejor_fitness = iteracciones;
         }
+        grafPromedio->setearPuntos( histPromFitnes, histIteracion );
 
     }
 
