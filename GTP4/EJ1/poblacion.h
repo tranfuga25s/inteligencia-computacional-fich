@@ -3,7 +3,7 @@
 
 #include <QVector>
 #include <QMap>
-#include "evaluador.h"
+//#include "evaluador.h"
 #include <cfloat>
 #include "funciones_aux.h"
 
@@ -102,7 +102,7 @@ void Poblacion<T>::evaluarPoblacion()
     _mejor_fitness = (-1.0)*DBL_MAX;
     // recorro todo el vector y veo cual es el mejor valor
     for( int i=0; i<this->size(); i++ ) {
-        double temp = evaluar( this->at( i ).getX() );
+        double temp = evaluar( this->at( i ) );
         // VEO QUE ESTÉ BIEN ESTA FUNCION!
         temp = (-1.0)*temp;                                /// fit = -y
         //
