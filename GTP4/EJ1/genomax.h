@@ -1,8 +1,8 @@
 #ifndef GENOMA_H
 #define GENOMA_H
 
-#define cant_entera 10
-#define cant_decimal 4
+#define cant_entera 8
+#define cant_decimal 5
 
 #include <QVector>
 #include <funciones_aux.h>
@@ -21,8 +21,8 @@ public:
     int size() { return _genotipo.size(); }
     void mutar( int pos ) { _genotipo[pos] = !_genotipo.at( pos ); }
     double getX() const { return _x; }
-    bool at( int pos ) { return _genotipo.at( pos ); }
-    void setearGenoma( int i, bool valor) { _genotipo[i] = valor; }
+    bool at( int pos ) { return this->_genotipo.at( pos ); }
+    void setearGenoma( int i, bool valor) { this->_genotipo[i] = valor; }
     void setX( double valor );
     void mostrarGenotipo();
 
@@ -60,13 +60,16 @@ void GenomaX::aGenotipo() {
     // Tomo la parte decimal y la convierto a cadena de bits
 
     if( _genotipo.size() == 0 ) {
-        for(int i = 0; i < 20 ; i++) {
+        for(int i = 0; i < cant_decimal + cant_entera + 1; i++) {
             _genotipo.append(false);
         }
     }
 
-    int x_aux_entero = floor(_x);
-    double x_aux_decimal = (_x - floor(_x) * pow(10,cant_decimal));
+    double x_aux_decimal = 0.0;
+    double x_aux_entero = 0.0;
+    x_aux_decimal = modf( _x, &x_aux_entero );
+    x_aux_decimal *= pow( 10, cant_decimal );
+    modf( x_aux_decimal, &x_aux_decimal );
 
     // Positivo o negativo
     if( _x > 0.0 ) {
@@ -77,7 +80,7 @@ void GenomaX::aGenotipo() {
 
     //Parte Entera
     for (int i = cant_entera - 1 ; i>=0 ; i--) {
-        if(floor(fmod(x_aux_entero,2.0)) == 1.0) {
+        if( fmod( x_aux_entero, 2.0 ) == 1.0) {
             _genotipo[i] = true;
         }
         else
@@ -86,11 +89,12 @@ void GenomaX::aGenotipo() {
         }
 
         x_aux_entero = x_aux_entero/2.0;
+        modf( x_aux_entero, &x_aux_entero );
     }
 
     //Parte decimal
     for (int i = cant_entera ; i < cant_entera + cant_decimal ; i++) {
-        if(floor(fmod(x_aux_decimal,2.0)) == 1.0) {
+        if( fmod( x_aux_decimal, 2.0 ) == 1.0) {
             _genotipo[i] = true;
         }
         else
@@ -98,7 +102,8 @@ void GenomaX::aGenotipo() {
             _genotipo[i] = false;
         }
 
-        x_aux_decimal = x_aux_decimal/2.0;
+        x_aux_decimal /= 2.0;
+        modf( x_aux_decimal, &x_aux_decimal );
      }
 
 
@@ -125,7 +130,7 @@ void GenomaX::aFenotipo() {
 
 
 static void mutar( GenomaX &g ) {
-    int pos = valor_random( 0, g.size() );
+    int pos = valor_random_int( 0, g.size() );
     g.mutar( pos );
     g.aFenotipo();
 }
@@ -134,6 +139,7 @@ static void cruza( GenomaX &a, GenomaX &b ) {
     //Asumimos que tienen la misma profundidad de bits los genomas
 
     int pos = valor_random_int( 0, a.size() );
+    //qDebug() << pos;
 
     GenomaX auxA = a;
     GenomaX auxB = b;
