@@ -5,12 +5,16 @@ CONFIG   += qwt
 
 TEMPLATE = app
 
-SOURCES +=  main.cpp
+SOURCES +=  ../EJ1/main.cpp  \
+    ../../util/graficador.cpp \
+    ../../util/graficadormdi.cpp
 
 OTHER_FILES += parametros.cfg
 
 INCLUDEPATH += ../../util
 
-HEADERS += genomax.h \
-           poblacion.h \
-           evaluador.h
+HEADERS += ../EJ1/genomax.h \
+           evaluador.h \
+           ../EJ1/poblacion.h \
+           ../../util/graficador.h \
+           ../../util/graficadormdi.h
