@@ -136,7 +136,7 @@ void GenomaX::aFenotipo() {
     }
     for( int i=cant_entera; i<cant_entera + cant_decimal; i++ ) {
         if (_genotipo.at(i)) {
-            temporal += pow( 2.0, (-1)*(i - cant_entera) );
+            temporal += pow( 2.0, (-1)*( i - ( cant_entera - 1 ) ) );
         }
     }
     if( _genotipo.at( _genotipo.size() -1 ) == false ) {
