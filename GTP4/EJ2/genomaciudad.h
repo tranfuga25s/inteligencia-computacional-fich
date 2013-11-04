@@ -3,8 +3,6 @@
 
 #include <QVector>
 
-#define tamano_indice 4 // 2^4 = 16
-
 class GenomaCiudad {
 
 public:

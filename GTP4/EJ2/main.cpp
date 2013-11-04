@@ -101,8 +101,14 @@ int main(int argc, char *argv[])
 
     int cant_ciudades = parametros.value( "cantidad_ciudades" ).toInt();
 
+    QVector< QVector<int> > distancias;
+    for( int i=0; i<cant_ciudades; i++ ) {
+        distancias.append( stringAQVector( parametros.value( QString( "distancias%1" ).arg( i ) ).toString() ) );
+    }
+
     for( int i=0; i<cant_total; i++ ) {
         GenomaCiudad temp( cant_ciudades );
+        temp.setearMatrizDistancias( &distancias );
         pob.append( temp );
     }
 
