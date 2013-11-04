@@ -100,6 +100,7 @@ int main(int argc, char *argv[])
         temp.setX( valor );
         valor = valor_random( min, max );
         temp.setY( valor );
+        temp.setMinMax( min, max );
         pob.append( temp );
     }
 

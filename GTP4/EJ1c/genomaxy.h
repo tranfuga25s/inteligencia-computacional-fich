@@ -27,10 +27,14 @@ public:
     void setX( double valor );
     void setY( double valor );
     void mostrarGenotipo();
+    void setMinMax( double min, double max ) { _min = min; _max = max; }
+    double getMin() const { return _min; }
+    double getMax() const { return _max; }
 
 private:
     double _x; // Fenotipo x
     double _y; // Fenotipo y
+    double _min, _max;
     QVector<bool> _genotipo;
 };
 
@@ -41,17 +45,23 @@ GenomaXY::GenomaXY() {
     }
     _x = 0.0;
     _y = 0.0;
+    _min = 0.0;
+    _max = 0.0;
 }
 
 GenomaXY::GenomaXY( const GenomaXY& origin ) {
     this->_x = origin.getX();
     this->_y = origin.getY();
+    this->_min = origin.getMin();
+    this->_max = origin.getMax();
     aGenotipo();
 }
 
 GenomaXY::GenomaXY( GenomaXY &origin ) {
     this->_x = origin.getX();
     this->_y = origin.getY();
+    this->_min = origin.getMin();
+    this->_max = origin.getMax();
     aGenotipo();
 }
 
@@ -84,9 +94,9 @@ void GenomaXY::aGenotipo() {
 
     // Positivo o negativo
     if( _x > 0.0 ) {
-        _genotipo[cant_decimal + cant_entera] = true;
+        _genotipo[cant_decimal + cant_entera + 1] = true;
     } else {
-        _genotipo[cant_decimal + cant_entera] = false;
+        _genotipo[cant_decimal + cant_entera + 1] = false;
     }
 
     //Parte Entera
@@ -134,7 +144,7 @@ void GenomaXY::aGenotipo() {
     }
 
     //Parte Entera
-    for (int i = desplazamiento + cant_entera - 1 ; i>=0 ; i--) {
+    for (int i = cant_entera - 1 ; i >=0; i--) {
         if( fmod( y_aux_entero, 2.0 ) == 1.0) {
             _genotipo[desplazamiento+i] = true;
         }
@@ -148,7 +158,7 @@ void GenomaXY::aGenotipo() {
     }
 
     //Parte decimal
-    for (int i = desplazamiento+cant_entera ; i < desplazamiento+cant_entera + cant_decimal ; i++) {
+    for (int i = cant_entera ; i < cant_entera + cant_decimal ; i++) {
         if( fmod( y_aux_decimal, 2.0 ) == 1.0) {
             _genotipo[desplazamiento+i] = true;
         }
@@ -232,7 +242,7 @@ static void cruza( GenomaXY &a, GenomaXY &b ) {
 
 void GenomaXY::mostrarGenotipo() {
     QString salida;
-    salida.append( QString( "Genotipo:%1:" ).arg( _x ) );
+    salida.append( QString( "Genotipo:%1,%2:" ).arg( _x ).arg( _y ) );
     foreach( bool val, _genotipo ) {
         if( val ) {
             salida.append( "1" );
