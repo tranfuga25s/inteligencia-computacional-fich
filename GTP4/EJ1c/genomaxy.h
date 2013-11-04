@@ -31,6 +31,8 @@ public:
     double getMin() const { return _min; }
     double getMax() const { return _max; }
 
+    bool valido();
+
 private:
     double _x; // Fenotipo x
     double _y; // Fenotipo y
@@ -73,6 +75,13 @@ void GenomaXY::setX( double valor ) {
 void GenomaXY::setY( double valor ) {
     _y = valor;
     aGenotipo();
+}
+
+bool GenomaXY::valido() {
+    if( _x >= _min && _x <= _max && _y >= _min && _x >= _max ) {
+        return true;
+    }
+    return false;
 }
 
 void GenomaXY::aGenotipo() {
@@ -243,12 +252,20 @@ static void cruza( GenomaXY &a, GenomaXY &b ) {
 void GenomaXY::mostrarGenotipo() {
     QString salida;
     salida.append( QString( "Genotipo:%1,%2:" ).arg( _x ).arg( _y ) );
+    int pos = 0;
     foreach( bool val, _genotipo ) {
+        if( pos == cant_entera || pos == 2*cant_entera + cant_decimal + 1 ) {
+            salida.append( "," );
+        }
+        if( pos == cant_entera + cant_decimal || pos == _genotipo.size() - 1  ) {
+            salida.append( ", sig:" );
+        }
         if( val ) {
             salida.append( "1" );
         } else {
             salida.append( "0" );
         }
+        pos++;
     }
     qDebug() << salida;
 }

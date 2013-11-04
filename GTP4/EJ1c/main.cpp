@@ -154,8 +154,8 @@ int main(int argc, char *argv[])
 
         if( mejor_fitness <= pob.mejorFitnes() ) {
             mejor_fitness = pob.mejorFitnes();
-            pos_mejor_fitness_x = pob.posicionMinimoX();
-            pos_mejor_fitness_y = pob.posicionMinimoY();
+            pos_mejor_fitness_x = pob.elementoMinimo().getX();
+            pos_mejor_fitness_y = pob.elementoMinimo().getY();
             generacion_mejor_fitness = iteracciones;
         }
         grafPromedio->setearPuntos( histPromFitnes, histIteracion );
