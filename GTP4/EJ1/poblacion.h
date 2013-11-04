@@ -30,10 +30,7 @@ public:
     int modoSeleccionPadres() const { return _metodo_seleccion; }
 
     double mejorFitnes() const { return _mejor_fitness; }
-    double posicionMinimo() { return this->at(_pos_mejor_fitness).getX(); }
-
-    double posicionMinimoX() { return this->at( _pos_mejor_fitness ).getX(); }
-    double posicionMinimoY() { return this->at( _pos_mejor_fitness ).getY(); }
+    T elementoMinimo() { return this->at( _pos_mejor_fitness ); }
 
     void setearBrechaGeneracional( double valor ) { _brecha_generacional = valor; }
     double brechaGeneracional() const { return _brecha_generacional; }

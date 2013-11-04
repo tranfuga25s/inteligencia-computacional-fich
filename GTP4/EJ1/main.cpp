@@ -172,7 +172,7 @@ int main(int argc, char *argv[])
 
         if( mejor_fitness <= pob.mejorFitnes() ) {
             mejor_fitness = pob.mejorFitnes();
-            pos_mejor_fitness = pob.posicionMinimo();
+            pos_mejor_fitness = pob.elementoMinimo().getX();
             generacion_mejor_fitness = iteracciones;
         }
         grafPromedio->setearPuntos( histPromFitnes, histIteracion );

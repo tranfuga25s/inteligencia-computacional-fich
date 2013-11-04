@@ -14,7 +14,7 @@ public:
     GenomaCiudad( GenomaCiudad& origin );
 
     void setearMatrizDistancias( QVector< QVector<int> > *dist ) { _distancias = dist; }
-    QVector< QVector<int> > *getMatrizDistancias() { return _distancias; }
+    QVector< QVector<int> > *getMatrizDistancias() const { return _distancias; }
 
     QVector<int> getRecorrido() const { return _recorrido; }
 
@@ -23,6 +23,8 @@ public:
     int distanciaRecorrido() const;
 
     bool valido();
+
+    void mostrarRecorrido();
 
 private:
     int _cant_ciudades;
@@ -95,6 +97,16 @@ int GenomaCiudad::distanciaRecorrido() const {
         anterior = nuevo;
     }
     return distancia;
+}
+
+void GenomaCiudad::mostrarRecorrido() {
+    QString salida;
+    salida.append( "Recorrido: " );
+    for( int i=0; i<_recorrido.size(); i++ ) {
+        salida.append( QString::number( _recorrido.at(i) ) ).append( "," );
+    }
+    qDebug() << salida;
+    return;
 }
 
 void cruza( GenomaCiudad &a, GenomaCiudad &b ) {

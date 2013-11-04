@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
     histPromFitnes.append( pob.mejorFitnes() );
 
     double mejor_fitness = 0.0;
-    double pos_mejor_fitness = 0.0;
+    GenomaCiudad pos_mejor_fitness;
     int generacion_mejor_fitness = -1;
 
     while( pob.mejorFitnes() <= fitnes_necesario
@@ -159,7 +159,7 @@ int main(int argc, char *argv[])
 
         if( mejor_fitness <= pob.mejorFitnes() ) {
             mejor_fitness = pob.mejorFitnes();
-            pos_mejor_fitness = pob.posicionMinimo();
+            pos_mejor_fitness = pob.elementoMinimo();
             generacion_mejor_fitness = iteracciones;
         }
         grafPromedio->setearPuntos( histPromFitnes, histIteracion );
@@ -167,7 +167,8 @@ int main(int argc, char *argv[])
     }
 
     qDebug() << "Mejor Fitness: " << mejor_fitness;
-    qDebug() << "Posicion Minimo: " << pos_mejor_fitness;
+    qDebug() << "Posicion Minimo: ";
+    pos_mejor_fitness.mostrarRecorrido();
     qDebug() << "Minimo: " << evaluar( pos_mejor_fitness );
     qDebug() << "Generacion: " << generacion_mejor_fitness;
     return a.exec();
