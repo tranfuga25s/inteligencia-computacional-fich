@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
     }
 
 
-    GenomaXY p1;
+   /* GenomaXY p1;
     p1.setX( 128.0 );
     p1.setY( 128.0 );
     p1.mostrarGenotipo();
@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
     p1.mutar( 10 );
     p1.mostrarGenotipo();
     p1.mutar( 11 );
-    p1.mostrarGenotipo();
+    p1.mostrarGenotipo();*/
 
     double fitnes_necesario = parametros.value( "fitnes_necesario", 0.0 ).toDouble();
 
