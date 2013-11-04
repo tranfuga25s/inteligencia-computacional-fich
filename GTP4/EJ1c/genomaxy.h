@@ -36,7 +36,8 @@ public:
 private:
     double _x; // Fenotipo x
     double _y; // Fenotipo y
-    double _min, _max;
+    double _min;
+    double _max;
     QVector<bool> _genotipo;
 };
 
@@ -205,18 +206,18 @@ void GenomaXY::aFenotipo() {
     temporal = 0.0;
     for( int i=cant_entera; i>=0; i-- ) {
         if (_genotipo.at(desplazamiento+i)) {
-            temporal += pow( 2.0, desplazamiento+ ( cant_entera - 1 ) - i );
+            temporal += pow( 2.0, ( cant_entera - 1 ) - i );
         }
     }
     for( int i=cant_entera; i<cant_entera + cant_decimal; i++ ) {
         if (_genotipo.at(desplazamiento+i)) {
-            temporal += pow( 2.0, (-1)*(i - desplazamiento+( cant_entera - 1 )) );
+            temporal += pow( 2.0, (-1)*( i - ( cant_entera - 1 ) ) );
         }
     }
     if( _genotipo.at( _genotipo.size() -1 ) == false ) {
         temporal *= (-1.0);
     }
-    _x = temporal;
+    _y = temporal;
 }
 
 

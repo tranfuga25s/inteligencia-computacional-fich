@@ -104,6 +104,26 @@ int main(int argc, char *argv[])
         pob.append( temp );
     }
 
+
+    GenomaXY p1;
+    p1.setX( 128.0 );
+    p1.setY( 128.0 );
+    p1.mostrarGenotipo();
+    p1.mutar( 9 );
+    p1.mutar( 26 );
+    p1.mostrarGenotipo();
+    p1.mutar( 1 );
+    p1.mostrarGenotipo();
+    p1.mutar( 2 );
+    p1.mostrarGenotipo();
+    p1.mutar( 15 );
+    p1.mostrarGenotipo();
+    p1.mutar( 10 );
+    p1.mostrarGenotipo();
+    p1.mutar( 11 );
+    p1.mostrarGenotipo();
+    return 0;
+
     double fitnes_necesario = parametros.value( "fitnes_necesario", 0.0 ).toDouble();
 
     int iteracciones_maximas = parametros.value( "iteracciones_maximas", 1000 ).toInt();
