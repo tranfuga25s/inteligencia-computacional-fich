@@ -29,6 +29,8 @@ public:
     int ciudad( int i ) { return _recorrido.at( i ); }
     void setearCiudad( int i, int ciudad ) { _recorrido[i] = ciudad; }
 
+    void mutar( int pos ) { _recorrido[pos] = _cant_ciudades - _recorrido.at( pos ); }
+
 private:
     int _cant_ciudades;
     QVector<int> _recorrido;
@@ -113,6 +115,7 @@ void GenomaCiudad::mostrarRecorrido() {
 }
 
 void cruza( GenomaCiudad &a, GenomaCiudad &b ) {
+    // Evito cambiar la primera y ultima ciudad?
     int posa = valor_random_int( 1, a.getRecorrido().size() -1 );
 
     QVector<int> ciudades;
@@ -127,7 +130,9 @@ void cruza( GenomaCiudad &a, GenomaCiudad &b ) {
 }
 
 void mutar( GenomaCiudad &a ) {
-    /// @TODO: implementar
+    int pos = valor_random_int( 0, a.getRecorrido().size() - 1 );
+
+    a.mutar( pos );
 }
 
 
