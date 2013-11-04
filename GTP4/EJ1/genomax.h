@@ -19,7 +19,7 @@ public:
     void aFenotipo();
     void aGenotipo();
     int size() { return _genotipo.size(); }
-    void mutar( int pos ) { _genotipo[pos] = !_genotipo.at( pos ); }
+    void mutar( int pos ) { _genotipo[pos] = !_genotipo.at( pos ); aFenotipo(); }
     double getX() const { return _x; }
     bool at( int pos ) { return this->_genotipo.at( pos ); }
     void setearGenoma( int i, bool valor) { this->_genotipo[i] = valor; }
@@ -129,9 +129,9 @@ void GenomaX::aGenotipo() {
 void GenomaX::aFenotipo() {
     // Convierte la cadena de bits en un numero doble
     double temporal = 0.0;
-    for( int i=cant_entera; i>=0; i-- ) {
+    for( int i=cant_entera-1; i>=0; i-- ) {
         if (_genotipo.at(i)) {
-            temporal += pow( 2.0, cant_entera - i );
+            temporal += pow( 2.0, ( cant_entera - 1) - i );
         }
     }
     for( int i=cant_entera; i<cant_entera + cant_decimal; i++ ) {
@@ -178,12 +178,20 @@ static void cruza( GenomaX &a, GenomaX &b ) {
 void GenomaX::mostrarGenotipo() {
     QString salida;
     salida.append( QString( "Genotipo:%1:" ).arg( _x ) );
+    int pos = 0;
     foreach( bool val, _genotipo ) {
+        if( pos == cant_entera ) {
+            salida.append( "," );
+        }
+        if( pos == cant_entera + cant_decimal ) {
+            salida.append( ", sig:" );
+        }
         if( val ) {
             salida.append( "1" );
         } else {
             salida.append( "0" );
         }
+        pos++;
     }
     qDebug() << salida;
 }

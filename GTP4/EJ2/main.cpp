@@ -162,6 +162,7 @@ int main(int argc, char *argv[])
         sumatoria /=  pob.size();
         histPromFitnes.append( sumatoria );
         grafPuntos->agregarCurva( x, y, QString( "Gen%1" ).arg( iteracciones ) );
+        a.processEvents();
 
         if( mejor_fitness <= pob.mejorFitnes() ) {
             mejor_fitness = pob.mejorFitnes();
@@ -169,6 +170,7 @@ int main(int argc, char *argv[])
             generacion_mejor_fitness = iteracciones;
         }
         grafPromedio->setearPuntos( histPromFitnes, histIteracion );
+        a.processEvents();
 
     }
 

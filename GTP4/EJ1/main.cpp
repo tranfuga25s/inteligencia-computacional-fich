@@ -119,6 +119,17 @@ int main(int argc, char *argv[])
     grafFuncion->agregarCurva( posx, posy, "funcion" );
     a.processEvents();
 
+    GenomaX p1;
+    p1.setX( 128.0 );
+    p1.mostrarGenotipo();
+    p1.mutar( 9 );
+    p1.mostrarGenotipo();
+    p1.mutar( 1 );
+    p1.mostrarGenotipo();
+    p1.mutar( 2 );
+    p1.mostrarGenotipo();
+    return 0;
+
     double fitnes_necesario = parametros.value( "fitnes_necesario", 0.0 ).toDouble();
 
     int iteracciones_maximas = parametros.value( "iteracciones_maximas", 1000 ).toInt();
