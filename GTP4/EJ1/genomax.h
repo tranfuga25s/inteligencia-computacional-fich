@@ -25,9 +25,15 @@ public:
     void setearGenoma( int i, bool valor) { this->_genotipo[i] = valor; }
     void setX( double valor );
     void mostrarGenotipo();
+    bool valido();
+    void setMinMax( double min, double max ) { _min = min; _max = max; }
+    double getMin() const { return _min; }
+    double getMax() const { return _max; }
 
 private:
     double _x; // Fenotipo
+    double _min;
+    double _max;
     QVector<bool> _genotipo;
 };
 
@@ -41,17 +47,28 @@ GenomaX::GenomaX() {
 
 GenomaX::GenomaX( const GenomaX& origin ) {
     this->_x = origin.getX();
+    this->_min = origin.getMin();
+    this->_max = origin.getMax();
     aGenotipo();
 }
 
 GenomaX::GenomaX( GenomaX &origin ) {
     this->_x = origin.getX();
+    this->_min = origin.getMin();
+    this->_max = origin.getMax();
     aGenotipo();
 }
 
 void GenomaX::setX( double valor ) {
     _x = valor;
     aGenotipo();
+}
+
+bool GenomaX::valido() {
+     if( _x >= _min && _x <= _max ) {
+         return true;
+     }
+     return false;
 }
 
 void GenomaX::aGenotipo() {

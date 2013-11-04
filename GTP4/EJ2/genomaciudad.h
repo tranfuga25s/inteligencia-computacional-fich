@@ -18,6 +18,8 @@ public:
 
     int distanciaRecorrido() const;
 
+    bool valido();
+
 private:
     int _cant_ciudades;
     QVector<int> _recorrido;
@@ -45,6 +47,10 @@ GenomaCiudad::GenomaCiudad( const GenomaCiudad &origin ) {
 GenomaCiudad::GenomaCiudad( GenomaCiudad &origin ) {
     this->_cant_ciudades = origin.cantidadCiudades();
     this->generarNuevoRecorrido();
+}
+
+bool GenomaCiudad::valido() {
+    return false;
 }
 
 void GenomaCiudad::generarNuevoRecorrido() {

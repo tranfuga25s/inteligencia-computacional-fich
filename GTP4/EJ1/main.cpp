@@ -106,6 +106,7 @@ int main(int argc, char *argv[])
         GenomaX temp;
         double valor = valor_random( min, max );
         temp.setX( valor );
+        temp.setMinMax( min, max );
         pob.append( temp );
     }
 

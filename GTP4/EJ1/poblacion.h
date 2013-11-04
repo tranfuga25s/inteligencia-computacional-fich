@@ -335,10 +335,10 @@ void Poblacion<T>::generarHijos()
             //qDebug() << "mutacion";
         }
 
-        if( hijo1.getX() >= _min && hijo1.getX() <= _max ) {
+        if( hijo1.valido() ) {
             this->append( hijo1 );
         }
-        if( hijo2.getX() >= _min && hijo2.getX() <= _max ) {
+        if( hijo2.valido() ) {
             this->append( hijo2 );
         }
     }

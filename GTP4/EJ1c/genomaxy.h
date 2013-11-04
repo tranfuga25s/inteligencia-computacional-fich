@@ -194,12 +194,12 @@ void GenomaXY::aFenotipo() {
 
     int desplazamiento = cant_entera + cant_decimal + 1;
     temporal = 0.0;
-    for( int i=desplazamiento+cant_entera; i>=0; i-- ) {
+    for( int i=cant_entera; i>=0; i-- ) {
         if (_genotipo.at(desplazamiento+i)) {
             temporal += pow( 2.0, desplazamiento+ cant_entera - i );
         }
     }
-    for( int i=desplazamiento+cant_entera; i<desplazamiento+cant_entera + cant_decimal; i++ ) {
+    for( int i=cant_entera; i<cant_entera + cant_decimal; i++ ) {
         if (_genotipo.at(desplazamiento+i)) {
             temporal += pow( 2.0, (-1)*(i - desplazamiento+cant_entera) );
         }
