@@ -134,7 +134,6 @@ int main(int argc, char *argv[])
     p1.mostrarGenotipo();
     p1.mutar( 11 );
     p1.mostrarGenotipo();
-    return 0;
 
     double fitnes_necesario = parametros.value( "fitnes_necesario", 0.0 ).toDouble();
 
