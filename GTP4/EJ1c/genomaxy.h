@@ -80,7 +80,7 @@ void GenomaXY::setY( double valor ) {
 
 bool GenomaXY::valido() {
     if( _x >= _min && _x <= _max &&
-        _y >= _min && _x >= _max ) {
+        _y >= _min && _y <= _max ) {
         return true;
     }
     return false;

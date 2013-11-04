@@ -180,7 +180,7 @@ int main(int argc, char *argv[])
 
     }
 
-    qDebug() << "Mejor Fitness: " << mejor_fitness;
+    qDebug() << "Mejor Fitness: " << -1*mejor_fitness;
     qDebug() << "Posicion Minimo: " << pos_mejor_fitness_x <<", "<<pos_mejor_fitness_y;
     qDebug() << "Minimo: " << evaluar( pos_mejor_fitness_x, pos_mejor_fitness_y );
     qDebug() << "Generacion: " << generacion_mejor_fitness;

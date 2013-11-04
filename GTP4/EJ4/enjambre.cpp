@@ -8,10 +8,13 @@ enjambre::enjambre(double num_part, double x_min, double x_max, double toleranci
     _X_max = x_max;
     _X_min = x_min;
 
+    //Inicializo la red con los parametros pasados
+    _redpso =  red;
+
     //Particulas
     for (int i = 0; i<num_part; i++) {
         Particula Auxiliar;
-        Auxiliar.inicializar(_X_min,_X_max,num_part);
+        Auxiliar.inicializar(_X_min,_X_max,red->cantidadPesos());
         _enjambre.append(Auxiliar);
     }
     //mejor_y inicial aleatorio
@@ -22,9 +25,6 @@ enjambre::enjambre(double num_part, double x_min, double x_max, double toleranci
 
     //Maximo de iteraciones permitidas
     _max_iter = max_iteraciones;
-
-    //Inicializo la red con los parametros pasados
-    _redpso =  red;
 
     //Copio las salidas deseadas y las entradas para poder comparar
     _entradas = entradas;
@@ -80,7 +80,9 @@ bool enjambre::optimizar()
 
         //Una vez que actualizo todas los pesos en las partuculas, los copio red neuronal
 
-        _redpso->setearPesos(_mejores_pesos_globales.last());
+        //qDebug() << "Pesos Viejos" << _mejores_pesos_globales.last();
+
+
 
         //Porcentaje de error
         /*
@@ -101,6 +103,8 @@ bool enjambre::optimizar()
 
     } while (error >= _tolerancia && cant_iteraciones < _max_iter);
 
+    _redpso->setearPesos(_mejores_pesos_globales.last());
+
     if (error < _tolerancia) {
         //Sale por tolerancia
         return true;
@@ -117,6 +121,8 @@ double enjambre::evaluarFuncion(QVector<double> pesos)
     //Hago un feedforward de la red con los pesos que recive la funcion
 
     _redpso->setearPesos(pesos);
+
+    //qDebug() << pesos;
 
     QVector<int> salida_entr;
     for( int i=0; i<_salidas.size(); i++ ) {

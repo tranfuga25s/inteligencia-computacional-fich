@@ -27,7 +27,7 @@ public:
     int ciudad( int i ) { return _recorrido.at( i ); }
     void setearCiudad( int i, int ciudad ) { _recorrido[i] = ciudad; }
 
-    void mutar( int pos ) { _recorrido[pos] = _cant_ciudades - _recorrido.at( pos ); }
+    void mutar( int pos );
 
 private:
     int _cant_ciudades;
@@ -85,7 +85,7 @@ void GenomaCiudad::generarNuevoRecorrido() {
     for( int i=0; i<_cant_ciudades; i++ ) {
         int pos = valor_random_int( 0, temp.size() );
         _recorrido.append( temp.at( pos ) );
-        temp.at( pos );
+        temp.remove( pos );
     }
     _recorrido.append( _recorrido.at(0) );
 }
@@ -110,6 +110,13 @@ void GenomaCiudad::mostrarRecorrido() {
     }
     qDebug() << salida;
     return;
+}
+
+void GenomaCiudad::mutar(int pos)
+{
+    int aux = _recorrido.at(pos);
+    _recorrido[pos] = _recorrido.at( _recorrido.size() - 1 - pos );
+    _recorrido[_recorrido.size() -1 - pos] = aux;
 }
 
 void cruza( GenomaCiudad &a, GenomaCiudad &b ) {
