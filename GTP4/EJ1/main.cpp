@@ -16,6 +16,7 @@
 typedef QVector<double> vector;
 typedef QVector< QVector<double> > matriz;
 
+#include "evaluador.h"
 #include "funciones_aux.h"
 #include "genomax.h"
 #include "poblacion.h"
