@@ -19,7 +19,7 @@ public:
     void aFenotipo();
     void aGenotipo();
     int size() { return _genotipo.size(); }
-    void mutar( int pos ) { _genotipo[pos] = !_genotipo.at( pos ); }
+    void mutar( int pos ) { _genotipo[pos] = !_genotipo.at( pos ); aFenotipo(); }
     double getX() const { return _x; }
     double getY() const { return _y; }
     bool at( int pos ) { return this->_genotipo.at( pos ); }
@@ -179,12 +179,12 @@ void GenomaXY::aFenotipo() {
     double temporal = 0.0;
     for( int i=cant_entera; i>=0; i-- ) {
         if (_genotipo.at(i)) {
-            temporal += pow( 2.0, cant_entera - i );
+            temporal += pow( 2.0, (cant_entera-1) - i );
         }
     }
     for( int i=cant_entera; i<cant_entera + cant_decimal; i++ ) {
         if (_genotipo.at(i)) {
-            temporal += pow( 2.0, (-1)*(i - cant_entera) );
+            temporal += pow( 2.0, (-1)*( i - ( cant_entera - 1 ) ) );
         }
     }
     if( _genotipo.at( cant_entera + cant_decimal ) == false ) {
@@ -196,12 +196,12 @@ void GenomaXY::aFenotipo() {
     temporal = 0.0;
     for( int i=cant_entera; i>=0; i-- ) {
         if (_genotipo.at(desplazamiento+i)) {
-            temporal += pow( 2.0, desplazamiento+ cant_entera - i );
+            temporal += pow( 2.0, desplazamiento+ ( cant_entera - 1 ) - i );
         }
     }
     for( int i=cant_entera; i<cant_entera + cant_decimal; i++ ) {
         if (_genotipo.at(desplazamiento+i)) {
-            temporal += pow( 2.0, (-1)*(i - desplazamiento+cant_entera) );
+            temporal += pow( 2.0, (-1)*(i - desplazamiento+( cant_entera - 1 )) );
         }
     }
     if( _genotipo.at( _genotipo.size() -1 ) == false ) {
