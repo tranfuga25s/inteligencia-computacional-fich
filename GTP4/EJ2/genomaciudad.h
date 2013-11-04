@@ -50,6 +50,18 @@ GenomaCiudad::GenomaCiudad( GenomaCiudad &origin ) {
 }
 
 bool GenomaCiudad::valido() {
+    // Verifico que la ciudad inicial y final sean la mismas
+    if( _recorrido.at(0) != _recorrido.at( _recorrido.size() -1 ) ) {
+        return false;
+    }
+    // Veo que no existan ciudades repetidas en el recorrido
+    for( int i=1; i<_recorrido.size()-1; i++ ) {
+        for( int j=1; j<_recorrido.size()-1; j++ ) {
+            if( _recorrido.at( i ) == _recorrido.at( j ) ) {
+                return false;
+            }
+        }
+    }
     return false;
 }
 
