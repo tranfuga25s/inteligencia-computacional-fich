@@ -76,6 +76,7 @@ void GenomaCiudad::generarNuevoRecorrido() {
         _recorrido.append( temp.at( pos ) );
         temp.at( pos );
     }
+    _recorrido.append( _recorrido.at(0) );
 }
 
 int GenomaCiudad::distanciaRecorrido() const {
