@@ -12,7 +12,11 @@ public:
     GenomaCiudad( int cantCiudades );
     GenomaCiudad( const GenomaCiudad &origin );
     GenomaCiudad( GenomaCiudad& origin );
+
     void setearMatrizDistancias( QVector< QVector<int> > *dist ) { _distancias = dist; }
+    QVector< QVector<int> > *getMatrizDistancias() { return _distancias; }
+
+    QVector<int> getRecorrido() const { return _recorrido; }
 
     int cantidadCiudades() const { return _cant_ciudades; }
 
@@ -41,12 +45,14 @@ GenomaCiudad::GenomaCiudad( int cantCiudades ) {
 
 GenomaCiudad::GenomaCiudad( const GenomaCiudad &origin ) {
     this->_cant_ciudades = origin.cantidadCiudades();
-    this->generarNuevoRecorrido();
+    this->_recorrido = origin.getRecorrido();
+    this->_distancias = origin.getMatrizDistancias();
 }
 
 GenomaCiudad::GenomaCiudad( GenomaCiudad &origin ) {
     this->_cant_ciudades = origin.cantidadCiudades();
-    this->generarNuevoRecorrido();
+    this->_recorrido = origin.getRecorrido();
+    this->_distancias = origin.getMatrizDistancias();
 }
 
 bool GenomaCiudad::valido() {
