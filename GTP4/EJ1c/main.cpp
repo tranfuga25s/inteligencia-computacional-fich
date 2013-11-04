@@ -104,7 +104,6 @@ int main(int argc, char *argv[])
         pob.append( temp );
     }
 
-
    /* GenomaXY p1;
     p1.setX( 128.0 );
     p1.setY( 128.0 );
