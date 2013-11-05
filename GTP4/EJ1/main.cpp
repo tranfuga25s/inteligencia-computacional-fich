@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
 
     // Grafico la funcion
     QVector<double> posy, posx;
-    for( double i=min; i<max; i++ ) {
+    for( double i=min; i<max; i+=0.05 ) {
         posx.append( i );
         posy.append( evaluar( i ) );
     }
