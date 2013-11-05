@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
     mdiArea->addSubWindow( grafFuncion );
     grafFuncion->show();
     mdiArea->tileSubWindows();
+    grafFuncion->setearParaSOM();
 
     GraficadorMdi *grafFitnes = new GraficadorMdi( mdiArea );
     grafFitnes->setearTitulo( QString::fromUtf8( "Evolucion Mejor Fitness" ) );
@@ -102,8 +103,10 @@ int main(int argc, char *argv[])
     int cant_ciudades = parametros.value( "cantidad_ciudades" ).toInt();
 
     QVector< QVector<int> > distancias;
+    QVector<int> indice_ciudades;
     for( int i=0; i<cant_ciudades; i++ ) {
         distancias.append( stringAQVector( parametros.value( QString( "distancias%1" ).arg( i ) ).toString() ) );
+        indice_ciudades.append( i );
     }
 
     for( int i=0; i<cant_total; i++ ) {
@@ -111,6 +114,21 @@ int main(int argc, char *argv[])
         temp.setearMatrizDistancias( &distancias );
         pob.append( temp );
     }
+
+   /* GenomaCiudad p1( cant_ciudades );
+    GenomaCiudad p2( cant_ciudades );
+
+    p1.mostrarRecorrido();
+    p2.mostrarRecorrido();
+
+    cruza( p1, p2 );
+
+    p1.mostrarRecorrido();
+    p2.mostrarRecorrido();
+
+    qDebug() << p1.valido();
+    qDebug() << p2.valido();*/
+
 
     double fitnes_necesario = parametros.value( "fitnes_necesario", 0.0 ).toDouble();
 
@@ -128,7 +146,7 @@ int main(int argc, char *argv[])
     histIteracion.append( 0 );
     histPromFitnes.append( pob.mejorFitnes() );
 
-    double mejor_fitness = 0.0;
+    double mejor_fitness = (-1.0)*DBL_MAX;
     GenomaCiudad pos_mejor_fitness;
     int generacion_mejor_fitness = -1;
 
@@ -146,7 +164,9 @@ int main(int argc, char *argv[])
 
         iteracciones++;
         PBTiempo->setValue( iteracciones );
-
+        for( int i=0; i<cant_ciudades; i++ ) {
+            indice_ciudades.append( i );
+        }
         histFitness.append( pob.mejorFitnes() );
         histIteracion.append( iteracciones );
         grafFitnes->setearPuntos( histFitness, histIteracion );
@@ -159,15 +179,16 @@ int main(int argc, char *argv[])
             x.append( pob.at( i ).distanciaRecorrido() );
             sumatoria += (-1.0)*evaluar( pob.at( i ) );
         }
-        sumatoria /=  pob.size();
+        sumatoria /= pob.size();
         histPromFitnes.append( sumatoria );
         grafPuntos->agregarCurva( x, y, QString( "Gen%1" ).arg( iteracciones ) );
         a.processEvents();
 
-        if( mejor_fitness <= pob.mejorFitnes() ) {
+        if( pob.mejorFitnes() >= mejor_fitness ) {
             mejor_fitness = pob.mejorFitnes();
             pos_mejor_fitness = pob.elementoMinimo();
             generacion_mejor_fitness = iteracciones;
+            grafFuncion->setearPuntos( pob.elementoMinimo().getRecorrido(), indice_ciudades );
         }
         grafPromedio->setearPuntos( histPromFitnes, histIteracion );
         a.processEvents();
@@ -179,5 +200,6 @@ int main(int argc, char *argv[])
     pos_mejor_fitness.mostrarRecorrido();
     qDebug() << "Minimo: " << evaluar( pos_mejor_fitness );
     qDebug() << "Generacion: " << generacion_mejor_fitness;
+    grafFuncion->setearPuntos( pos_mejor_fitness.getRecorrido(), indice_ciudades );
     return a.exec();
 }
