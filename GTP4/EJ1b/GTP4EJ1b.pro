@@ -5,16 +5,17 @@ CONFIG   += qwt
 
 TEMPLATE = app
 
-SOURCES +=  ../EJ1/main.cpp  \
-    ../../util/graficador.cpp \
-    ../../util/graficadormdi.cpp
+SOURCES += ../../util/graficador.cpp \
+    ../../util/graficadormdi.cpp \
+    main.cpp
 
 OTHER_FILES += parametros.cfg
 
-INCLUDEPATH += ../../util
+INCLUDEPATH += ../../util \
+               ../../EJ1
 
 HEADERS += ../EJ1/genomax.h \
-           evaluador.h \
            ../EJ1/poblacion.h \
            ../../util/graficador.h \
-           ../../util/graficadormdi.h
+           ../../util/graficadormdi.h \
+    evaluadorb.h
