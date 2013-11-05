@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
     histIteracion.append( 0 );
     histPromFitnes.append( pob.mejorFitnes() );
 
-    double mejor_fitness = 0.0;
+    double mejor_fitness = (-1.0)*DBL_MAX;
     double pos_mejor_fitness_x = 0.0;
     double pos_mejor_fitness_y = 0.0;
     int generacion_mejor_fitness = -1;
@@ -170,7 +170,7 @@ int main(int argc, char *argv[])
         sumatoria /=  pob.size();
         histPromFitnes.append( sumatoria );
 
-        if( mejor_fitness <= pob.mejorFitnes() ) {
+        if(  pob.mejorFitnes()  >= mejor_fitness ) {
             mejor_fitness = pob.mejorFitnes();
             pos_mejor_fitness_x = pob.elementoMinimo().getX();
             pos_mejor_fitness_y = pob.elementoMinimo().getY();
@@ -180,7 +180,7 @@ int main(int argc, char *argv[])
 
     }
 
-    qDebug() << "Mejor Fitness: " << mejor_fitness;
+    qDebug() << "Mejor Fitness: " << (-1.)*mejor_fitness;
     qDebug() << "Posicion Minimo: " << pos_mejor_fitness_x <<", "<<pos_mejor_fitness_y;
     qDebug() << "Minimo: " << evaluar( pos_mejor_fitness_x, pos_mejor_fitness_y );
     qDebug() << "Generacion: " << generacion_mejor_fitness;
