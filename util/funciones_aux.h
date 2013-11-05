@@ -297,7 +297,7 @@ static int valor_random_int( int min, int max )
         int rango = max - min;
         return (aleatorio*rango) + min;
     }*/
-    return qrand() % max;
+    return  ( qrand() % ( max - min) ) + min;
 }
 
 /*!

@@ -76,7 +76,6 @@ void RedNeuronal::setearPesos(QVector<double> pesos)
     int cant;
 
     for( int i=0; i<capas.size(); i++ ) {
-        //Sera indistinto el a que neurona le asigno a cada peso???
         cant = capas.at(i)->cantidadPesos();
 
         QVector<double> pesos_aux;

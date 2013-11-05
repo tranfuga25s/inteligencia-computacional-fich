@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
 
     //Grafico Funcion 2
     QVector<double> x2, y2;
-    for( int i=x2_min; i<=x2_max; i++ ) {
+    for( double i=x2_min; i<=x2_max; i+=0.25) {
         y2.append( funcion2.evaluarFuncion(i) );
         x2.append( i );
     }

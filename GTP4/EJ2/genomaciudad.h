@@ -129,6 +129,13 @@ void GenomaCiudad::mostrarRecorrido() {
     return;
 }
 
+void GenomaCiudad::mutar(int pos)
+{
+    int aux = _recorrido.at(pos);
+    _recorrido[pos] = _recorrido.at( _recorrido.size() - 1 - pos );
+    _recorrido[_recorrido.size() -1 - pos] = aux;
+}
+
 void cruza( GenomaCiudad &a, GenomaCiudad &b ) {
     // Evito cambiar la primera y ultima ciudad?
     /* int posa = valor_random_int( 1, a.getRecorrido().size() -2 );
