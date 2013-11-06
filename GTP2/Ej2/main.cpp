@@ -141,10 +141,6 @@ int main(int argc, char *argv[])
     PBEpocas->setFormat( "Epoca %v de %m - %p%" );
 
     // Etapa de Ordenamiento Global --------------------------------------------------------------------
-    //som.setearRadioVecindad( tamano_vecindad_inicial );
-    //som.setearTasaAprendizaje( tasas.at( 0 ) );
-    //PBTasaAprendizaje->setValue( tasas.at( 0 ) * 100 );
-
     PBEpocas->setRange( 0, epocas.at( 0 ) );
     PBEpocas->setFormat( "Epoca %v de %m - %p%" );
 
@@ -164,18 +160,6 @@ int main(int argc, char *argv[])
             som.cambiosSignificativos();
         }
     }
-
-//    for( int epoca=0; epoca<epocas.at(0); epoca++ ) {
-//        PBEpocas->setValue( epoca );
-//        for( int p=0; p<entradas.size(); p++ ) {
-//            som.entrenar( entradas.at( p ) );
-//            graf1->setearPuntos( som.obtenerPuntos() );
-//            a.processEvents();
-//        }
-//        graf1->setearPuntos( som.obtenerPuntos() );
-//        a.processEvents();
-//        som.cambiosSignificativos();
-//    }
 
     // Etapa de transición -----------------------------------------------------------------------------
     QVector<int> tamano_vecindad2 = distribucionEquitativa( epocas.at( 1 ), 1, 5);

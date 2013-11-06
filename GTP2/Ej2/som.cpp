@@ -104,8 +104,8 @@ void SOM::actualizarPeso( int fila_ganadora, int columna_ganadora, vector distan
             for( int pos=0; pos<_som.at(fil).at(col).size(); pos++ ) {
                 if( vecindad.at( pos ) > _limite_vecindad ) {
                         double temp = _tasa_aprendizaje*
-                                      distancia_obtenida.at(pos)/*
-                                      vecindad.at( pos )*/;
+                                      distancia_obtenida.at(pos)*
+                                      vecindad.at( pos );
                         _som[fil][col][pos] += temp;
                         _ultimos_deltas[fil][col] = temp;
                 }
