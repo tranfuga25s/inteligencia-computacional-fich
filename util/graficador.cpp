@@ -327,6 +327,16 @@ void Graficador::setearPuntos( QVector<double> puntos, QVector<double> escala_ti
     this->setearPuntos( datos );
 }
 
+void Graficador::setearPuntos(QVector<int> puntos, QVector<int> puntos2)
+{
+    QVector<QPointF> datos;
+    int max = qMin( puntos.size(), puntos2.size() );
+    for( int i=0; i<max; i++ ) {
+        datos.append( QPointF( puntos2.at( i ), puntos.at( i ) ) );
+    }
+    this->setearPuntos( datos );
+}
+
 void Graficador::setearParaSOM( QString nombre )
 {
     if( curvas->size() == 0 ) {

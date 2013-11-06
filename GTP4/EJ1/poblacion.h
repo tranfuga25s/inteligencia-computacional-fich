@@ -185,8 +185,6 @@ void Poblacion<T>::ruleta()
         _fitness.remove( azar );
 
     }
-
-
 }
 
 template<typename T>
@@ -296,6 +294,7 @@ void Poblacion<T>::generarHijos()
     if( _elitismo ) {
         this->append( _nuevos_padres.at( 0 ) );
         _pos_mejor_fitness = 0;
+        _mejor_fitness = evaluar( this->at( 0 ) );
     }
 
     // Genero la brecha generacional copiando los padres para convervar las buenas soluciones
@@ -332,11 +331,15 @@ void Poblacion<T>::generarHijos()
             //qDebug() << "mutacion";
         }
 
+
         if( hijo1.valido() ) {
             this->append( hijo1 );
+            //hijo1.mostrarRecorrido();
         }
+
         if( hijo2.valido() ) {
             this->append( hijo2 );
+            //hijo2.mostrarRecorrido();
         }
     }
 }

@@ -16,9 +16,9 @@
 typedef QVector<double> vector;
 typedef QVector< QVector<double> > matriz;
 
+#include "evaluadorb.h"
 #include "funciones_aux.h"
-#include "genomaciudad.h"
-#include "evaluador.h"
+#include "../EJ1/genomax.h"
 #include "../EJ1/poblacion.h"
 #include "graficadormdi.h"
 
@@ -47,7 +47,6 @@ int main(int argc, char *argv[])
     mdiArea->addSubWindow( grafFuncion );
     grafFuncion->show();
     mdiArea->tileSubWindows();
-    grafFuncion->setearParaSOM();
 
     GraficadorMdi *grafFitnes = new GraficadorMdi( mdiArea );
     grafFitnes->setearTitulo( QString::fromUtf8( "Evolucion Mejor Fitness" ) );
@@ -90,45 +89,51 @@ int main(int argc, char *argv[])
     QSettings parametros( "parametros.cfg", QSettings::IniFormat );
 
     // Inicializo la poblacion
-    Poblacion<GenomaCiudad> pob;
+    Poblacion<GenomaX> pob;
     int cant_total = parametros.value( "cantidad_elementos" ).toInt();
     pob.setearTotal( cant_total );
 
     pob.setearElitismo( parametros.value( "elitismo", false ).toBool() );
     pob.setearBrechaGeneracional( parametros.value( "brecha_generacional" ).toDouble() );
     pob.setearProbabilidadMutacion( parametros.value( "probabilidad_mutacion").toDouble() );
-    pob.setearModoSeleccionPadres( (Poblacion<GenomaCiudad>::MetodoSeleccion)parametros.value( "metodo_seleccion" ).toInt() );
+    pob.setearModoSeleccionPadres( (Poblacion<GenomaX>::MetodoSeleccion)parametros.value( "metodo_seleccion" ).toInt() );
     pob.setearPorcentajeCantidadDePadres( parametros.value( "cantidad_padres" ).toDouble() );
 
-    int cant_ciudades = parametros.value( "cantidad_ciudades" ).toInt();
-
-    QVector< QVector<int> > distancias;
-    QVector<int> indice_ciudades;
-    for( int i=0; i<cant_ciudades; i++ ) {
-        distancias.append( stringAQVector( parametros.value( QString( "distancias%1" ).arg( i ) ).toString() ) );
-        indice_ciudades.append( i );
-    }
-
+    double max = parametros.value( "max" ).toDouble();
+    double min = parametros.value( "min" ).toDouble();
+    pob.setearMinMax( min, max );
     for( int i=0; i<cant_total; i++ ) {
-        GenomaCiudad temp( cant_ciudades );
-        temp.setearMatrizDistancias( &distancias );
+        GenomaX temp;
+        double valor = valor_random( min, max );
+        temp.setX( valor );
+        temp.setMinMax( min, max );
         pob.append( temp );
     }
 
-   /* GenomaCiudad p1( cant_ciudades );
-    GenomaCiudad p2( cant_ciudades );
+    // Grafico la funcion
+    QVector<double> posy, posx;
+    for( double i=min; i<max; i+=0.05 ) {
+        posx.append( i );
+        posy.append( evaluar( i ) );
+    }
+    grafFuncion->agregarCurva( posx, posy, "funcion" );
+    a.processEvents();
 
-    p1.mostrarRecorrido();
-    p2.mostrarRecorrido();
-
-    cruza( p1, p2 );
-
-    p1.mostrarRecorrido();
-    p2.mostrarRecorrido();
-
-    qDebug() << p1.valido();
-    qDebug() << p2.valido();*/
-
+    /*GenomaX p1;
+    p1.setX( 128.0 );
+    p1.mostrarGenotipo();
+    p1.mutar( 9 );
+    p1.mostrarGenotipo();
+    p1.mutar( 1 );
+    p1.mostrarGenotipo();
+    p1.mutar( 2 );
+    p1.mostrarGenotipo();
+    p1.mutar( 15 );
+    p1.mostrarGenotipo();
+    p1.mutar( 10 );
+    p1.mostrarGenotipo();
+    p1.mutar( 11 );
+    p1.mostrarGenotipo();*/
 
     double fitnes_necesario = parametros.value( "fitnes_necesario", 0.0 ).toDouble();
 
@@ -146,8 +151,8 @@ int main(int argc, char *argv[])
     histIteracion.append( 0 );
     histPromFitnes.append( pob.mejorFitnes() );
 
-    double mejor_fitness = (-1.0)*DBL_MAX;
-    GenomaCiudad pos_mejor_fitness;
+    double mejor_fitness = 0.0;
+    double pos_mejor_fitness = 0.0;
     int generacion_mejor_fitness = -1;
 
     while( pob.mejorFitnes() <= fitnes_necesario
@@ -164,9 +169,7 @@ int main(int argc, char *argv[])
 
         iteracciones++;
         PBTiempo->setValue( iteracciones );
-        for( int i=0; i<cant_ciudades; i++ ) {
-            indice_ciudades.append( i );
-        }
+
         histFitness.append( pob.mejorFitnes() );
         histIteracion.append( iteracciones );
         grafFitnes->setearPuntos( histFitness, histIteracion );
@@ -176,30 +179,25 @@ int main(int argc, char *argv[])
         double sumatoria = 0.0;
         for( int i=0; i<pob.size(); i++ ) {
             y.append( i );
-            x.append( pob.at( i ).distanciaRecorrido() );
-            sumatoria += (-1.0)*evaluar( pob.at( i ) );
+            x.append( pob.at( i ).getX() );
+            sumatoria += (-1.0)*evaluar( pob.at( i ).getX() );
         }
-        sumatoria /= pob.size();
+        sumatoria /=  pob.size();
         histPromFitnes.append( sumatoria );
         grafPuntos->agregarCurva( x, y, QString( "Gen%1" ).arg( iteracciones ) );
-        a.processEvents();
 
-        if( pob.mejorFitnes() >= mejor_fitness ) {
+        if( mejor_fitness <= pob.mejorFitnes() ) {
             mejor_fitness = pob.mejorFitnes();
-            pos_mejor_fitness = pob.elementoMinimo();
+            pos_mejor_fitness = pob.elementoMinimo().getX();
             generacion_mejor_fitness = iteracciones;
-            grafFuncion->setearPuntos( pob.elementoMinimo().getRecorrido(), indice_ciudades );
         }
         grafPromedio->setearPuntos( histPromFitnes, histIteracion );
-        a.processEvents();
 
     }
 
     qDebug() << "Mejor Fitness: " << mejor_fitness;
-    qDebug() << "Posicion Minimo: ";
-    pos_mejor_fitness.mostrarRecorrido();
+    qDebug() << "Posicion Minimo: " << pos_mejor_fitness;
     qDebug() << "Minimo: " << evaluar( pos_mejor_fitness );
     qDebug() << "Generacion: " << generacion_mejor_fitness;
-    grafFuncion->setearPuntos( pos_mejor_fitness.getRecorrido(), indice_ciudades );
     return a.exec();
 }
