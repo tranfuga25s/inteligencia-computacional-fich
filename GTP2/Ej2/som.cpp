@@ -25,6 +25,7 @@ SOM::SOM( int tamano_x, int tamano_y, int tamano_entradas )
 
 /*!
  * \brief SOM::entrenar
+ *Calcula la neurona ganadora y actualiza sus pesos y los de su vecindad
  * \param patron
  */
 void SOM::entrenar( QVector<double> patron )
@@ -39,7 +40,7 @@ void SOM::entrenar( QVector<double> patron )
         for( int c=0; c<_som.at(f).size(); c++ ) {
 
             double dist = this->distancia( patron, f, c );
-            ultima_distancia << dist;
+            ultima_distancia.append(dist);
 
             if( dist < distancia_minima ) {
                 distancia_minima = dist;
@@ -86,7 +87,7 @@ double SOM::distancia( QVector<double> patron, int fila, int columna )
  * \param columna
  * \param distancia_obtenida
  */
-void SOM::actualizarPeso( int fila_ganadora, int columna_ganadora, QVector<double> distancia_obtenida )
+void SOM::actualizarPeso( int fila_ganadora, int columna_ganadora, vector distancia_obtenida )
 {
     int max_vec_x = max_x_matriz( fila_ganadora   , this->_radio_vecindad, _som.size() );
     int min_vec_x = min_x_matriz( fila_ganadora   , this->_radio_vecindad );
@@ -99,15 +100,18 @@ void SOM::actualizarPeso( int fila_ganadora, int columna_ganadora, QVector<doubl
 
             QVector<double> vecindad = funcionVecindad( fil, col, fila_ganadora, columna_ganadora );
 
+            // posicion x e y
             for( int pos=0; pos<_som.at(fil).at(col).size(); pos++ ) {
                 if( vecindad.at( pos ) > _limite_vecindad ) {
                         double temp = _tasa_aprendizaje*
-                                distancia_obtenida.at(pos)*
-                                vecindad.at( pos );
+                                      distancia_obtenida.at(pos)/*
+                                      vecindad.at( pos )*/;
                         _som[fil][col][pos] += temp;
                         _ultimos_deltas[fil][col] = temp;
                 }
             }
+
+
         }
     }
 }
@@ -122,14 +126,24 @@ void SOM::actualizarPeso( int fila_ganadora, int columna_ganadora, QVector<doubl
  */
 QVector<double> SOM::funcionVecindad( int fila, int columna, int fila_ganadora, int columna_ganadora )
 {
+
+    //qDebug() << radioVecindad();
     QVector<double> temp;
-        temp << exp((-1)*(pow((double)(fila_ganadora-fila),2.0))/(2.0*pow(_radio_vecindad,2.0)))
-             << exp((-1)*(pow((double)(columna_ganadora-columna),2.0))/(2.0*pow(_radio_vecindad,2.0)));
-    /*if( fila == fila_ganadora && columna == columna_ganadora ) {
-        temp << 1.0 << 1.0;
-    } else {
-        temp << 0.0 << 0.0;
-    }*/
+    if (_radio_vecindad > 0) {
+        temp.append(exp((-1.0)*(pow((double)(fila_ganadora-fila),2.0))/(2.0*pow(_radio_vecindad,2.0))));
+        temp.append(exp((-1.0)*(pow((double)(columna_ganadora-columna),2.0))/(2.0*pow(_radio_vecindad,2.0))));
+    }
+    else
+    {
+        temp.append(exp((-1.0)*(pow((double)(fila_ganadora-fila),2.0))/(2.0*pow(1.0,2.0))));
+        temp.append(exp((-1.0)*(pow((double)(columna_ganadora-columna),2.0))/(2.0*pow(1.0,2.0))));
+    }
+
+//    if( fila == fila_ganadora && columna == columna_ganadora ) {
+//        temp << 1.0 << 1.0;
+//    } else {
+//        temp << 0.0 << 0.0;
+//    }
     return temp;
 }
 

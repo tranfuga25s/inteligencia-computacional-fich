@@ -499,13 +499,35 @@ static void generarArchivoAleatoriosEntrenamiento( QString archivo_entrada, QStr
 #ifndef FUNCIONESPARASOM
 #define FUNCIONESPARASOM
 
-static QVector<int> aproximacionLineal( int epocas, int par_ini, int par_fin ) {
+//!
+//! \brief distribucionEquitativa
+//! No se podia usar interpolacion lineal porque se harian divisiones sobre enteros entonces hago una distribucion
+//! a lo largo del tamaño de la epoca poniendo valores de la vecindad
+//! \param epocas
+//! \param par_ini
+//! \param par_fin
+//! \return
+//!
+
+static QVector<int>  distribucionEquitativa( int epocas, int par_ini, int par_fin ) {
     QVector<int> auxiliar;
+
     int dif = ( par_fin - par_ini );
-    for(int i = 0 ; i < epocas; i++) {
-        auxiliar.append( ( ( i / epocas ) * dif ) + par_ini );
-        //auxiliar.push_back( par_ini + ( (par_fin - par_ini) / (epocas ) ) * ( epocas ));
+    int cant_div = floor((double)epocas/(double)dif);
+
+    for(int i = 0 ; i < dif ; i++ ) {
+        for( int j = 0 ; j < cant_div ; j++ ) {
+            auxiliar.push_front(par_ini + i);
+        }
     }
+
+    if((cant_div * dif) < epocas) {
+        for (int i = 0 ; i < (epocas - (cant_div * dif)) ; i++) {
+            auxiliar.push_front(par_fin);
+        }
+
+    }
+
     return auxiliar;
 }
 
@@ -513,8 +535,7 @@ static QVector<double> aproximacionLineald( double epocas, double par_ini, doubl
     QVector<double> auxiliar;
     double dif = ( par_fin - par_ini );
     for(int i = 0 ; i < epocas; i++) {
-        auxiliar.append( ( ( i / epocas ) * dif ) + par_ini );
-        //auxiliar.push_back( par_ini + ( (par_fin - par_ini) / (epocas ) ) * ( epocas ));
+        auxiliar.append(( ( i / epocas ) * dif ) + par_ini );
     }
     return auxiliar;
 }

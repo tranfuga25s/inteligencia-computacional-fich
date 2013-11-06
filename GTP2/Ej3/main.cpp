@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     }
 
     // Inicializo el SOM
-   /*    SOM som( parametros.value( "som_tam_x", 2 ).toInt(),
+       SOM som( parametros.value( "som_tam_x", 2 ).toInt(),
                   parametros.value( "som_tam_y", 2 ).toInt(),
                   parametros.value( "tamano_entradas" ).toInt() );
 
@@ -145,35 +145,35 @@ int main(int argc, char *argv[])
         contadores.append( temp );
     }
 
-    // Para cada patron busco cual es la neurona ganadora y aumento su contador
-    QPair<int,int> pos;
-    // Recorro todas las entradas
-    for( int entrada = 0; entrada < entradas.size(); entrada++ ) {
+//    // Para cada patron busco cual es la neurona ganadora y aumento su contador
+//    QPair<int,int> pos;
+//    // Recorro todas las entradas
+//    for( int entrada = 0; entrada < entradas.size(); entrada++ ) {
 
-        pos = som.getNeuronaGanadora( entradas.at( entrada ) );
+//        pos = som.getNeuronaGanadora( entradas.at( entrada ) );
 
-        int clase = salidas.at( entrada );
+//        int clase = salidas.at( entrada );
 
-        contadores[clase][pos.first][pos.second] += 1;
-    }
+//        contadores[clase][pos.first][pos.second] += 1;
+//    }
 
-    // Busco a que etiqueta corresponde cada uno viendo cual es el número de conteo de clase más alto
-    for( int fila=0; fila<pos.first; fila++ ) {
-        for( int columna=0; columna<pos.second; columna++ ) {
+//    // Busco a que etiqueta corresponde cada uno viendo cual es el número de conteo de clase más alto
+//    for( int fila=0; fila<pos.first; fila++ ) {
+//        for( int columna=0; columna<pos.second; columna++ ) {
 
-            int maximo = 0;
-            int clase = -1;
-            for( int c=0; c<cant_clases; c++ ) {
-                if( contadores.at( c ).at( columna ).at( fila ) > maximo ) {
-                    clase = c;
-                    maximo = contadores.at( c ).at( columna ).at( fila );
-                }
-            }
-            // Seteo la clase según corresponda
-            som.setearClase( fila, columna, clase );
-        }
+//            int maximo = 0;
+//            int clase = -1;
+//            for( int c=0; c<cant_clases; c++ ) {
+//                if( contadores.at( c ).at( columna ).at( fila ) > maximo ) {
+//                    clase = c;
+//                    maximo = contadores.at( c ).at( columna ).at( fila );
+//                }
+//            }
+//            // Seteo la clase según corresponda
+//            som.setearClase( fila, columna, clase );
+//        }
 
-    }*/
+//    }
 
     // Mostrar resultado de la clasificacion
     // Si el tamaño es = 2 => clouds

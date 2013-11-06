@@ -14,7 +14,7 @@ public:
 
     double distancia( QVector<double> patron, int fila, int columna );
 
-    void actualizarPeso(int fila_ganadora, int columna_ganadora, QVector<double> distancia_obtenida );
+    void actualizarPeso(int fila_ganadora, int columna_ganadora, vector distancia_obtenida );
 
     QVector<double> funcionVecindad( int fila, int columna , int fila_ganadora, int columna_ganadora );
 
@@ -28,7 +28,7 @@ public:
     QVector<QPointF> obtenerPuntos();
 
     static bool menorque( const QPointF v1, const QPointF v2 ) {
-        return v1.x() < v2.x() && v1.y() < v2.y();
+        return v1.x() <= v2.x() && v1.y() <= v2.y();
     }
 
     bool cambiosSignificativos();

@@ -15,7 +15,6 @@ SOURCES +=  main.cpp \
             ../../util/graficador.cpp \
             ../../util/graficadormdi.cpp \
     som.cpp \
-    exterior.cpp
 
 HEADERS +=  ../../util/graficador.h \
             ../../util/funciones_aux.h \

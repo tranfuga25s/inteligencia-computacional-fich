@@ -96,7 +96,7 @@ void SOM::actualizarPeso( int fila, int columna, QVector<double> distancia_obten
 
             QVector<double> vecindad = funcionVecindad( fil, col, fila, columna );
 
-            for( int pos=0; pos<_som.at(fil).at(col).size(); pos++ ) {
+            for( int pos=0; pos<vecindad.size(); pos++ ) { //_som.at(fil).at(col).size()
 
                 if( vecindad.at( pos ) > 0.15 ) {
                     double dif =  _tasa_aprendizaje*
