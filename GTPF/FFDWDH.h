@@ -12,14 +12,14 @@ public:
     double optimizar(QVector<int> Gen);
     void setearAltoPlancha(double alto) {_alto_plancha = alto;}
     void setearAnchoPlancha(double ancho) {_ancho_plancha = ancho;}
-    void setearInformacion(QMap<int,QPair<double,double>> informacion) {_informacion = informacion;}
+    void setearInformacion( QMap< int, QPair<double,double> > informacion) {_informacion = informacion;}
     void regenerarOrden();
     void hacerCorte(int pos,Pieza pieza);
 
 private:
     QVector<Plancha> _planchas;
     QVector<Pieza> _piezas;
-    QMap<int,QPair<double,double>> _informacion;
+    QMap<int, QPair<double,double > > _informacion;
     double _alto_plancha,_ancho_plancha;
     QVector<int> _orden_plancha;
 };
@@ -100,7 +100,7 @@ void FFDWDH::regenerarOrden()
     // Ordeno los largos
     QMap<double,int> orden;
     for( int i=0; i<_planchas.size(); i++ ) {
-        orden.append( _planchas.at( i ).areaDisponible(), i );
+        orden.insert( _planchas.at( i ).areaDisponible(), i );
     }
     _orden_plancha.clear();
     foreach( int p, orden.values() ) {

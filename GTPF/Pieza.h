@@ -11,8 +11,8 @@ public:
     void setearAncho(double ancho) {_ancho = ancho;}
 
 private:
-    double _ancho = 0.0;
-    double _alto = 0.0;
+    double _ancho;
+    double _alto;
 };
 
 #endif // PIEZA_H
