@@ -14,7 +14,8 @@ SOURCES +=  main.cpp \
 OTHER_FILES += parametros.cfg \
     parametros.cfg
 
-INCLUDEPATH += ../util
+INCLUDEPATH += ../util \
+               ../GTP4/EJ1
 
 HEADERS += \
     genomax.h \
@@ -31,4 +32,6 @@ HEADERS += \
     BarraAluminio.h \
     FFDW.h \
     evaluarVentana.h \
-    templatealuminio.h
+    templatealuminio.h \
+    GenomaVentana.h \
+    templateventana.h
