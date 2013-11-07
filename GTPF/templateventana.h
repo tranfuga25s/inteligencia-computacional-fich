@@ -23,10 +23,10 @@ public:
     double minAlto() const { return _min_alto; }
 
     void setearTipo( int tipo ) { _tipo = tipo; }
-    int tipo() { return _tipo; }
+    int tipo() const { return _tipo; }
 
     void setearCantidad( int cant ) { _cantidad = cant; }
-    int getCantidad() { return _cantidad; }
+    int getCantidad() const { return _cantidad; }
 
     void setearNombre( QString nombre ) { _nombre = nombre; }
     QString nombre() const { return _nombre; }
@@ -53,7 +53,7 @@ TemplateVentana::TemplateVentana( const TemplateVentana &origin )
     _max_alto = origin.maxAlto();
     _min_alto = origin.minAlto();
     _tipo = origin.tipo();
-    _cantidad = origin.cantidad();
+    _cantidad = origin.getCantidad();
     _nombre = origin.nombre();
 }
 
@@ -66,7 +66,7 @@ TemplateVentana::TemplateVentana( TemplateVentana &origin )
     _max_alto = origin.maxAlto();
     _min_alto = origin.minAlto();
     _tipo = origin.tipo();
-    _cantidad = origin.cantidad();
+    _cantidad = origin.getCantidad();
     _nombre = origin.nombre();
 }
 #endif // TEMPLATEVENTANA_H
