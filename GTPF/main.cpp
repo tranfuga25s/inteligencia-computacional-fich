@@ -16,10 +16,10 @@
 typedef QVector<double> vector;
 typedef QVector< QVector<double> > matriz;
 
-#include "genomax.h"
-#include "poblacion.h"
 #include "graficadormdi.h"
 #include "evaluarVentana.h"
+#include "poblacion.h"
+#include "GenomaVentana.h"
 
 /*!
  * \brief main
@@ -39,13 +39,13 @@ int main(int argc, char *argv[])
     mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     main.setCentralWidget(mdiArea);
 
-    GraficadorMdi *grafFuncion = new GraficadorMdi( mdiArea );
+    /*GraficadorMdi *grafFuncion = new GraficadorMdi( mdiArea );
     grafFuncion->setearTitulo( QString::fromUtf8( "Funcion" ) );
     grafFuncion->setearTituloEjeX( QString::fromUtf8( "X" ) );
     grafFuncion->setearTituloEjeY( QString::fromUtf8( "Y" ) );
     mdiArea->addSubWindow( grafFuncion );
     grafFuncion->show();
-    mdiArea->tileSubWindows();
+    mdiArea->tileSubWindows();*/
 
     GraficadorMdi *grafFitnes = new GraficadorMdi( mdiArea );
     grafFitnes->setearTitulo( QString::fromUtf8( "Evolucion Mejor Fitness" ) );
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     mdiArea->tileSubWindows();
     grafFitnes->setearParaSOM();
 
-    GraficadorMdi *grafPuntos = new GraficadorMdi( mdiArea );
+    /*GraficadorMdi *grafPuntos = new GraficadorMdi( mdiArea );
     grafPuntos->setearTitulo( QString::fromUtf8( "Puntos a evaluar" ) );
     grafPuntos->setearTituloEjeX( QString::fromUtf8( "Posicion" ) );
     grafPuntos->setearTituloEjeY( QString::fromUtf8( "Y" ) );
@@ -65,6 +65,7 @@ int main(int argc, char *argv[])
     mdiArea->tileSubWindows();
     //grafPuntos->setearParaSOM();
    // grafPuntos->setearEjesEnGrafico();
+   */
 
     GraficadorMdi *grafPromedio = new GraficadorMdi( mdiArea );
     grafPromedio->setearTitulo( QString::fromUtf8( "Fitness Promedio" ) );
@@ -88,7 +89,7 @@ int main(int argc, char *argv[])
     QSettings parametros( "parametros.cfg", QSettings::IniFormat );
 
     // Inicializo la poblacion
-    Poblacion<GenomaX> pob;
+    Poblacion<GenomaVentana> pob;
     int cant_total = parametros.value( "cantidad_elementos" ).toInt();
     pob.setearTotal( cant_total );
 
@@ -98,41 +99,16 @@ int main(int argc, char *argv[])
     pob.setearModoSeleccionPadres( (Poblacion<GenomaX>::MetodoSeleccion)parametros.value( "metodo_seleccion" ).toInt() );
     pob.setearPorcentajeCantidadDePadres( parametros.value( "cantidad_padres" ).toDouble() );
 
-    double max = parametros.value( "max" ).toDouble();
+    /*double max = parametros.value( "max" ).toDouble();
     double min = parametros.value( "min" ).toDouble();
     pob.setearMinMax( min, max );
     for( int i=0; i<cant_total; i++ ) {
-        GenomaX temp;
+        GenomaVentana temp;
         double valor = valor_random( min, max );
         temp.setX( valor );
         temp.setMinMax( min, max );
         pob.append( temp );
-    }
-
-    // Grafico la funcion
-    QVector<double> posy, posx;
-    for( double i=min; i<max; i+=0.05 ) {
-        posx.append( i );
-        posy.append( evaluar( i ) );
-    }
-    grafFuncion->agregarCurva( posx, posy, "funcion" );
-    a.processEvents();
-
-    /*GenomaX p1;
-    p1.setX( 128.0 );
-    p1.mostrarGenotipo();
-    p1.mutar( 9 );
-    p1.mostrarGenotipo();
-    p1.mutar( 1 );
-    p1.mostrarGenotipo();
-    p1.mutar( 2 );
-    p1.mostrarGenotipo();
-    p1.mutar( 15 );
-    p1.mostrarGenotipo();
-    p1.mutar( 10 );
-    p1.mostrarGenotipo();
-    p1.mutar( 11 );
-    p1.mostrarGenotipo();*/
+    }*/
 
     double fitnes_necesario = parametros.value( "fitnes_necesario", 0.0 ).toDouble();
 
