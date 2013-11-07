@@ -18,7 +18,7 @@ INCLUDEPATH += ../util
 
 HEADERS += \
     genomax.h \
-    poblacion.h \
+    ../../GTP4/EJ1/poblacion.h \
     ../../util/graficador.h \
     ../../util/graficadormdi.h \
     ../../util/funciones_aux.h \

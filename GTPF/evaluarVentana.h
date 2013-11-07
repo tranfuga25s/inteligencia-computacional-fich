@@ -6,6 +6,9 @@
 
 double evaluar( GenomaVentanas ventana ) {
 
+    for( int i=0; i<ventana.size(); i ++ ) {
+
+    }
 }
 
 #endif // EVALUARVENTANA_H
