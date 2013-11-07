@@ -6,8 +6,6 @@ CONFIG   += qwt
 TEMPLATE = app
 
 SOURCES +=  main.cpp \
-    ../../util/graficador.cpp \
-    ../../util/graficadormdi.cpp \
     ../util/graficadormdi.cpp \
     ../util/graficador.cpp
 
@@ -21,9 +19,6 @@ INCLUDEPATH += ../util \
 HEADERS += \
     genomax.h \
     ../../GTP4/EJ1/poblacion.h \
-    ../../util/graficador.h \
-    ../../util/graficadormdi.h \
-    ../../util/funciones_aux.h \
     ../util/graficadormdi.h \
     ../util/graficador.h \
     ../util/funciones_aux.h \

@@ -13,6 +13,7 @@ public:
     int size() { return _genotipo.size(); }
     void mutar( int pos ) { _genotipo[pos] = !_genotipo.at( pos ); aFenotipo(); }
     bool at( int pos ) { return this->_genotipo.at( pos ); }
+    bool valido() { return true; }
 
 
     /* void setearGenoma( int i, bool valor) { this->_genotipo[i] = valor; }
@@ -26,5 +27,10 @@ private:
     QVector<TemplateVentana> _fenotipo;
     QVector<bool> _genotipo;
 };
+
+void cruza( GenomaVentana &a1, GenomaVentana &a2 )
+{}
+
+void mutar( GenomaVentana &a ) {}
 
 #endif // GENOMAVENTANA_H

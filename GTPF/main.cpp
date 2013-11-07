@@ -13,6 +13,7 @@
 #include <QSqlDatabase>
 #include <QSqlTableModel>
 #include <QSqlRecord>
+#include <QDebug>
 
 #include "iostream"
 
@@ -42,8 +43,8 @@ int main(int argc, char *argv[])
     mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     main.setCentralWidget(mdiArea);
 
-    QSqlDatabase db;
-    db.setDatabaseName( "./aberturas.sqlite" );
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName( "aberturas.sqlite" );
     if( !db.open() ) {
         qDebug() << "No se pudo abrir la base de datos";
         abort();
@@ -56,7 +57,7 @@ int main(int argc, char *argv[])
     QVector<TemplateVentana> data;
     for( int i=0; i<modelo.rowCount(); i++ ) {
         TemplateVentana temp;
-        QSqlRecord r = modelo->record( i );
+        QSqlRecord r = modelo.record( i );
         temp.setearNombre( r.value( "nombre" ).toString() );
         temp.setearTipo( r.value( "id_abertura" ).toInt() );
         temp.setearAncho( r.value( "ancho" ).toDouble() );
@@ -65,10 +66,10 @@ int main(int argc, char *argv[])
         temp.setearMinAlto( r.value( "min_alto" ).toDouble() );
         temp.setearMaxAncho( r.value( "max_ancho" ).toDouble() );
         temp.setearMinAncho( r.value( "max_ancho" ).toDouble() );
-        QDebug() << "Cargada abertura " << temp.nombre();
+        qDebug() << "Cargada abertura " << temp.nombre();
         data.append( temp );
     }
-
+    return 0;
     /*GraficadorMdi *grafFuncion = new GraficadorMdi( mdiArea );
     grafFuncion->setearTitulo( QString::fromUtf8( "Funcion" ) );
     grafFuncion->setearTituloEjeX( QString::fromUtf8( "X" ) );
@@ -126,7 +127,7 @@ int main(int argc, char *argv[])
     pob.setearElitismo( parametros.value( "elitismo", false ).toBool() );
     pob.setearBrechaGeneracional( parametros.value( "brecha_generacional" ).toDouble() );
     pob.setearProbabilidadMutacion( parametros.value( "probabilidad_mutacion").toDouble() );
-    pob.setearModoSeleccionPadres( (Poblacion<GenomaX>::MetodoSeleccion)parametros.value( "metodo_seleccion" ).toInt() );
+    pob.setearModoSeleccionPadres( (Poblacion<GenomaVentana>::MetodoSeleccion)parametros.value( "metodo_seleccion" ).toInt() );
     pob.setearPorcentajeCantidadDePadres( parametros.value( "cantidad_padres" ).toDouble() );
 
     /*double max = parametros.value( "max" ).toDouble();
@@ -157,7 +158,7 @@ int main(int argc, char *argv[])
     histPromFitnes.append( pob.mejorFitnes() );
 
     double mejor_fitness = 0.0;
-    double pos_mejor_fitness = 0.0;
+    GenomaVentana pos_mejor_fitness;
     int generacion_mejor_fitness = -1;
 
     while( pob.mejorFitnes() <= fitnes_necesario
@@ -184,16 +185,16 @@ int main(int argc, char *argv[])
         double sumatoria = 0.0;
         for( int i=0; i<pob.size(); i++ ) {
             y.append( i );
-            x.append( pob.at( i ).getX() );
-            sumatoria += (-1.0)*evaluar( pob.at( i ).getX() );
+            x.append( evaluar( pob.at( i ) ) );
+            sumatoria += (-1.0)*evaluar( pob.at( i ) );
         }
         sumatoria /=  pob.size();
         histPromFitnes.append( sumatoria );
-        grafPuntos->agregarCurva( x, y, QString( "Gen%1" ).arg( iteracciones ) );
+        //grafPuntos->agregarCurva( x, y, QString( "Gen%1" ).arg( iteracciones ) );
 
         if( mejor_fitness <= pob.mejorFitnes() ) {
             mejor_fitness = pob.mejorFitnes();
-            pos_mejor_fitness = pob.elementoMinimo().getX();
+            pos_mejor_fitness = pob.elementoMinimo();
             generacion_mejor_fitness = iteracciones;
         }
         grafPromedio->setearPuntos( histPromFitnes, histIteracion );
@@ -201,7 +202,7 @@ int main(int argc, char *argv[])
     }
 
     qDebug() << "Mejor Fitness: " << mejor_fitness;
-    qDebug() << "Posicion Minimo: " << pos_mejor_fitness;
+    //qDebug() << "Posicion Minimo: " << pos_mejor_fitness;
     qDebug() << "Minimo: " << evaluar( pos_mejor_fitness );
     qDebug() << "Generacion: " << generacion_mejor_fitness;
     return a.exec();

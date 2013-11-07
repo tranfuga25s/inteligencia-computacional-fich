@@ -44,6 +44,19 @@ private:
 
 };
 
+TemplateVentana::TemplateVentana()
+{
+    _ancho = 0.0;
+    _alto = 0.0;
+    _max_ancho = 0.0;
+    _min_ancho = 0.0;
+    _max_alto = 0.0;
+    _min_alto = 0.0;
+    _tipo = 0;
+    _cantidad = 0;
+    _nombre = QString();
+}
+
 TemplateVentana::TemplateVentana( const TemplateVentana &origin )
 {
     _ancho = origin.ancho();
