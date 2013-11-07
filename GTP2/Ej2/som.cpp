@@ -25,7 +25,7 @@ SOM::SOM( int tamano_x, int tamano_y, int tamano_entradas )
 
 /*!
  * \brief SOM::entrenar
- *Calcula la neurona ganadora y actualiza sus pesos y los de su vecindad
+ * Calcula la neurona ganadora y actualiza sus pesos y los de su vecindad
  * \param patron
  */
 void SOM::entrenar( QVector<double> patron, int epoca )
@@ -55,13 +55,7 @@ void SOM::entrenar( QVector<double> patron, int epoca )
         qDebug() << "Patron: " << patron << " no tuvo ninguna neurona ganadora. Distancia: "<<ultima_distancia;
         //abort();
     } else {
-
-        // La distancia tiene que ser un vector de las mismas dimensiones
-        // que la entrada para "acercarlo" al patron
-
-        vector dif = diferenciaVector( patron, _som.at( fila_ganadora ).at( columna_ganadora ) );
-
-        actualizarPeso( fila_ganadora, columna_ganadora, dif, epoca );
+        actualizarPeso( fila_ganadora, columna_ganadora, patron, epoca );
     }
 
 }
@@ -90,54 +84,29 @@ double SOM::distancia( QVector<double> patron, int fila, int columna )
  * \param columna
  * \param distancia_obtenida
  */
-void SOM::actualizarPeso(int fila_ganadora, int columna_ganadora, vector distancia_obtenida , int epoca)
+void SOM::actualizarPeso(int fila_ganadora, int columna_ganadora, vector patron, int epoca)
 {
-    int max_vec_x = max_x_matriz( fila_ganadora   , this->_radio_vecindad, _som.size() );
-    int min_vec_x = min_x_matriz( fila_ganadora   , this->_radio_vecindad );
-    int max_vec_y = max_y_matriz( columna_ganadora, this->_radio_vecindad, _som.at(0).size() );
-    int min_vec_y = min_y_matriz( columna_ganadora, this->_radio_vecindad );
 
-    //qDebug() << min_vec_x << max_vec_x << min_vec_y << max_vec_y;
+    for( int fil=0; fil<_som.size(); fil++ ) {
 
-    //PELIGRO!!! HARDCODING!!!
+        for( int col=0; col<_som.at(0).size(); col++ ) {
 
-    for( int fil=min_vec_x; fil<max_vec_x; fil++ ) {
+            int dif1 = abs( fil - fila_ganadora );
+            int dif2 = abs( col - columna_ganadora );
 
-        for( int col=min_vec_y; col<max_vec_y; col++ ) {
+            int dist = qMax( dif1, dif2 );
 
-            // peso para x peso para y es decis pos vale 2
-            for( int pos=0; pos<_som.at(fil).at(col).size(); pos++ ) {
+            if( dist <= _radio_vecindad ) {
 
-                //Limito la modificacion cuando la distancia entre el patron y el peso es chica
-                if (distancia_obtenida.at(pos) < 0.15) {
+                vector distancia_obtenida = diferenciaVector( patron, _som.at(fil).at(col) );
 
-                    qDebug() << "ENTRO";
+                // peso para x peso para y es decis pos vale 2
+                for( int pos=0; pos<_som.at(fil).at(col).size(); pos++ ) {
 
-                    double temp = _tasa_aprendizaje*
-                            distancia_obtenida.at(pos);
+                    _som[fil][col][pos] += _tasa_aprendizaje*distancia_obtenida.at(pos);
 
-                    //Controlo si se me va de los limites de los pesos en este caso -1 y 1
-                    //Tengo que aplanar los limites de la vecindad si llego al limite de la red
-                    if( (_som[fil][col][pos] += temp) <= 1.0 && (_som[fil][col][pos] += temp) >= -1.0 ) {
-                        _som[fil][col][pos] += temp;
-                    }
-                    else
-                    {
-                        if((_som[fil][col][pos] += temp) <= 1.0) {
-                            _som[fil][col][pos] += 1.0;
-                        }
-                        else
-                        {
-                            _som[fil][col][pos] += -1.0;
-                        }
-                    }
-                    //Guardo para estadisticas
-                    _ultimos_deltas[fil][col] = temp;
                 }
-
             }
-
-
         }
     }
 
