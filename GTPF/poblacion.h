@@ -59,7 +59,6 @@ private:
     double _cantidad_padres;
     int _probabilidad_mutacion;
 
-    //Rango
     double _max;
     double _min;
 
@@ -231,9 +230,9 @@ void Poblacion<T>::ventaneo()
 template<typename T>
 void Poblacion<T>::torneo()
 {
-    //int tam_nueva_generacion = this->cantidadDePadres();
+    int tam_nueva_generacion = this->cantidadDePadres();
 
-    for( int j=0; j<_cantidad_padres; j++ ) {
+    for( int j=0; j<tam_nueva_generacion; j++ ) {
 
         // Elijo cuatro participantes y los hago competir
         QMap<double,int> mposiciones;
