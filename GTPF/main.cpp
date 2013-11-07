@@ -10,6 +10,9 @@
 #include <QDockWidget>
 #include <QLayout>
 #include <QElapsedTimer>
+#include <QSqlDatabase>
+#include <QSqlTableModel>
+#include <QSqlRecord>
 
 #include "iostream"
 
@@ -38,6 +41,33 @@ int main(int argc, char *argv[])
     mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     main.setCentralWidget(mdiArea);
+
+    QSqlDatabase db;
+    db.setDatabaseName( "./aberturas.sqlite" );
+    if( !db.open() ) {
+        qDebug() << "No se pudo abrir la base de datos";
+        abort();
+    }
+
+    QSqlTableModel modelo;
+    modelo.setTable( "aberturas" );
+    modelo.select();
+
+    QVector<TemplateVentana> data;
+    for( int i=0; i<modelo.rowCount(); i++ ) {
+        TemplateVentana temp;
+        QSqlRecord r = modelo->record( i );
+        temp.setearNombre( r.value( "nombre" ).toString() );
+        temp.setearTipo( r.value( "id_abertura" ).toInt() );
+        temp.setearAncho( r.value( "ancho" ).toDouble() );
+        temp.setearAlto( r.value( "alto" ).toDouble() );
+        temp.setearMaxAlto( r.value( "max_alto" ).toDouble() );
+        temp.setearMinAlto( r.value( "min_alto" ).toDouble() );
+        temp.setearMaxAncho( r.value( "max_ancho" ).toDouble() );
+        temp.setearMinAncho( r.value( "max_ancho" ).toDouble() );
+        QDebug() << "Cargada abertura " << temp.nombre();
+        data.append( temp );
+    }
 
     /*GraficadorMdi *grafFuncion = new GraficadorMdi( mdiArea );
     grafFuncion->setearTitulo( QString::fromUtf8( "Funcion" ) );

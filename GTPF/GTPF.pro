@@ -1,4 +1,4 @@
-QT       += core widgets
+QT       += core widgets sql
 TARGET = GTP3
 CONFIG   += console
 CONFIG   += qwt
@@ -12,7 +12,8 @@ SOURCES +=  main.cpp \
     ../util/graficador.cpp
 
 OTHER_FILES += parametros.cfg \
-    parametros.cfg
+    parametros.cfg \
+    aberturas.sqlite
 
 INCLUDEPATH += ../util \
                ../GTP4/EJ1
