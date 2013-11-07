@@ -3,7 +3,6 @@
 
 #include <QVector>
 #include <QMap>
-//#include "evaluador.h"
 #include <cfloat>
 #include "funciones_aux.h"
 
