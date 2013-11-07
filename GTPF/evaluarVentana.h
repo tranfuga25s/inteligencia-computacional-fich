@@ -13,11 +13,21 @@ double evaluar( GenomaVentana ventana ) {
 
     for( int i=0; i<ventana.size(); i ++ ) {
 
-
         // Genero los templates de Aluminio
+        TemplateAluminio temp;
+        temp.setearTipo( i );
+        temp.setearLargo( ventana.at(i).largo() );
+        aluminios.append( temp );
 
+        TemplateAluminio temp2;
+        temp2.setearTipo( i );
+        temp2.setearLargo( ventana.at(i).ancho() );
+        aluminios.append( temp2 );
 
         // Genero los templates de Vidrios
+        TemplatePieza temp3;
+        temp3.setearTipo( i );
+        piezas_vidrio.append( temp3 );
 
 
     }
