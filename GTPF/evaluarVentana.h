@@ -45,7 +45,7 @@ double evaluar( GenomaVentana ventana ) {
     double fitness = 0.0;
     double c1 = 1.0;
     double c2 = 1.0;
-    fitness = c1 * evaluador_aluminio.optimizar() + c2 * evaluador_vidrios.optimizar();
+    //fitness = c1 * evaluador_aluminio.optimizar() + c2 * evaluador_vidrios.optimizar();
     return fitness;
 }
 

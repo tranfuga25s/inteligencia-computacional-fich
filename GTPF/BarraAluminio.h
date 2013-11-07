@@ -41,4 +41,9 @@ BarraAluminio::BarraAluminio(BarraAluminio &b)
     this->_largo = b.largoActual();
 }
 
+BarraAluminio::BarraAluminio()
+{
+    _largo = 0.0;
+}
+
 #endif // BARRAALUMINIO_H
