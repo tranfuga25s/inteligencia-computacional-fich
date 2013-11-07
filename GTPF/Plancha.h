@@ -6,6 +6,9 @@
 class Plancha {
 public:
     Plancha();
+    Plancha(const Plancha & plancha);
+    Plancha(Plancha & plancha);
+    Plancha(double ancho,double alto);
     double ancho() const { return _ancho; }
     double alto() const { return _alto; }
     void setearAlto (double alto) { _alto = alto; }
@@ -18,9 +21,27 @@ private:
     double _alto;
 };
 
-Plancha::Plancha() {
+Plancha::Plancha()
+{
     _ancho = 0.0;
     _alto = 0.0;
+}
+
+Plancha::Plancha(const Plancha &plancha)
+{
+    this->_ancho = plancha.ancho();
+    this->_alto = plancha.alto();
+}
+
+Plancha::Plancha(Plancha &plancha)
+{
+    this->_ancho = plancha.ancho();
+    this->_alto = plancha.alto();
+}
+
+Plancha::Plancha(double ancho,double alto) {
+    _ancho = ancho;
+    _alto = alto;
 }
 
 

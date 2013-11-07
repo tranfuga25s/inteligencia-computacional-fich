@@ -3,6 +3,7 @@
 
 #include <QVector>
 #include <QMap>
+#include "TemplatePiezas.h"
 #include "Plancha.h"
 
 class FFDWDH {
@@ -12,14 +13,14 @@ public:
     double optimizar(QVector<int> Gen);
     void setearAltoPlancha(double alto) {_alto_plancha = alto;}
     void setearAnchoPlancha(double ancho) {_ancho_plancha = ancho;}
-    void setearInformacion( QMap< int, QPair<double,double> > informacion) {_informacion = informacion;}
+    void setearTemplates( QVector<TemplatePiezas> &informacion) {_informacion = informacion;}
     void regenerarOrden();
     void hacerCorte(int pos,Pieza pieza);
 
 private:
     QVector<Plancha> _planchas;
     QVector<Pieza> _piezas;
-    QMap<int, QPair<double,double > > _informacion;
+    QVector<TemplatePiezas>  _informacion;
     double _alto_plancha,_ancho_plancha;
     QVector<int> _orden_plancha;
 };
@@ -36,8 +37,7 @@ FFDWDH::FFDWDH()
 
 Pieza FFDWDH::generarPieza(int pos)
 {
-    QPair<double,double> posiciones = _informacion.value(pos);
-    return Pieza(posiciones.first,posiciones.second);
+    return Pieza(_informacion.value(pos).ancho(),_informacion.value(pos).alto());
 }
 
 double FFDWDH::optimizar(QVector<int> Gen)
@@ -49,9 +49,7 @@ double FFDWDH::optimizar(QVector<int> Gen)
     }
 
     //Cargo la primera plancha
-    Plancha Auxiliar;
-    Auxiliar.setearAncho(_ancho_plancha);
-    Auxiliar.setearAlto(_alto_plancha);
+    Plancha Auxiliar(_ancho_plancha,_alto_plancha);
     _planchas.append(Auxiliar);
     regenerarOrden();
 
@@ -61,7 +59,7 @@ double FFDWDH::optimizar(QVector<int> Gen)
 
         for( int pos_planchas = 0; pos_planchas<_planchas.size(); pos_planchas++ ) {
 
-            if( _planchas.at( _orden_plancha.at( pos_planchas ) ).entraPieza( _piezas[i].ancho() ,_piezas[i].alto() )) {
+            if( _planchas[_orden_plancha.at( pos_planchas )].entraPieza( _piezas.at(i))) {
                 hacerCorte(pos_planchas,_piezas.at(i));
                 entro_existente = true;
                 pos_planchas = _planchas.size() + 1; // Salgo del for de barras
@@ -78,7 +76,7 @@ double FFDWDH::optimizar(QVector<int> Gen)
             _planchas.append( plancha );
 
             // genero el corte que no se pudo generar
-            plancha.hacerCorte(_planchas.size() - 1 ,_piezas.at(i) );
+            hacerCorte(_planchas.size() - 1 ,_piezas.at(i) );
 
             regenerarOrden();
         }
