@@ -34,4 +34,5 @@ HEADERS += \
     evaluarVentana.h \
     templatealuminio.h \
     GenomaVentana.h \
-    templateventana.h
+    templateventana.h \
+    TemplatePiezas.h

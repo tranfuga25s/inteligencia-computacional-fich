@@ -23,7 +23,7 @@ typedef QVector< QVector<double> > matriz;
 
 /*!
  * \brief main
- * Guia de Trabajos Practicos 3
+ * TP FINAL OPTIMIZACION DE VENTANAS
  * \param argc
  * \param argv
  * \return
