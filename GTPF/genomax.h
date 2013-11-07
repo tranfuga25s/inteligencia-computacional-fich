@@ -4,6 +4,9 @@
 #define cant_entera 10 // 2^10 = 1024
 #define cant_decimal 5 // Hasta 5 elementos de la posicion decimal
 
+#include <math.h>
+#include "funciones_aux.h"
+
 #include <QVector>
 
 /**

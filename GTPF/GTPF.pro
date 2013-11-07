@@ -14,7 +14,7 @@ SOURCES +=  main.cpp \
 OTHER_FILES += parametros.cfg \
     parametros.cfg
 
-INCLUDEPATH += ../../util
+INCLUDEPATH += ../util
 
 HEADERS += \
     genomax.h \
@@ -29,4 +29,6 @@ HEADERS += \
     Pieza.h \
     Plancha.h \
     BarraAluminio.h \
-    FFDW.h
+    FFDW.h \
+    evaluarVentana.h \
+    templatealuminio.h

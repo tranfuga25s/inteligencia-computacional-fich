@@ -19,6 +19,7 @@ typedef QVector< QVector<double> > matriz;
 #include "genomax.h"
 #include "poblacion.h"
 #include "graficadormdi.h"
+#include "evaluarVentana.h"
 
 /*!
  * \brief main
