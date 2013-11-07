@@ -2,82 +2,122 @@
 #define FFDWDH_H
 
 #include <QVector>
+#include <QMap>
+#include "Plancha.h"
 
-//!
-//! \brief The ColumnaPlancha class
-//! Clase que modela la columna de corte
-//!
-
-class ColumnaPlancha {
+class FFDWDH {
 public:
-    ColumnaPlancha();
-    double ancho() {return _ancho;}
-    double alto() {return _alto;}
-    void setearAlto(double alto) {_alto = alto;}
-    void setearAncho(double ancho) {_ancho = ancho;}
+    FFDWDH();
+    Pieza generarPieza(int pos);
+    double optimizar(QVector<int> Gen);
+    void setearAltoPlancha(double alto) {_alto_plancha = alto;}
+    void setearAnchoPlancha(double ancho) {_ancho_plancha = ancho;}
+    void setearInformacion(QMap<int,QPair<double,double>> informacion) {_informacion = informacion;}
+    void regenerarOrden();
+    void hacerCorte(int pos,Pieza pieza);
 
 private:
-    double _ancho = 0.0;
-    double _alto = 0.0;
+    QVector<Plancha> _planchas;
+    QVector<Pieza> _piezas;
+    QMap<int,QPair<double,double>> _informacion;
+    double _alto_plancha,_ancho_plancha;
+    QVector<int> _orden_plancha;
 };
 
+FFDWDH::FFDWDH()
+{
+    _planchas.clear();
+    _piezas.clear();
+    _informacion.clear();
+    _alto_plancha = 0.0;
+    _ancho_plancha = 0.0;
+    _orden_plancha.clear();
+}
 
-//!
-//! \brief FFDWDH
-//! Devuelve el area sobrante segun el orden en que estaban las piezas en el gen
-//! Es fundamenta controlar si hay que usar una nueva plancha o no de esa manera
-//! es posible medir que tan buena es la secuencia de corte
-//! \param Piezas
-//! \param Ancho_plancha
-//! \param Alto_plancha
-//! \return
-//!
+Pieza FFDWDH::generarPieza(int pos)
+{
+    QPair<double,double> posiciones = _informacion.value(pos);
+    return Pieza(posiciones.first,posiciones.second);
+}
 
-static double FFDWDH(QVector<PiezaCorte> Piezas, double Ancho_plancha, double Alto_plancha) {
+double FFDWDH::optimizar(QVector<int> Gen)
+{
+    //Recorro el gen y cargo las piezas generadas
+    for (int g = 0 ; g < Gen.size() ; g++) {
+        //A partir de la informacion del gen genero las piezas y las cargo en el vector
+        _piezas.append(generarPieza(Gen.at(g)));
+    }
 
-    //Vector que contiene las columnas de la plancha
-    QVector<ColumnaPlancha> columnas;
+    //Cargo la primera plancha
+    Plancha Auxiliar;
+    Auxiliar.setearAncho(_ancho_plancha);
+    Auxiliar.setearAlto(_alto_plancha);
+    _planchas.append(Auxiliar);
+    regenerarOrden();
 
-    //Cargo la primera columna
-    ColumnaPlancha Auxiliar;
-    //El ancho de la primera columna me lo da la primera pieza de la cadena ordenada "Piezas"
-    Auxiliar.setearAncho(Piezas[0].ancho());
-    //El alto si es el de la plancha
-    Auxiliar.setearAlto(Alto_plancha);
+    for (int i = 0 ; i < _piezas.size() ; i++) {
 
-    columnas.append(Auxiliar);
+        bool entro_existente = false;
 
-    double Area_plancha = Ancho_plancha * Alto_plancha;
-    QVector<double> area_sobrante_columnas;
+        for( int pos_planchas = 0; pos_planchas<_planchas.size(); pos_planchas++ ) {
 
-    int j = 0;
+            if( _planchas.at( _orden_plancha.at( pos_planchas ) ).entraPieza( _piezas[i].ancho() ,_piezas[i].alto() )) {
+                hacerCorte(pos_planchas,_piezas.at(i));
+                entro_existente = true;
+                pos_planchas = _planchas.size() + 1; // Salgo del for de barras
+                regenerarOrden();
+            }
 
-    for (int i = 0; i< Piezas.size(); i++) {
-        while (Piezas[i].ancho > columnas.at(j).ancho() ||Piezas[i].alto > columnas.at(j).alto()) {
-            //Calcular el area sobrante de la columna
-            double calc_aux = (columnas.at(j).ancho() * columnas.at(j).alto()); //Estaria bien??
-            area_sobrante_columnas.append(calc_aux);
-
-            //Controlar si necesito una nueva plancha de vidrio
-
-            //Si no puedo colocar ninguna pieza mas en la columna creo otra
-            Auxiliar.setearAncho(Piezas[i].ancho());
-            Auxiliar.setearAlto(Alto_plancha);
-            columnas.append(Auxiliar);
-            j++;
         }
-        columnas[j].setearAncho( columnas[j].ancho() - Piezas[i].ancho() ); //???
-        columnas[j].setearAlto( columnas[j].alto() - Piezas[i].alto() );
+
+        if( !entro_existente ) {
+            // Agrego una nueva barra a la lista de utilizadas
+            Plancha plancha(_ancho_plancha,_alto_plancha);
+
+            // Lo agergo a las consideradas
+            _planchas.append( plancha );
+
+            // genero el corte que no se pudo generar
+            plancha.hacerCorte(_planchas.size() - 1 ,_piezas.at(i) );
+
+            regenerarOrden();
+        }
+
     }
 
-    //Sumo la totalidad del area sobrante y lo devuelvo como fitness
-    double area_sobrante = 0.0;
-    for (int i = 0; i< area_sobrante_columnas.size(); i++) {
-        area_sobrante += area_sobrante_columnas.at(i);
+    // Calculo la sumatoria de los largos actuales
+    double sobrante = 0.0;
+    for( int i=0; i<_planchas.size(); i++ ) {
+        sobrante += _planchas.at( i ).areaDisponible();
     }
 
-    return area_sobrante;
+    return sobrante;
 
+}
+
+void FFDWDH::regenerarOrden()
+{
+    // Ordeno los largos
+    QMap<double,int> orden;
+    for( int i=0; i<_planchas.size(); i++ ) {
+        orden.append( _planchas.at( i ).areaDisponible(), i );
+    }
+    _orden_plancha.clear();
+    foreach( int p, orden.values() ) {
+        _orden_plancha.append( p );
+    }
+}
+
+void FFDWDH::hacerCorte(int pos, Pieza pieza)
+{
+    //Creo la nueva plancha que me sobre
+    Plancha Auxiliar(_planchas.at(pos).ancho() - pieza.ancho(),_planchas.at(pos).alto());
+    _planchas.append(Auxiliar);
+    //Redimensiono la actual segun lo que me sobra el la altura
+    _planchas[pos].setearAlto( _planchas.at(pos).alto() - pieza.alto());
+    _planchas[pos].setearAncho( _planchas.at(pos).ancho() - pieza.ancho());
+
+    regenerarOrden();
 }
 
 #endif // FFDWDH_H

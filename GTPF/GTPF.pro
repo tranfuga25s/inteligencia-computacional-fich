@@ -31,4 +31,5 @@ HEADERS += \
     BarraAluminio.h \
     FFDW.h \
     evaluarVentana.h \
-    templatealuminio.h
+    templatealuminio.h \
+    TemplatePiezas.h
