@@ -4,12 +4,12 @@
 #include "FFDW.h"
 #include "GenomaVentana.h"
 #include "templatealuminio.h"
-#include "templatepieza.h"
+#include "TemplatePiezas.h"
 
 double evaluar( GenomaVentana ventana ) {
 
     QVector<TemplateAluminio> aluminios;
-    QVector<TemplatePieza> piezas_vidrio;
+    QVector<TemplatePiezas> piezas_vidrio;
 
     for( int i=0; i<ventana.size(); i ++ ) {
 
@@ -25,7 +25,7 @@ double evaluar( GenomaVentana ventana ) {
         aluminios.append( temp2 );
 
         // Genero los templates de Vidrios
-        TemplatePieza temp3;
+        TemplatePiezas temp3;
         temp3.setearTipo( i );
         piezas_vidrio.append( temp3 );
 
