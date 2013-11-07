@@ -5,7 +5,6 @@
 #define cant_decimal 5 // Hasta 5 elementos de la posicion decimal
 
 #include <QVector>
-#include <funciones_aux.h>
 
 /**
  * \brief The Genoma class

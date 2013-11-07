@@ -27,4 +27,6 @@ HEADERS += \
     ../util/funciones_aux.h \
     FFDWDH.h \
     Pieza.h \
-    Plancha.h
+    Plancha.h \
+    BarraAluminio.h \
+    FFDW.h
