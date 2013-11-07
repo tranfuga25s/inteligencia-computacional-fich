@@ -47,6 +47,7 @@ double FFDW::optimizar( QVector<int> gen )
     // Inicializo con al primera barra de aluminio
     BarraAluminio primera;
     primera.setearLargo( _largo_barra_original );
+    _barras.append( primera );
     regenerarOrden();
 
     // Recorro todos los elementos del gen
