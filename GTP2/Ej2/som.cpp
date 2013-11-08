@@ -28,7 +28,7 @@ SOM::SOM( int tamano_x, int tamano_y, int tamano_entradas )
  * Calcula la neurona ganadora y actualiza sus pesos y los de su vecindad
  * \param patron
  */
-void SOM::entrenar( QVector<double> patron, int epoca )
+void SOM::entrenar( QVector<double> patron )
 {
     double distancia_minima = DBL_MAX;
     int fila_ganadora = -1;
@@ -55,7 +55,7 @@ void SOM::entrenar( QVector<double> patron, int epoca )
         qDebug() << "Patron: " << patron << " no tuvo ninguna neurona ganadora. Distancia: "<<ultima_distancia;
         //abort();
     } else {
-        actualizarPeso( fila_ganadora, columna_ganadora, patron, epoca );
+        actualizarPeso( fila_ganadora, columna_ganadora, patron );
     }
 
 }
@@ -84,7 +84,7 @@ double SOM::distancia( QVector<double> patron, int fila, int columna )
  * \param columna
  * \param distancia_obtenida
  */
-void SOM::actualizarPeso(int fila_ganadora, int columna_ganadora, vector patron, int epoca)
+void SOM::actualizarPeso(int fila_ganadora, int columna_ganadora, vector patron)
 {
 
     for( int fil=0; fil<_som.size(); fil++ ) {

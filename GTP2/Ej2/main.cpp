@@ -87,8 +87,6 @@ int main(int argc, char *argv[])
              parametros.value( "tamano_entradas" ).toInt() );
 
 
-    som.setearRadioVecindad( parametros.value( "radio_vecindad").toInt() );
-
     graf1->setearParaSOM();
     graf1->setearPuntos( som.obtenerPuntos() );
     graf1->deshabilitarEscalado();
@@ -136,7 +134,7 @@ int main(int argc, char *argv[])
         PBTamanoVecindad->setValue( tamano_vecindad1.at( epoca ) );
         PBTasaAprendizaje->setValue( tasa_aprendizajes1.at( epoca ) * 100 );
         for( int p=0; p<entradas.size(); p++ ) {
-            som.entrenar( entradas.at( p ), epoca );
+            som.entrenar( entradas.at( p ));
             if( p % 10 == 0 ) {
                 graf1->setearPuntos( som.obtenerPuntos() );
                 a.processEvents();
@@ -190,7 +188,7 @@ int main(int argc, char *argv[])
         PBTamanoVecindad->setValue( tamano_vecindad2.at( epoca ) );
         PBTasaAprendizaje->setValue( tasa_aprendizajes2.at( epoca ) * 100 );
         for( int p=0; p<entradas.size(); p++ ) {
-            som.entrenar( entradas.at( p ), epoca );
+            som.entrenar( entradas.at( p ) );
             if( p % 10 == 0 ) {
                 graf1->setearPuntos( som.obtenerPuntos() );
                 a.processEvents();
@@ -206,16 +204,16 @@ int main(int argc, char *argv[])
     PBEpocas->setFormat( "Epoca %v de %m - %p%" );
 
     som.setearRadioVecindad( 0 );
-    tasa_aprendizajes2 = aproximacionLineald( epocas.at( 2 ), tasas.at( 2 ), tasas.at( 3 ) );
+    QVector<double> tasa_aprendizajes3 = aproximacionLineald( epocas.at( 2 ), tasas.at( 2 ), tasas.at( 3 ) );
 
     for( int epoca=0 ; epoca<epocas.at(2); epoca++ ) {
 
-        som.setearTasaAprendizaje( tasa_aprendizajes2.at( epoca ) );
+        som.setearTasaAprendizaje( tasa_aprendizajes3.at( epoca ) );
         PBEpocas->setValue( epoca + 1 );
-        PBTasaAprendizaje->setValue( tasa_aprendizajes2.at( epoca )  * 100 );
+        PBTasaAprendizaje->setValue( tasa_aprendizajes3.at( epoca )  * 100 );
 
         for( int p=0; p<entradas.size(); p++ ) {
-            som.entrenar( entradas.at( p ), epoca );
+            som.entrenar( entradas.at( p ) );
             if( p%10 == 0 ) {
                 graf1->setearPuntos( som.obtenerPuntos() );
                 a.processEvents();

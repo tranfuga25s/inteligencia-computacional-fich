@@ -34,15 +34,6 @@ private:
 
 };
 
-void cruza( GenomaVentana &a1, GenomaVentana &a2 )
-{}
-
-void mutar( GenomaVentana &a ) {}
-
-#endif // GENOMAVENTANA_H
-
-
-
 GenomaVentana::GenomaVentana()
 {
     //Reservas la cantidad de bits
@@ -142,3 +133,35 @@ void GenomaVentana::aGenotipo()
 
     }
 }
+
+//Son funciones reutilizables
+void cruza( GenomaVentana &a1, GenomaVentana &a2 )
+{
+    int pos = valor_random_int( 0, bits );
+    //qDebug() << pos;
+
+    GenomaVentana auxA = a;
+    GenomaVentana auxB = b;
+
+    for (int i = pos; i<a.size(); i++) {
+        auxB.setearGenoma( i, a.at(i) );
+        auxA.setearGenoma( i, b.at(i) );
+    }
+    a.aFenotipo();
+    b.aFenotipo();
+
+    a = auxA;
+    b = auxB;
+
+    a.aFenotipo();
+    b.aFenotipo();
+}
+
+void mutar( GenomaVentana &a )
+{
+    int pos = valor_random_int( 0, a.size() );
+    a.mutar( pos );
+    //a.aFenotipo();
+}
+
+#endif // GENOMAVENTANA_H
