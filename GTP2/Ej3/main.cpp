@@ -91,26 +91,29 @@ int main(int argc, char *argv[])
             vector temp1, temp2, temp3, temp4, temp5;
             //1er Armonico
             temp1.append( entradas.at(i).at(0) );
+            temp1.append( i );
             entradas1.append( temp1 );
 
             //2do Armonico
             temp2.append( entradas.at(i).at(1) );
+            temp2.append( i );
             entradas2.append( temp2 );
 
             //3er Armonico
             temp3.append( entradas.at(i).at(2) );
+            temp3.append( i );
             entradas3.append( temp3 );
 
             //4to Armonico
             temp4.append( entradas.at(i).at(3) );
+            temp4.append( i );
             entradas4.append( temp4 );
 
             //5to Armonico
             temp5.append( entradas.at(i).at(4) );
+            temp5.append( i );
             entradas5.append( temp5 );
         }
-
-        qDebug() << entradas1.size() << salidas.size();
 
         GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );
         mdiArea->addSubWindow( graf2 );
@@ -118,7 +121,7 @@ int main(int argc, char *argv[])
         graf2->setearTitulo( "Datos originales - 1º Armonico" );
         graf2->setearTituloEjeX( " X " );
         graf2->setearTituloEjeY( " Y " );
-        graf2->agregarPuntosClasificados( entradas1, salidas, QVector<int>(0,1) );
+        graf2->agregarPuntosClasificados( entradas1, salidas, 0.5 );
         mdiArea->tileSubWindows();
 
         GraficadorMdi *graf3 = new GraficadorMdi( mdiArea );
@@ -127,7 +130,7 @@ int main(int argc, char *argv[])
         graf3->setearTitulo( "Datos originales - 2º Armonico" );
         graf3->setearTituloEjeX( " X " );
         graf3->setearTituloEjeY( " Y " );
-        graf3->agregarPuntosClasificados( entradas2, salidas, QVector<int>(0,1)  );
+        graf3->agregarPuntosClasificados( entradas2, salidas, 0.5  );
         mdiArea->tileSubWindows();
 
         GraficadorMdi *graf4 = new GraficadorMdi( mdiArea );
@@ -136,7 +139,7 @@ int main(int argc, char *argv[])
         graf4->setearTitulo( "Datos originales - 3º Armonico" );
         graf4->setearTituloEjeX( " X " );
         graf4->setearTituloEjeY( " Y " );
-        graf4->agregarPuntosClasificados( entradas3, salidas, QVector<int>(0,1)  );
+        graf4->agregarPuntosClasificados( entradas3, salidas, 0.5  );
         mdiArea->tileSubWindows();
 
         GraficadorMdi *graf5 = new GraficadorMdi( mdiArea );
@@ -145,7 +148,7 @@ int main(int argc, char *argv[])
         graf5->setearTitulo( "Datos originales - 4º Armonico" );
         graf5->setearTituloEjeX( " X " );
         graf5->setearTituloEjeY( " Y " );
-        graf5->agregarPuntosClasificados( entradas4, salidas, QVector<int>(0,1)  );
+        graf5->agregarPuntosClasificados( entradas4, salidas, 0.5  );
         mdiArea->tileSubWindows();
 
         GraficadorMdi *graf6 = new GraficadorMdi( mdiArea );
@@ -154,7 +157,7 @@ int main(int argc, char *argv[])
         graf6->setearTitulo( "Datos originales - 5º Armonico" );
         graf6->setearTituloEjeX( " X " );
         graf6->setearTituloEjeY( " Y " );
-        graf6->agregarPuntosClasificados( entradas5, salidas, QVector<int>(0,1)  );
+        graf6->agregarPuntosClasificados( entradas5, salidas, 0.5  );
         mdiArea->tileSubWindows();
     }
 
@@ -269,7 +272,7 @@ int main(int argc, char *argv[])
     for( int fila=0; fila<parametros.value( "som_tam_x", 2 ).toInt(); fila++ ) {
         for( int columna=0; columna<parametros.value( "som_tam_y", 2 ).toInt(); columna++ ) {
 
-            int maximo = 0;
+            int maximo = -1;
             int clase = -1;
             for( int c=0; c<cant_clases; c++ ) {
                 if( contadores.at( c ).at( columna ).at( fila ) > maximo ) {
@@ -290,6 +293,7 @@ int main(int argc, char *argv[])
 
     for( int entrada = 0; entrada < entradas.size(); entrada++ ) {
 
+        //Evaluo
         pos = som.getNeuronaGanadora( entradas.at( entrada ) );
 
         if(som.devolverClasesSalida(pos.first,pos.second) != salidas.at(entrada)) {cant_errores++;}
@@ -301,7 +305,7 @@ int main(int argc, char *argv[])
 
     qDebug() << "CANTIDAD DE ERRORES EN EL SOM" << cant_errores;
 
-    qDebug() << "PORCENTAJE DE ERROR EN LA CLASIFICACION" << porcentaje_error;
+    qDebug() << "PORCENTAJE DE ERROR EN LA CLASIFICACION" << porcentaje_error << "%";
 
     //Ya tengo la nueva evaluacion de todos los patrones en la red som
     // Mostrar resultado de la clasificacion
@@ -324,14 +328,19 @@ int main(int argc, char *argv[])
         for( int i=0; i < entradas.size(); i++ ) {
             vector temp1, temp2, temp3, temp4, temp5;
             temp1.append( entradas.at(i).at(0) );
+            temp1.append( i );
             entradas1.append( temp1 );
             temp2.append( entradas.at(i).at(1) );
+            temp2.append( i );
             entradas2.append( temp2 );
             temp3.append( entradas.at(i).at(2) );
+            temp3.append( i );
             entradas3.append( temp3 );
             temp4.append( entradas.at(i).at(3) );
+            temp4.append( i );
             entradas4.append( temp4 );
             temp5.append( entradas.at(i).at(4) );
+            temp5.append( i );
             entradas5.append( temp5 );
         }
         GraficadorMdi *graf2 = new GraficadorMdi( mdiArea );

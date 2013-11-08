@@ -77,7 +77,7 @@ double SOM::distancia( QVector<double> patron, int fila, int columna )
     for( int i=0; i<patron.size(); i++ ) {
         distancia += pow( ( patron.at( i ) - _som.at( fila ).at( columna ).at( i ) ), 2.0 );
     }
-    return pow( distancia, 0.5 );
+    return distancia;
 }
 
 /*!
