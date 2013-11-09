@@ -152,28 +152,15 @@ void cruza( GenomaVentana &a1, GenomaVentana &a2 )
     GenomaVentana auxA = a1;
     GenomaVentana auxB = a2;
 
-    //Reordenar los dos genomas a partrones a partir de pos
-    //Importaria pos con respecto a como codificamos el gen ancho/alto????
 
-    //AuxA
-    //Generar un vector con los nuevos indices
-    QVector<int> posAuxA = generarPosicionesAleatorias(pos,a1.size());
-    //Modificar los nuevos indices a partir del vector de nuevos indice
-    for (int i = 0 ; i < posAuxA.size() ; i++) {
-        auxA.setearGenoma(posAuxA.at(i), a1.at(posAuxA.at(i)));
+    for(int i = pos ; i<a1.size();i++ ) {
+        auxA.setearGenoma(i,a2.at(i));
+        auxB.setearGenoma(i,a1.at(i));
     }
 
-    //AuxB
-    //Generar un vector con los nuevos indices
-    QVector<int> posAuxB = generarPosicionesAleatorias(pos,a2.size());
-    //Modificar los nuevos indices a partir del vector de nuevos indice
-    for (int i = 0 ; i < posAuxB.size() ; i++) {
-        auxB.setearGenoma(posAuxB.at(i), a2.at(posAuxB.at(i)));
-    }
-
-    //Para poder igualar los objetos
-    a1.aFenotipo();
-    a2.aFenotipo();
+//    //Para poder igualar los objetos ???
+//    a1.aFenotipo();
+//    a2.aFenotipo();
 
     a1 = auxA;
     a2 = auxB;

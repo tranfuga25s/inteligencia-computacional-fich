@@ -3,7 +3,9 @@
 
 #include <QVector>
 #include <QMap>
-//#include "evaluarVentana.h"
+#include "evaluarVentana.h"
+#include "evaluarVidrio.h"
+//#include "evaluarAluminio.h"
 #include <cfloat>
 #include "funciones_aux.h"
 
@@ -47,6 +49,7 @@ public:
     void setearMinMax( double min, double max ) { _min = min; _max = max; }
 
     void evaluarPoblacion();
+    void evaluarPoblacion(QVector<TemplatePiezas> piezas_vidrio);
     void seleccionarPadres();
     void generarHijos();
 
@@ -105,6 +108,29 @@ void Poblacion<T>::evaluarPoblacion()
     // recorro todo el vector y veo cual es el mejor valor
     for( int i=0; i<this->size(); i++ ) {
         double temp = evaluar( this->at( i ) );
+        // VEO QUE ESTÉ BIEN ESTA FUNCION!
+        temp = (-1.0)*temp;                                /// fit = -y
+        //
+        if( temp > _mejor_fitness ) {
+            _mejor_fitness = temp;
+            _pos_mejor_fitness = i;
+        }
+        _fitness[i] = temp;
+    }
+    if( _pos_mejor_fitness == -1 ) {
+        abort();
+    }
+}
+
+template<typename T>
+void Poblacion<T>::evaluarPoblacion(QVector<TemplatePiezas> piezas_vidrio)
+{
+    _fitness.clear();
+    _fitness.resize( this->size() );
+    _mejor_fitness = (-1.0)*DBL_MAX;
+    // recorro todo el vector y veo cual es el mejor valor
+    for( int i=0; i<this->size(); i++ ) {
+        double temp = evaluar( this->at( i ), piezas_vidrio );
         // VEO QUE ESTÉ BIEN ESTA FUNCION!
         temp = (-1.0)*temp;                                /// fit = -y
         //

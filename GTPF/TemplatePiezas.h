@@ -20,11 +20,17 @@ public:
     void setearCantidad( int cant ) { _cantidad = cant; }
     int getCantidad() const { return _cantidad; }
 
+    void setearMutado(int num) {_ind_mutado=num;}
+    int getMutado() {return _ind_mutado;}
+
+
+
 private:
     double _ancho;
     double _alto;
     int _tipo;
     int _cantidad;
+    int _ind_mutado=-1;
 
 };
 
@@ -50,5 +56,7 @@ TemplatePiezas::TemplatePiezas( TemplatePiezas &origin)
     _tipo = origin.tipo();
     _cantidad = origin.getCantidad();
 }
+
+
 
 #endif // TEMPLATEPIEZAS_H

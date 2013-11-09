@@ -11,7 +11,9 @@ SOURCES +=  main.cpp \
 
 OTHER_FILES += parametros.cfg \
     parametros.cfg \
-    aberturas.sqlite
+    aberturas.sqlite \
+    parametrosVidrio.cfg \
+    parametrosAluminio.cfg
 
 INCLUDEPATH += ../util \
                ../GTP4/EJ1
@@ -32,4 +34,7 @@ HEADERS += \
     GenomaVentana.h \
     templateventana.h \
     TemplatePiezas.h \
-    poblacion.h
+    poblacion.h \
+    GenomaVidrio.h \
+    evaluarVidrio.h \
+    evaluarAluminio.h
