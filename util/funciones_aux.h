@@ -643,5 +643,26 @@ static matriz correlacionProducto(vector entradas,vector salidas) {
 
 #endif
 
+#ifndef TPF
+#define TPF
+
+static QVector<int> generarPosicionesAleatorias(int ini,int fin) {
+    //Cargo un vector para luego desordenarlo
+    QVector<int> Aux,Aux2;
+    for (int i = ini ; i < fin ; i++) {
+        Aux.append(i);
+    }
+    //Cargo Aux2 a partir de sacar un aleatorio de aux
+    for(int i = ini ; i< fin ; i++) {
+        int pos = valor_random_int(0,Aux.size());
+        Aux2.append(Aux.at(pos));
+        Aux.remove(pos);
+    }
+
+    return Aux2;
+
+}
+
+#endif
 
 #endif // FUNCIONES_AUX_H

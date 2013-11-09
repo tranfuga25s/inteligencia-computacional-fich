@@ -127,6 +127,7 @@ int main(int argc, char *argv[])
     pob.setearElitismo( parametros.value( "elitismo", false ).toBool() );
     pob.setearBrechaGeneracional( parametros.value( "brecha_generacional" ).toDouble() );
     pob.setearProbabilidadMutacion( parametros.value( "probabilidad_mutacion").toDouble() );
+    pob.setearProbabilidadCruza( parametros.value( "probabilidad_cruza").toDouble() );
     pob.setearModoSeleccionPadres( (Poblacion<GenomaVentana>::MetodoSeleccion)parametros.value( "metodo_seleccion" ).toInt() );
     pob.setearPorcentajeCantidadDePadres( parametros.value( "cantidad_padres" ).toDouble() );
 

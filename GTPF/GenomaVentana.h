@@ -3,6 +3,8 @@
 
 #include <QVector>
 #include "templateventana.h"
+#include "funciones_aux.h"
+#include <QDebug>
 
 //HARDCODING!
 #define bits 12
@@ -10,7 +12,7 @@
 class GenomaVentana {
 public:
     GenomaVentana();
-    GenomaVentana( const GenomaVentana &origin );
+    GenomaVentana( const GenomaVentana& origin );
     GenomaVentana( GenomaVentana& origin );
     void setearFenotipo(QVector<TemplateVentana> informacion) {_fenotipo = informacion;}
     void aFenotipo();
@@ -19,11 +21,11 @@ public:
     void mutar( int pos ) { _genotipo[pos] = !_genotipo.at( pos ); aFenotipo(); }
     bool at( int pos ) { return this->_genotipo.at( pos ); }
     bool valido() { return true; }
+    void setearGenoma( int i, bool valor) { this->_genotipo[i] = valor; }
+    QVector<bool> mostrarGenotipo() {return _genotipo;}
+    QVector<TemplateVentana> mostrarFenotipo() {return _fenotipo;}
 
-
-    /* void setearGenoma( int i, bool valor) { this->_genotipo[i] = valor; }
-    void mostrarGenotipo();
-    bool valido();
+    /*bool valido();
     void setMinMax( double min, double max ) { _min = min; _max = max; }
     double getMin() const { return _min; }
     double getMax() const { return _max; } */
@@ -39,6 +41,13 @@ GenomaVentana::GenomaVentana()
     //Reservas la cantidad de bits
     _genotipo.resize(bits * 2 * _fenotipo.size());
 
+}
+
+GenomaVentana::GenomaVentana(GenomaVentana& origin) {
+    _genotipo.resize(origin._genotipo.size());
+    _fenotipo.resize(origin._fenotipo.size());
+    this->_fenotipo = origin.mostrarFenotipo();
+    this->_genotipo = origin.mostrarGenotipo();
 }
 
 void GenomaVentana::aFenotipo()
@@ -140,21 +149,38 @@ void cruza( GenomaVentana &a1, GenomaVentana &a2 )
     int pos = valor_random_int( 0, bits );
     //qDebug() << pos;
 
-    GenomaVentana auxA = a;
-    GenomaVentana auxB = b;
+    GenomaVentana auxA = a1;
+    GenomaVentana auxB = a2;
 
-    for (int i = pos; i<a.size(); i++) {
-        auxB.setearGenoma( i, a.at(i) );
-        auxA.setearGenoma( i, b.at(i) );
+    //Reordenar los dos genomas a partrones a partir de pos
+    //Importaria pos con respecto a como codificamos el gen ancho/alto????
+
+    //AuxA
+    //Generar un vector con los nuevos indices
+    QVector<int> posAuxA = generarPosicionesAleatorias(pos,a1.size());
+    //Modificar los nuevos indices a partir del vector de nuevos indice
+    for (int i = 0 ; i < posAuxA.size() ; i++) {
+        auxA.setearGenoma(posAuxA.at(i), a1.at(posAuxA.at(i)));
     }
-    a.aFenotipo();
-    b.aFenotipo();
 
-    a = auxA;
-    b = auxB;
+    //AuxB
+    //Generar un vector con los nuevos indices
+    QVector<int> posAuxB = generarPosicionesAleatorias(pos,a2.size());
+    //Modificar los nuevos indices a partir del vector de nuevos indice
+    for (int i = 0 ; i < posAuxB.size() ; i++) {
+        auxB.setearGenoma(posAuxB.at(i), a2.at(posAuxB.at(i)));
+    }
 
-    a.aFenotipo();
-    b.aFenotipo();
+    //Para poder igualar los objetos
+    a1.aFenotipo();
+    a2.aFenotipo();
+
+    a1 = auxA;
+    a2 = auxB;
+
+    //para actualizar los valores de los objetos
+    a1.aFenotipo();
+    a2.aFenotipo();
 }
 
 void mutar( GenomaVentana &a )
