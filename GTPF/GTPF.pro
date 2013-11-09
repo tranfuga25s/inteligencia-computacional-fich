@@ -37,4 +37,5 @@ HEADERS += \
     poblacion.h \
     GenomaVidrio.h \
     evaluarVidrio.h \
-    evaluarAluminio.h
+    evaluarAluminio.h \
+    GenomaAluminio.h

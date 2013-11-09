@@ -5,7 +5,7 @@
 #include <QMap>
 #include "evaluarVentana.h"
 #include "evaluarVidrio.h"
-//#include "evaluarAluminio.h"
+#include "evaluarAluminio.h"
 #include <cfloat>
 #include "funciones_aux.h"
 
@@ -50,8 +50,10 @@ public:
 
     void evaluarPoblacion();
     void evaluarPoblacion(QVector<TemplatePiezas> piezas_vidrio);
+    void evaluarPoblacion(QVector<TemplateAluminio> aluminios);
     void seleccionarPadres();
     void generarHijos();
+    void generarHijos(QVector<TemplatePiezas> piezas_vidrio);
 
 private:
     int _cantidad_total;
@@ -131,6 +133,29 @@ void Poblacion<T>::evaluarPoblacion(QVector<TemplatePiezas> piezas_vidrio)
     // recorro todo el vector y veo cual es el mejor valor
     for( int i=0; i<this->size(); i++ ) {
         double temp = evaluar( this->at( i ), piezas_vidrio );
+        // VEO QUE ESTÉ BIEN ESTA FUNCION!
+        temp = (-1.0)*temp;                                /// fit = -y
+        //
+        if( temp > _mejor_fitness ) {
+            _mejor_fitness = temp;
+            _pos_mejor_fitness = i;
+        }
+        _fitness[i] = temp;
+    }
+    if( _pos_mejor_fitness == -1 ) {
+        abort();
+    }
+}
+
+template<typename T>
+void Poblacion<T>::evaluarPoblacion(QVector<TemplateAluminio> aluminios)
+{
+    _fitness.clear();
+    _fitness.resize( this->size() );
+    _mejor_fitness = (-1.0)*DBL_MAX;
+    // recorro todo el vector y veo cual es el mejor valor
+    for( int i=0; i<this->size(); i++ ) {
+        double temp = evaluar( this->at( i ), aluminios );
         // VEO QUE ESTÉ BIEN ESTA FUNCION!
         temp = (-1.0)*temp;                                /// fit = -y
         //
@@ -326,6 +351,78 @@ void Poblacion<T>::generarHijos()
         this->append( _nuevos_padres.at( 0 ) );
         _pos_mejor_fitness = 0;
         _mejor_fitness = evaluar( this->at( 0 ) );
+    }
+
+    // Genero la brecha generacional copiando los padres para convervar las buenas soluciones
+    int brecha = floor( this->_cantidad_total * this->_brecha_generacional );
+    if( brecha > _nuevos_padres.size() ) {
+        brecha = _nuevos_padres.size();
+    }
+    for( int i=0; i<brecha; i++ ) {
+        this->append( _nuevos_padres.at( i ) );
+    }
+
+    while( this->size() < _cantidad_total ) {
+
+        int p1 = valor_random_int( 0, _nuevos_padres.size() );
+        int p2 = valor_random_int( 0, _nuevos_padres.size() );
+        while( p1 == p2 ) {
+            p2 = valor_random_int( 0, _nuevos_padres.size() );
+        }
+
+        T hijo1 = _nuevos_padres.at( p1 );
+        T hijo2 = _nuevos_padres.at( p2 );
+
+        //CRUZAS
+
+        int  prob0 = valor_random_int( 0, 100 );
+
+        if( prob0 != 0 && prob0 % ( 100 - _probabilidad_cruza ) == 0 ) {
+            //Hay Cruza
+            cruza( hijo1, hijo2 );
+            //qDebug() << "cruza";
+        }
+
+        //En el caso de que no haya cruza podria dejar los mismos padres y listo?
+
+        int  prob1 = valor_random_int( 0, 100 );
+        int  prob2 = valor_random_int( 0, 100 );
+
+
+        //MUTACIONES
+        if( prob1 != 0 && prob1 % ( 100 - _probabilidad_mutacion ) == 0 ) {
+            mutar( hijo1 );
+            //qDebug() << "mutacion";
+        }
+        if( prob2 != 0 && prob2 % ( 100 - _probabilidad_mutacion ) == 0 ) {
+            mutar( hijo2 );
+            //qDebug() << "mutacion";
+        }
+
+
+        if( hijo1.valido() ) {
+            this->append( hijo1 );
+            //hijo1.mostrarRecorrido();
+        }
+
+        if( hijo2.valido() ) {
+            this->append( hijo2 );
+            //hijo2.mostrarRecorrido();
+        }
+    }
+}
+
+template<typename T>
+void Poblacion<T>::generarHijos(QVector<TemplatePiezas> piezas_vidrio)
+{
+
+    this->clear();
+    _pos_mejor_fitness = -1;
+
+    if( _elitismo ) {
+        this->append( _nuevos_padres.at( 0 ) );
+        _pos_mejor_fitness = 0;
+        _mejor_fitness = evaluar( this->at( 0 ),piezas_vidrio );
     }
 
     // Genero la brecha generacional copiando los padres para convervar las buenas soluciones

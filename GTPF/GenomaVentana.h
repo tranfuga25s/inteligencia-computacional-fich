@@ -144,7 +144,7 @@ void GenomaVentana::aGenotipo()
 }
 
 //Son funciones reutilizables
-void cruza( GenomaVentana &a1, GenomaVentana &a2 )
+static void cruza( GenomaVentana &a1, GenomaVentana &a2 )
 {
     int pos = valor_random_int( 0, bits );
     //qDebug() << pos;
@@ -170,7 +170,7 @@ void cruza( GenomaVentana &a1, GenomaVentana &a2 )
     a2.aFenotipo();
 }
 
-void mutar( GenomaVentana &a )
+static void mutar( GenomaVentana &a )
 {
     int pos = valor_random_int( 0, a.size() );
     a.mutar( pos );

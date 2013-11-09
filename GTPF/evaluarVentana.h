@@ -71,7 +71,7 @@ double evaluar( GenomaVentana ventana ) {
            && iteraccionesV <= iteracciones_maximasV ) {
 
         poblacionVidrios.seleccionarPadres();
-        poblacionVidrios.generarHijos();
+        poblacionVidrios.generarHijos(piezas_vidrio);
         poblacionVidrios.evaluarPoblacion(piezas_vidrio);
 
         iteraccionesV++;
@@ -132,7 +132,7 @@ double evaluar( GenomaVentana ventana ) {
     double fitness = 0.0;
     double c1 = 1.0;
     double c2 = 1.0;
-    //fitness = c1 * evaluador_aluminio.optimizar() + c2 * mejor_fitness_vidrio;
+    //fitness = c1 * mejor_fitness_aluminio + c2 * mejor_fitness_vidrio;
     return fitness;
 }
 

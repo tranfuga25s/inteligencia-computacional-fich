@@ -39,7 +39,7 @@ FFDWDH::FFDWDH()
     _alto_plancha = 0.0;
     _ancho_plancha = 0.0;
     _orden_plancha.clear();
-
+    _informacion.clear();
 
 }
 
