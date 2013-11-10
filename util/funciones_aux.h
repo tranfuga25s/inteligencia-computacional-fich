@@ -653,12 +653,16 @@ static QVector<int> generarPosicionesAleatorias(int ini,int fin) {
         Aux.append(i);
     }
     //Cargo Aux2 a partir de sacar un aleatorio de aux
-    for(int i = ini ; i< fin ; i++) {
-        int pos = valor_random_int(0,Aux.size());
-        Aux2.append(Aux.at(pos));
-        Aux.remove(pos);
+    while( Aux.size() > 0 ) {
+        if( Aux.size() == 1 ) {
+            Aux2.append( Aux.at(0) );
+            Aux.remove( 0 );
+        } else {
+            int pos = valor_random_int(0,Aux.size());
+            Aux2.append(Aux.at(pos));
+            Aux.remove(pos);
+        }
     }
-
     return Aux2;
 
 }

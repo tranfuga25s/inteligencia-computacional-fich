@@ -50,7 +50,7 @@ private:
 
 static void cruza( GenomaAluminio &a1, GenomaAluminio &a2 )
 {
-    int pos = valor_random_int( 0, bits );
+    int pos = valor_random_int( 0, a1.size() );
     //qDebug() << pos;
 
     GenomaAluminio auxA = a1;
@@ -83,6 +83,10 @@ static void cruza( GenomaAluminio &a1, GenomaAluminio &a2 )
 }
 
 static void mutar(GenomaAluminio &a)
-{  a.mutar(); a.mostrarGenotipo(); }
+{
+    qDebug() << "Mutacion!";
+    a.mutar();
+    a.mostrarGenotipo();
+}
 
 #endif // GENOMAALUMINIO_H

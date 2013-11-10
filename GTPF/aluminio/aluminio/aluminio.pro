@@ -14,8 +14,7 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
-INCLUDEPATH += ../. \
-               ../../../util/
+INCLUDEPATH += ../../../util/
 
 SOURCES += main.cpp \
     ../../GenomaAluminio.cpp \
@@ -23,8 +22,6 @@ SOURCES += main.cpp \
     ../../FFDW.cpp \
     ../../templatealuminio.cpp
 
-HEADERS += \
-    ../../evaluarAluminio.h
+HEADERS += ../../evaluarAluminio.h
 
-OTHER_FILES += \
-    parametrosAluminio.cfg
+OTHER_FILES += parametrosAluminio.cfg

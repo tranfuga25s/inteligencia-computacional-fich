@@ -1,16 +1,16 @@
 #include <QtCore/QCoreApplication>
 
-#include "../GenomaAluminio.h"
-#include "../templateventana.h"
-#include "../templatealuminio.h"
+#include "../../GenomaAluminio.h"
+#include "../../templateventana.h"
+#include "../../templatealuminio.h"
 
-#include "../GenomaAluminio.h"
-
-
-#include "../evaluarAluminio.h"
+#include "../../GenomaAluminio.h"
 
 
-#include "../poblacion.h"
+#include "../../evaluarAluminio.h"
+
+
+#include "../../poblacion.h"
 
 #include <QSettings>
 
@@ -29,11 +29,11 @@ int main(int argc, char *argv[])
     int cant_totalA = parametrosA.value( "cantidad_elementos", 10 ).toInt();
     poblacionAluminio.setearTotal( cant_totalA );
     poblacionAluminio.setearElitismo( parametrosA.value( "elitismo", false ).toBool() );
-    poblacionAluminio.setearBrechaGeneracional( parametrosA.value( "brecha_generacional" ).toDouble() );
-    poblacionAluminio.setearProbabilidadMutacion( parametrosA.value( "probabilidad_mutacion").toDouble() );
-    poblacionAluminio.setearProbabilidadCruza( parametrosA.value( "probabilidad_cruza").toDouble() );
+    poblacionAluminio.setearBrechaGeneracional( parametrosA.value( "brecha_generacional", 1.0 ).toDouble() );
+    poblacionAluminio.setearProbabilidadMutacion( parametrosA.value( "probabilidad_mutacion", 2).toDouble() );
+    poblacionAluminio.setearProbabilidadCruza( parametrosA.value( "probabilidad_cruza", 95).toDouble() );
     poblacionAluminio.setearModoSeleccionPadres( (Poblacion<GenomaAluminio>::MetodoSeleccion)parametrosA.value( "metodo_seleccion" ).toInt() );
-    poblacionAluminio.setearPorcentajeCantidadDePadres( parametrosA.value( "cantidad_padres" ).toDouble() );
+    poblacionAluminio.setearPorcentajeCantidadDePadres( parametrosA.value( "cantidad_padres", 20 ).toDouble() );
 
 
     double fitnes_necesarioA = parametrosA.value( "fitnes_necesario", 0.0 ).toDouble();
@@ -69,29 +69,34 @@ int main(int argc, char *argv[])
         temp.randomizar();
         poblacionAluminio.append( temp );
     }
-    return 0;
+
     poblacionAluminio.evaluarPoblacion();
 
-    double mejor_fitness_aluminio = DBL_MIN;
+    double mejor_fitness_aluminio = poblacionAluminio.mejorFitnes();
     GenomaAluminio pos_mejor_fitness_aluminio;
+    int generacion_mejor_fitness = 1;
 
     while( poblacionAluminio.mejorFitnes() <= fitnes_necesarioA
            && iteraccionesA <= iteracciones_maximasA ) {
-        qDebug() << "Reiniciado";
+        qDebug() << "Reiniciado ---------------------------------------------------------";
         poblacionAluminio.seleccionarPadres();
         poblacionAluminio.generarHijos();
         poblacionAluminio.evaluarPoblacion();
 
         iteraccionesA++;
 
-        qDebug() << "Fitnes: "<<poblacionAluminio.mejorFitnes();
+        qDebug() << "Fitness: "<<poblacionAluminio.mejorFitnes();
         if( mejor_fitness_aluminio <= poblacionAluminio.mejorFitnes() ) {
             mejor_fitness_aluminio = poblacionAluminio.mejorFitnes();
-            qDebug() << "Fitnes Actualizado " << mejor_fitness_aluminio;
+            qDebug() << " ------------------------------->  Fitness Actualizado " << mejor_fitness_aluminio;
             pos_mejor_fitness_aluminio = poblacionAluminio.elementoMinimo();
+            generacion_mejor_fitness = iteraccionesA;
         }
 
     }
+
+    qDebug() << "Mejor fitness global: " << mejor_fitness_aluminio;
+    qDebug() << "Generacion mejor fitness" << generacion_mejor_fitness;
     
     return 0;
 }

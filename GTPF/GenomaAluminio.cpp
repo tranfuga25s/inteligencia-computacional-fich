@@ -76,7 +76,6 @@ void GenomaAluminio::randomizar() {
         }
         pos++;
     }
-    mostrarGenotipo();
 }
 
 void GenomaAluminio::mostrarGenotipo() {
