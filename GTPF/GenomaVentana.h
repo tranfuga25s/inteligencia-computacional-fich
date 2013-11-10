@@ -26,6 +26,8 @@ public:
     QVector<bool> getGenotipo() const { return _genotipo; }
     QVector<TemplateVentana> getFenotipo() const { return _fenotipo; }
 
+    double largo();
+
 private:
     QVector<TemplateVentana> _fenotipo;
     QVector<bool> _genotipo;

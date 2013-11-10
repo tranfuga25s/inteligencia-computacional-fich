@@ -6,6 +6,7 @@
 
 static double evaluar( GenomaVidrio gen )
 {
+    qDebug() << "Procesando...";
     return gen.getEvaluador()->evaluarGen( gen );
 }
 

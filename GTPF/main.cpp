@@ -173,7 +173,7 @@ int main(int argc, char *argv[])
     histIteracion.append( 0 );
     histPromFitnes.append( pob.mejorFitnes() );
 
-    double mejor_fitness = 0.0;
+    double mejor_fitness = DBL_MIN;
     GenomaVentana pos_mejor_fitness;
     int generacion_mejor_fitness = -1;
 

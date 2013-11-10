@@ -347,16 +347,9 @@ void Poblacion<T>::generarHijos()
             //qDebug() << "mutacion";
         }
 
+        this->append( hijo1 );
+        this->append( hijo2 );
 
-        if( hijo1.valido() ) {
-            this->append( hijo1 );
-            //hijo1.mostrarRecorrido();
-        }
-
-        if( hijo2.valido() ) {
-            this->append( hijo2 );
-            //hijo2.mostrarRecorrido();
-        }
     }
 }
 
