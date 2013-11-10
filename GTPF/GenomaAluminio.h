@@ -5,7 +5,7 @@
 #include "funciones_aux.h"
 #include <QDebug>
 #include "TemplatePiezas.h"
-#include "FFDWDH.h"
+#include "FFDW.h"
 
 //HARDCODING!
 #define bits 12
@@ -83,7 +83,7 @@ void GenomaAluminio::mutar()
     int pos2 = valor_random_int( 0, _genotipo.size() );
 
     while (_genotipo.at(pos1) ==  _genotipo.at(pos2)) {
-        pos2 = valor_random_int( 0, a.size() );
+        pos2 = valor_random_int( 0, _genotipo.size() );
     }
     int aux = _genotipo.at(pos1);
 

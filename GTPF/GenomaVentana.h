@@ -12,7 +12,7 @@
 class GenomaVentana {
 public:
     GenomaVentana();
-    void mutar( int pos ) { _genotipo[pos] = !_genotipo.at( pos ); aFenotipo(); }  GenomaVentana( const GenomaVentana& origin );
+    GenomaVentana( const GenomaVentana& origin );
     GenomaVentana( GenomaVentana& origin );
     void setearFenotipo(QVector<TemplateVentana> informacion) {_fenotipo = informacion;}
     void aFenotipo();
