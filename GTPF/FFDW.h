@@ -3,6 +3,7 @@
 
 #include "BarraAluminio.h"
 #include "templatealuminio.h"
+#include "GenomaAluminio.h"
 
 #include <QVector>
 #include <QMap>
@@ -15,7 +16,7 @@ class FFDW {
 public:
     FFDW();
 
-    double optimizar( QVector<int> gen );
+    double optimizar(GenomaAluminio &Gen );
 
     void setearTemplates( QVector<TemplateAluminio> templates ) { _templates = templates; }
 
@@ -42,8 +43,13 @@ FFDW::FFDW()
     _orden_barras.clear();
 }
 
-double FFDW::optimizar( QVector<int> gen )
+double FFDW::optimizar( GenomaAluminio &Gen )
 {
+    //Recorro el gen y cargo las piezas generadas
+    QVector<int> gen = Gen.getGenotipo(); // Ordenes de corte
+    setearTemplates( Gen.getFenotipo() ); // templates para el tamaño del corte generados en el genoma
+                                          // para los templates generados por mutacion o cruza
+
     // Inicializo con al primera barra de aluminio
     BarraAluminio primera;
     primera.setearLargo( _largo_barra_original );

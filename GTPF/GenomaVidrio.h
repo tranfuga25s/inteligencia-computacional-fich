@@ -20,7 +20,7 @@ public:
     void aGenotipo();
     void mutar();
     int size() { return _genotipo.size(); }
-    bool at( int pos ) { return this->_genotipo.at( pos ); }
+    int at( int pos ) { return this->_genotipo.at( pos ); }
     bool valido() { return true; }
     void setearGenoma( int i, bool valor) { this->_genotipo[i] = valor; }
 
