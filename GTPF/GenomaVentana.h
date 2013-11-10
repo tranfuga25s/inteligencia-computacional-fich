@@ -14,7 +14,8 @@ public:
     GenomaVentana();
     GenomaVentana( const GenomaVentana& origin );
     GenomaVentana( GenomaVentana& origin );
-    void setearFenotipo(QVector<TemplateVentana> informacion) {_fenotipo = informacion;}
+    void iniciarRandomizado();
+    void setearTemplates(QVector<TemplateVentana> informacion) {_fenotipo = informacion;}
     void aFenotipo();
     void aGenotipo();
     int size() { return _genotipo.size(); }

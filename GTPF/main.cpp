@@ -119,6 +119,7 @@ int main(int argc, char *argv[])
     // Cargo los parametros del ejercicio
     QSettings parametros( "parametros.cfg", QSettings::IniFormat );
 
+
     // Inicializo la poblacion
     Poblacion<GenomaVentana> pob;
     int cant_total = parametros.value( "cantidad_elementos" ).toInt();
@@ -136,6 +137,14 @@ int main(int argc, char *argv[])
     int iteracciones_maximas = parametros.value( "iteracciones_maximas", 1000 ).toInt();
     int iteracciones = 0;
     PBTiempo->setRange( 0, iteracciones_maximas );
+
+    // Cargo la poblacion
+    for( int i=0; i<cant_total; i++ ) {
+        GenomaVentana temporal;
+        temporal.setearTemplates( data );
+        temporal.iniciarRandomizado();
+        pob.append( temporal );
+    }
 
     pob.evaluarPoblacion();
     a.processEvents();
@@ -192,7 +201,6 @@ int main(int argc, char *argv[])
     }
 
     qDebug() << "Mejor Fitness: " << mejor_fitness;
-    //qDebug() << "Posicion Minimo: " << pos_mejor_fitness;
     qDebug() << "Minimo: " << evaluar( pos_mejor_fitness );
     qDebug() << "Generacion: " << generacion_mejor_fitness;
     return a.exec();

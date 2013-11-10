@@ -16,6 +16,8 @@
 
 double evaluar( GenomaVentana ventana ) {
 
+    qDebug() << endl << "ENTRA A LA EVALUACION DE FITNESS DE LA VENTANA";
+
     QVector<TemplateAluminio> aluminios;
     QVector<TemplatePiezas> piezas_vidrio;
 
@@ -44,6 +46,9 @@ double evaluar( GenomaVentana ventana ) {
     }
 
     //VIDRIOS
+
+    qDebug() << endl <<"COMIENZA LA EVALUACION DEL FITNESS DE LAS BARRAS DE ALUMINIO";
+
     Poblacion<GenomaVidrio> poblacionVidrios;
 
     // Cargo los parametros del ejercicio
@@ -101,6 +106,9 @@ double evaluar( GenomaVentana ventana ) {
     }
 
     //ALUMINIO
+
+    qDebug() << endl <<"COMIENZA LA EVALUACION DEL FITNESS DE LAS PLANCHAS DE VIDRIO";
+
     Poblacion<GenomaAluminio> poblacionAluminio;
 
     // Cargo los parametros del ejercicio
@@ -163,6 +171,13 @@ double evaluar( GenomaVentana ventana ) {
     double c1 = parametrosA.value("c1").toDouble();
     double c2 = parametrosV.value("c2").toDouble();
     fitness = c1 * mejor_fitness_aluminio + c2 * mejor_fitness_vidrio;
+
+
+
+    qDebug() << "Fitness Aluminio: " << mejor_fitness_aluminio;
+    qDebug() << "Fitness Vidrio: " << mejor_fitness_vidrio;
+    qDebug() << "Fitness Total: " << fitness;
+
     return fitness;
 }
 
