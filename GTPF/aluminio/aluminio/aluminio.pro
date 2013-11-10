@@ -17,4 +17,11 @@ TEMPLATE = app
 INCLUDEPATH += ../. \
                ../../../util/
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    ../../GenomaAluminio.cpp \
+    ../../BarraAluminio.cpp \
+    ../../FFDW.cpp \
+    ../../templatealuminio.cpp
+
+HEADERS += \
+    ../../evaluarAluminio.h

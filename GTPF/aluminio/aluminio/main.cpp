@@ -1,6 +1,14 @@
 #include <QtCore/QCoreApplication>
 
+#include "../GenomaAluminio.h"
+#include "../templateventana.h"
+#include "../templatealuminio.h"
+
+#include "../GenomaAluminio.h"
+
+
 #include "../evaluarAluminio.h"
+
 
 #include "../poblacion.h"
 
@@ -10,15 +18,15 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    qDebug() << endl <<"COMIENZA LA EVALUACION DEL FITNESS DE LAS PLANCHAS DE VIDRIO";
+    qDebug() << endl <<"COMIENZA LA EVALUACION DEL FITNESS DE LAS BARRAS DE ALUMINIO";
 
     Poblacion<GenomaAluminio> poblacionAluminio;
 
     // Cargo los parametros del ejercicio
-    QSettings parametrosA( "../parametrosAluminio.cfg", QSettings::IniFormat );
+    QSettings parametrosA( "../../parametrosAluminio.cfg", QSettings::IniFormat );
 
     // Inicializo la poblacion
-    int cant_totalA = parametrosA.value( "cantidad_elementos" ).toInt();
+    int cant_totalA = parametrosA.value( "cantidad_elementos", 10 ).toInt();
     poblacionAluminio.setearTotal( cant_totalA );
     poblacionAluminio.setearElitismo( parametrosA.value( "elitismo", false ).toBool() );
     poblacionAluminio.setearBrechaGeneracional( parametrosA.value( "brecha_generacional" ).toDouble() );
@@ -32,6 +40,21 @@ int main(int argc, char *argv[])
 
     int iteracciones_maximasA = parametrosA.value( "iteracciones_maximas", 1000 ).toInt();
     int iteraccionesA = 0;
+
+    QVector<TemplateAluminio> aluminios;
+
+    // Genero los templates de Aluminio
+    TemplateAluminio temp;
+    temp.setearTipo( 1 );
+    temp.setearLargo( 12.8 );
+    temp.setearCantidad( 2 );
+    aluminios.append( temp );
+
+    TemplateAluminio temp2;
+    temp2.setearTipo( 2 );
+    temp2.setearLargo( 4.3  );
+    temp2.setearCantidad( 4 );
+    aluminios.append( temp2 );
 
     // Genero el evaluador de las barras de aluminio
     FFDW *evaluador_aluminio = new FFDW();
