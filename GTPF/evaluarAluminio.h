@@ -4,7 +4,7 @@
 #include "GenomaAluminio.h"
 #include "FFDW.h"
 
-static double evaluar( GenomaAluminio gen )
+static double evaluar( const GenomaAluminio gen )
 {
     return gen.getEvaluador()->evaluarGen( gen );
 }

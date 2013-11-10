@@ -2,8 +2,10 @@
 #define EVALUARVENTANA_H
 
 #include "evaluarVidrio.h"
+#include "evaluarAluminio.h"
 #include "GenomaVentana.h"
 #include "GenomaVidrio.h"
+#include "GenomaAluminio.h"
 #include "templatealuminio.h"
 #include "TemplatePiezas.h"
 #include "FFDW.h"
@@ -125,17 +127,17 @@ double evaluar( GenomaVentana ventana ) {
     int iteracciones_maximasA = parametrosA.value( "iteracciones_maximas", 1000 ).toInt();
     int iteraccionesA = 0;
 
-    poblacionAluminio.evaluarPoblacion(aluminios);
+    poblacionAluminio.evaluarPoblacion();
 
     double mejor_fitness_aluminio = 0.0;
-    GenomaVidrio pos_mejor_fitness_aluminio;
+    GenomaAluminio pos_mejor_fitness_aluminio;
 
     while( poblacionAluminio.mejorFitnes() <= fitnes_necesarioA
            && iteraccionesA <= iteracciones_maximasA ) {
 
         poblacionAluminio.seleccionarPadres();
         poblacionAluminio.generarHijos();
-        poblacionAluminio.evaluarPoblacion(aluminios);
+        poblacionAluminio.evaluarPoblacion();
 
         iteraccionesA++;
 
@@ -151,7 +153,7 @@ double evaluar( GenomaVentana ventana ) {
     double fitness = 0.0;
     double c1 = 1.0;
     double c2 = 1.0;
-    //fitness = c1 * mejor_fitness_aluminio + c2 * mejor_fitness_vidrio;
+    fitness = c1 * mejor_fitness_aluminio + c2 * mejor_fitness_vidrio;
     return fitness;
 }
 

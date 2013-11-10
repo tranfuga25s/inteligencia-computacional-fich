@@ -15,7 +15,7 @@ class FFDW {
 public:
     FFDW();
 
-    double optimizar(GenomaAluminio &Gen );
+    double evaluarGen(const GenomaAluminio &Gen );
 
     void setearTemplates( QVector<TemplateAluminio> templates ) { _templates = templates; }
 

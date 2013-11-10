@@ -9,7 +9,7 @@ FFDW::FFDW()
     _orden_barras.clear();
 }
 
-double FFDW::optimizar( GenomaAluminio &Gen )
+double FFDW::evaluarGen( const GenomaAluminio &Gen )
 {
     //Recorro el gen y cargo las piezas generadas
     QVector<int> gen = Gen.getGenotipo(); // Ordenes de corte
