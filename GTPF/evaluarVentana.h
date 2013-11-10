@@ -85,7 +85,7 @@ double evaluar( GenomaVentana ventana ) {
 
     poblacionVidrios.evaluarPoblacion();
 
-    double mejor_fitness_vidrio = 0.0;
+    double mejor_fitness_vidrio = DBL_MIN;
     GenomaVidrio pos_mejor_fitness_vidrio;
 
     while( poblacionVidrios.mejorFitnes() <= fitnes_necesarioV
@@ -146,7 +146,7 @@ double evaluar( GenomaVentana ventana ) {
 
     poblacionAluminio.evaluarPoblacion();
 
-    double mejor_fitness_aluminio = 0.0;
+    double mejor_fitness_aluminio = DBL_MIN;
     GenomaAluminio pos_mejor_fitness_aluminio;
 
     while( poblacionAluminio.mejorFitnes() <= fitnes_necesarioA
