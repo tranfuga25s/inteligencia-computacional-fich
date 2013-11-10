@@ -7,7 +7,8 @@ TEMPLATE = app
 
 SOURCES +=  main.cpp \
     ../util/graficadormdi.cpp \
-    ../util/graficador.cpp
+    ../util/graficador.cpp \
+    FFDWDH.cpp
 
 OTHER_FILES += parametros.cfg \
     parametros.cfg \

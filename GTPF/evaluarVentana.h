@@ -62,7 +62,21 @@ double evaluar( GenomaVentana ventana ) {
     int iteracciones_maximasV = parametrosV.value( "iteracciones_maximas", 1000 ).toInt();
     int iteraccionesV = 0;
 
-    poblacionVidrios.evaluarPoblacion(piezas_vidrio);
+    // generar evaluador de cortes
+    FFDWDH *evaluador_vidrio = new FFDWDH();
+    evaluador_vidrio->setearAltoPlancha( parametrosV.value( "alto_plancha", 10.0 ).toDouble() );
+    evaluador_vidrio->setearAnchoPlancha( parametrosV.value( "ancho_plancha", 10.0 ).toDouble() );
+
+    // Creacion de la nueva poblcion de posibles cortes
+    for( int i=0; i<cant_totalV; i++ ) {
+        GenomaVidrio temporal;
+        temporal.setearTemplates( piezas_vidrio );
+        temporal.randomizar();
+        temporal.setearEvaluador( evaluador_vidrio );
+        poblacionVidrios.append( temporal );
+    }
+
+    poblacionVidrios.evaluarPoblacion();
 
     double mejor_fitness_vidrio = 0.0;
     GenomaVidrio pos_mejor_fitness_vidrio;
@@ -71,8 +85,8 @@ double evaluar( GenomaVentana ventana ) {
            && iteraccionesV <= iteracciones_maximasV ) {
 
         poblacionVidrios.seleccionarPadres();
-        poblacionVidrios.generarHijos(piezas_vidrio);
-        poblacionVidrios.evaluarPoblacion(piezas_vidrio);
+        poblacionVidrios.generarHijos();
+        poblacionVidrios.evaluarPoblacion();
 
         iteraccionesV++;
 

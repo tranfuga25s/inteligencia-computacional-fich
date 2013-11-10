@@ -5,6 +5,7 @@
 #include "TemplatePiezas.h"
 #include "funciones_aux.h"
 #include <QDebug>
+#include "FFDWDH.h"
 
 //HARDCODING!
 #define bits 12
@@ -15,15 +16,21 @@ public:
     GenomaVidrio( const GenomaVidrio &origin ) ;
     GenomaVidrio( GenomaVidrio &origin );
   //  void aFenotipo();
-    void setearTemplates(QVector<TemplatePiezas> templates) {_fenotipo=templates;aGenotipo();}
+    void setearTemplates( QVector<TemplatePiezas> templates ) { _fenotipo=templates; }
     void aGenotipo();
     void mutar();
     int size() { return _genotipo.size(); }
     bool at( int pos ) { return this->_genotipo.at( pos ); }
     bool valido() { return true; }
     void setearGenoma( int i, bool valor) { this->_genotipo[i] = valor; }
+
     QVector<int> getGenotipo() const {return _genotipo;}
+
     QVector<TemplatePiezas> getFenotipo() const {return _fenotipo;}
+
+    FFDWDH *getEvaluador() const { return evaluador; }
+
+    void randomizar();
 
 
     /*bool valido();
@@ -37,28 +44,54 @@ private:
     //en genotipo tenemos el orden de las piezas con su identificador de tipo
     QVector<int> _genotipo;
 
+    bool _inicializado;
+
+    FFDWDH *evaluador;
+
 };
+
+GenomaVidrio::GenomaVidrio()
+{
+    _inicializado = false;
+    evaluador = 0;
+}
+
 
 GenomaVidrio::GenomaVidrio(const GenomaVidrio &origin )
 {
     this->_fenotipo = origin.getFenotipo();
     this->_genotipo = origin.getGenotipo();
-
+    this->evaluador = origin.getEvaluador();
 }
 
 GenomaVidrio::GenomaVidrio( GenomaVidrio &origin ) {
     this->_fenotipo = origin.getFenotipo();
     this->_genotipo = origin.getGenotipo();
+    this->evaluador = origin.getEvaluador();
 }
 
 
 void GenomaVidrio::aGenotipo() {
-    _genotipo.clear();
+    /*_genotipo.clear();
     for (int i = 0; i<_fenotipo.size();i++){
         for (int p=0;p<_fenotipo.at(i).getCantidad();p++){
             _genotipo[i+p]=_fenotipo.at(i).tipo();
 
         }
+    } */
+}
+
+void GenomaVidrio::randomizar() {
+    _genotipo.clear();
+    QVector<int> temporal;
+    for (int i = 0; i<_fenotipo.size();i++){
+        for (int p=0;p<_fenotipo.at(i).getCantidad();p++){
+            temporal[i+p]=_fenotipo.at(i).tipo();
+        }
+    }
+    for( int i=0; i<temporal.size(); i++ ) {
+        int pos_random = valor_random_int( 0, temporal.size() -1 );
+        _genotipo[i] = temporal.at(pos_random);
     }
 }
 

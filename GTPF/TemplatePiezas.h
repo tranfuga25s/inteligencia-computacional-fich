@@ -30,7 +30,7 @@ private:
     double _alto;
     int _tipo;
     int _cantidad;
-    int _ind_mutado=-1;
+    int _ind_mutado;
 
 };
 
@@ -39,6 +39,7 @@ TemplatePiezas::TemplatePiezas() {
     _alto = 0.0;
     _tipo = 0;
     _cantidad = 0;
+    _ind_mutado = -1;
 }
 
 TemplatePiezas::TemplatePiezas(const TemplatePiezas &origin)
