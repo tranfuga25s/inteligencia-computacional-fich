@@ -17,6 +17,7 @@ double FFDW::evaluarGen( const GenomaAluminio &Gen )
                                           // para los templates generados por mutacion o cruza
 
     // Inicializo con al primera barra de aluminio
+    _barras.clear();
     BarraAluminio primera;
     primera.setearLargo( _largo_barra_original );
     _barras.append( primera );

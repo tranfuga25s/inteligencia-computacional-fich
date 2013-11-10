@@ -56,6 +56,12 @@ int main(int argc, char *argv[])
     temp2.setearCantidad( 4 );
     aluminios.append( temp2 );
 
+    TemplateAluminio temp3;
+    temp3.setearTipo( 2 );
+    temp3.setearLargo( 0.3  );
+    temp3.setearCantidad( 6 );
+    aluminios.append( temp3 );
+
     // Genero el evaluador de las barras de aluminio
     FFDW *evaluador_aluminio = new FFDW();
     evaluador_aluminio->setearTemplates( aluminios );
@@ -86,7 +92,7 @@ int main(int argc, char *argv[])
         iteraccionesA++;
 
         qDebug() << "Fitness: "<<poblacionAluminio.mejorFitnes();
-        if( mejor_fitness_aluminio <= poblacionAluminio.mejorFitnes() ) {
+        if( poblacionAluminio.mejorFitnes() >= mejor_fitness_aluminio ) {
             mejor_fitness_aluminio = poblacionAluminio.mejorFitnes();
             qDebug() << " ------------------------------->  Fitness Actualizado " << mejor_fitness_aluminio;
             pos_mejor_fitness_aluminio = poblacionAluminio.elementoMinimo();

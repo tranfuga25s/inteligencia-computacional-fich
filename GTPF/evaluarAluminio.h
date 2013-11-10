@@ -6,7 +6,6 @@
 
 static double evaluar( const GenomaAluminio gen )
 {
-    qDebug() << "Evaluando";
     return gen.getEvaluador()->evaluarGen( gen );
 }
 
