@@ -18,7 +18,7 @@ Pieza FFDWDH::generarPieza(int pos)
     return Pieza(_informacion.value(pos).ancho(),_informacion.value(pos).alto());
 }
 
-double FFDWDH::evaluarGen( GenomaVidrio Gen )
+double FFDWDH::evaluarGen( GenomaVidrio &Gen )
 {
     //Recorro el gen y cargo las piezas generadas
     QVector<int> gen = Gen.getGenotipo(); // Ordenes de corte

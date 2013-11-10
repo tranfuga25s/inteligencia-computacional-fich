@@ -1,11 +1,15 @@
 #ifndef EVALUARVENTANA_H
 #define EVALUARVENTANA_H
 
-#include "FFDW.h"
-#include "FFDWDH.h"
+#include "poblacion.h"
 #include "GenomaVentana.h"
+#include "GenomaVidrio.h"
 #include "templatealuminio.h"
 #include "TemplatePiezas.h"
+#include "FFDW.h"
+#include "FFDWDH.h"
+#include <QSettings>
+
 
 double evaluar( GenomaVentana ventana ) {
 
@@ -54,7 +58,7 @@ double evaluar( GenomaVentana ventana ) {
     poblacionVidrios.setearBrechaGeneracional( parametrosV.value( "brecha_generacional" ).toDouble() );
     poblacionVidrios.setearProbabilidadMutacion( parametrosV.value( "probabilidad_mutacion").toDouble() );
     poblacionVidrios.setearProbabilidadCruza( parametrosV.value( "probabilidad_cruza").toDouble() );
-    poblacionVidrios.setearModoSeleccionPadres( (Poblacion<GenomaVidrio>::MetodoSeleccion)parametrosV.value( "metodo_seleccion" ).toInt() );
+    poblacionVidrios.setearModoSeleccionPadres( (Poblacion<GenomaVidrio>::MetodoSeleccion) parametrosV.value( "metodo_seleccion" ).toInt() );
     poblacionVidrios.setearPorcentajeCantidadDePadres( parametrosV.value( "cantidad_padres" ).toDouble() );
 
     double fitnes_necesarioV = parametrosV.value( "fitnes_necesario", 0.0 ).toDouble();

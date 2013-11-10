@@ -12,7 +12,7 @@ class FFDWDH {
 public:
     FFDWDH();
     Pieza generarPieza(int pos);
-    double evaluarGen( GenomaVidrio Gen );
+    double evaluarGen( GenomaVidrio &Gen );
     void setearAltoPlancha(double alto) {_alto_plancha = alto;}
     void setearAnchoPlancha(double ancho) {_ancho_plancha = ancho;}
     void setearTemplates( QVector<TemplatePiezas> &informacion) { _informacion = informacion; }

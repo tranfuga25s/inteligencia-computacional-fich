@@ -1,6 +1,8 @@
 #ifndef TEMPLATEVENTANA_H
 #define TEMPLATEVENTANA_H
 
+#include <QString>
+
 class TemplateVentana {
 
 public:

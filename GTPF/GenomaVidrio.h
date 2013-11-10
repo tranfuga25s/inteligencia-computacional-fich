@@ -2,9 +2,9 @@
 #define GENOMAVIDRIO_H
 
 #include <QVector>
-#include "TemplatePiezas.h"
 #include "funciones_aux.h"
 #include <QDebug>
+#include "TemplatePiezas.h"
 #include "FFDWDH.h"
 
 //HARDCODING!
@@ -28,7 +28,8 @@ public:
 
     QVector<TemplatePiezas> getFenotipo() const {return _fenotipo;}
 
-    FFDWDH *getEvaluador() const { return evaluador; }
+    void setearEvaluador( FFDWDH *puntero ) { _evaluador = puntero; }
+    FFDWDH *getEvaluador() const { return _evaluador; }
 
     void randomizar();
 
@@ -46,14 +47,14 @@ private:
 
     bool _inicializado;
 
-    FFDWDH *evaluador;
+    FFDWDH *_evaluador;
 
 };
 
 GenomaVidrio::GenomaVidrio()
 {
     _inicializado = false;
-    evaluador = 0;
+    _evaluador = 0;
 }
 
 
@@ -61,13 +62,13 @@ GenomaVidrio::GenomaVidrio(const GenomaVidrio &origin )
 {
     this->_fenotipo = origin.getFenotipo();
     this->_genotipo = origin.getGenotipo();
-    this->evaluador = origin.getEvaluador();
+    this->_evaluador = origin.getEvaluador();
 }
 
 GenomaVidrio::GenomaVidrio( GenomaVidrio &origin ) {
     this->_fenotipo = origin.getFenotipo();
     this->_genotipo = origin.getGenotipo();
-    this->evaluador = origin.getEvaluador();
+    this->_evaluador = origin.getEvaluador();
 }
 
 

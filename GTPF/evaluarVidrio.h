@@ -2,6 +2,7 @@
 #define EVALUARVIDRIO_H
 
 #include "GenomaVidrio.h"
+#include "FFDWDH.h"
 
 static double evaluar( GenomaVidrio gen )
 {
