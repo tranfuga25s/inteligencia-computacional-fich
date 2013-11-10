@@ -107,7 +107,7 @@ double evaluar( GenomaVentana ventana ) {
 
         if(  poblacionVidrios.mejorFitnes() >= mejor_fitness_vidrio ) {
             mejor_fitness_vidrio = poblacionVidrios.mejorFitnes();
-            //pos_mejor_fitness_vidrio = poblacionVidrios.elementoMinimo();
+            pos_mejor_fitness_vidrio = poblacionVidrios.elementoMinimo();
         }
 
     }

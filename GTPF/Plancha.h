@@ -13,7 +13,7 @@ public:
     double alto() const { return _alto; }
     void setearAlto (double alto) { _alto = alto; }
     void setearAncho( double ancho ) { _ancho = ancho; }
-    bool entraPieza( Pieza pieza );
+    bool entraPieza( Pieza pieza ) const;
     double areaDisponible() const { return _ancho * _alto; }
 
 private:

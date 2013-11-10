@@ -24,7 +24,7 @@ Plancha::Plancha(double ancho,double alto) {
 }
 
 
-bool Plancha::entraPieza(Pieza pieza)
+bool Plancha::entraPieza(Pieza pieza) const
 {
     if(pieza.ancho() <= _ancho && pieza.alto() <= _alto ) {
         return true;

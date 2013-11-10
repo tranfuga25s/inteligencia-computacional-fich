@@ -80,6 +80,7 @@ int main(int argc, char *argv[])
         temp.setearCantidad( r.value("cantidad").toInt() );
         qDebug() << "Cargada abertura " << temp.nombre();
         data.append( temp );
+        qDebug() << temp.ancho() << temp.alto();
     }
 
     QMdiSubWindow *tiposVentanas = new QMdiSubWindow( mdiArea );

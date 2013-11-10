@@ -43,8 +43,8 @@ double FFDWDH::evaluarGen( GenomaVidrio &Gen )
         bool entro_existente = false;
 
         for( int pos_planchas = 0; pos_planchas<_planchas.size(); pos_planchas++ ) {
-
-            if( _planchas[_orden_plancha.at( pos_planchas )].entraPieza( _piezas.at(i))) {
+            int posicion = _orden_plancha.at( pos_planchas );
+            if( _planchas.at(posicion).entraPieza( _piezas.at(i))) {
                 hacerCorte(pos_planchas,_piezas.at(i));
                 entro_existente = true;
                 pos_planchas = _planchas.size() + 1; // Salgo del for de barras
@@ -74,6 +74,8 @@ double FFDWDH::evaluarGen( GenomaVidrio &Gen )
         sobrante += _planchas.at( i ).areaDisponible();
     }
 
+    //if (sobrante < 0 ) {abort();}
+
     return sobrante;
 
 }
@@ -93,12 +95,24 @@ void FFDWDH::regenerarOrden()
 
 void FFDWDH::hacerCorte( int pos, Pieza pieza )
 {
-    //Creo la nueva plancha que me sobre
-    Plancha Auxiliar(_planchas.at(pos).ancho() - pieza.ancho(),_planchas.at(pos).alto());
-    _planchas.append(Auxiliar);
-    //Redimensiono la actual segun lo que me sobra el la altura
-    _planchas[pos].setearAlto( _planchas.at(pos).alto() - pieza.alto());
-    _planchas[pos].setearAncho( pieza.ancho());
+    if((_planchas.at(pos).ancho() - pieza.ancho()) > 0 && (_planchas.at(pos).alto() - pieza.alto()) > 0) {
+            //Creo la nueva plancha que me sobre
+            Plancha Auxiliar(_planchas.at(pos).ancho() - pieza.ancho(),_planchas.at(pos).alto());
+            _planchas.append(Auxiliar);
+    }
+
+
+    if((_planchas.at(pos).alto() - pieza.alto()) > 0) {
+        //Redimensiono la actual segun lo que me sobra el la altura
+        _planchas[pos].setearAlto( _planchas.at(pos).alto() - pieza.alto());
+        _planchas[pos].setearAncho( pieza.ancho());
+    }
+    else
+    {
+        _planchas.remove(pos);
+    }
+
+
 
     regenerarOrden();
 }
