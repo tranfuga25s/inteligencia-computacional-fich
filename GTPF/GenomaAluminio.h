@@ -4,7 +4,7 @@
 #include <QVector>
 #include "funciones_aux.h"
 #include <QDebug>
-#include "TemplatePiezas.h"
+//#include "TemplatePiezas.h"
 #include "FFDW.h"
 
 //HARDCODING!
@@ -33,6 +33,8 @@ public:
 
     void randomizar();
 
+    void mostrarGenotipo();
+
 
 private:
     //en fenotipo estan los tipos de piezas de vidrio sin repetir y con id = 1...n
@@ -56,7 +58,7 @@ static void cruza( GenomaAluminio &a1, GenomaAluminio &a2 )
 
     //Reordenar los dos genomas a partrones a partir de pos
     //Importaria pos con respecto a como codificamos el gen ancho/alto????
-
+    a1.mostrarGenotipo();
     //AuxA
     //Generar un vector con los nuevos indices
     QVector<int> posAuxA = generarPosicionesAleatorias(pos,a1.size());
@@ -64,7 +66,10 @@ static void cruza( GenomaAluminio &a1, GenomaAluminio &a2 )
     for (int i = 0 ; i < posAuxA.size() ; i++) {
         auxA.setearGenoma(posAuxA.at(i), a1.at(posAuxA.at(i)));
     }
+    a1 = auxA;
+    a1.mostrarGenotipo();
 
+    a2.mostrarGenotipo();
     //AuxB
     //Generar un vector con los nuevos indices
     QVector<int> posAuxB = generarPosicionesAleatorias(pos,a2.size());
@@ -73,13 +78,11 @@ static void cruza( GenomaAluminio &a1, GenomaAluminio &a2 )
         auxB.setearGenoma(posAuxB.at(i), a2.at(posAuxB.at(i)));
     }
 
-
-    a1 = auxA;
     a2 = auxB;
-
+    a2.mostrarGenotipo();
 }
 
 static void mutar(GenomaAluminio &a)
-{  a.mutar();  }
+{  a.mutar(); a.mostrarGenotipo(); }
 
 #endif // GENOMAALUMINIO_H

@@ -25,3 +25,6 @@ SOURCES += main.cpp \
 
 HEADERS += \
     ../../evaluarAluminio.h
+
+OTHER_FILES += \
+    parametrosAluminio.cfg

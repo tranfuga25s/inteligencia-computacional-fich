@@ -1,9 +1,11 @@
 #include "BarraAluminio.h"
 
+#include <QDebug>
+
 bool BarraAluminio::acepta( double largo ) const {
-    if( _largo < largo ) {
-        return false;
-    } else if( _largo - largo > 0 ) {
+    //qDebug() << "Largo actual: " << _largo << "- buscado: "<<largo;
+    if( _largo >= largo ) {
+        //qDebug() << "Acepto";
         return true;
     }
     return false;

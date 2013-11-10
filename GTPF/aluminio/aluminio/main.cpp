@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     Poblacion<GenomaAluminio> poblacionAluminio;
 
     // Cargo los parametros del ejercicio
-    QSettings parametrosA( "../../parametrosAluminio.cfg", QSettings::IniFormat );
+    QSettings parametrosA( "parametrosAluminio.cfg", QSettings::IniFormat );
 
     // Inicializo la poblacion
     int cant_totalA = parametrosA.value( "cantidad_elementos", 10 ).toInt();
@@ -45,13 +45,13 @@ int main(int argc, char *argv[])
 
     // Genero los templates de Aluminio
     TemplateAluminio temp;
-    temp.setearTipo( 1 );
-    temp.setearLargo( 12.8 );
+    temp.setearTipo( 0 );
+    temp.setearLargo( 1.8 );
     temp.setearCantidad( 2 );
     aluminios.append( temp );
 
     TemplateAluminio temp2;
-    temp2.setearTipo( 2 );
+    temp2.setearTipo( 1 );
     temp2.setearLargo( 4.3  );
     temp2.setearCantidad( 4 );
     aluminios.append( temp2 );
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
         temp.randomizar();
         poblacionAluminio.append( temp );
     }
-
+    return 0;
     poblacionAluminio.evaluarPoblacion();
 
     double mejor_fitness_aluminio = DBL_MIN;
@@ -77,20 +77,21 @@ int main(int argc, char *argv[])
 
     while( poblacionAluminio.mejorFitnes() <= fitnes_necesarioA
            && iteraccionesA <= iteracciones_maximasA ) {
-
+        qDebug() << "Reiniciado";
         poblacionAluminio.seleccionarPadres();
         poblacionAluminio.generarHijos();
         poblacionAluminio.evaluarPoblacion();
 
         iteraccionesA++;
 
-
+        qDebug() << "Fitnes: "<<poblacionAluminio.mejorFitnes();
         if( mejor_fitness_aluminio <= poblacionAluminio.mejorFitnes() ) {
             mejor_fitness_aluminio = poblacionAluminio.mejorFitnes();
+            qDebug() << "Fitnes Actualizado " << mejor_fitness_aluminio;
             pos_mejor_fitness_aluminio = poblacionAluminio.elementoMinimo();
         }
 
     }
     
-    return a.exec();
+    return 0;
 }
