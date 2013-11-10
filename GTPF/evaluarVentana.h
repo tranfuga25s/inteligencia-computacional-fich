@@ -43,11 +43,6 @@ double evaluar( GenomaVentana ventana ) {
         piezas_vidrio.append( temp3 );
     }
 
-    FFDW evaluador_aluminio;
-    evaluador_aluminio.setearTemplates( aluminios );
-
-
-
     //VIDRIOS
     Poblacion<GenomaVidrio> poblacionVidrios;
 
@@ -126,6 +121,20 @@ double evaluar( GenomaVentana ventana ) {
 
     int iteracciones_maximasA = parametrosA.value( "iteracciones_maximas", 1000 ).toInt();
     int iteraccionesA = 0;
+
+    // Genero el evaluador de las barras de aluminio
+    FFDW *evaluador_aluminio = new FFDW();
+    evaluador_aluminio->setearTemplates( aluminios );
+    evaluador_aluminio->setearLargoBarraOriginal( parametrosA.value("largo_barra", 10.0).toDouble() );
+
+    // Inicializo la población de cortes necesarios de aluminio
+    for( int i=0; i<cant_totalA; i++ ) {
+        GenomaAluminio temp;
+        temp.setearEvaluador( evaluador_aluminio );
+        temp.setearTemplates( aluminios );
+        temp.randomizar();
+        poblacionAluminio.append( temp );
+    }
 
     poblacionAluminio.evaluarPoblacion();
 
