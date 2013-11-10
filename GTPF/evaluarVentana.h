@@ -151,8 +151,8 @@ double evaluar( GenomaVentana ventana ) {
 
 
     double fitness = 0.0;
-    double c1 = 1.0;
-    double c2 = 1.0;
+    double c1 = parametrosA.value("c1").toDouble();
+    double c2 = parametrosV.value("c2").toDouble();
     fitness = c1 * mejor_fitness_aluminio + c2 * mejor_fitness_vidrio;
     return fitness;
 }
