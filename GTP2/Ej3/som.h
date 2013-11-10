@@ -22,8 +22,11 @@ public:
 
     QVector<QPointF> obtenerPuntos();
 
-    static bool menorque( const QPointF v1, const QPointF v2 ) {
-        return v1.x() <= v2.x() && v1.y() <= v2.y();
+    static bool menorqueX( const QPointF v1, const QPointF v2 ) {
+        return ( ( v1.x() <= v2.x() ) );
+    }
+    static bool menorqueY( const QPointF v1, const QPointF v2 ) {
+        return ( ( v1.y() <= v2.y() ) );
     }
 
     bool cambiosSignificativos();

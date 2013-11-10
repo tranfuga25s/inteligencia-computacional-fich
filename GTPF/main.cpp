@@ -14,6 +14,8 @@
 #include <QSqlTableModel>
 #include <QSqlRecord>
 #include <QDebug>
+#include <QMdiSubWindow>
+#include <QTableView>
 
 #include "iostream"
 
@@ -53,6 +55,15 @@ int main(int argc, char *argv[])
     QSqlTableModel modelo;
     modelo.setTable( "aberturas" );
     modelo.select();
+    modelo.setHeaderData( 0, Qt::Horizontal, "#ID" );
+    modelo.setHeaderData( 1, Qt::Horizontal, "Nombre" );
+    modelo.setHeaderData( 2, Qt::Horizontal, "Ancho Base" );
+    modelo.setHeaderData( 3, Qt::Horizontal, "Alto Base" );
+    modelo.setHeaderData( 4, Qt::Horizontal, "Maximo Alto" );
+    modelo.setHeaderData( 5, Qt::Horizontal, "Minimo Alto" );
+    modelo.setHeaderData( 6, Qt::Horizontal, "Maximo Acho" );
+    modelo.setHeaderData( 7, Qt::Horizontal, "Minimo Ancho" );
+    modelo.setHeaderData( 8, Qt::Horizontal, "Cantida de repeticiones" );
 
     QVector<TemplateVentana> data;
     for( int i=0; i<modelo.rowCount(); i++ ) {
@@ -69,6 +80,12 @@ int main(int argc, char *argv[])
         qDebug() << "Cargada abertura " << temp.nombre();
         data.append( temp );
     }
+
+    QMdiSubWindow *tiposVentanas = new QMdiSubWindow( mdiArea );
+    QTableView *tablaTipos = new QTableView( tiposVentanas );
+    tiposVentanas->setWidget( tablaTipos );
+    tablaTipos->setModel( &modelo );
+    mdiArea->addSubWindow( tiposVentanas );
 
     /*GraficadorMdi *grafFuncion = new GraficadorMdi( mdiArea );
     grafFuncion->setearTitulo( QString::fromUtf8( "Funcion" ) );

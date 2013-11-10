@@ -280,7 +280,6 @@ int main(int argc, char *argv[])
                     maximo = contadores.at( c ).at( columna ).at( fila );
                 }
             }
-            // Seteo la clase según corresponda
             som.setearClase( fila, columna, clase );
         }
 
