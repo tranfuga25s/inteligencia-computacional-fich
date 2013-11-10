@@ -1,7 +1,7 @@
 #ifndef EVALUARVENTANA_H
 #define EVALUARVENTANA_H
 
-#include "poblacion.h"
+#include "evaluarVidrio.h"
 #include "GenomaVentana.h"
 #include "GenomaVidrio.h"
 #include "templatealuminio.h"
@@ -9,6 +9,7 @@
 #include "FFDW.h"
 #include "FFDWDH.h"
 #include <QSettings>
+#include "poblacion.h"
 
 
 double evaluar( GenomaVentana ventana ) {

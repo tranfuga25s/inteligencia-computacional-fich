@@ -1,5 +1,6 @@
 #include "FFDWDH.h"
 
+#include "GenomaVidrio.h"
 
 FFDWDH::FFDWDH()
 {
@@ -22,7 +23,7 @@ double FFDWDH::evaluarGen( GenomaVidrio &Gen )
 {
     //Recorro el gen y cargo las piezas generadas
     QVector<int> gen = Gen.getGenotipo(); // Ordenes de corte
-    setearTemplates( Gen.getFenotipo() ); // templates para el tamaño del corte generados en el genoma
+    this->setearTemplates( Gen.getFenotipo() ); // templates para el tamaño del corte generados en el genoma
                                           // para los templates generados por mutacion o cruza
 
     for (int g = 0 ; g < gen.size() ; g++) {

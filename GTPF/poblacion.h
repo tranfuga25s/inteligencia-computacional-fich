@@ -3,9 +3,6 @@
 
 #include <QVector>
 #include <QMap>
-#include "evaluarVentana.h"
-#include "evaluarVidrio.h"
-#include "evaluarAluminio.h"
 #include <cfloat>
 #include "funciones_aux.h"
 

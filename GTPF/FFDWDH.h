@@ -6,7 +6,8 @@
 #include "TemplatePiezas.h"
 #include "Plancha.h"
 #include "poblacion.h"
-#include "GenomaVidrio.h"
+//#include "GenomaVidrio.h"
+class GenomaVidrio;
 
 class FFDWDH {
 public:
@@ -15,7 +16,7 @@ public:
     double evaluarGen( GenomaVidrio &Gen );
     void setearAltoPlancha(double alto) {_alto_plancha = alto;}
     void setearAnchoPlancha(double ancho) {_ancho_plancha = ancho;}
-    void setearTemplates( QVector<TemplatePiezas> &informacion) { _informacion = informacion; }
+    void setearTemplates( QVector<TemplatePiezas> informacion) { _informacion = informacion; }
     void regenerarOrden();
     void hacerCorte(int pos,Pieza pieza);
 

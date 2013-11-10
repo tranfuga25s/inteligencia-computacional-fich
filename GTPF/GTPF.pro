@@ -8,7 +8,13 @@ TEMPLATE = app
 SOURCES +=  main.cpp \
             ../util/graficadormdi.cpp \
             ../util/graficador.cpp \
-            FFDWDH.cpp
+            FFDWDH.cpp \
+    TemplatePiezas.cpp \
+    Pieza.cpp \
+    Plancha.cpp \
+    GenomaVidrio.cpp \
+    GenomaVentana.cpp \
+    templateventana.cpp
 
 OTHER_FILES += parametros.cfg \
                 aberturas.sqlite \
