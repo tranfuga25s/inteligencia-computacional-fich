@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
 
     // Cargo los parametros del ejercicio
     QSettings parametros( "parametros.cfg", QSettings::IniFormat );
-
+    a.processEvents();
 
     // Inicializo la poblacion
     Poblacion<GenomaVentana> pob;
@@ -154,6 +154,7 @@ int main(int argc, char *argv[])
     int iteracciones_maximas = parametros.value( "iteracciones_maximas", 1000 ).toInt();
     int iteracciones = 0;
     PBTiempo->setRange( 0, iteracciones_maximas );
+
 
     // Cargo la poblacion
     for( int i=0; i<cant_total; i++ ) {
