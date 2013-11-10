@@ -165,8 +165,12 @@ int main(int argc, char *argv[])
         pob.append( temporal );
     }
 
+
+
     pob.evaluarPoblacion();
     a.processEvents();
+
+    double mejor_fitness = pob.mejorFitnes();
 
     QVector<double> histFitness;
     QVector<int> histIteracion;
@@ -175,9 +179,10 @@ int main(int argc, char *argv[])
     histIteracion.append( 0 );
     histPromFitnes.append( pob.mejorFitnes() );
 
-    double mejor_fitness = DBL_MIN;
+
     GenomaVentana pos_mejor_fitness;
     int generacion_mejor_fitness = -1;
+
 
     while( pob.mejorFitnes() <= fitnes_necesario
         && iteracciones <= iteracciones_maximas ) {
@@ -211,6 +216,7 @@ int main(int argc, char *argv[])
         //grafPuntos->agregarCurva( x, y, QString( "Gen%1" ).arg( iteracciones ) );
 
         if( mejor_fitness <= pob.mejorFitnes() ) {
+            qDebug() << "ENTRO a actualizar";
             mejor_fitness = pob.mejorFitnes();
             pos_mejor_fitness = pob.elementoMinimo();
             generacion_mejor_fitness = iteracciones;
@@ -219,7 +225,7 @@ int main(int argc, char *argv[])
 
     }
 
-    qDebug() << "Mejor Fitness: " << mejor_fitness;
-    qDebug() << "Generacion: " << generacion_mejor_fitness;
+//    qDebug() << "Mejor Fitness: " << mejor_fitness;
+//    qDebug() << "Generacion: " << generacion_mejor_fitness;
     return a.exec();
 }

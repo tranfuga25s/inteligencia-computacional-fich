@@ -128,8 +128,8 @@ void Poblacion<T>::seleccionarPadres()
     // Me aseguro el elitismo para cualquier metodo
     if( _elitismo ) {
         _nuevos_padres.append( this->at( _pos_mejor_fitness ) );
-        this->remove( _pos_mejor_fitness );
-        _fitness.remove( _pos_mejor_fitness );
+        //this->remove( _pos_mejor_fitness );
+        //_fitness.remove( _pos_mejor_fitness );
         _pos_mejor_fitness = -1;
     }
 
@@ -236,6 +236,7 @@ template<typename T>
 void Poblacion<T>::torneo()
 {
     int tam_nueva_generacion = this->cantidadDePadres();
+
     // Elijo cuatro participantes y los hago competir
     QMap<double,int> mposiciones;
     for( int i=0; i<this->size(); i++ ) {
@@ -312,11 +313,13 @@ void Poblacion<T>::generarHijos()
 
     while( this->size() < _cantidad_total ) {
 
+
         int p1 = valor_random_int( 0, _nuevos_padres.size() );
         int p2 = valor_random_int( 0, _nuevos_padres.size() );
         while( p1 == p2 ) {
             p2 = valor_random_int( 0, _nuevos_padres.size() );
         }
+
 
         T hijo1 = _nuevos_padres.at( p1 );
         T hijo2 = _nuevos_padres.at( p2 );

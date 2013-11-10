@@ -7,8 +7,6 @@
 #include "TemplatePiezas.h"
 #include "FFDWDH.h"
 
-//HARDCODING!
-#define bits 12
 
 class GenomaVidrio {
 public:
@@ -54,7 +52,7 @@ private:
 
 static void cruza( GenomaVidrio &a1, GenomaVidrio &a2 )
 {
-    int pos = valor_random_int( 0, bits );
+    int pos = valor_random_int( 0, a1.size() );
     //qDebug() << pos;
 
     GenomaVidrio auxA = a1;

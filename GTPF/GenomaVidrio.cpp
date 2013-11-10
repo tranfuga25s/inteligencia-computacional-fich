@@ -42,10 +42,19 @@ void GenomaVidrio::randomizar() {
         }
     }
     _genotipo.resize( nuevo_tamano );
-    for( int i=0; i<temporal.size(); i++ ) {
-        int pos_random = valor_random_int( 0, temporal.size() -1 );
-        _genotipo[i] = temporal.at(pos_random);
+    int pos = 0;
+    while( temporal.size() > 0 ) {
+        if( temporal.size() == 1 ) {
+            _genotipo[pos] = temporal.at(0);
+            temporal.clear();
+        } else {
+            int pos_random = valor_random_int( 0, temporal.size() -1 );
+            _genotipo[pos] = temporal.at(pos_random);
+            temporal.remove(pos_random);
+        }
+        pos++;
     }
+
 }
 
 ///!

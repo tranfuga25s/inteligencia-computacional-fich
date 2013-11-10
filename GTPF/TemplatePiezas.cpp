@@ -14,6 +14,7 @@ TemplatePiezas::TemplatePiezas(const TemplatePiezas &origin)
     _alto = origin.alto();
     _tipo = origin.tipo();
     _cantidad = origin.getCantidad();
+    _ind_mutado = origin.getMutado();
 }
 
 TemplatePiezas::TemplatePiezas( TemplatePiezas &origin)
@@ -22,5 +23,6 @@ TemplatePiezas::TemplatePiezas( TemplatePiezas &origin)
     _alto = origin.alto();
     _tipo = origin.tipo();
     _cantidad = origin.getCantidad();
+    _ind_mutado = origin.getMutado();
 }
 

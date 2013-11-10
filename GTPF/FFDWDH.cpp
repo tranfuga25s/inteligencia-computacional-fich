@@ -21,6 +21,8 @@ Pieza FFDWDH::generarPieza(int pos)
 
 double FFDWDH::evaluarGen( GenomaVidrio &Gen )
 {
+    _planchas.clear();
+
     //Recorro el gen y cargo las piezas generadas
     QVector<int> gen = Gen.getGenotipo(); // Ordenes de corte
     this->setearTemplates( Gen.getFenotipo() ); // templates para el tamaño del corte generados en el genoma
@@ -96,7 +98,7 @@ void FFDWDH::hacerCorte( int pos, Pieza pieza )
     _planchas.append(Auxiliar);
     //Redimensiono la actual segun lo que me sobra el la altura
     _planchas[pos].setearAlto( _planchas.at(pos).alto() - pieza.alto());
-    _planchas[pos].setearAncho( _planchas.at(pos).ancho() - pieza.ancho());
+    _planchas[pos].setearAncho( pieza.ancho());
 
     regenerarOrden();
 }

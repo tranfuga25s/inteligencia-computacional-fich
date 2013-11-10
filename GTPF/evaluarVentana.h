@@ -40,7 +40,7 @@ double evaluar( GenomaVentana ventana ) {
 
         // Genero los templates de Vidrios
         TemplatePiezas temp3;
-        temp3.setearTipo( i );
+        temp3.setearTipo( i+1 );
         temp3.setearAlto( auxiliar.at(i).alto() );
         temp3.setearAncho( auxiliar.at(i).ancho() );
         temp3.setearCantidad( auxiliar.at(i).getCantidad() );
@@ -86,10 +86,14 @@ double evaluar( GenomaVentana ventana ) {
         poblacionVidrios.append( temporal );
     }
 
+
+
     poblacionVidrios.evaluarPoblacion();
 
-    double mejor_fitness_vidrio = DBL_MIN;
+    double mejor_fitness_vidrio = poblacionVidrios.mejorFitnes();
+
     GenomaVidrio pos_mejor_fitness_vidrio;
+
 
     while( poblacionVidrios.mejorFitnes() <= fitnes_necesarioV
            && iteraccionesV <= iteracciones_maximasV ) {
@@ -101,9 +105,9 @@ double evaluar( GenomaVentana ventana ) {
         iteraccionesV++;
 
 
-        if( mejor_fitness_vidrio <= poblacionVidrios.mejorFitnes() ) {
+        if(  poblacionVidrios.mejorFitnes() >= mejor_fitness_vidrio ) {
             mejor_fitness_vidrio = poblacionVidrios.mejorFitnes();
-            pos_mejor_fitness_vidrio = poblacionVidrios.elementoMinimo();
+            //pos_mejor_fitness_vidrio = poblacionVidrios.elementoMinimo();
         }
 
     }
@@ -148,10 +152,12 @@ double evaluar( GenomaVentana ventana ) {
         qDebug() << "Agregado gen de aluminio";
     }
 
+    double mejor_fitness_aluminio = (-1.0)*DBL_MAX;
+
     poblacionAluminio.evaluarPoblacion();
     qDebug() << "Fin de evaluacion inicial";
 
-    double mejor_fitness_aluminio = (-1.0)*DBL_MAX;
+
     GenomaAluminio pos_mejor_fitness_aluminio;
 
     while( poblacionAluminio.mejorFitnes() <= fitnes_necesarioA
@@ -185,7 +191,7 @@ double evaluar( GenomaVentana ventana ) {
 
     //qDebug() << "Fitness Aluminio: " << mejor_fitness_aluminio;
     qDebug() << "Fitness Vidrio: " << mejor_fitness_vidrio;
-    qDebug() << "Fitness Total: " << fitness;
+   // qDebug() << "Fitness Total: " << fitness;
 
     return fitness;
 }

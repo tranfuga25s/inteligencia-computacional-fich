@@ -21,7 +21,7 @@ public:
     int getCantidad() const { return _cantidad; }
 
     void setearMutado(int num) {_ind_mutado=num;}
-    int getMutado() {return _ind_mutado;}
+    int getMutado() const {return _ind_mutado;}
 
 
 
