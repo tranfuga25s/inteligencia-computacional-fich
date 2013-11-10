@@ -3,10 +3,9 @@
 
 #include "BarraAluminio.h"
 #include "templatealuminio.h"
-#include "GenomaAluminio.h"
-
 #include <QVector>
 #include <QMap>
+class GenomaAluminio;
 
 /*
   Optimizador para funciones de corte de aluminio

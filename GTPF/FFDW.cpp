@@ -1,5 +1,7 @@
 #include "FFDW.h"
 
+#include "GenomaAluminio.h"
+
 FFDW::FFDW()
 {
     _largo_barra_original = 0.0;

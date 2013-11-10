@@ -15,7 +15,10 @@ SOURCES +=  main.cpp \
     GenomaVidrio.cpp \
     GenomaVentana.cpp \
     templateventana.cpp \
-    FFDW.cpp
+    FFDW.cpp \
+    GenomaAluminio.cpp \
+    BarraAluminio.cpp \
+    templatealuminio.cpp
 
 OTHER_FILES += parametros.cfg \
                 aberturas.sqlite \

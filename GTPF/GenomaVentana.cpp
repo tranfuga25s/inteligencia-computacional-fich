@@ -11,8 +11,15 @@ GenomaVentana::GenomaVentana()
 GenomaVentana::GenomaVentana(GenomaVentana& origin) {
     _genotipo.resize(origin._genotipo.size());
     _fenotipo.resize(origin._fenotipo.size());
-    this->_fenotipo = origin.mostrarFenotipo();
-    this->_genotipo = origin.mostrarGenotipo();
+    this->_fenotipo = origin.getFenotipo();
+    this->_genotipo = origin.getGenotipo();
+}
+
+GenomaVentana::GenomaVentana( const GenomaVentana& origin ) {
+    _genotipo.resize(origin._genotipo.size());
+    _fenotipo.resize(origin._fenotipo.size());
+    this->_fenotipo = origin.getFenotipo();
+    this->_genotipo = origin.getGenotipo();
 }
 
 void GenomaVentana::aFenotipo()

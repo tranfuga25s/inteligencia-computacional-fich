@@ -22,13 +22,8 @@ public:
     bool at( int pos ) { return this->_genotipo.at( pos ); }
     bool valido() { return true; }
     void setearGenoma( int i, bool valor) { this->_genotipo[i] = valor; }
-    QVector<bool> mostrarGenotipo() {return _genotipo;}
-    QVector<TemplateVentana> mostrarFenotipo() {return _fenotipo;}
-
-    /*bool valido();
-    void setMinMax( double min, double max ) { _min = min; _max = max; }
-    double getMin() const { return _min; }
-    double getMax() const { return _max; } */
+    QVector<bool> getGenotipo() const { return _genotipo; }
+    QVector<TemplateVentana> getFenotipo() const { return _fenotipo; }
 
 private:
     QVector<TemplateVentana> _fenotipo;

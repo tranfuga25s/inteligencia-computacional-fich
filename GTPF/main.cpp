@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
         qDebug() << "Cargada abertura " << temp.nombre();
         data.append( temp );
     }
-    return 0;
+
     /*GraficadorMdi *grafFuncion = new GraficadorMdi( mdiArea );
     grafFuncion->setearTitulo( QString::fromUtf8( "Funcion" ) );
     grafFuncion->setearTituloEjeX( QString::fromUtf8( "X" ) );
@@ -130,17 +130,6 @@ int main(int argc, char *argv[])
     pob.setearProbabilidadCruza( parametros.value( "probabilidad_cruza").toDouble() );
     pob.setearModoSeleccionPadres( (Poblacion<GenomaVentana>::MetodoSeleccion)parametros.value( "metodo_seleccion" ).toInt() );
     pob.setearPorcentajeCantidadDePadres( parametros.value( "cantidad_padres" ).toDouble() );
-
-    /*double max = parametros.value( "max" ).toDouble();
-    double min = parametros.value( "min" ).toDouble();
-    pob.setearMinMax( min, max );
-    for( int i=0; i<cant_total; i++ ) {
-        GenomaVentana temp;
-        double valor = valor_random( min, max );
-        temp.setX( valor );
-        temp.setMinMax( min, max );
-        pob.append( temp );
-    }*/
 
     double fitnes_necesario = parametros.value( "fitnes_necesario", 0.0 ).toDouble();
 
