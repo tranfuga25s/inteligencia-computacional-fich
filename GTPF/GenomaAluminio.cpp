@@ -10,12 +10,18 @@ GenomaAluminio::GenomaAluminio()
 
 GenomaAluminio::GenomaAluminio(const GenomaAluminio &origin )
 {
+    if( origin.getGenotipo().size() == 0 ) {
+        abort();
+    }
     this->_fenotipo = origin.getFenotipo();
     this->_genotipo = origin.getGenotipo();
     this->_evaluador = origin.getEvaluador();
 }
 
 GenomaAluminio::GenomaAluminio( GenomaAluminio &origin ) {
+    if( origin.getGenotipo().size() == 0 ) {
+        abort();
+    }
     this->_fenotipo = origin.getFenotipo();
     this->_genotipo = origin.getGenotipo();
     this->_evaluador = origin.getEvaluador();
@@ -49,12 +55,15 @@ void GenomaAluminio::mutar()
 
 void GenomaAluminio::randomizar() {
     _genotipo.clear();
+    int nuevo_tamano = 0;
     QVector<int> temporal;
     for (int i = 0; i<_fenotipo.size();i++){
+        nuevo_tamano += _fenotipo.at(i).getCantidad();
         for (int p=0;p<_fenotipo.at(i).getCantidad();p++){
-            temporal[i+p]=_fenotipo.at(i).tipo();
+            temporal.append( _fenotipo.at(i).tipo() );
         }
     }
+    _genotipo.resize( nuevo_tamano );
     for( int i=0; i<temporal.size(); i++ ) {
         int pos_random = valor_random_int( 0, temporal.size() -1 );
         _genotipo[i] = temporal.at(pos_random);

@@ -34,11 +34,14 @@ void GenomaVidrio::aGenotipo() {
 void GenomaVidrio::randomizar() {
     _genotipo.clear();
     QVector<int> temporal;
+    int nuevo_tamano = 0;
     for (int i = 0; i<_fenotipo.size();i++){
+        nuevo_tamano += _fenotipo.at(i).getCantidad();
         for (int p=0;p<_fenotipo.at(i).getCantidad();p++){
-            temporal[i+p]=_fenotipo.at(i).tipo();
+            temporal.append( _fenotipo.at(i).tipo() );
         }
     }
+    _genotipo.resize( nuevo_tamano );
     for( int i=0; i<temporal.size(); i++ ) {
         int pos_random = valor_random_int( 0, temporal.size() -1 );
         _genotipo[i] = temporal.at(pos_random);

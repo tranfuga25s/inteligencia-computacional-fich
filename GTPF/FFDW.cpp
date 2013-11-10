@@ -73,7 +73,7 @@ void FFDW::regenerarOrden()
     // Ordeno los largos
     QMap<double,int> orden;
     for( int i=0; i<_barras.size(); i++ ) {
-        orden.insert( _barras.at( i ).largoActual(), i );
+        orden.insertMulti( _barras.at( i ).largoActual(), i );
     }
     _orden_barras.clear();
     foreach( int p, orden.values() ) {

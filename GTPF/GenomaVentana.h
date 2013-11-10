@@ -49,9 +49,9 @@ static void cruza( GenomaVentana &a1, GenomaVentana &a2 )
         auxB.setearGenoma(i,a1.at(i));
     }
 
-//    //Para poder igualar los objetos ???
-//    a1.aFenotipo();
-//    a2.aFenotipo();
+    //Para poder igualar los objetos ???
+    a1.aFenotipo();
+    a2.aFenotipo();
 
     a1 = auxA;
     a2 = auxB;

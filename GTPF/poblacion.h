@@ -106,9 +106,10 @@ void Poblacion<T>::evaluarPoblacion()
         double temp = evaluar( this->at( i ) );
         // VEO QUE ESTÉ BIEN ESTA FUNCION!
         temp = (-1.0)*temp;                                /// fit = -y
-        //
+        qDebug() << "Fitness:" << temp;
         if( temp > _mejor_fitness ) {
             _mejor_fitness = temp;
+            qDebug() << "Mejor Fitnes: " << _mejor_fitness;
             _pos_mejor_fitness = i;
         }
         _fitness[i] = temp;
@@ -234,28 +235,27 @@ void Poblacion<T>::ventaneo()
 template<typename T>
 void Poblacion<T>::torneo()
 {
-    //int tam_nueva_generacion = this->cantidadDePadres();
+    int tam_nueva_generacion = this->cantidadDePadres();
+    // Elijo cuatro participantes y los hago competir
+    QMap<double,int> mposiciones;
+    for( int i=0; i<this->size(); i++ ) {
+        mposiciones.insertMulti( _fitness.at(i), i );
+    }
+    QList<int> posiciones = mposiciones.values(); // Valores ordenados
 
-    for( int j=0; j<_cantidad_padres; j++ ) {
-
-        // Elijo cuatro participantes y los hago competir
-        QMap<double,int> mposiciones;
-        for( int i=0; i<this->size(); i++ ) {
-            mposiciones.insertMulti( _fitness.at(i), i );
-        }
-        QList<int> posiciones = mposiciones.values(); // Valores ordenados
+    for( int j=0; j<tam_nueva_generacion; j++ ) {
 
         int p = valor_random( 0, posiciones.size() );
-        int pos1 = posiciones.takeAt( p );
+        int pos1 = posiciones.value( p );
         //posiciones.remove( p );
         p = valor_random( 0, posiciones.size() );
-        int pos2 = posiciones.takeAt( p );
+        int pos2 = posiciones.value( p );
         //posiciones.remove( p );
         p = valor_random( 0, posiciones.size() );
-        int pos3 = posiciones.takeAt( p );
+        int pos3 = posiciones.value( p );
         //posiciones.remove( p );
         p = valor_random( 0, posiciones.size() );
-        int pos4 = posiciones.takeAt( p );
+        int pos4 = posiciones.value( p );
         posiciones.clear();
 
         int ganador1 = 0;
@@ -325,7 +325,7 @@ void Poblacion<T>::generarHijos()
 
         int  prob0 = valor_random_int( 0, 100 );
 
-        if( prob0 != 0 && prob0 % ( 100 - _probabilidad_cruza ) == 0 ) {
+        if( prob0 != 0 && prob0 <=  _probabilidad_cruza ) {
             //Hay Cruza
             cruza( hijo1, hijo2 );
             //qDebug() << "cruza";
@@ -338,11 +338,11 @@ void Poblacion<T>::generarHijos()
 
 
         //MUTACIONES
-        if( prob1 != 0 && prob1 % ( 100 - _probabilidad_mutacion ) == 0 ) {
+        if( prob1 != 0 && prob1 <= _probabilidad_mutacion ) {
             mutar( hijo1 );
             //qDebug() << "mutacion";
         }
-        if( prob2 != 0 && prob2 % ( 100 - _probabilidad_mutacion ) == 0 ) {
+        if( prob2 != 0 && prob2 <= _probabilidad_mutacion ) {
             mutar( hijo2 );
             //qDebug() << "mutacion";
         }

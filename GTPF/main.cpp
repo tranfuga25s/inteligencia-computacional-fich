@@ -77,6 +77,7 @@ int main(int argc, char *argv[])
         temp.setearMinAlto( r.value( "min_alto" ).toDouble() );
         temp.setearMaxAncho( r.value( "max_ancho" ).toDouble() );
         temp.setearMinAncho( r.value( "max_ancho" ).toDouble() );
+        temp.setearCantidad( r.value("cantidad").toInt() );
         qDebug() << "Cargada abertura " << temp.nombre();
         data.append( temp );
     }
@@ -219,7 +220,6 @@ int main(int argc, char *argv[])
     }
 
     qDebug() << "Mejor Fitness: " << mejor_fitness;
-    qDebug() << "Minimo: " << evaluar( pos_mejor_fitness );
     qDebug() << "Generacion: " << generacion_mejor_fitness;
     return a.exec();
 }

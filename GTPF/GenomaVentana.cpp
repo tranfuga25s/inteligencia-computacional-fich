@@ -18,8 +18,10 @@ GenomaVentana::GenomaVentana(GenomaVentana& origin) {
 void GenomaVentana::iniciarRandomizado()
 {
     _genotipo.clear();
-    for(int i = 0 ; i < _genotipo.size() ; i++ ) {
-        _genotipo[i] = valor_random_int(0,1);
+    for( int i=0; i<_fenotipo.size(); i++ ) {
+        for( int k=0; k<bits*2; k++ ) {
+             _genotipo.append( valor_random_int(0,1) );
+        }
     }
 }
 
@@ -40,7 +42,7 @@ void GenomaVentana::aFenotipo()
         double temporal = 0.0;
 
         //Ancho
-        for( int i=bits; i>=0; i-- ) {
+        for( int i=bits-1; i>=0; i-- ) {
             if (_genotipo.at(i + desplazamiento)) {
                 temporal += pow( 2.0, ( bits ) - i );
             }
@@ -53,7 +55,7 @@ void GenomaVentana::aFenotipo()
         temporal = 0.0;
 
         //Alto
-        for( int i=bits; i>=0; i-- ) {
+        for( int i=bits-1; i>=0; i-- ) {
             if (_genotipo.at(i + desplazamiento)) {
                 temporal += pow( 2.0, ( bits ) - i );
             }

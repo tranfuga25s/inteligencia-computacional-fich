@@ -14,7 +14,7 @@ public:
     void hacerCorte( double largo );
 
 private:
-    int _largo;
+    double _largo;
 
 };
 
