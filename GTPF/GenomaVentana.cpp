@@ -15,6 +15,14 @@ GenomaVentana::GenomaVentana(GenomaVentana& origin) {
     this->_genotipo = origin.getGenotipo();
 }
 
+void GenomaVentana::iniciarRandomizado()
+{
+    _genotipo.clear();
+    for(int i = 0 ; i < _genotipo.size() ; i++ ) {
+        _genotipo[i] = valor_random_int(0,1);
+    }
+}
+
 GenomaVentana::GenomaVentana( const GenomaVentana& origin ) {
     _genotipo.resize(origin._genotipo.size());
     _fenotipo.resize(origin._fenotipo.size());
