@@ -188,8 +188,8 @@ void Poblacion<T>::ruleta()
         // Coloco el seleccionado en la población de padres
         _nuevos_padres.append( this->at( azar ) );
         // Lo elimino de la poblacion actual para rehacer el sistema actual
-        this->remove( azar );
-        _fitness.remove( azar );
+        //this->remove( azar );
+        //_fitness.remove( azar );
 
     }
 }
@@ -223,12 +223,12 @@ void Poblacion<T>::ventaneo()
         _nuevos_padres.append( this->at( pos_actual ) );
 
         // Saco el elemento sacado de la lista de orden
-        orden.remove( indices_ordenados.at( indices_ordenados.size() - azar -1 ) );
+        //orden.remove( indices_ordenados.at( indices_ordenados.size() - azar -1 ) );
 
         // lo elimino de los proximos candidatos
-        this->remove( pos_actual );
+        //this->remove( pos_actual );
         // Elimino su fitness
-        _fitness.remove( pos_actual );
+        //_fitness.remove( pos_actual );
 
     }
 
@@ -284,9 +284,9 @@ void Poblacion<T>::torneo()
         // lo coloco con los padres
         _nuevos_padres.append( this->at( ganador ) );
         // Lo elimino de los elementos actuale
-        this->remove( ganador );
+        //this->remove( ganador );
         // Elimino su fitness
-        _fitness.remove( ganador );
+        //_fitness.remove( ganador );
 
     }
 }
