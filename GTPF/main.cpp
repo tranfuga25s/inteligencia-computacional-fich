@@ -167,11 +167,11 @@ int main(int argc, char *argv[])
     }
 
 
-
     pob.evaluarPoblacion();
     a.processEvents();
 
     double mejor_fitness = pob.mejorFitnes();
+
 
     QVector<double> histFitness;
     QVector<int> histIteracion;
@@ -179,10 +179,11 @@ int main(int argc, char *argv[])
     histFitness.append( pob.mejorFitnes() );
     histIteracion.append( 0 );
     histPromFitnes.append( pob.mejorFitnes() );
-
+    grafFitnes->setearPuntos( histFitness, histIteracion );
+    a.processEvents();
 
     GenomaVentana pos_mejor_fitness;
-    int generacion_mejor_fitness = -1;
+    int generacion_mejor_fitness = 0;
 
 
     while( pob.mejorFitnes() <= fitnes_necesario
@@ -215,20 +216,25 @@ int main(int argc, char *argv[])
         sumatoria /=  pob.size();
         histPromFitnes.append( sumatoria );
         //grafPuntos->agregarCurva( x, y, QString( "Gen%1" ).arg( iteracciones ) );
+        a.processEvents();
 
-        if( mejor_fitness <= pob.mejorFitnes() ) {
+        qDebug() << "Mejor Fitness historico: "<<mejor_fitness;
+        qDebug() << "Mejor Fitness: "<<pob.mejorFitnes();
+        if( pob.mejorFitnes() >= mejor_fitness ) {
             qDebug() << "ENTRO a actualizar FITNESS VENTANA";
             mejor_fitness = pob.mejorFitnes();
             pos_mejor_fitness = pob.elementoMinimo();
             generacion_mejor_fitness = iteracciones;
         }
         grafPromedio->setearPuntos( histPromFitnes, histIteracion );
+        a.processEvents();
+        qDebug() << "Fin iteracción " << iteracciones;
 
     }
 
     qDebug() << endl << "RESULTADO FINAL: ";
 
     qDebug() << "Mejor Fitness VENTANA: " << mejor_fitness;
-//    qDebug() << "Generacion: " << generacion_mejor_fitness;
+    qDebug() << "Generacion: " << generacion_mejor_fitness;
     return a.exec();
 }
