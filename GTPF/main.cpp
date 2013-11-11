@@ -166,26 +166,31 @@ int main(int argc, char *argv[])
         pob.append( temporal );
     }
 
-
+    //qDebug() << "Evaluacion de ventana Numero: " << iteracciones + 1;
 
     pob.evaluarPoblacion();
     a.processEvents();
 
-    double mejor_fitness = pob.mejorFitnes();
+    /// Sucede que el fitness que me devuelve evaluar ventana mientras mas cerca este de 0
+    ///mejor, por eso devuelve numeros negativos, tiende a 0. Ahora en pobacion el fitness
+    ///para que sea positivo es -y entonces tengo que invertir la escala aca para que pueda
+    ///entrar al while
+
+    double mejor_fitness = (-1)*pob.mejorFitnes();
 
     QVector<double> histFitness;
     QVector<int> histIteracion;
     QVector<double> histPromFitnes;
-    histFitness.append( pob.mejorFitnes() );
+    histFitness.append( (-1)*pob.mejorFitnes() );
     histIteracion.append( 0 );
-    histPromFitnes.append( pob.mejorFitnes() );
+    histPromFitnes.append( (-1)*pob.mejorFitnes() );
 
 
     GenomaVentana pos_mejor_fitness;
     int generacion_mejor_fitness = -1;
 
 
-    while( pob.mejorFitnes() <= fitnes_necesario
+    while( (-1)*pob.mejorFitnes() <= fitnes_necesario
         && iteracciones <= iteracciones_maximas ) {
 
         pob.seleccionarPadres();
@@ -194,13 +199,18 @@ int main(int argc, char *argv[])
         pob.generarHijos();
         a.processEvents();
 
+        iteracciones++;
+
+        //qDebug() << "Evaluacion de ventana Numero: " << iteracciones + 1;
+
         pob.evaluarPoblacion();
         a.processEvents();
 
-        iteracciones++;
+
+
         PBTiempo->setValue( iteracciones );
 
-        histFitness.append( pob.mejorFitnes() );
+        histFitness.append( (-1)*pob.mejorFitnes() );
         histIteracion.append( iteracciones );
         grafFitnes->setearPuntos( histFitness, histIteracion );
         a.processEvents();
@@ -216,9 +226,9 @@ int main(int argc, char *argv[])
         histPromFitnes.append( sumatoria );
         //grafPuntos->agregarCurva( x, y, QString( "Gen%1" ).arg( iteracciones ) );
 
-        if( mejor_fitness <= pob.mejorFitnes() ) {
+        if( mejor_fitness <= (-1)*pob.mejorFitnes() ) {
             qDebug() << "ENTRO a actualizar FITNESS VENTANA";
-            mejor_fitness = pob.mejorFitnes();
+            mejor_fitness = (-1)*pob.mejorFitnes();
             pos_mejor_fitness = pob.elementoMinimo();
             generacion_mejor_fitness = iteracciones;
         }
@@ -228,7 +238,7 @@ int main(int argc, char *argv[])
 
     qDebug() << endl << "RESULTADO FINAL: ";
 
-    qDebug() << "Mejor Fitness VENTANA: " << mejor_fitness;
+    qDebug() << "Mejor Fitness VENTANA: " << (-1)*mejor_fitness;
 //    qDebug() << "Generacion: " << generacion_mejor_fitness;
     return a.exec();
 }

@@ -83,6 +83,9 @@ void GenomaVidrio::mutar()
         auxiliar.setearMutado(_fenotipo.at(tipoPieza).tipo());
         auxiliar.setearCantidad(1); //es uno nuevo, asi que es el primero de ese tipo
 
+        //Una vez que configure el nuevo lo cargo a los fenotipos!!!!
+        _fenotipo.append(auxiliar);
+
         //Modifico el template original
         _fenotipo[tipoPieza].setearCantidad(_fenotipo.at(tipoPieza).getCantidad()-1);
         _fenotipo[tipoPieza].setearMutado(auxiliar.tipo());

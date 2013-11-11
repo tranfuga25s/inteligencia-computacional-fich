@@ -105,7 +105,8 @@ double evaluar( GenomaVentana ventana ) {
         iteraccionesV++;
 
 
-        if(  poblacionVidrios.mejorFitnes() >= mejor_fitness_vidrio ) {
+        if( mejor_fitness_vidrio <= poblacionVidrios.mejorFitnes()  ) {
+            //qDebug() << "Actualizado mejor fitness vidrios";
             mejor_fitness_vidrio = poblacionVidrios.mejorFitnes();
             pos_mejor_fitness_vidrio = poblacionVidrios.elementoMinimo();
         }
@@ -194,7 +195,8 @@ double evaluar( GenomaVentana ventana ) {
     fitness = c1 * mejor_fitness_aluminio + c2 * mejor_fitness_vidrio;
 
 
-   // qDebug() << "Fitness Total: " << fitness;
+    //qDebug() << "Fitness Total: " << fitness;
+
 
     return fitness;
 }

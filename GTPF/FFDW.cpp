@@ -37,6 +37,9 @@ double FFDW::evaluarGen( const GenomaAluminio &Gen )
 
                 _barras[pos_barra].hacerCorte( longitud );
 
+                //Que pasa si me da 0 la resta, no habria que eliminarla para que no queden invalidas?
+                if((_barras[pos_barra].largoActual() - longitud) == 0) {_barras.remove(pos_barra);}
+
                 entro_existente = true;
                 pos_barras = _barras.size() + 1; // Salgo del for de barras
                 regenerarOrden();
@@ -52,8 +55,12 @@ double FFDW::evaluarGen( const GenomaAluminio &Gen )
             // genero el corte que no se pudo generar
             barra.hacerCorte( longitud );
 
-            // Lo agergo a las consideradas
-            _barras.append( barra );
+            //Que pasa si me da 0 la resta, no habria que eliminarla para que no queden invalidas?
+            if((barra.largoActual() - longitud) != 0)
+            {
+                // Lo agergo a las consideradas
+                _barras.append( barra );
+            }
 
             regenerarOrden();
         }
