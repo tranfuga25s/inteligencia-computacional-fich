@@ -37,6 +37,9 @@ public:
     void deshabilitarEscalado();
     void agregarTrapezoide( QVector<double> valores, QString nombre );
 
+    void agregarCurva( int pos, QString nombre );
+    void setearPuntos( int pos_curva, QVector<double> datos );
+
 private:
     QwtPlot *myPlot;
     QwtLegend *leyenda;

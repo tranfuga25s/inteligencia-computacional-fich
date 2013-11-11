@@ -124,7 +124,9 @@ int main(int argc, char *argv[])
     mdiArea->addSubWindow( grafPromedio );
     grafPromedio->show();
     mdiArea->tileSubWindows();
-    grafPromedio->setearParaSOM();
+    grafPromedio->agregarCurva( 0, "Promedio" );
+    grafPromedio->agregarCurva( 1, "Maximo" );
+    grafPromedio->agregarCurva( 2, "Minimo" );
 
     // barra de progreso para mostrar el avance del tiempo
     QDockWidget *dockBarra = new QDockWidget( QString::fromUtf8( "Evaluaciones" ) );
@@ -180,9 +182,13 @@ int main(int argc, char *argv[])
     QVector<double> histFitness;
     QVector<int> histIteracion;
     QVector<double> histPromFitnes;
+    QVector<double> histMaxFitnes;
+    QVector<double> histMinFitnes;
     histFitness.append( (-1)*pob.mejorFitnes() );
     histIteracion.append( 0 );
     histPromFitnes.append( (-1)*pob.mejorFitnes() );
+    histMaxFitnes.append( (-1)*pob.mejorFitnes() );
+    histMinFitnes.append( (-1)*pob.mejorFitnes() );
     grafFitnes->setearPuntos( histFitness, histIteracion );
     a.processEvents();
 
@@ -215,18 +221,18 @@ int main(int argc, char *argv[])
         grafFitnes->setearPuntos( histFitness, histIteracion );
         a.processEvents();
 
-        QVector<double> x, y;
         double sumatoria = 0.0;
         for( int i=0; i<pob.size(); i++ ) {
-            y.append( i );
-            x.append( evaluar( pob.at( i ) ) );
             sumatoria += (-1.0)*evaluar( pob.at( i ) );
         }
         sumatoria /=  pob.size();
         histPromFitnes.append( sumatoria );
-        //grafPuntos->agregarCurva( x, y, QString( "Gen%1" ).arg( iteracciones ) );
+        histMaxFitnes.append( pob.maximoFitness() );
+        histMinFitnes.append( pob.minimoFitness() );
+        grafPromedio->setearPuntos( 0, histPromFitnes );
+        grafPromedio->setearPuntos( 1, histMaxFitnes );
+        grafPromedio->setearPuntos( 2, histMinFitnes );
         a.processEvents();
-
 
         qDebug() << "Mejor Fitness historico: "<<mejor_fitness;
         qDebug() << "Mejor Fitness: "<<pob.mejorFitnes();
@@ -237,8 +243,6 @@ int main(int argc, char *argv[])
             pos_mejor_fitness = pob.elementoMinimo();
             generacion_mejor_fitness = iteracciones;
         }
-        grafPromedio->setearPuntos( histPromFitnes, histIteracion );
-        a.processEvents();
         qDebug() << "Fin iteracción " << iteracciones;
 
     }

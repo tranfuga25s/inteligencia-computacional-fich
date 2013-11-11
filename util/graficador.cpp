@@ -389,6 +389,39 @@ void Graficador::agregarTrapezoide( QVector<double> valores, QString nombre )
     agregarCurva( valores, temp, nombre );
 }
 
+void Graficador::agregarCurva( int pos, QString nombre )
+{
+    QwtPlotCurve *curva = new QwtPlotCurve( nombre );
+    curvas->insert( pos, curva );
+    curva->setRenderHint( QwtPlotItem::RenderAntialiased );
+    cambiarColor();
+    curva->setPen( QPen( color ) );
+    curva->setSymbol( new QwtSymbol( QwtSymbol::Hexagon,
+                                     QBrush( (Qt::GlobalColor)this->color ),
+                                     QPen( Qt::NoPen ),
+                                     QSize( 8, 8 ) ) );
+    curva->attach( myPlot );
+}
+
+void Graficador::setearPuntos(int pos_curva, QVector<double> datos)
+{
+    // Busco la curva
+    QwtPlotCurve *curva = curvas->value( pos_curva );
+    if( curva != 0 ) {
+
+        QVector<QPointF> puntos;
+        for( int i=0; i<datos.size(); i++ ) {
+            puntos.append( QPointF( i, datos.at(i) ) );
+        }
+
+        curva->setSamples( puntos );
+        myPlot->replot();
+
+    } else {
+        abort();
+    }
+}
+
 void Graficador::cambiarColor()
 {
     switch( this->color ) {

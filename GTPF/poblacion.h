@@ -45,6 +45,9 @@ public:
 
     void setearMinMax( double min, double max ) { _min = min; _max = max; }
 
+    double minimoFitness() const { return _minimo_fitness; }
+    double maximoFitness() const { return _maximo_fitness; }
+
     void evaluarPoblacion();
     void seleccionarPadres();
     void generarHijos();
@@ -53,6 +56,8 @@ private:
     int _cantidad_total;
 
     double _mejor_fitness;
+    double _minimo_fitness;
+    double _maximo_fitness;
     int _pos_mejor_fitness;
 
     MetodoSeleccion _metodo_seleccion;
@@ -86,6 +91,8 @@ Poblacion<T>::Poblacion() : QVector<T>()
     _probabilidad_mutacion = 0;
     _min = 0.0;
     _max = 0.0;
+    _maximo_fitness = 0.0;
+    _minimo_fitness = 0.0;
 }
 
 template<typename T>
@@ -101,6 +108,8 @@ void Poblacion<T>::evaluarPoblacion()
     _fitness.clear();
     _fitness.resize( this->size() );
     _mejor_fitness = (-1.0)*DBL_MAX;
+    _maximo_fitness = (-1.0)*DBL_MAX;
+    _minimo_fitness = DBL_MAX;
     // recorro todo el vector y veo cual es el mejor valor
     for( int i=0; i<this->size(); i++ ) {
         double temp = evaluar( this->at( i ) );
@@ -111,6 +120,12 @@ void Poblacion<T>::evaluarPoblacion()
             _mejor_fitness = temp;
             //qDebug() << "Mejor Fitnes: " << _mejor_fitness;
             _pos_mejor_fitness = i;
+        }
+        if( temp < _minimo_fitness ) {
+            _minimo_fitness = temp;
+        }
+        if( temp >= _maximo_fitness ) {
+            _maximo_fitness = temp;
         }
         _fitness[i] = temp;
     }
