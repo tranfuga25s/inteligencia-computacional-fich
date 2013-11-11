@@ -51,7 +51,7 @@ double FFDWDH::evaluarGen( GenomaVidrio &Gen )
                 hacerCorte(pos_planchas,_piezas.at(i));
                 entro_existente = true;
                 pos_planchas = _planchas.size() + 1; // Salgo del for de barras
-                //regenerarOrden();
+                regenerarOrden();
             }
 
         }
@@ -67,7 +67,7 @@ double FFDWDH::evaluarGen( GenomaVidrio &Gen )
             // genero el corte que no se pudo generar
             hacerCorte(_planchas.size() - 1 ,_piezas.at(i) );
 
-            //regenerarOrden();
+            regenerarOrden();
         }
 
         regenerarOrden();
@@ -91,7 +91,7 @@ void FFDWDH::regenerarOrden()
     // Ordeno los largos
     QMap<double,int> orden;
     for( int i=0; i<_planchas.size(); i++ ) {
-        orden.insert( _planchas.at( i ).areaDisponible(), i );
+        orden.insertMulti( _planchas.at( i ).areaDisponible(), i );
     }
     _orden_plancha.clear();
     foreach( int p, orden.values() ) {
@@ -117,26 +117,18 @@ void FFDWDH::hacerCorte( int pos, Pieza pieza )
     else
     {
         //Casos que tengo un sobrante despues del corte
-        if((_planchas.at(pos).alto() - pieza.alto()) > 0 && (_planchas.at(pos).ancho() - pieza.ancho()) == 0) {
+        if((_planchas.at(pos).alto() - pieza.alto()) > 0) {
             //Redimensiono la actual segun lo que me sobra el la altura
             _planchas[pos].setearAlto( _planchas.at(pos).alto() - pieza.alto());
             _planchas[pos].setearAncho( pieza.ancho());
         }
         else
         {
-            if ((_planchas.at(pos).ancho() - pieza.ancho()) == 0 && (_planchas.at(pos).alto() - pieza.alto()) > 0) {
-                //Redimensiono la actual segun lo que me sobra el la ancho
-                _planchas[pos].setearAlto( pieza.alto() );
-                _planchas[pos].setearAncho( _planchas.at(pos).ancho() - pieza.ancho());
-            }
-            else
-            {
-                //Caso que la pieza ocupa toda la plancha y no sobra nada
-                _planchas.remove(pos);
-            }
+            //Caso que la pieza ocupa toda la plancha y no sobra nada
+            _planchas.remove(pos);
         }
     }
 
-    //regenerarOrden();
+    regenerarOrden();
 }
 

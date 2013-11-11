@@ -297,8 +297,30 @@ static int valor_random_int( int min, int max )
         int rango = max - min;
         return (aleatorio*rango) + min;
     }*/
-    return  ( qrand() % ( max - min) ) + min;
+    return  ( qrand() % ( max - min) )  + min;
 }
+
+/*!
+ * \brief valor_random
+ * Funcion para generar un valor aleatorio entre min y max
+ * \param min
+ * \param max
+ * \return
+ */
+static bool valor_random_cerouno()
+{
+    double aux = ((double)qrand() / (double)RAND_MAX);
+    if ( aux > 0.5 )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
+}
+
 
 /*!
  * \brief mostrarVector

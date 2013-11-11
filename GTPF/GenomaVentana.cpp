@@ -15,12 +15,13 @@ GenomaVentana::GenomaVentana(GenomaVentana& origin) {
     this->_genotipo = origin.getGenotipo();
 }
 
+//Genera TODOS 0
 void GenomaVentana::iniciarRandomizado()
 {
     _genotipo.clear();
     for( int i=0; i<_fenotipo.size(); i++ ) {
-        for( int k=0; k<bits*2; k++ ) {
-             _genotipo.append( valor_random_int(0,1) );
+        for( int k=0; k<bits+bits; k++ ) {
+            _genotipo.append(valor_random_cerouno());
         }
     }
 }
@@ -31,6 +32,7 @@ GenomaVentana::GenomaVentana( const GenomaVentana& origin ) {
     this->_fenotipo = origin.getFenotipo();
     this->_genotipo = origin.getGenotipo();
 }
+
 
 void GenomaVentana::aFenotipo()
 {
@@ -50,7 +52,13 @@ void GenomaVentana::aFenotipo()
 
         desplazamiento += bits;
 
-        _fenotipo[j].setearAncho(temporal);
+        //Tendria que mapear el valor de temporal a un rango valido para el problema
+
+        temporal = temporal/ (pow(2,bits) -1);
+        double rangoAncho = _fenotipo.at(j).maxAncho() - _fenotipo.at(j).minAncho();
+
+
+        _fenotipo[j].setearAncho(temporal*rangoAncho + _fenotipo.at(j).minAncho());
 
         temporal = 0.0;
 
@@ -63,13 +71,22 @@ void GenomaVentana::aFenotipo()
 
         desplazamiento += bits;
 
-        _fenotipo[j].setearAlto(temporal);
+        //Tendria que mapear el valor de temporal a un rango valido para el problema
+
+        temporal = temporal/ (pow(2,bits) -1);
+        double rangoAlto = _fenotipo.at(j).maxAlto() - _fenotipo.at(j).minAlto();
+
+        _fenotipo[j].setearAlto(temporal*rangoAlto + _fenotipo.at(j).minAlto());
     }
 }
+
+//No se usa
 
 void GenomaVentana::aGenotipo()
 {
     int desplazamiento = 0;
+
+    _genotipo.resize(bits*_fenotipo.size());
 
     //Primero recorremos el fenotipo
     for(int j = 0 ; j < _fenotipo.size() ; j++) {

@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
         pob.append( temporal );
     }
 
-    pob.evaluarPoblacion();
+    pob.evaluarPoblacionVentana();
     a.processEvents();
 
     /// Sucede que el fitness que me devuelve evaluar ventana mientras mas cerca este de 0
@@ -174,43 +174,41 @@ int main(int argc, char *argv[])
     ///para que sea positivo es -y entonces tengo que invertir la escala aca para que pueda
     ///entrar al while
 
-    double mejor_fitness = (-1)*pob.mejorFitnes();
+    double mejor_fitness = pob.mejorFitnes();
 
 
     QVector<double> histFitness;
     QVector<int> histIteracion;
     QVector<double> histPromFitnes;
-    histFitness.append( (-1)*pob.mejorFitnes() );
+    histFitness.append( pob.mejorFitnes() );
     histIteracion.append( 0 );
-    histPromFitnes.append( (-1)*pob.mejorFitnes() );
+    histPromFitnes.append( pob.mejorFitnes() );
     grafFitnes->setearPuntos( histFitness, histIteracion );
     a.processEvents();
 
-    GenomaVentana pos_mejor_fitness;
+    //GenomaVentana pos_mejor_fitness;
     int generacion_mejor_fitness = 0;
 
 
-    while( (-1)*pob.mejorFitnes() <= fitnes_necesario
+    while( pob.mejorFitnes() <= fitnes_necesario
         && iteracciones <= iteracciones_maximas ) {
 
         pob.seleccionarPadres();
         a.processEvents();
 
-        pob.generarHijos();
+        pob.generarHijosVentana();
+        a.processEvents();
+
+        pob.evaluarPoblacionVentana();
         a.processEvents();
 
         iteracciones++;
 
-        //qDebug() << "Evaluacion de ventana Numero: " << iteracciones + 1;
-
-        pob.evaluarPoblacion();
-        a.processEvents();
-
-
+        //GRAFICOS -------------------------
 
         PBTiempo->setValue( iteracciones );
 
-        histFitness.append( (-1)*pob.mejorFitnes() );
+        histFitness.append( pob.mejorFitnes() );
         histIteracion.append( iteracciones );
         grafFitnes->setearPuntos( histFitness, histIteracion );
         a.processEvents();
@@ -219,8 +217,8 @@ int main(int argc, char *argv[])
         double sumatoria = 0.0;
         for( int i=0; i<pob.size(); i++ ) {
             y.append( i );
-            x.append( evaluar( pob.at( i ) ) );
-            sumatoria += (-1.0)*evaluar( pob.at( i ) );
+            x.append( evaluarVentana( pob.at( i ) ) );
+            sumatoria += evaluarVentana( pob.at( i ) );
         }
         sumatoria /=  pob.size();
         histPromFitnes.append( sumatoria );
@@ -230,24 +228,28 @@ int main(int argc, char *argv[])
 
         qDebug() << "Mejor Fitness historico: "<<mejor_fitness;
         qDebug() << "Mejor Fitness: "<<pob.mejorFitnes();
-        if( mejor_fitness <= (-1)*pob.mejorFitnes() ) {
+
+        //--------------------------------------
+
+        if( mejor_fitness <= pob.mejorFitnes() ) {
 
             qDebug() << "ENTRO a actualizar FITNESS VENTANA";
-            mejor_fitness = (-1)*pob.mejorFitnes();
-            pos_mejor_fitness = pob.elementoMinimo();
+            mejor_fitness = pob.mejorFitnes();
+            //pos_mejor_fitness = pob.elementoMinimo();
             generacion_mejor_fitness = iteracciones;
         }
+
+
         grafPromedio->setearPuntos( histPromFitnes, histIteracion );
         a.processEvents();
-        qDebug() << "Fin iteracción " << iteracciones;
 
     }
 
     qDebug() << endl << "RESULTADO FINAL: ";
 
 
-    qDebug() << "Mejor Fitness VENTANA: " << (-1)*mejor_fitness;
-    qDebug() << "Generacion: " <<  (-1)* generacion_mejor_fitness;
+    qDebug() << "Mejor Fitness VENTANA: " << mejor_fitness;
+    qDebug() << "Generacion: " <<  generacion_mejor_fitness;
 
     return a.exec();
 }
