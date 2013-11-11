@@ -106,10 +106,10 @@ void Poblacion<T>::evaluarPoblacion()
         double temp = evaluar( this->at( i ) );
         // VEO QUE ESTÉ BIEN ESTA FUNCION!
         temp = (-1.0)*temp;                                /// fit = -y
-        qDebug() << "Fitness:" << temp;
+        //qDebug() << "Fitness:" << temp;
         if( temp > _mejor_fitness ) {
             _mejor_fitness = temp;
-            qDebug() << "Mejor Fitnes: " << _mejor_fitness;
+            //qDebug() << "Mejor Fitnes: " << _mejor_fitness;
             _pos_mejor_fitness = i;
         }
         _fitness[i] = temp;

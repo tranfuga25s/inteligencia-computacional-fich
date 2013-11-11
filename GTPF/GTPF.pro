@@ -28,7 +28,7 @@ OTHER_FILES += parametros.cfg \
 INCLUDEPATH += ../util \
                ../GTP4/EJ1
 
-HEADERS += genomax.h \
+HEADERS += \
             ../util/graficadormdi.h \
             ../util/graficador.h \
             ../util/funciones_aux.h \

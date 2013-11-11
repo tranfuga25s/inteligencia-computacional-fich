@@ -45,7 +45,7 @@ double evaluar( GenomaVentana ventana ) {
         temp3.setearAncho( auxiliar.at(i).ancho() );
         temp3.setearCantidad( auxiliar.at(i).getCantidad() );
         piezas_vidrio.append( temp3 );
-        qDebug() << "Agregado template";
+        //qDebug() << "Agregados los templates";
     }
 
 //    //VIDRIOS
@@ -111,10 +111,12 @@ double evaluar( GenomaVentana ventana ) {
         }
 
     }
+    //Muestro
+    qDebug() << "Fitness Vidrio: " << (-1)*mejor_fitness_vidrio;
 
     //ALUMINIO
 
-  /*  qDebug() << endl <<"COMIENZA LA EVALUACION DEL FITNESS DE LAS BARRAS DE ALUMINIO";
+    qDebug() << endl <<"COMIENZA LA EVALUACION DEL FITNESS DE LAS BARRAS DE ALUMINIO";
 
     Poblacion<GenomaAluminio> poblacionAluminio;
 
@@ -149,48 +151,49 @@ double evaluar( GenomaVentana ventana ) {
         temp.setearTemplates( aluminios );
         temp.randomizar();
         poblacionAluminio.append( temp );
-        qDebug() << "Agregado gen de aluminio";
+        //qDebug() << "Agregado gen de aluminio";
     }
 
-    double mejor_fitness_aluminio = (-1.0)*DBL_MAX;
+
 
     poblacionAluminio.evaluarPoblacion();
-    qDebug() << "Fin de evaluacion inicial";
+    //qDebug() << "Fin de evaluacion inicial";
 
+    double mejor_fitness_aluminio = poblacionAluminio.mejorFitnes();
 
     GenomaAluminio pos_mejor_fitness_aluminio;
 
     while( poblacionAluminio.mejorFitnes() <= fitnes_necesarioA
            && iteraccionesA <= iteracciones_maximasA ) {
-        qDebug() << "Seleccion de padres";
+        //qDebug() << "Seleccion de padres";
         poblacionAluminio.seleccionarPadres();
-        qDebug() << "Generar hijos";
+        //qDebug() << "Generar hijos";
         poblacionAluminio.generarHijos();
-        qDebug() << "Evaluar poblacion";
+        //qDebug() << "Evaluar poblacion";
         poblacionAluminio.evaluarPoblacion();
 
         iteraccionesA++;
 
 
         if( mejor_fitness_aluminio <= poblacionAluminio.mejorFitnes() ) {
-            qDebug() << "Actualizado mejor fitness aluminio";
+            //qDebug() << "Actualizado mejor fitness aluminio";
             mejor_fitness_aluminio = poblacionAluminio.mejorFitnes();
             pos_mejor_fitness_aluminio = poblacionAluminio.elementoMinimo();
         }
-        qDebug() << "Iteración "<<iteraccionesA;
+        //qDebug() << "Iteración "<<iteraccionesA;
 
     }
-*/
+
+    //Muestro
+    qDebug() << "Fitness Aluminio: " << (-1)*mejor_fitness_aluminio;
+
 
     double fitness = 0.0;
-    //double c1 = parametrosA.value("c1").toDouble();
+    double c1 = parametrosA.value("c1").toDouble();
     double c2 = parametrosV.value("c2").toDouble();
-    fitness = /* c1 * mejor_fitness_aluminio*/ + c2 * mejor_fitness_vidrio;
+    fitness = c1 * mejor_fitness_aluminio + c2 * mejor_fitness_vidrio;
 
 
-
-    //qDebug() << "Fitness Aluminio: " << mejor_fitness_aluminio;
-    qDebug() << "Fitness Vidrio: " << mejor_fitness_vidrio;
    // qDebug() << "Fitness Total: " << fitness;
 
     return fitness;

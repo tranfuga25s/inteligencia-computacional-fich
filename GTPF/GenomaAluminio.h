@@ -67,9 +67,9 @@ static void cruza( GenomaAluminio &a1, GenomaAluminio &a2 )
         auxA.setearGenoma(posAuxA.at(i), a1.at(posAuxA.at(i)));
     }
     a1 = auxA;
-    a1.mostrarGenotipo();
+    //a1.mostrarGenotipo();
 
-    a2.mostrarGenotipo();
+    //a2.mostrarGenotipo();
     //AuxB
     //Generar un vector con los nuevos indices
     QVector<int> posAuxB = generarPosicionesAleatorias(pos,a2.size());
@@ -79,12 +79,12 @@ static void cruza( GenomaAluminio &a1, GenomaAluminio &a2 )
     }
 
     a2 = auxB;
-    a2.mostrarGenotipo();
+    //a2.mostrarGenotipo();
 }
 
 static void mutar(GenomaAluminio &a)
 {
-    qDebug() << "Mutacion!";
+    //qDebug() << "Mutacion!";
     a.mutar();
     a.mostrarGenotipo();
 }

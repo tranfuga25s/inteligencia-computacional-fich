@@ -119,7 +119,7 @@ void GenomaVentana::aGenotipo()
 
         desplazamiento += bits;
 
-        qDebug() << _genotipo;
+        //qDebug() << _genotipo;
 
 
     }

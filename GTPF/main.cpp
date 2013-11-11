@@ -217,7 +217,7 @@ int main(int argc, char *argv[])
         //grafPuntos->agregarCurva( x, y, QString( "Gen%1" ).arg( iteracciones ) );
 
         if( mejor_fitness <= pob.mejorFitnes() ) {
-            qDebug() << "ENTRO a actualizar";
+            qDebug() << "ENTRO a actualizar FITNESS VENTANA";
             mejor_fitness = pob.mejorFitnes();
             pos_mejor_fitness = pob.elementoMinimo();
             generacion_mejor_fitness = iteracciones;
@@ -226,7 +226,9 @@ int main(int argc, char *argv[])
 
     }
 
-//    qDebug() << "Mejor Fitness: " << mejor_fitness;
+    qDebug() << endl << "RESULTADO FINAL: ";
+
+    qDebug() << "Mejor Fitness VENTANA: " << mejor_fitness;
 //    qDebug() << "Generacion: " << generacion_mejor_fitness;
     return a.exec();
 }

@@ -83,5 +83,5 @@ void GenomaAluminio::mostrarGenotipo() {
     for( int i=0; i<_genotipo.size(); i++ ) {
         temp.append( QString::number( _genotipo.at( i ) ) ).append( ", " );
     }
-    qDebug() << temp;
+    //qDebug() << temp;
 }
