@@ -221,7 +221,7 @@ int main(int argc, char *argv[])
 
         double sumatoria = 0.0;
         for( int i=0; i<pob.size(); i++ ) {
-            sumatoria += evaluar( pob.at( i ) );
+            sumatoria += evaluarVentana( pob.at( i ) );
         }
         sumatoria /=  pob.size();
         histPromFitnes.append( sumatoria );
