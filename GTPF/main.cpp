@@ -166,7 +166,10 @@ int main(int argc, char *argv[])
         pob.append( temporal );
     }
 
+<<<<<<< HEAD
     //qDebug() << "Evaluacion de ventana Numero: " << iteracciones + 1;
+=======
+>>>>>>> f4659ff938b369158adb24389fa8609443f7698d
 
     pob.evaluarPoblacion();
     a.processEvents();
@@ -178,16 +181,23 @@ int main(int argc, char *argv[])
 
     double mejor_fitness = (-1)*pob.mejorFitnes();
 
+
     QVector<double> histFitness;
     QVector<int> histIteracion;
     QVector<double> histPromFitnes;
     histFitness.append( (-1)*pob.mejorFitnes() );
     histIteracion.append( 0 );
+<<<<<<< HEAD
     histPromFitnes.append( (-1)*pob.mejorFitnes() );
 
+=======
+    histPromFitnes.append( pob.mejorFitnes() );
+    grafFitnes->setearPuntos( histFitness, histIteracion );
+    a.processEvents();
+>>>>>>> f4659ff938b369158adb24389fa8609443f7698d
 
     GenomaVentana pos_mejor_fitness;
-    int generacion_mejor_fitness = -1;
+    int generacion_mejor_fitness = 0;
 
 
     while( (-1)*pob.mejorFitnes() <= fitnes_necesario
@@ -225,20 +235,34 @@ int main(int argc, char *argv[])
         sumatoria /=  pob.size();
         histPromFitnes.append( sumatoria );
         //grafPuntos->agregarCurva( x, y, QString( "Gen%1" ).arg( iteracciones ) );
+        a.processEvents();
 
+<<<<<<< HEAD
         if( mejor_fitness <= (-1)*pob.mejorFitnes() ) {
+=======
+        qDebug() << "Mejor Fitness historico: "<<mejor_fitness;
+        qDebug() << "Mejor Fitness: "<<pob.mejorFitnes();
+        if( pob.mejorFitnes() >= mejor_fitness ) {
+>>>>>>> f4659ff938b369158adb24389fa8609443f7698d
             qDebug() << "ENTRO a actualizar FITNESS VENTANA";
             mejor_fitness = (-1)*pob.mejorFitnes();
             pos_mejor_fitness = pob.elementoMinimo();
             generacion_mejor_fitness = iteracciones;
         }
         grafPromedio->setearPuntos( histPromFitnes, histIteracion );
+        a.processEvents();
+        qDebug() << "Fin iteracción " << iteracciones;
 
     }
 
     qDebug() << endl << "RESULTADO FINAL: ";
 
+<<<<<<< HEAD
     qDebug() << "Mejor Fitness VENTANA: " << (-1)*mejor_fitness;
 //    qDebug() << "Generacion: " << generacion_mejor_fitness;
+=======
+    qDebug() << "Mejor Fitness VENTANA: " << mejor_fitness;
+    qDebug() << "Generacion: " << generacion_mejor_fitness;
+>>>>>>> f4659ff938b369158adb24389fa8609443f7698d
     return a.exec();
 }
