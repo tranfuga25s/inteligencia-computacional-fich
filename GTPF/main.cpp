@@ -184,11 +184,11 @@ int main(int argc, char *argv[])
     QVector<double> histPromFitnes;
     QVector<double> histMaxFitnes;
     QVector<double> histMinFitnes;
-    histFitness.append( pob.mejorFitnes() );
+    histFitness.append( fabs( pob.mejorFitnes() ) );
     histIteracion.append( 0 );
-    histPromFitnes.append( pob.mejorFitnes() );
-    histMaxFitnes.append( pob.mejorFitnes() );
-    histMinFitnes.append( pob.mejorFitnes() );
+    histPromFitnes.append( fabs( pob.mejorFitnes() ) );
+    histMaxFitnes.append( fabs( pob.mejorFitnes() ) );
+    histMinFitnes.append( fabs( pob.mejorFitnes() ) );
     grafFitnes->setearPuntos( histFitness, histIteracion );
     a.processEvents();
 
@@ -214,26 +214,26 @@ int main(int argc, char *argv[])
 
         PBTiempo->setValue( iteracciones );
 
-        histFitness.append( pob.mejorFitnes() );
+        histFitness.append( fabs( pob.mejorFitnes() ) );
         histIteracion.append( iteracciones );
         grafFitnes->setearPuntos( histFitness, histIteracion );
         a.processEvents();
 
         double sumatoria = 0.0;
         for( int i=0; i<pob.size(); i++ ) {
-            sumatoria += evaluarVentana( pob.at( i ) );
+            sumatoria += fabs( evaluarVentana( pob.at( i ) ) );
         }
         sumatoria /=  pob.size();
         histPromFitnes.append( sumatoria );
-        histMaxFitnes.append( pob.maximoFitness() );
-        histMinFitnes.append( pob.minimoFitness() );
+        histMaxFitnes.append( fabs(pob.maximoFitness()) );
+        histMinFitnes.append( fabs(pob.minimoFitness()) );
         grafPromedio->setearPuntos( 0, histPromFitnes );
         grafPromedio->setearPuntos( 1, histMaxFitnes );
         grafPromedio->setearPuntos( 2, histMinFitnes );
         a.processEvents();
 
         qDebug() << "Mejor Fitness historico: "<<mejor_fitness;
-        qDebug() << "Mejor Fitness: "<<pob.mejorFitnes();
+        qDebug() << "Mejor Fitness: "<<fabs( pob.mejorFitnes() );
 
         //--------------------------------------
 
