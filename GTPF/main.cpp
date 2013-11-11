@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
     mdiArea->tileSubWindows();*/
 
     GraficadorMdi *grafFitnes = new GraficadorMdi( mdiArea );
-    grafFitnes->setearTitulo( QString::fromUtf8( "Evolucion Mejor Fitness" ) );
+    grafFitnes->setearTitulo( QString::fromUtf8( "Evolucion Fitness" ) );
     grafFitnes->setearTituloEjeX( QString::fromUtf8( "Generacion" ) );
     grafFitnes->setearTituloEjeY( QString::fromUtf8( "fitness" ) );
     mdiArea->addSubWindow( grafFitnes );

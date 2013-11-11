@@ -143,6 +143,8 @@ void Poblacion<T>::evaluarPoblacionVentana()
     _fitness.clear();
     _fitness.resize( this->size() );
     _mejor_fitness = (-1.0)*DBL_MAX;
+    _maximo_fitness = (-1.0)*DBL_MAX;
+    _minimo_fitness = DBL_MAX;
     // recorro todo el vector y veo cual es el mejor valor
     for( int i=0; i<this->size(); i++ ) {
         double temp = evaluarVentana( this->at( i ) );
@@ -153,6 +155,12 @@ void Poblacion<T>::evaluarPoblacionVentana()
             _mejor_fitness = temp;
             //qDebug() << "Mejor Fitnes: " << _mejor_fitness;
             _pos_mejor_fitness = i;
+        }
+        if( temp < _minimo_fitness ) {
+            _minimo_fitness = temp;
+        }
+        if( temp >= _maximo_fitness ) {
+            _maximo_fitness = temp;
         }
         _fitness[i] = temp;
     }
