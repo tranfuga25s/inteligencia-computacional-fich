@@ -14,9 +14,9 @@
 #include "poblacion.h"
 
 
-double evaluar( GenomaVentana ventana ) {
+double evaluarVentana( GenomaVentana ventana ) {
 
-    qDebug() << endl << "ENTRA A LA EVALUACION DE FITNESS DE LA VENTANA";
+    //qDebug() << endl << "ENTRA A LA EVALUACION DE FITNESS DE LA VENTANA";
 
     QVector<TemplateAluminio> aluminios;
     QVector<TemplatePiezas> piezas_vidrio;
@@ -50,7 +50,7 @@ double evaluar( GenomaVentana ventana ) {
 
 //    //VIDRIOS
 
-    qDebug() << endl <<"COMIENZA LA EVALUACION DEL FITNESS DE LAS PLANCHAS DE VIDRIO";
+    //qDebug() << endl <<"COMIENZA LA EVALUACION DEL FITNESS DE LAS PLANCHAS DE VIDRIO";
 
     Poblacion<GenomaVidrio> poblacionVidrios;
 
@@ -113,11 +113,11 @@ double evaluar( GenomaVentana ventana ) {
 
     }
     //Muestro
-    qDebug() << "Fitness Vidrio: " << (-1)*mejor_fitness_vidrio;
+    //qDebug() << "Fitness Vidrio: " << mejor_fitness_vidrio;
 
     //ALUMINIO
 
-    qDebug() << endl <<"COMIENZA LA EVALUACION DEL FITNESS DE LAS BARRAS DE ALUMINIO";
+    //qDebug() << endl <<"COMIENZA LA EVALUACION DEL FITNESS DE LAS BARRAS DE ALUMINIO";
 
     Poblacion<GenomaAluminio> poblacionAluminio;
 
@@ -160,6 +160,8 @@ double evaluar( GenomaVentana ventana ) {
     poblacionAluminio.evaluarPoblacion();
     //qDebug() << "Fin de evaluacion inicial";
 
+    //VER!!!
+
     double mejor_fitness_aluminio = poblacionAluminio.mejorFitnes();
 
     GenomaAluminio pos_mejor_fitness_aluminio;
@@ -186,13 +188,13 @@ double evaluar( GenomaVentana ventana ) {
     }
 
     //Muestro
-    qDebug() << "Fitness Aluminio: " << (-1)*mejor_fitness_aluminio;
+    //qDebug() << "Fitness Aluminio: " << mejor_fitness_aluminio;
 
 
     double fitness = 0.0;
-    double c1 = parametrosA.value("c1").toDouble();
-    double c2 = parametrosV.value("c2").toDouble();
-    fitness = c1 * mejor_fitness_aluminio + c2 * mejor_fitness_vidrio;
+    double c1 = parametrosA.value("c1",1.0).toDouble();
+    double c2 = parametrosV.value("c2",1.0).toDouble();
+    fitness = (-1.0)*(c1*fabs(mejor_fitness_aluminio) + c2*fabs(mejor_fitness_vidrio));
 
 
     //qDebug() << "Fitness Total: " << fitness;

@@ -49,8 +49,10 @@ public:
     double maximoFitness() const { return _maximo_fitness; }
 
     void evaluarPoblacion();
+    void evaluarPoblacionVentana();
     void seleccionarPadres();
     void generarHijos();
+    void generarHijosVentana();
 
 private:
     int _cantidad_total;
@@ -133,6 +135,32 @@ void Poblacion<T>::evaluarPoblacion()
         abort();
     }
 }
+
+
+template<typename T>
+void Poblacion<T>::evaluarPoblacionVentana()
+{
+    _fitness.clear();
+    _fitness.resize( this->size() );
+    _mejor_fitness = (-1.0)*DBL_MAX;
+    // recorro todo el vector y veo cual es el mejor valor
+    for( int i=0; i<this->size(); i++ ) {
+        double temp = evaluarVentana( this->at( i ) );
+        // VEO QUE ESTÉ BIEN ESTA FUNCION!
+//        temp = (-1.0)*temp;                                /// fit = -y
+        //qDebug() << "Fitness:" << temp;
+        if( temp > _mejor_fitness ) {
+            _mejor_fitness = temp;
+            //qDebug() << "Mejor Fitnes: " << _mejor_fitness;
+            _pos_mejor_fitness = i;
+        }
+        _fitness[i] = temp;
+    }
+    if( _pos_mejor_fitness == -1 ) {
+        abort();
+    }
+}
+
 
 template<typename T>
 void Poblacion<T>::seleccionarPadres()
@@ -370,5 +398,73 @@ void Poblacion<T>::generarHijos()
 
     }
 }
+
+template<typename T>
+void Poblacion<T>::generarHijosVentana()
+{
+
+    this->clear();
+    _pos_mejor_fitness = -1;
+
+    if( _elitismo ) {
+        this->append( _nuevos_padres.at( 0 ) );
+        _pos_mejor_fitness = 0;
+        _mejor_fitness = evaluarVentana( this->at( 0 ) );
+    }
+
+    // Genero la brecha generacional copiando los padres para convervar las buenas soluciones
+    int brecha = floor( this->_cantidad_total * this->_brecha_generacional );
+    if( brecha > _nuevos_padres.size() ) {
+        brecha = _nuevos_padres.size();
+    }
+    for( int i=0; i<brecha; i++ ) {
+        this->append( _nuevos_padres.at( i ) );
+    }
+
+    while( this->size() < _cantidad_total ) {
+
+
+        int p1 = valor_random_int( 0, _nuevos_padres.size() );
+        int p2 = valor_random_int( 0, _nuevos_padres.size() );
+        while( p1 == p2 ) {
+            p2 = valor_random_int( 0, _nuevos_padres.size() );
+        }
+
+
+        T hijo1 = _nuevos_padres.at( p1 );
+        T hijo2 = _nuevos_padres.at( p2 );
+
+        //CRUZAS
+
+        int  prob0 = valor_random_int( 0, 100 );
+
+        if( prob0 != 0 && prob0 <=  _probabilidad_cruza ) {
+            //Hay Cruza
+            cruza( hijo1, hijo2 );
+            //qDebug() << "cruza";
+        }
+
+        //En el caso de que no haya cruza podria dejar los mismos padres y listo?
+
+        int  prob1 = valor_random_int( 0, 100 );
+        int  prob2 = valor_random_int( 0, 100 );
+
+
+        //MUTACIONES
+        if( prob1 != 0 && prob1 <= _probabilidad_mutacion ) {
+            mutar( hijo1 );
+            //qDebug() << "mutacion";
+        }
+        if( prob2 != 0 && prob2 <= _probabilidad_mutacion ) {
+            mutar( hijo2 );
+            //qDebug() << "mutacion";
+        }
+
+        this->append( hijo1 );
+        this->append( hijo2 );
+
+    }
+}
+
 
 #endif // POBLACION_H
