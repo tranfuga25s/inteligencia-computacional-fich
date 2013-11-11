@@ -44,7 +44,7 @@ void GenomaVentana::aFenotipo()
         //Ancho
         for( int i=bits-1; i>=0; i-- ) {
             if (_genotipo.at(i + desplazamiento)) {
-                temporal += pow( 2.0, ( bits ) - i );
+                temporal += pow( 2.0, ( bits - 1) - i );
             }
         }
 
@@ -57,7 +57,7 @@ void GenomaVentana::aFenotipo()
         //Alto
         for( int i=bits-1; i>=0; i-- ) {
             if (_genotipo.at(i + desplazamiento)) {
-                temporal += pow( 2.0, ( bits ) - i );
+                temporal += pow( 2.0, ( bits - 1 ) - i );
             }
         }
 
@@ -82,9 +82,9 @@ void GenomaVentana::aGenotipo()
 
 
         //Ancho decimales
-        double ancho_decimal = (pow(2,bits) - 1.0) * (ancho_aux - min_ancho) / (max_ancho - min_ancho);
+        double ancho_decimal = (pow(2,bits -1) - 1.0) * (ancho_aux - min_ancho) / (max_ancho - min_ancho);
 
-        for (int i = bits ; i >= 0 ; i--) {
+        for (int i = bits -1 ; i >= 0 ; i--) {
             if( fmod( ancho_decimal, 2.0 ) == 1.0) {
                 _genotipo[i + desplazamiento] = true;
             }
@@ -101,9 +101,9 @@ void GenomaVentana::aGenotipo()
         desplazamiento += bits;
 
         //Alto decimal
-        double alto_decimal = (pow(2,bits) - 1.0) * (alto_aux - min_alto) / (max_alto - min_alto);
+        double alto_decimal = (pow(2,bits -1) - 1.0) * (alto_aux - min_alto) / (max_alto - min_alto);
 
-        for (int i = bits ; i >= 0 ; i--) {
+        for (int i = bits -1 ; i >= 0 ; i--) {
             if( fmod( alto_decimal, 2.0 ) == 1.0) {
                 _genotipo[i + desplazamiento] = true;
             }
