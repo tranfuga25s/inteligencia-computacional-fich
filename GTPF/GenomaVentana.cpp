@@ -161,3 +161,21 @@ double GenomaVentana::costoTotal( double costo_vidrio, double costo_aluminio )
 
     return costo_total;
 }
+
+/*!
+ * \brief GenomaVentana::mostrarTabla
+ * \return
+ */
+double GenomaVentana::mostrarTabla()
+{
+    qDebug() << "Tamaños finales elegidos: ";
+    qDebug() << "+------+-----------------+-----------+------------+";
+    qDebug() << "| Tipo |  Nombre         |  ancho    |    alto    |";
+    qDebug() << "+------+-----------------+-----------+------------+";
+    foreach( TemplateVentana templ, _fenotipo ) {
+        qDebug() << "| " << templ.tipo() << " | " << templ.nombre() << " | "
+                 << templ.ancho() << " | " << temp.alto() << " | ";
+
+    }
+    qDebug() << "+------+-----------------+-----------+------------+";
+}

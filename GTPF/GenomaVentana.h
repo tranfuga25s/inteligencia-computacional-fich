@@ -29,6 +29,7 @@ public:
     double largo();
 
     double costoTotal(double costo_vidrio, double costo_aluminio);
+    double mostrarTabla();
 
 private:
     QVector<TemplateVentana> _fenotipo;

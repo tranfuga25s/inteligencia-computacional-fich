@@ -266,5 +266,7 @@ int main(int argc, char *argv[])
     qDebug() << "Costo desperdicio: $ " << mejor_fitness;
     qDebug() << "Ganancia: $ " << costo_total - parametros.value( "costo_total", 63541.29 ).toDouble();
 
+    ventana_mejor_fitness.mostrarTabla();
+
     return a.exec();
 }
