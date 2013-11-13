@@ -144,7 +144,9 @@ void GenomaVentana::aGenotipo()
 
 /*!
  * \brief GenomaVentana::costoTotal
- * \return
+ * \param costo_vidrio Costo del metro cuadrado de vidrio
+ * \param costo_aluminio Costo del metro lineal de aluminio
+ * \return costo total de la ventana evaluada
  */
 double GenomaVentana::costoTotal( double costo_vidrio, double costo_aluminio )
 {
@@ -169,13 +171,13 @@ double GenomaVentana::costoTotal( double costo_vidrio, double costo_aluminio )
 double GenomaVentana::mostrarTabla()
 {
     qDebug() << "Tamaños finales elegidos: ";
-    qDebug() << "+------+-----------------+-----------+------------+";
-    qDebug() << "| Tipo |  Nombre         |  ancho    |    alto    |";
-    qDebug() << "+------+-----------------+-----------+------------+";
+    qDebug() << "+------+---------+--------+-------+";
+    qDebug() << "| Tipo |  Nombre | ancho  | alto  |";
+    qDebug() << "+------+---------+--------+-------+";
     foreach( TemplateVentana templ, _fenotipo ) {
         qDebug() << "| " << templ.tipo() << " | " << templ.nombre() << " | "
                  << templ.ancho() << " | " << templ.alto() << " | ";
 
     }
-    qDebug() << "+------+-----------------+-----------+------------+";
+    qDebug() << "+------+---------+--------+-------+";
 }

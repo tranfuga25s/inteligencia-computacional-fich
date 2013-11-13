@@ -263,8 +263,8 @@ int main(int argc, char *argv[])
 
     double costo_total = ventana_mejor_fitness.costoTotal( costo_vidrio, costo_aluminio );
     qDebug() << "Costo total de aluminio+vidrio: $ " << costo_total;
-    qDebug() << "Costo desperdicio: $ " << mejor_fitness;
-    double ganancia = costo_total - parametros.value( "costo_total", 63541.29 ).toDouble();
+    qDebug() << "Costo desperdicio: $ " << (-1.0)*mejor_fitness;
+    double ganancia = ( costo_total + (-1.0)*mejor_fitness ) - parametros.value( "costo_total", 63541.29 ).toDouble();
     qDebug() << "Ganancia: $ " << ganancia;
 
     ventana_mejor_fitness.mostrarTabla();
