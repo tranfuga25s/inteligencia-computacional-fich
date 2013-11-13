@@ -6,8 +6,8 @@
 #include "funciones_aux.h"
 #include <QDebug>
 
-//HARDCODING!
-#define bits 12
+//Precicion para los altos y anchos
+#define bits 7
 
 class GenomaVentana {
 public:

@@ -128,7 +128,7 @@ QVector<QPointF> SOM::obtenerPuntos()
             temp.append( punto );
         }
     }
-    qSort( temp.begin(), temp.end(), SOM::menorque );
+    //qSort( temp.begin(), temp.end(), SOM::menorque );
     return temp;
 }
 

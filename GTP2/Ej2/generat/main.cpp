@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
         temp2.pop_front();
         nombre_archivo = temp2.first();
     } else {
-        nombre_archivo = "t.csv";
+        nombre_archivo = "../t.csv";
     }
 
     if( parametros.filter( "cantidad_puntos" ).size() != 0 ) {
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
         cant_puntos = temp2.first().toInt();
     } else {
         qDebug() << "NO se especifico el parametro cantidad_puntos, utilizando 100";
-        cant_puntos = 100;
+        cant_puntos = 2000;
     }
 
     // Busco el radio

@@ -233,18 +233,18 @@ int main(int argc, char *argv[])
         a.processEvents();
 
         qDebug() << "Mejor Fitness historico: "<<mejor_fitness;
-        qDebug() << "Mejor Fitness: "<<pob.mejorFitnes();
+        qDebug() << "Mejor Fitness de la iteracion actual: "<<pob.mejorFitnes();
 
         //--------------------------------------
 
         if( mejor_fitness <= pob.mejorFitnes() ) {
 
-            qDebug() << "ENTRO a actualizar FITNESS VENTANA";
+            //qDebug() << "ENTRO a actualizar FITNESS VENTANA";
             mejor_fitness = pob.mejorFitnes();
             //pos_mejor_fitness = pob.elementoMinimo();
             generacion_mejor_fitness = iteracciones;
         }
-        qDebug() << "Fin iteracción " << iteracciones;
+       // qDebug() << "Fin iteracción " << iteracciones;
 
 
         grafPromedio->setearPuntos( histPromFitnes, histIteracion );
@@ -254,8 +254,8 @@ int main(int argc, char *argv[])
     qDebug() << endl << "RESULTADO FINAL: ";
 
 
-    qDebug() << "Mejor Fitness VENTANA: " << mejor_fitness;
-    qDebug() << "Generacion: " <<  generacion_mejor_fitness;
+    qDebug() << "Fitness Final de la Ventana: " << mejor_fitness;
+    qDebug() << "Generacion de la Evolucion Ganadora: " <<  generacion_mejor_fitness;
 
     return a.exec();
 }

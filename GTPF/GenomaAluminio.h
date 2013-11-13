@@ -7,8 +7,6 @@
 //#include "TemplatePiezas.h"
 #include "FFDW.h"
 
-//HARDCODING!
-#define bits 12
 
 class GenomaAluminio {
 public:
