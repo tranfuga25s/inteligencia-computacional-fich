@@ -174,7 +174,7 @@ double GenomaVentana::mostrarTabla()
     qDebug() << "+------+-----------------+-----------+------------+";
     foreach( TemplateVentana templ, _fenotipo ) {
         qDebug() << "| " << templ.tipo() << " | " << templ.nombre() << " | "
-                 << templ.ancho() << " | " << temp.alto() << " | ";
+                 << templ.ancho() << " | " << templ.alto() << " | ";
 
     }
     qDebug() << "+------+-----------------+-----------+------------+";
