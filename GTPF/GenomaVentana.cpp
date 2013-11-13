@@ -142,3 +142,22 @@ void GenomaVentana::aGenotipo()
     }
 }
 
+/*!
+ * \brief GenomaVentana::costoTotal
+ * \return
+ */
+double GenomaVentana::costoTotal( double costo_vidrio, double costo_aluminio )
+{
+    // Recorro la ventana y reconvierto a costo
+    double costo_total = 0.0;
+
+    foreach( TemplateVentana templ, _fenotipo ) {
+
+        costo_total += 2.0 * costo_aluminio * templ.alto();
+        costo_total += 2.0 * costo_aluminio * templ.ancho();
+
+        costo_total += costo_vidrio * ( templ.ancho() * templ.alto() );
+    }
+
+    return costo_total;
+}

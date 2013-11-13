@@ -28,6 +28,8 @@ public:
 
     double largo();
 
+    double costoTotal(double costo_vidrio, double costo_aluminio);
+
 private:
     QVector<TemplateVentana> _fenotipo;
     QVector<bool> _genotipo;

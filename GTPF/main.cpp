@@ -192,7 +192,7 @@ int main(int argc, char *argv[])
     grafFitnes->setearPuntos( histFitness, histIteracion );
     a.processEvents();
 
-    //GenomaVentana pos_mejor_fitness;
+    GenomaVentana ventana_mejor_fitness;
     int generacion_mejor_fitness = 0;
 
 
@@ -241,7 +241,7 @@ int main(int argc, char *argv[])
 
             //qDebug() << "ENTRO a actualizar FITNESS VENTANA";
             mejor_fitness = pob.mejorFitnes();
-            //pos_mejor_fitness = pob.elementoMinimo();
+            ventana_mejor_fitness = pob.elementoMinimo();
             generacion_mejor_fitness = iteracciones;
         }
        // qDebug() << "Fin iteracción " << iteracciones;
@@ -253,9 +253,18 @@ int main(int argc, char *argv[])
 
     qDebug() << endl << "RESULTADO FINAL: ";
 
+    QSettings pref2( "parametrosAluminio.cfg", QSettings::IniFormat );
+    double costo_aluminio = pref2.value( "c1", 400.0 ).toDouble();
+    QSettings pref3( "parametrosVidrio.cfg", QSettings::IniFormat );
+    double costo_vidrio = pref3.value( "c2", 1638.0 ).toDouble();
 
     qDebug() << "Fitness Final de la Ventana: " << mejor_fitness;
     qDebug() << "Generacion de la Evolucion Ganadora: " <<  generacion_mejor_fitness;
+
+    double costo_total = ventana_mejor_fitness.costoTotal( costo_vidrio, costo_aluminio );
+    qDebug() << "Costo total de aluminio+vidrio: $ " << costo_total;
+    qDebug() << "Costo desperdicio: $ " << mejor_fitness;
+    qDebug() << "Ganancia: $ " << costo_total - parametros.value( "costo_total", 63541.29 ).toDouble();
 
     return a.exec();
 }
