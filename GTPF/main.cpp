@@ -168,6 +168,10 @@ int main(int argc, char *argv[])
         pob.append( temporal );
     }
 
+    //Mido el tiempo para ver cuanto dura en total
+    QElapsedTimer medidor_tiempo;
+    medidor_tiempo.start();
+
     pob.evaluarPoblacionVentana();
     a.processEvents();
 
@@ -253,10 +257,14 @@ int main(int argc, char *argv[])
 
     qDebug() << endl << "RESULTADO FINAL: ";
 
+    qint64 milisegundos = medidor_tiempo.elapsed();
+
+    qDebug() << "Tiempo medido: " << milisegundos << " ms";
+
     QSettings pref2( "parametrosAluminio.cfg", QSettings::IniFormat );
-    double costo_aluminio = pref2.value( "c1", 400.0 ).toDouble();
+    double costo_aluminio = pref2.value( "costo_aluminio", 40.0 ).toDouble();
     QSettings pref3( "parametrosVidrio.cfg", QSettings::IniFormat );
-    double costo_vidrio = pref3.value( "c2", 1638.0 ).toDouble();
+    double costo_vidrio = pref3.value( "costo_vidrio", 182.0 ).toDouble();
 
     qDebug() << "Fitness Final de la Ventana: " << mejor_fitness;
     qDebug() << "Generacion de la Evolucion Ganadora: " <<  generacion_mejor_fitness;
@@ -264,8 +272,8 @@ int main(int argc, char *argv[])
     double costo_total = ventana_mejor_fitness.costoTotal( costo_vidrio, costo_aluminio );
     qDebug() << "Costo total de aluminio+vidrio: $ " << costo_total;
     qDebug() << "Costo desperdicio: $ " << (-1.0)*mejor_fitness;
-    double ganancia = ( costo_total + (-1.0)*mejor_fitness ) - parametros.value( "costo_total", 63541.29 ).toDouble();
-    qDebug() << "Ganancia: $ " << ganancia;
+    //double ganancia = ( costo_total + (-1.0)*mejor_fitness ) - parametros.value( "costo_total", 63541.29 ).toDouble() ;
+    //qDebug() << "Ganancia: $ " << ganancia;
 
     ventana_mejor_fitness.mostrarTabla();
 
