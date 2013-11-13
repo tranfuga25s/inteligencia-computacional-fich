@@ -153,10 +153,10 @@ double GenomaVentana::costoTotal( double costo_vidrio, double costo_aluminio )
 
     foreach( TemplateVentana templ, _fenotipo ) {
 
-        costo_total += 2.0 * costo_aluminio * templ.alto();
-        costo_total += 2.0 * costo_aluminio * templ.ancho();
+        costo_total += 2.0 * costo_aluminio * templ.alto() * templ.getCantidad();
+        costo_total += 2.0 * costo_aluminio * templ.ancho() * templ.getCantidad();
 
-        costo_total += costo_vidrio * ( templ.ancho() * templ.alto() );
+        costo_total += costo_vidrio * ( templ.ancho() * templ.alto() ) * templ.getCantidad();
     }
 
     return costo_total;
