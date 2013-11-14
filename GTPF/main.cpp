@@ -24,7 +24,7 @@ typedef QVector< QVector<double> > matriz;
 
 #include "graficadormdi.h"
 #include "evaluarVentana.h"
-#include "poblacion.h"
+#include "PoblacionVentanas.h"
 #include "GenomaVentana.h"
 
 /*!
@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
     a.processEvents();
 
     // Inicializo la poblacion
-    Poblacion<GenomaVentana> pob;
+    PoblacionVentanas pob;
     int cant_total = parametros.value( "cantidad_elementos" ).toInt();
     pob.setearTotal( cant_total );
 
@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
     pob.setearBrechaGeneracional( parametros.value( "brecha_generacional" ).toDouble() );
     pob.setearProbabilidadMutacion( parametros.value( "probabilidad_mutacion").toDouble() );
     pob.setearProbabilidadCruza( parametros.value( "probabilidad_cruza").toDouble() );
-    pob.setearModoSeleccionPadres( (Poblacion<GenomaVentana>::MetodoSeleccion)parametros.value( "metodo_seleccion" ).toInt() );
+    pob.setearModoSeleccionPadres( (PoblacionVentanas::MetodoSeleccion)parametros.value( "metodo_seleccion" ).toInt() );
     pob.setearPorcentajeCantidadDePadres( parametros.value( "cantidad_padres" ).toDouble() );
 
     double fitnes_necesario = parametros.value( "fitnes_necesario", 0.0 ).toDouble();

@@ -2,6 +2,7 @@ QT       += core widgets sql
 TARGET = GTPF
 CONFIG   += console
 CONFIG   += qwt
+QT += concurrent
 
 TEMPLATE = app
 
@@ -46,4 +47,5 @@ HEADERS += \
             GenomaVidrio.h \
             evaluarVidrio.h \
             evaluarAluminio.h \
-            GenomaAluminio.h
+            GenomaAluminio.h \
+    PoblacionVentanas.h
