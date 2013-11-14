@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 
     while( poblacionAluminio.mejorFitnes() <= fitnes_necesarioA
            && iteraccionesA <= iteracciones_maximasA ) {
-        qDebug() << "Reiniciado ---------------------------------------------------------";
+
         poblacionAluminio.seleccionarPadres();
         poblacionAluminio.generarHijos();
         poblacionAluminio.evaluarPoblacion();
@@ -92,9 +92,8 @@ int main(int argc, char *argv[])
         iteraccionesA++;
 
         qDebug() << "Fitness: "<<poblacionAluminio.mejorFitnes();
-        if( poblacionAluminio.mejorFitnes() >= mejor_fitness_aluminio ) {
+        if( poblacionAluminio.mejorFitnes() > mejor_fitness_aluminio ) {
             mejor_fitness_aluminio = poblacionAluminio.mejorFitnes();
-            qDebug() << " ------------------------------->  Fitness Actualizado " << mejor_fitness_aluminio;
             pos_mejor_fitness_aluminio = poblacionAluminio.elementoMinimo();
             generacion_mejor_fitness = iteraccionesA;
         }
