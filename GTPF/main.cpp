@@ -16,6 +16,7 @@
 #include <QDebug>
 #include <QMdiSubWindow>
 #include <QTableView>
+#include <QtConcurrentRun>
 
 #include "iostream"
 

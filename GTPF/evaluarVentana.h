@@ -11,8 +11,8 @@
 #include "FFDW.h"
 #include "FFDWDH.h"
 #include <QSettings>
-#include "poblacion.h"
-
+#include "PoblacionAluminio.h"
+#include "PoblacionVidrios.h"
 
 double evaluarVentana( GenomaVentana ventana ) {
 
@@ -52,7 +52,7 @@ double evaluarVentana( GenomaVentana ventana ) {
 
     //qDebug() << endl <<"COMIENZA LA EVALUACION DEL FITNESS DE LAS PLANCHAS DE VIDRIO";
 
-    Poblacion<GenomaVidrio> poblacionVidrios;
+    PoblacionVidrio poblacionVidrios;
 
     // Cargo los parametros del ejercicio
     QSettings parametrosV( "parametrosVidrio.cfg", QSettings::IniFormat );
@@ -64,7 +64,7 @@ double evaluarVentana( GenomaVentana ventana ) {
     poblacionVidrios.setearBrechaGeneracional( parametrosV.value( "brecha_generacional" ).toDouble() );
     poblacionVidrios.setearProbabilidadMutacion( parametrosV.value( "probabilidad_mutacion").toDouble() );
     poblacionVidrios.setearProbabilidadCruza( parametrosV.value( "probabilidad_cruza").toDouble() );
-    poblacionVidrios.setearModoSeleccionPadres( (Poblacion<GenomaVidrio>::MetodoSeleccion) parametrosV.value( "metodo_seleccion" ).toInt() );
+    poblacionVidrios.setearModoSeleccionPadres( (PoblacionVidrio::MetodoSeleccion) parametrosV.value( "metodo_seleccion" ).toInt() );
     poblacionVidrios.setearPorcentajeCantidadDePadres( parametrosV.value( "cantidad_padres" ).toDouble() );
 
     double fitnes_necesarioV = parametrosV.value( "fitnes_necesario", 0.0 ).toDouble();
@@ -119,7 +119,7 @@ double evaluarVentana( GenomaVentana ventana ) {
 
     //qDebug() << endl <<"COMIENZA LA EVALUACION DEL FITNESS DE LAS BARRAS DE ALUMINIO";
 
-    Poblacion<GenomaAluminio> poblacionAluminio;
+    PoblacionAluminio poblacionAluminio;
 
     // Cargo los parametros del ejercicio
     QSettings parametrosA( "parametrosAluminio.cfg", QSettings::IniFormat );
@@ -131,7 +131,7 @@ double evaluarVentana( GenomaVentana ventana ) {
     poblacionAluminio.setearBrechaGeneracional( parametrosA.value( "brecha_generacional" ).toDouble() );
     poblacionAluminio.setearProbabilidadMutacion( parametrosA.value( "probabilidad_mutacion").toDouble() );
     poblacionAluminio.setearProbabilidadCruza( parametrosA.value( "probabilidad_cruza").toDouble() );
-    poblacionAluminio.setearModoSeleccionPadres( (Poblacion<GenomaAluminio>::MetodoSeleccion)parametrosA.value( "metodo_seleccion" ).toInt() );
+    poblacionAluminio.setearModoSeleccionPadres( (PoblacionAluminio::MetodoSeleccion)parametrosA.value( "metodo_seleccion" ).toInt() );
     poblacionAluminio.setearPorcentajeCantidadDePadres( parametrosA.value( "cantidad_padres" ).toDouble() );
 
 

@@ -4,7 +4,7 @@
 #include "GenomaVidrio.h"
 #include "FFDWDH.h"
 
-static double evaluar( GenomaVidrio gen )
+static double evaluarVidrio( GenomaVidrio gen )
 {
     //qDebug() << "Procesando...";
     return gen.getEvaluador()->evaluarGen( gen );

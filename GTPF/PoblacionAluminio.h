@@ -1,5 +1,5 @@
-#ifndef POBLACIONVENTANAS_H
-#define POBLACIONVENTANAS_H
+#ifndef POBLACIONALUMINIO_H
+#define POBLACIONALUMINIO_H
 
 #include <QVector>
 #include <QMap>
@@ -8,9 +8,9 @@
 
 #include "funciones_aux.h"
 
-#include "GenomaVentana.h"
+#include "GenomaAluminio.h"
 
-class PoblacionVentanas : public QVector<GenomaVentana>
+class PoblacionAluminio : public QVector<GenomaAluminio>
 {
 
 public:
@@ -21,7 +21,7 @@ public:
         Torneo = 3
     };
 
-    PoblacionVentanas();
+    PoblacionAluminio();
 
     void setearTotal( int cantidad_total );
     int totalPoblacion() const { return _cantidad_total; }
@@ -33,7 +33,7 @@ public:
     int modoSeleccionPadres() const { return _metodo_seleccion; }
 
     double mejorFitnes() const { return _mejor_fitness; }
-    GenomaVentana elementoMinimo() { return this->at( _pos_mejor_fitness ); }
+    GenomaAluminio elementoMinimo() { return this->at( _pos_mejor_fitness ); }
 
     void setearBrechaGeneracional( double valor ) { _brecha_generacional = valor; }
     double brechaGeneracional() const { return _brecha_generacional; }
@@ -52,9 +52,9 @@ public:
     double minimoFitness() const { return _minimo_fitness; }
     double maximoFitness() const { return _maximo_fitness; }
 
-    void evaluarPoblacionVentana();
+    void evaluarPoblacion();
     void seleccionarPadres();
-    void generarHijosVentana();
+    void generarHijos();
 
 private:
     int _cantidad_total;
@@ -76,7 +76,7 @@ private:
     double _min;
 
     QVector<double> _fitness;
-    QVector<GenomaVentana> _nuevos_padres;
+    QVector<GenomaAluminio> _nuevos_padres;
 
     void ruleta();
     void ventaneo();
@@ -84,7 +84,7 @@ private:
 
 };
 
-PoblacionVentanas::PoblacionVentanas() : QVector<GenomaVentana>()
+PoblacionAluminio::PoblacionAluminio() : QVector<GenomaAluminio>()
 {
     _elitismo = false;
     _cantidad_total = 0.0;
@@ -99,13 +99,13 @@ PoblacionVentanas::PoblacionVentanas() : QVector<GenomaVentana>()
 }
 
 
-void PoblacionVentanas::setearTotal( int cantidad_total )
+void PoblacionAluminio::setearTotal( int cantidad_total )
 {
     _cantidad_total = cantidad_total;
     _fitness.resize( _cantidad_total );
 }
 
-void PoblacionVentanas::evaluarPoblacionVentana()
+void PoblacionAluminio::evaluarPoblacion()
 {
     _fitness.clear();
     _fitness.resize( this->size() );
@@ -113,7 +113,7 @@ void PoblacionVentanas::evaluarPoblacionVentana()
     _maximo_fitness = (-1.0)*DBL_MAX;
     _minimo_fitness = DBL_MAX;
 
-    _fitness = QtConcurrent::blockingMapped<QVector<double> >( *this, evaluarVentana );
+    _fitness = QtConcurrent::blockingMapped<QVector<double> >( *this, evaluarAluminio );
 
     // recorro todo el vector y veo cual es el mejor valor
     for( int i=0; i<this->size(); i++ ) {
@@ -141,7 +141,7 @@ void PoblacionVentanas::evaluarPoblacionVentana()
 
 
 
-void PoblacionVentanas::seleccionarPadres()
+void PoblacionAluminio::seleccionarPadres()
 {
     // inicializo el vector de padres a utilizar
     _nuevos_padres.clear();
@@ -163,7 +163,7 @@ void PoblacionVentanas::seleccionarPadres()
 }
 
 
-void PoblacionVentanas::ruleta()
+void PoblacionAluminio::ruleta()
 {
     QVector<double> _probabilidades( this->size() );
 
@@ -213,7 +213,7 @@ void PoblacionVentanas::ruleta()
     }
 }
 
-void PoblacionVentanas::ventaneo()
+void PoblacionAluminio::ventaneo()
 {
     int tam_nueva_generacion = this->cantidadDePadres();
 
@@ -253,7 +253,7 @@ void PoblacionVentanas::ventaneo()
 }
 
 
-void PoblacionVentanas::torneo()
+void PoblacionAluminio::torneo()
 {
     int tam_nueva_generacion = this->cantidadDePadres();
 
@@ -310,7 +310,7 @@ void PoblacionVentanas::torneo()
 }
 
 
-void PoblacionVentanas::generarHijosVentana()
+void PoblacionAluminio::generarHijos()
 {
 
     this->clear();
@@ -319,7 +319,7 @@ void PoblacionVentanas::generarHijosVentana()
     if( _elitismo ) {
         this->append( _nuevos_padres.at( 0 ) );
         _pos_mejor_fitness = 0;
-        _mejor_fitness = evaluarVentana( this->at( 0 ) );
+        _mejor_fitness = evaluarAluminio( this->at( 0 ) );
     }
 
     // Genero la brecha generacional copiando los padres para convervar las buenas soluciones
@@ -341,8 +341,8 @@ void PoblacionVentanas::generarHijosVentana()
         }
 
 
-        GenomaVentana hijo1 = _nuevos_padres.at( p1 );
-        GenomaVentana hijo2 = _nuevos_padres.at( p2 );
+        GenomaAluminio hijo1 = _nuevos_padres.at( p1 );
+        GenomaAluminio hijo2 = _nuevos_padres.at( p2 );
 
         //CRUZAS
 
@@ -376,6 +376,4 @@ void PoblacionVentanas::generarHijosVentana()
     }
 }
 
-
-
-#endif // POBLACIONVENTANAS_H
+#endif // POBLACIONALUMINIO_H
